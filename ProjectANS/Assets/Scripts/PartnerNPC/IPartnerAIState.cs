@@ -10,5 +10,6 @@ public enum PartnerAIState
 {
     STAY,
     FOLLOW,
-    FREE_WALK
+    FREE_WALK,
+    EVENT
 }

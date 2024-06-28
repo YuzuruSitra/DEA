@@ -7,19 +7,16 @@ public class PartnerNPCController : MonoBehaviour
     [SerializeField] 
     private float _moveSpeed;
     public float MoveSpeed => _moveSpeed;
-    // [Header("目標座標に対する許容誤差")]
-    // [SerializeField] 
-    // private float _stoppingDistance = 0.1f;
 
     private PartnerAIState _currentState;
     private Dictionary<PartnerAIState, IPartnerAIState> _states = new Dictionary<PartnerAIState, IPartnerAIState>();
-
-    //private Animator _animator;
-    // ターゲット座標を保持
-
-    // 移動用クラス
-    // private InnNPCMover _innNPCMover;
-    // public InnNPCMover InnNPCMover => _innNPCMover;
+    Dictionary<PartnerAIState, int> _utilities = new Dictionary<PartnerAIState, int>
+    {
+        { PartnerAIState.STAY, 0 },
+        { PartnerAIState.FOLLOW, 0 },
+        { PartnerAIState.FREE_WALK, 0 },
+        { PartnerAIState.EVENT, 0 }
+    };
 
     void Start()
     {
@@ -29,15 +26,15 @@ public class PartnerNPCController : MonoBehaviour
     void Update()
     {
         _states[_currentState].UpdateState();
-        // ChangeAnimWalk(_states[_currentState].IsWalk);
-        if (_states[_currentState].IsStateFin) NextState(_currentState);
+        if (_states[_currentState].IsStateFin) NextState();
     }
 
-    void NextState(PartnerAIState state)
+    void NextState()
     {
         // 選定処理を挟む
-        PartnerAIState newState = state;
-        switch (state)
+        UpdateUtilities();
+        PartnerAIState newState = SelectState();
+        switch (newState)
         {
             case PartnerAIState.STAY:
                 break;
@@ -46,11 +43,34 @@ public class PartnerNPCController : MonoBehaviour
             case PartnerAIState.FREE_WALK:
                 break;
             default:
-                newState = state;
                 break;
         }
         _states[_currentState].ExitState();
         _states[newState].EnterState();
         _currentState = newState;
     }
+
+    PartnerAIState SelectState()
+    {
+        PartnerAIState selectedState = PartnerAIState.STAY;
+        int maxUtility = int.MinValue;
+        foreach (var utility in _utilities)
+        {
+            if (utility.Value > maxUtility)
+            {
+                maxUtility = utility.Value;
+                selectedState = utility.Key;
+            }
+        }
+        return selectedState;
+    }
+
+    public void UpdateUtilities()
+    {
+        _utilities[PartnerAIState.STAY] = Random.Range(0, 100);
+        _utilities[PartnerAIState.FOLLOW] = Random.Range(0, 100);
+        _utilities[PartnerAIState.FREE_WALK] = Random.Range(0, 100);
+        _utilities[PartnerAIState.EVENT] = Random.Range(0, 100);
+    }
+
 }
