@@ -5,6 +5,7 @@ namespace PartnerNPC
 {
     public class FreeWalkState : IPartnerAIState
     {
+        
         private readonly Transform _npcTransform;
         private readonly NavMeshAgent _agent;
         private readonly float _speed = 3.0f;
@@ -13,7 +14,7 @@ namespace PartnerNPC
         private const float Range = 4.0f;
         private const float AngleRange = 60f;
         private const float DestinationThreshold = 1.25f;
-        private const float StateTime = 10.0f;
+        private const float StateTime = 6.0f;
         private float _remainTime;
         public bool IsStateFin => (_remainTime <= 0);
 

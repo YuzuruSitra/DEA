@@ -11,12 +11,12 @@ namespace PartnerNPC
     {
         private NavMeshAgent _agent;
         private PartnerAIState _currentState;
-        private readonly Dictionary<PartnerAIState, IPartnerAIState> _states = new Dictionary<PartnerAIState, IPartnerAIState>();
-        private readonly Dictionary<PartnerAIState, int> _utilities = new Dictionary<PartnerAIState, int>
+        private readonly Dictionary<PartnerAIState, IPartnerAIState> _states = new();
+        private readonly Dictionary<PartnerAIState, int> _utilities = new()
         {
-            { PartnerAIState.Stay, 0 },
-            { PartnerAIState.Follow, 0 },
-            { PartnerAIState.FreeWalk, 0 },
+            { PartnerAIState.Stay, 50 },
+            { PartnerAIState.Follow, 50 },
+            { PartnerAIState.FreeWalk, 50 },
             { PartnerAIState.Event, 0 }
         };
         private DebugColor _debugColor;
@@ -55,23 +55,42 @@ namespace PartnerNPC
 
         private PartnerAIState SelectState()
         {
-            var selectedState = PartnerAIState.Stay;
+            if (_utilities.Count == 0) return PartnerAIState.Stay;
+
             var maxUtility = int.MinValue;
+            var selectedState = PartnerAIState.Stay;
+            var countMaxUtility = 0;
+
+            // Iterate through _utilities to find the state with the highest utility
             foreach (var utility in _utilities)
             {
-                if (utility.Value <= maxUtility) continue;
-                maxUtility = utility.Value;
-                selectedState = utility.Key;
+                if (utility.Value > maxUtility)
+                {
+                    maxUtility = utility.Value;
+                    selectedState = utility.Key;
+                    countMaxUtility = 1;
+                }
+                else if (utility.Value == maxUtility)
+                {
+                    countMaxUtility++;
+                    if (Random.Range(0, countMaxUtility) == 0)
+                        selectedState = utility.Key;
+                }
             }
             return selectedState;
         }
 
         private void UpdateUtilities()
         {
-            _utilities[PartnerAIState.Stay] = Random.Range(0, 100);
-            _utilities[PartnerAIState.Follow] = Random.Range(0, 100);
-            _utilities[PartnerAIState.FreeWalk] = Random.Range(0, 100);
-            //_utilities[PartnerAIState.EVENT] = Random.Range(0, 100);
+            var keysToUpdate = new List<PartnerAIState>(_utilities.Keys); // Create a list of keys to iterate over
+            foreach (var key in keysToUpdate)
+            {
+                if (key == _currentState)
+                    _utilities[key] = (key == PartnerAIState.Event) ? 0 : _utilities[key] -= 25;
+                else
+                    _utilities[key] += 10;
+                _utilities[key] = Math.Clamp(_utilities[key], 0, 100);
+            }
         }
 
         private void DebugColor(PartnerAIState newState)
