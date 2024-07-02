@@ -350,14 +350,15 @@
 "Assets/Scripts/Gimmick/Door.cs"
 "Assets/Scripts/Gimmick/IInteractable.cs"
 "Assets/Scripts/Gimmick/Treasure.cs"
+"Assets/Scripts/PartnerNPC/EventState.cs"
 "Assets/Scripts/PartnerNPC/FollowState.cs"
 "Assets/Scripts/PartnerNPC/FreeWalkState.cs"
 "Assets/Scripts/PartnerNPC/IPartnerAIState.cs"
-"Assets/Scripts/PartnerNPC/NPCMover.cs"
 "Assets/Scripts/PartnerNPC/PartnerNPCController.cs"
 "Assets/Scripts/PartnerNPC/StayState.cs"
 "Assets/Scripts/Player/PlayerInteraction.cs"
 "Assets/Scripts/Player/PlayerMover.cs"
+"Assets/Scripts/System/Debug/DebugColor.cs"
 -langversion:9.0
 
 /deterministic
