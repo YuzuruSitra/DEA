@@ -1,17 +1,20 @@
 using UnityEngine;
 
-public class DebugColor
+namespace System.Debug
 {
-    Material _material;
-
-    public DebugColor(Material mat)
+    public class DebugColor
     {
-        _material = mat;
-    }
+        private readonly Material _material;
 
-    public void ChangeColor(Color color)
-    {
-        _material.color = color;
-    }
+        public DebugColor(Material mat)
+        {
+            _material = mat;
+        }
 
+        public void ChangeColor(Color color)
+        {
+            _material.color = color;
+        }
+
+    }
 }

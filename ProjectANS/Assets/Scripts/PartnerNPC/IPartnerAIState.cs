@@ -1,15 +1,18 @@
-public interface IPartnerAIState
+namespace PartnerNPC
 {
-    bool IsStateFin { get; }
-    void EnterState();
-    void UpdateState();
-    void ExitState();
-}
+    public interface IPartnerAIState
+    {
+        bool IsStateFin { get; }
+        void EnterState();
+        void UpdateState();
+        void ExitState();
+    }
 
-public enum PartnerAIState
-{
-    STAY,
-    FOLLOW,
-    FREE_WALK,
-    EVENT
+    public enum PartnerAIState
+    {
+        Stay,
+        Follow,
+        FreeWalk,
+        Event
+    }
 }

@@ -1,95 +1,100 @@
+using System;
 using System.Collections.Generic;
+using System.Debug;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
-public class PartnerNPCController : MonoBehaviour
+namespace PartnerNPC
 {
-    NavMeshAgent _agent;
-    private PartnerAIState _currentState;
-    private Dictionary<PartnerAIState, IPartnerAIState> _states = new Dictionary<PartnerAIState, IPartnerAIState>();
-    Dictionary<PartnerAIState, int> _utilities = new Dictionary<PartnerAIState, int>
+    public class PartnerNpcController : MonoBehaviour
     {
-        { PartnerAIState.STAY, 0 },
-        { PartnerAIState.FOLLOW, 0 },
-        { PartnerAIState.FREE_WALK, 0 },
-        { PartnerAIState.EVENT, 0 }
-    };
-
-    void Start()
-    {
-        _agent = GetComponent<NavMeshAgent>();
-        _states.Add(PartnerAIState.STAY, new StayState(gameObject));
-        _states.Add(PartnerAIState.FOLLOW, new FollowState(GameObject.FindWithTag("Player"), _agent));
-        _states.Add(PartnerAIState.FREE_WALK, new FreeWalkState(gameObject, _agent));
-        _states.Add(PartnerAIState.EVENT, new EventState());
-
-        _currentState = PartnerAIState.FREE_WALK;
-        _states[_currentState].EnterState();
-        DebugColor(_currentState);
-    }
-
-    void Update()
-    {
-        _states[_currentState].UpdateState();
-        if (_states[_currentState].IsStateFin) NextState();
-    }
-
-    void NextState()
-    {
-        // ëIíËèàóùÇã≤Çﬁ
-        UpdateUtilities();
-        PartnerAIState newState = SelectState();
-        // ÉfÉoÉbÉOèàóù
-        DebugColor(newState);
-        _states[_currentState].ExitState();
-        _states[newState].EnterState();
-        _currentState = newState;
-    }
-
-    PartnerAIState SelectState()
-    {
-        PartnerAIState selectedState = PartnerAIState.STAY;
-        int maxUtility = int.MinValue;
-        foreach (var utility in _utilities)
+        private NavMeshAgent _agent;
+        private PartnerAIState _currentState;
+        private readonly Dictionary<PartnerAIState, IPartnerAIState> _states = new Dictionary<PartnerAIState, IPartnerAIState>();
+        private readonly Dictionary<PartnerAIState, int> _utilities = new Dictionary<PartnerAIState, int>
         {
-            if (utility.Value > maxUtility)
+            { PartnerAIState.Stay, 0 },
+            { PartnerAIState.Follow, 0 },
+            { PartnerAIState.FreeWalk, 0 },
+            { PartnerAIState.Event, 0 }
+        };
+        private DebugColor _debugColor;
+        
+        private void Start()
+        {
+            _debugColor = new DebugColor(GetComponent<Renderer>().material);
+            _agent = GetComponent<NavMeshAgent>();
+            _states.Add(PartnerAIState.Stay, new StayState(gameObject));
+            _states.Add(PartnerAIState.Follow, new FollowState(GameObject.FindWithTag("Player"), _agent));
+            _states.Add(PartnerAIState.FreeWalk, new FreeWalkState(gameObject, _agent));
+            _states.Add(PartnerAIState.Event, new EventState());
+
+            _currentState = PartnerAIState.FreeWalk;
+            _states[_currentState].EnterState();
+            DebugColor(_currentState);
+        }
+
+        private void Update()
+        {
+            _states[_currentState].UpdateState();
+            if (_states[_currentState].IsStateFin) NextState();
+        }
+
+        private void NextState()
+        {
+            // ÈÅ∏ÂÆöÂá¶ÁêÜ„ÇíÊåü„ÇÄ
+            UpdateUtilities();
+            var newState = SelectState();
+            // „Éá„Éê„ÉÉ„Ç∞Âá¶ÁêÜ
+            DebugColor(newState);
+            _states[_currentState].ExitState();
+            _states[newState].EnterState();
+            _currentState = newState;
+        }
+
+        private PartnerAIState SelectState()
+        {
+            var selectedState = PartnerAIState.Stay;
+            var maxUtility = int.MinValue;
+            foreach (var utility in _utilities)
             {
+                if (utility.Value <= maxUtility) continue;
                 maxUtility = utility.Value;
                 selectedState = utility.Key;
             }
+            return selectedState;
         }
-        return selectedState;
-    }
 
-    public void UpdateUtilities()
-    {
-        _utilities[PartnerAIState.STAY] = Random.Range(0, 100);
-        _utilities[PartnerAIState.FOLLOW] = Random.Range(0, 100);
-        _utilities[PartnerAIState.FREE_WALK] = Random.Range(0, 100);
-        //_utilities[PartnerAIState.EVENT] = Random.Range(0, 100);
-    }
-
-    private void DebugColor(PartnerAIState newState)
-    {
-        // ÉfÉoÉbÉOèàóù
-        DebugColor _debugColor = new DebugColor(GetComponent<Renderer>().material);
-        switch (newState)
+        private void UpdateUtilities()
         {
-            case PartnerAIState.STAY:
-                _debugColor.ChangeColor(Color.blue);
-                break;
-            case PartnerAIState.FOLLOW:
-                _debugColor.ChangeColor(Color.cyan);
-                break;
-            case PartnerAIState.FREE_WALK:
-                _debugColor.ChangeColor(Color.green);
-                break;
-            case PartnerAIState.EVENT:
-                _debugColor.ChangeColor(Color.red);
-                break;
-            default:
-                break;
+            _utilities[PartnerAIState.Stay] = Random.Range(0, 100);
+            _utilities[PartnerAIState.Follow] = Random.Range(0, 100);
+            _utilities[PartnerAIState.FreeWalk] = Random.Range(0, 100);
+            //_utilities[PartnerAIState.EVENT] = Random.Range(0, 100);
         }
-    }
 
+        private void DebugColor(PartnerAIState newState)
+        {
+            switch (newState)
+            {
+                // „Éá„Éê„ÉÉ„Ç∞Âá¶ÁêÜ
+                case PartnerAIState.Stay:
+                    _debugColor.ChangeColor(Color.blue);
+                    break;
+                case PartnerAIState.Follow:
+                    _debugColor.ChangeColor(Color.cyan);
+                    break;
+                case PartnerAIState.FreeWalk:
+                    _debugColor.ChangeColor(Color.green);
+                    break;
+                case PartnerAIState.Event:
+                    _debugColor.ChangeColor(Color.red);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
+            }
+        }
+
+    }
 }

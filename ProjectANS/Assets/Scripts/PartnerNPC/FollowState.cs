@@ -1,38 +1,39 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class FollowState : IPartnerAIState
+namespace PartnerNPC
 {
-    private Transform _player;
-    NavMeshAgent _agent;
-    private float _speed = 6.0f;
-    private const float STATE_TIME = 4.0f;
-    private float _remainTime;
-    public bool IsStateFin => (_remainTime <= 0);
-
-    public FollowState(GameObject player, NavMeshAgent agent)
+    public class FollowState : IPartnerAIState
     {
-        _player = player.transform;
-        _agent = agent;
-    }
+        private readonly Transform _player;
+        private readonly NavMeshAgent _agent;
+        private const float Speed = 6.0f;
+        private const float StateTime = 4.0f;
+        private float _remainTime;
+        public bool IsStateFin => (_remainTime <= 0);
 
-    // ステートに入った時の処理
-    public void EnterState()
-    {
-        _remainTime = STATE_TIME;
-        _agent.isStopped = false;
-        _agent.speed = _speed;
-    }
+        public FollowState(GameObject player, NavMeshAgent agent)
+        {
+            _player = player.transform;
+            _agent = agent;
+        }
+        
+        public void EnterState()
+        {
+            _remainTime = StateTime;
+            _agent.isStopped = false;
+            _agent.speed = Speed;
+        }
+        
+        public void UpdateState()
+        {
+            _agent.destination = _player.position;
+            _remainTime -= Time.deltaTime;
+        }
 
-    // ステートの更新
-    public void UpdateState()
-    {
-        _agent.destination = _player.position;
-        _remainTime -= Time.deltaTime;
-    }
-
-    public void ExitState()
-    {
-        _agent.isStopped = true;
+        public void ExitState()
+        {
+            _agent.isStopped = true;
+        }
     }
 }

@@ -1,23 +1,23 @@
 
-public class EventState : IPartnerAIState
+namespace PartnerNPC
 {
-    // 仮置き
-    public bool IsStateFin => false;
-
-    // ステートに入った時の処理
-    public void EnterState()
+    public class EventState : IPartnerAIState
     {
+        public bool IsStateFin => false;
+        
+        public void EnterState()
+        {
 
-    }
+        }
 
-    // ステートの更新
-    public void UpdateState()
-    {
+        public void UpdateState()
+        {
 
-    }
+        }
 
-    public void ExitState()
-    {
+        public void ExitState()
+        {
 
+        }
     }
 }
