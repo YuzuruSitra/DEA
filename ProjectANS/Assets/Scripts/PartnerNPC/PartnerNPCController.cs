@@ -20,11 +20,12 @@ public class PartnerNPCController : MonoBehaviour
         _agent = GetComponent<NavMeshAgent>();
         _states.Add(PartnerAIState.STAY, new StayState());
         _states.Add(PartnerAIState.FOLLOW, new FollowState(GameObject.FindWithTag("Player"), _agent));
-        _states.Add(PartnerAIState.FREE_WALK, new FreeWalkState());
+        _states.Add(PartnerAIState.FREE_WALK, new FreeWalkState(gameObject, _agent));
         _states.Add(PartnerAIState.EVENT, new EventState());
 
-        _currentState = PartnerAIState.FOLLOW;
+        _currentState = PartnerAIState.FREE_WALK;
         _states[_currentState].EnterState();
+        DebugColor(_currentState);
     }
 
     void Update()
