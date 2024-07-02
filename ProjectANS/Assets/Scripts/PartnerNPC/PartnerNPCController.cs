@@ -18,7 +18,7 @@ public class PartnerNPCController : MonoBehaviour
     void Start()
     {
         _agent = GetComponent<NavMeshAgent>();
-        _states.Add(PartnerAIState.STAY, new StayState());
+        _states.Add(PartnerAIState.STAY, new StayState(gameObject));
         _states.Add(PartnerAIState.FOLLOW, new FollowState(GameObject.FindWithTag("Player"), _agent));
         _states.Add(PartnerAIState.FREE_WALK, new FreeWalkState(gameObject, _agent));
         _states.Add(PartnerAIState.EVENT, new EventState());
@@ -66,7 +66,7 @@ public class PartnerNPCController : MonoBehaviour
         _utilities[PartnerAIState.STAY] = Random.Range(0, 100);
         _utilities[PartnerAIState.FOLLOW] = Random.Range(0, 100);
         _utilities[PartnerAIState.FREE_WALK] = Random.Range(0, 100);
-        _utilities[PartnerAIState.EVENT] = Random.Range(0, 100);
+        //_utilities[PartnerAIState.EVENT] = Random.Range(0, 100);
     }
 
     private void DebugColor(PartnerAIState newState)

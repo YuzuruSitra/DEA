@@ -13,16 +13,14 @@ public class FreeWalkState : IPartnerAIState
     private const float DESTINATION_THRESHOLD = 1.25f;
     private const float STATE_TIME = 10.0f;
     private float _remainTime;
+    public bool IsStateFin => (_remainTime <= 0);
 
     public FreeWalkState(GameObject npc, NavMeshAgent agent)
     {
         _npcTransform = npc.transform;
         _agent = agent;
     }
-
-    // 仮置き
-    public bool IsStateFin => (_remainTime <= 0);
-
+    
     // ステートに入った時の処理
     public void EnterState()
     {
