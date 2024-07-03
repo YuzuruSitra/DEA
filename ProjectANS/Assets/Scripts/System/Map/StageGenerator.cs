@@ -50,7 +50,7 @@ public class StageGenerator : MonoBehaviour
     private void MapGenerate()
     {
         // 部屋（StartX、StartY、幅、高さ）
-        roomStatus = new int[System.Enum.GetNames(typeof(RoomStatus)).Length, roomNum];
+        roomStatus = new int[roomNum, System.Enum.GetNames(typeof(RoomStatus)).Length];
 
         // フロア設定
         _mapKind = new int[_mapSize, _mapSize];
@@ -67,10 +67,10 @@ public class StageGenerator : MonoBehaviour
         }
 
         // フロアを入れる
-        roomStatus[(int)RoomStatus.x, roomCount] = 0;
-        roomStatus[(int)RoomStatus.y, roomCount] = 0;
-        roomStatus[(int)RoomStatus.w, roomCount] = _mapSize;
-        roomStatus[(int)RoomStatus.h, roomCount] = _mapSize;
+        roomStatus[roomCount, (int)RoomStatus.x] = 0;
+        roomStatus[roomCount, (int)RoomStatus.y] = 0;
+        roomStatus[roomCount, (int)RoomStatus.w] = _mapSize;
+        roomStatus[roomCount, (int)RoomStatus.h] = _mapSize;
 
         // カウント追加
         roomCount++;
@@ -88,10 +88,10 @@ public class StageGenerator : MonoBehaviour
             for (int maxCheck = 0; maxCheck < roomNum; maxCheck++)
             {
                 // 面積比較
-                if (max < roomStatus[(int)RoomStatus.w, maxCheck] * roomStatus[(int)RoomStatus.h, maxCheck])
+                if (max < roomStatus[maxCheck, (int)RoomStatus.w] * roomStatus[maxCheck, (int)RoomStatus.h])
                 {
                     // 最大面積上書き
-                    max = roomStatus[(int)RoomStatus.w, maxCheck] * roomStatus[(int)RoomStatus.h, maxCheck];
+                    max = roomStatus[maxCheck, (int)RoomStatus.w] * roomStatus[maxCheck, (int)RoomStatus.h];
 
                     // 親の部屋番号セット
                     parentNum = maxCheck;
@@ -99,29 +99,29 @@ public class StageGenerator : MonoBehaviour
             }
 
             // 取得した部屋をさらに割る
-            if (SplitPoint(roomStatus[(int)RoomStatus.w, parentNum], roomStatus[(int)RoomStatus.h, parentNum]))
+            if (SplitPoint(roomStatus[parentNum, (int)RoomStatus.w], roomStatus[parentNum, (int)RoomStatus.h]))
             {
                 // 取得
-                roomStatus[(int)RoomStatus.x, roomCount] = roomStatus[(int)RoomStatus.x, parentNum];
-                roomStatus[(int)RoomStatus.y, roomCount] = roomStatus[(int)RoomStatus.y, parentNum];
-                roomStatus[(int)RoomStatus.w, roomCount] = roomStatus[(int)RoomStatus.w, parentNum] - line;
-                roomStatus[(int)RoomStatus.h, roomCount] = roomStatus[(int)RoomStatus.h, parentNum];
+                roomStatus[roomCount, (int)RoomStatus.x] = roomStatus[parentNum, (int)RoomStatus.x];
+                roomStatus[roomCount, (int)RoomStatus.y] = roomStatus[parentNum, (int)RoomStatus.y];
+                roomStatus[roomCount, (int)RoomStatus.w] = roomStatus[parentNum, (int)RoomStatus.w] - line;
+                roomStatus[roomCount, (int)RoomStatus.h] = roomStatus[parentNum, (int)RoomStatus.h];
 
                 // 親の部屋を整形する
-                roomStatus[(int)RoomStatus.x, parentNum] += roomStatus[(int)RoomStatus.w, roomCount];
-                roomStatus[(int)RoomStatus.w, parentNum] -= roomStatus[(int)RoomStatus.w, roomCount];
+                roomStatus[parentNum, (int)RoomStatus.x] += roomStatus[roomCount, (int)RoomStatus.w];
+                roomStatus[parentNum, (int)RoomStatus.w] -= roomStatus[roomCount, (int)RoomStatus.w];
             }
             else
             {
                 // 取得
-                roomStatus[(int)RoomStatus.x, roomCount] = roomStatus[(int)RoomStatus.x, parentNum];
-                roomStatus[(int)RoomStatus.y, roomCount] = roomStatus[(int)RoomStatus.y, parentNum];
-                roomStatus[(int)RoomStatus.w, roomCount] = roomStatus[(int)RoomStatus.w, parentNum];
-                roomStatus[(int)RoomStatus.h, roomCount] = roomStatus[(int)RoomStatus.h, parentNum] - line;
+                roomStatus[roomCount, (int)RoomStatus.x] = roomStatus[parentNum, (int)RoomStatus.x];
+                roomStatus[roomCount, (int)RoomStatus.y] = roomStatus[parentNum, (int)RoomStatus.y];
+                roomStatus[roomCount, (int)RoomStatus.w] = roomStatus[parentNum, (int)RoomStatus.w];
+                roomStatus[roomCount, (int)RoomStatus.h] = roomStatus[parentNum, (int)RoomStatus.h] - line;
 
                 // 親の部屋を整形する
-                roomStatus[(int)RoomStatus.y, parentNum] += roomStatus[(int)RoomStatus.h, roomCount];
-                roomStatus[(int)RoomStatus.h, parentNum] -= roomStatus[(int)RoomStatus.h, roomCount];
+                roomStatus[parentNum, (int)RoomStatus.y] += roomStatus[roomCount, (int)RoomStatus.h];
+                roomStatus[parentNum, (int)RoomStatus.h] -= roomStatus[roomCount, (int)RoomStatus.h];
             }
             // カウントを加算
             roomCount++;
@@ -131,34 +131,34 @@ public class StageGenerator : MonoBehaviour
         for (int i = 0; i < roomNum; i++)
         {
             // 生成座標の設定
-            roomStatus[(int)RoomStatus.rx, i] = Random.Range(roomStatus[(int)RoomStatus.x, i] + offsetWall, (roomStatus[(int)RoomStatus.x, i] + roomStatus[(int)RoomStatus.w, i]) - (roomMin + offsetWall));
-            roomStatus[(int)RoomStatus.ry, i] = Random.Range(roomStatus[(int)RoomStatus.y, i] + offsetWall, (roomStatus[(int)RoomStatus.y, i] + roomStatus[(int)RoomStatus.h, i]) - (roomMin + offsetWall));
+            roomStatus[i, (int)RoomStatus.rx] = Random.Range(roomStatus[i, (int)RoomStatus.x] + offsetWall, (roomStatus[i, (int)RoomStatus.x] + roomStatus[i, (int)RoomStatus.w]) - (roomMin + offsetWall));
+            roomStatus[i, (int)RoomStatus.ry] = Random.Range(roomStatus[i, (int)RoomStatus.y] + offsetWall, (roomStatus[i, (int)RoomStatus.y] + roomStatus[i, (int)RoomStatus.h]) - (roomMin + offsetWall));
 
             // 部屋の大きさを設定
-            roomStatus[(int)RoomStatus.rw, i] = Random.Range(roomMin, roomStatus[(int)RoomStatus.w, i] - (roomStatus[(int)RoomStatus.rx, i] - roomStatus[(int)RoomStatus.x, i]) - offset);
-            roomStatus[(int)RoomStatus.rh, i] = Random.Range(roomMin, roomStatus[(int)RoomStatus.h, i] - (roomStatus[(int)RoomStatus.ry, i] - roomStatus[(int)RoomStatus.y, i]) - offset);
+            roomStatus[i, (int)RoomStatus.rw] = Random.Range(roomMin, roomStatus[i, (int)RoomStatus.w] - (roomStatus[i, (int)RoomStatus.rx] - roomStatus[i, (int)RoomStatus.x]) - offset);
+            roomStatus[i, (int)RoomStatus.rh] = Random.Range(roomMin, roomStatus[i, (int)RoomStatus.h] - (roomStatus[i, (int)RoomStatus.ry] - roomStatus[i, (int)RoomStatus.y]) - offset);
         }
 
         // マップ上書き
         for (int count = 0; count < roomNum; count++)
         {
             // 取得した部屋の確認
-            for (int h = 0; h < roomStatus[(int)RoomStatus.h, count]; h++)
+            for (int h = 0; h < roomStatus[count, (int)RoomStatus.h]; h++)
             {
-                for (int w = 0; w < roomStatus[(int)RoomStatus.w, count]; w++)
+                for (int w = 0; w < roomStatus[count, (int)RoomStatus.w]; w++)
                 {
                     // 部屋チェックポイント
-                    _mapKind[w + roomStatus[(int)RoomStatus.x, count], h + roomStatus[(int)RoomStatus.y, count]] = (int)objectType.wall;
+                    _mapKind[w + roomStatus[count, (int)RoomStatus.x], h + roomStatus[count, (int)RoomStatus.y]] = (int)objectType.wall;
                 }
 
             }
 
             // 生成した部屋
-            for (int h = 0; h < roomStatus[(int)RoomStatus.rh, count]; h++)
+            for (int h = 0; h < roomStatus[count, (int)RoomStatus.rh]; h++)
             {
-                for (int w = 0; w < roomStatus[(int)RoomStatus.rw, count]; w++)
+                for (int w = 0; w < roomStatus[count, (int)RoomStatus.rw]; w++)
                 {
-                    _mapKind[w + roomStatus[(int)RoomStatus.rx, count], h + roomStatus[(int)RoomStatus.ry, count]] = (int)objectType.ground;
+                    _mapKind[w + roomStatus[count, (int)RoomStatus.rx], h + roomStatus[count, (int)RoomStatus.ry]] = (int)objectType.ground;
                 }
             }
         }
@@ -171,18 +171,18 @@ public class StageGenerator : MonoBehaviour
         for (int nowRoom = 0; nowRoom < roomNum; nowRoom++)
         {
             // 左の壁からの距離
-            splitLength[0] = roomStatus[(int)RoomStatus.x, nowRoom] > 0 ?
-                roomStatus[(int)RoomStatus.rx, nowRoom] - roomStatus[(int)RoomStatus.x, nowRoom] : int.MaxValue;
+            splitLength[0] = roomStatus[nowRoom, (int)RoomStatus.x] > 0 ?
+                roomStatus[nowRoom, (int)RoomStatus.rx] - roomStatus[nowRoom, (int)RoomStatus.x] : int.MaxValue;
             // 右の壁からの距離
-            splitLength[1] = (roomStatus[(int)RoomStatus.x, nowRoom] + roomStatus[(int)RoomStatus.w, nowRoom]) < _mapSize ?
-                (roomStatus[(int)RoomStatus.x, nowRoom] + roomStatus[(int)RoomStatus.w, nowRoom]) - (roomStatus[(int)RoomStatus.rx, nowRoom] + roomStatus[(int)RoomStatus.rw, nowRoom]) : int.MaxValue;
+            splitLength[1] = (roomStatus[nowRoom, (int)RoomStatus.x] + roomStatus[nowRoom, (int)RoomStatus.w]) < _mapSize ?
+                (roomStatus[nowRoom, (int)RoomStatus.x] + roomStatus[nowRoom, (int)RoomStatus.w]) - (roomStatus[nowRoom, (int)RoomStatus.rx] + roomStatus[nowRoom, (int)RoomStatus.rw]) : int.MaxValue;
 
             // 下の壁からの距離
-            splitLength[2] = roomStatus[(int)RoomStatus.y, nowRoom] > 0 ?
-                roomStatus[(int)RoomStatus.ry, nowRoom] - roomStatus[(int)RoomStatus.y, nowRoom] : int.MaxValue;
+            splitLength[2] = roomStatus[nowRoom, (int)RoomStatus.y] > 0 ?
+                roomStatus[nowRoom, (int)RoomStatus.ry] - roomStatus[nowRoom, (int)RoomStatus.y] : int.MaxValue;
             // 上の壁からの距離
-            splitLength[3] = (roomStatus[(int)RoomStatus.y, nowRoom] + roomStatus[(int)RoomStatus.h, nowRoom]) < _mapSize ?
-                (roomStatus[(int)RoomStatus.y, nowRoom] + roomStatus[(int)RoomStatus.h, nowRoom]) - (roomStatus[(int)RoomStatus.ry, nowRoom] + roomStatus[(int)RoomStatus.rh, nowRoom]) : int.MaxValue;
+            splitLength[3] = (roomStatus[nowRoom, (int)RoomStatus.y] + roomStatus[nowRoom, (int)RoomStatus.h]) < _mapSize ?
+                (roomStatus[nowRoom, (int)RoomStatus.y] + roomStatus[nowRoom, (int)RoomStatus.h]) - (roomStatus[nowRoom, (int)RoomStatus.ry] + roomStatus[nowRoom, (int)RoomStatus.rh]) : int.MaxValue;
 
             // マックスでない物のみ先へ
             for (int j = 0; j < splitLength.Length; j++)
@@ -193,7 +193,7 @@ public class StageGenerator : MonoBehaviour
                     if (j < 2)
                     {
                         // 道を引く場所を決定
-                        roodPoint = Random.Range(roomStatus[(int)RoomStatus.ry, nowRoom] + offset, roomStatus[(int)RoomStatus.ry, nowRoom] + roomStatus[(int)RoomStatus.rh, nowRoom] - offset);
+                        roodPoint = Random.Range(roomStatus[nowRoom, (int)RoomStatus.ry] + offset, roomStatus[nowRoom, (int)RoomStatus.ry] + roomStatus[nowRoom, (int)RoomStatus.rh] - offset);
 
                         // マップに書き込む
                         for (int w = 1; w <= splitLength[j]; w++)
@@ -202,18 +202,18 @@ public class StageGenerator : MonoBehaviour
                             if (j == 0)
                             {
                                 // 左
-                                _mapKind[(-w) + roomStatus[(int)RoomStatus.rx, nowRoom], roodPoint] = (int)objectType.road;
+                                _mapKind[(-w) + roomStatus[nowRoom, (int)RoomStatus.rx], roodPoint] = (int)objectType.road;
                             }
                             else
                             {
                                 // 右
-                                _mapKind[w + roomStatus[(int)RoomStatus.rx, nowRoom] + roomStatus[(int)RoomStatus.rw, nowRoom] - offset, roodPoint] = (int)objectType.road;
+                                _mapKind[w + roomStatus[nowRoom, (int)RoomStatus.rx] + roomStatus[nowRoom, (int)RoomStatus.rw] - offset, roodPoint] = (int)objectType.road;
 
                                 // 最後
                                 if (w == splitLength[j])
                                 {
                                     // 一つ多く作る
-                                    _mapKind[w + offset + roomStatus[(int)RoomStatus.rx, nowRoom] + roomStatus[(int)RoomStatus.rw, nowRoom] - offset, roodPoint] = (int)objectType.road;
+                                    _mapKind[w + offset + roomStatus[nowRoom, (int)RoomStatus.rx] + roomStatus[nowRoom, (int)RoomStatus.rw] - offset, roodPoint] = (int)objectType.road;
                                 }
                             }
                         }
@@ -221,7 +221,7 @@ public class StageGenerator : MonoBehaviour
                     else
                     {
                         // 道を引く場所を決定
-                        roodPoint = Random.Range(roomStatus[(int)RoomStatus.rx, nowRoom] + offset, roomStatus[(int)RoomStatus.rx, nowRoom] + roomStatus[(int)RoomStatus.rw, nowRoom] - offset);
+                        roodPoint = Random.Range(roomStatus[nowRoom, (int)RoomStatus.rx] + offset, roomStatus[nowRoom, (int)RoomStatus.rx] + roomStatus[nowRoom, (int)RoomStatus.rw] - offset);
 
                         // マップに書き込む
                         for (int h = 1; h <= splitLength[j]; h++)
@@ -230,18 +230,18 @@ public class StageGenerator : MonoBehaviour
                             if (j == 2)
                             {
                                 // 下
-                                _mapKind[roodPoint, (-h) + roomStatus[(int)RoomStatus.ry, nowRoom]] = (int)objectType.road;
+                                _mapKind[roodPoint, (-h) + roomStatus[nowRoom, (int)RoomStatus.ry]] = (int)objectType.road;
                             }
                             else
                             {
                                 // 上
-                                _mapKind[roodPoint, h + roomStatus[(int)RoomStatus.ry, nowRoom] + roomStatus[(int)RoomStatus.rh, nowRoom] - offset] = (int)objectType.road;
+                                _mapKind[roodPoint, h + roomStatus[nowRoom, (int)RoomStatus.ry] + roomStatus[nowRoom, (int)RoomStatus.rh] - offset] = (int)objectType.road;
 
                                 // 最後
                                 if (h == splitLength[j])
                                 {
                                     // 一つ多く作る
-                                    _mapKind[roodPoint, h + offset + roomStatus[(int)RoomStatus.ry, nowRoom] + roomStatus[(int)RoomStatus.rh, nowRoom] - offset] = (int)objectType.road;
+                                    _mapKind[roodPoint, h + offset + roomStatus[nowRoom, (int)RoomStatus.ry] + roomStatus[nowRoom, (int)RoomStatus.rh] - offset] = (int)objectType.road;
                                 }
                             }
                         }
@@ -259,21 +259,21 @@ public class StageGenerator : MonoBehaviour
             roadVec1 = 0;
             roadVec2 = 0;
             // 道を繋げる
-            for (int roodScan = 0; roodScan < roomStatus[(int)RoomStatus.w, nowRoom]; roodScan++)
+            for (int roodScan = 0; roodScan < roomStatus[nowRoom, (int)RoomStatus.w]; roodScan++)
             {
                 // 道を検索
-                if (_mapKind[roodScan + roomStatus[(int)RoomStatus.x, nowRoom], roomStatus[(int)RoomStatus.y, nowRoom]] == (int)objectType.road)
+                if (_mapKind[roodScan + roomStatus[nowRoom, (int)RoomStatus.x], roomStatus[nowRoom, (int)RoomStatus.y]] == (int)objectType.road)
                 {
                     // 道の座標セット
                     if (roadVec1 == 0)
                     {
                         // 始点セット
-                        roadVec1 = roodScan + roomStatus[(int)RoomStatus.x, nowRoom];
+                        roadVec1 = roodScan + roomStatus[nowRoom, (int)RoomStatus.x];
                     }
                     else
                     {
                         // 終点セット
-                        roadVec2 = roodScan + roomStatus[(int)RoomStatus.x, nowRoom];
+                        roadVec2 = roodScan + roomStatus[nowRoom, (int)RoomStatus.x];
                     }
                 }
             }
@@ -281,27 +281,27 @@ public class StageGenerator : MonoBehaviour
             for (int roadSet = roadVec1; roadSet < roadVec2; roadSet++)
             {
                 // 境界線を上書き
-                _mapKind[roadSet, roomStatus[(int)RoomStatus.y, nowRoom]] = (int)objectType.road;
+                _mapKind[roadSet, roomStatus[nowRoom, (int)RoomStatus.y]] = (int)objectType.road;
             }
 
             roadVec1 = 0;
             roadVec2 = 0;
 
-            for (int roadScan = 0; roadScan < roomStatus[(int)RoomStatus.h, nowRoom]; roadScan++)
+            for (int roadScan = 0; roadScan < roomStatus[nowRoom, (int)RoomStatus.h]; roadScan++)
             {
                 // 道を検索
-                if (_mapKind[roomStatus[(int)RoomStatus.x, nowRoom], roadScan + roomStatus[(int)RoomStatus.y, nowRoom]] == (int)objectType.road)
+                if (_mapKind[roomStatus[nowRoom, (int)RoomStatus.x], roadScan + roomStatus[nowRoom, (int)RoomStatus.y]] == (int)objectType.road)
                 {
                     // 道の座標セット
                     if (roadVec1 == 0)
                     {
                         // 始点セット
-                        roadVec1 = roadScan + roomStatus[(int)RoomStatus.y, nowRoom];
+                        roadVec1 = roadScan + roomStatus[nowRoom, (int)RoomStatus.y];
                     }
                     else
                     {
                         // 終点セット
-                        roadVec2 = roadScan + roomStatus[(int)RoomStatus.y, nowRoom];
+                        roadVec2 = roadScan + roomStatus[nowRoom, (int)RoomStatus.y];
                     }
                 }
             }
@@ -309,7 +309,7 @@ public class StageGenerator : MonoBehaviour
             for (int roadSet = roadVec1; roadSet < roadVec2; roadSet++)
             {
                 // 境界線を上書き
-                _mapKind[roomStatus[(int)RoomStatus.x, nowRoom], roadSet] = (int)objectType.road;
+                _mapKind[roomStatus[nowRoom, (int)RoomStatus.x], roadSet] = (int)objectType.road;
             }
         }
 
