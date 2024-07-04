@@ -1,385 +1,384 @@
 using UnityEngine;
-using Random = UnityEngine.Random;
 
-public class StageGenerator : MonoBehaviour
+namespace System.Map
 {
-    [SerializeField] Vector3 defaultPosition;
-    // Size of one side of the map.
-    [SerializeField] private int _mapSize;
-    // Block kind.
-    private int[,] _mapKind;
-
-    // Number of rooms.
-    [SerializeField] private int roomNum;
-    // Minimum room size.
-    [SerializeField] private int roomMin = 4;
-    private int roomCount;                      // •”‰®ƒJƒEƒ“ƒg
-    private int line = 0;                       // •ªŠ„“_
-    private int[,] roomStatus;                  // •”‰®‚ÌŠÇ—”z—ñ
-
-    private enum RoomStatus                     // •”‰®‚Ì”z—ñƒXƒe[ƒ^ƒX
+    public class StageGenerator : MonoBehaviour
     {
-        x,// ƒ}ƒbƒvÀ•W‚˜
-        y,// ƒ}ƒbƒvÀ•W‚™
-        w,// •ªŠ„‚µ‚½•
-        h,// •ªŠ„‚µ‚½‚‚³
+        [SerializeField] Vector3 _defaultPosition;
+        // Size of one side of the map.
+        [SerializeField] private int _mapSize;
+        // Block kind.
+        private int[,] _mapKind;
 
-        rx,// •”‰®‚Ì¶¬ˆÊ’u
-        ry,// •”‰®‚Ì¶¬ˆÊ’u
-        rw,// •”‰®‚Ì•
-        rh,// •”‰®‚Ì‚‚³
-    }
+        // Number of rooms.
+        [SerializeField] private int _roomNum;
+        // Minimum room size.
+        [SerializeField] private int _roomMin = 4;
+        private int _roomCount;                      // éƒ¨å±‹ã‚«ã‚¦ãƒ³ãƒˆ
+        private int _line; // åˆ†å‰²ç‚¹
+        private int[,] _roomInfo;
 
-    enum objectType
-    {
-        ground = 0,
-        wall = 1,
-        road = 2,
-    }
-    
-    [SerializeField] private GameObject[] mapObjects;               // ƒ}ƒbƒv¶¬—p‚ÌƒIƒuƒWƒFƒNƒg”z—ñ
-
-    private const int offsetWall = 2;   // •Ç‚©‚ç—£‚·‹——£
-    private const int offset = 1;       // ’²®—p
-
-    void Start()
-    {
-        MapGenerate();
-    }
-
-    private void MapGenerate()
-    {
-        // •”‰®iStartXAStartYA•A‚‚³j
-        roomStatus = new int[roomNum, System.Enum.GetNames(typeof(RoomStatus)).Length];
-
-        // ƒtƒƒAİ’è
-        _mapKind = new int[_mapSize, _mapSize];
-
-
-        // ƒtƒƒA‚Ì‰Šú‰»
-        for (int nowW = 0; nowW < _mapSize; nowW++)
+        private enum RoomStatus                     // éƒ¨å±‹ã®é…åˆ—ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹
         {
-            for (int nowH = 0; nowH < _mapSize; nowH++)
-            {
-                // •Ç‚ğ“\‚é
-                _mapKind[nowW, nowH] = 2;
-            }
+            X,// ãƒãƒƒãƒ—åº§æ¨™ï½˜
+            Y,// ãƒãƒƒãƒ—åº§æ¨™ï½™
+            W,// åˆ†å‰²ã—ãŸå¹…
+            H,// åˆ†å‰²ã—ãŸé«˜ã•
+
+            Rx,// éƒ¨å±‹ã®ç”Ÿæˆä½ç½®
+            Ry,// éƒ¨å±‹ã®ç”Ÿæˆä½ç½®
+            RW,// éƒ¨å±‹ã®å¹…
+            Rh,// éƒ¨å±‹ã®é«˜ã•
         }
 
-        // ƒtƒƒA‚ğ“ü‚ê‚é
-        roomStatus[roomCount, (int)RoomStatus.x] = 0;
-        roomStatus[roomCount, (int)RoomStatus.y] = 0;
-        roomStatus[roomCount, (int)RoomStatus.w] = _mapSize;
-        roomStatus[roomCount, (int)RoomStatus.h] = _mapSize;
-
-        // ƒJƒEƒ“ƒg’Ç‰Á
-        roomCount++;
-
-        // •”‰®‚Ì”‚¾‚¯•ªŠ„‚·‚é
-        int parentNum = 0;
-        int max = 0; 
-        for (int splitNum = 0; splitNum < roomNum - 1; splitNum++)
+        private enum ObjectType
         {
-            // •Ï”‰Šú‰»
-            parentNum = 0;  // •ªŠ„‚·‚é•”‰®”Ô†
-            max = 0;        // Å‘å–ÊÏ
+            Ground = 0,
+            Wall = 1,
+            Road = 2,
+        }
+    
+        [SerializeField] private GameObject[] _mapObjects;               // ãƒãƒƒãƒ—ç”Ÿæˆç”¨ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆé…åˆ—
 
-            // Å‘å‚Ì•”‰®”Ô†‚ğ’²‚×‚é
-            for (int maxCheck = 0; maxCheck < roomNum; maxCheck++)
+        private const int OffsetWall = 2;   // å£ã‹ã‚‰é›¢ã™è·é›¢
+        private const int Offset = 1;       // èª¿æ•´ç”¨
+        
+        public void MapGenerate()
+        {
+            // éƒ¨å±‹ï¼ˆStartXã€StartYã€å¹…ã€é«˜ã•ï¼‰
+            _roomInfo = new int[_roomNum, Enum.GetNames(typeof(RoomStatus)).Length];
+
+            // ãƒ•ãƒ­ã‚¢è¨­å®š
+            _mapKind = new int[_mapSize, _mapSize];
+
+
+            // ãƒ•ãƒ­ã‚¢ã®åˆæœŸåŒ–
+            for (var nowW = 0; nowW < _mapSize; nowW++)
             {
-                // –ÊÏ”äŠr
-                if (max < roomStatus[maxCheck, (int)RoomStatus.w] * roomStatus[maxCheck, (int)RoomStatus.h])
+                for (var nowH = 0; nowH < _mapSize; nowH++)
                 {
-                    // Å‘å–ÊÏã‘‚«
-                    max = roomStatus[maxCheck, (int)RoomStatus.w] * roomStatus[maxCheck, (int)RoomStatus.h];
-
-                    // e‚Ì•”‰®”Ô†ƒZƒbƒg
-                    parentNum = maxCheck;
+                    // å£ã‚’è²¼ã‚‹
+                    _mapKind[nowW, nowH] = 2;
                 }
             }
 
-            // æ“¾‚µ‚½•”‰®‚ğ‚³‚ç‚ÉŠ„‚é
-            if (SplitPoint(roomStatus[parentNum, (int)RoomStatus.w], roomStatus[parentNum, (int)RoomStatus.h]))
-            {
-                // æ“¾
-                roomStatus[roomCount, (int)RoomStatus.x] = roomStatus[parentNum, (int)RoomStatus.x];
-                roomStatus[roomCount, (int)RoomStatus.y] = roomStatus[parentNum, (int)RoomStatus.y];
-                roomStatus[roomCount, (int)RoomStatus.w] = roomStatus[parentNum, (int)RoomStatus.w] - line;
-                roomStatus[roomCount, (int)RoomStatus.h] = roomStatus[parentNum, (int)RoomStatus.h];
+            // ãƒ•ãƒ­ã‚¢ã‚’å…¥ã‚Œã‚‹
+            _roomInfo[_roomCount, (int)RoomStatus.X] = 0;
+            _roomInfo[_roomCount, (int)RoomStatus.Y] = 0;
+            _roomInfo[_roomCount, (int)RoomStatus.W] = _mapSize;
+            _roomInfo[_roomCount, (int)RoomStatus.H] = _mapSize;
 
-                // e‚Ì•”‰®‚ğ®Œ`‚·‚é
-                roomStatus[parentNum, (int)RoomStatus.x] += roomStatus[roomCount, (int)RoomStatus.w];
-                roomStatus[parentNum, (int)RoomStatus.w] -= roomStatus[roomCount, (int)RoomStatus.w];
+            // ã‚«ã‚¦ãƒ³ãƒˆè¿½åŠ 
+            _roomCount++;
+
+            // éƒ¨å±‹ã®æ•°ã ã‘åˆ†å‰²ã™ã‚‹
+            for (var splitNum = 0; splitNum < _roomNum - 1; splitNum++)
+            {
+                // å¤‰æ•°åˆæœŸåŒ–
+                var parentNum = 0;
+                var max = 0;
+
+                // æœ€å¤§ã®éƒ¨å±‹ç•ªå·ã‚’èª¿ã¹ã‚‹
+                for (var maxCheck = 0; maxCheck < _roomNum; maxCheck++)
+                {
+                    // é¢ç©æ¯”è¼ƒ
+                    if (max >= _roomInfo[maxCheck, (int)RoomStatus.W] * _roomInfo[maxCheck, (int)RoomStatus.H])
+                        continue;
+                    // æœ€å¤§é¢ç©ä¸Šæ›¸ã
+                    max = _roomInfo[maxCheck, (int)RoomStatus.W] * _roomInfo[maxCheck, (int)RoomStatus.H];
+
+                    // è¦ªã®éƒ¨å±‹ç•ªå·ã‚»ãƒƒãƒˆ
+                    parentNum = maxCheck;
+                }
+
+                // å–å¾—ã—ãŸéƒ¨å±‹ã‚’ã•ã‚‰ã«å‰²ã‚‹
+                if (SplitPoint(_roomInfo[parentNum, (int)RoomStatus.W], _roomInfo[parentNum, (int)RoomStatus.H]))
+                {
+                    // å–å¾—
+                    _roomInfo[_roomCount, (int)RoomStatus.X] = _roomInfo[parentNum, (int)RoomStatus.X];
+                    _roomInfo[_roomCount, (int)RoomStatus.Y] = _roomInfo[parentNum, (int)RoomStatus.Y];
+                    _roomInfo[_roomCount, (int)RoomStatus.W] = _roomInfo[parentNum, (int)RoomStatus.W] - _line;
+                    _roomInfo[_roomCount, (int)RoomStatus.H] = _roomInfo[parentNum, (int)RoomStatus.H];
+
+                    // è¦ªã®éƒ¨å±‹ã‚’æ•´å½¢ã™ã‚‹
+                    _roomInfo[parentNum, (int)RoomStatus.X] += _roomInfo[_roomCount, (int)RoomStatus.W];
+                    _roomInfo[parentNum, (int)RoomStatus.W] -= _roomInfo[_roomCount, (int)RoomStatus.W];
+                }
+                else
+                {
+                    // å–å¾—
+                    _roomInfo[_roomCount, (int)RoomStatus.X] = _roomInfo[parentNum, (int)RoomStatus.X];
+                    _roomInfo[_roomCount, (int)RoomStatus.Y] = _roomInfo[parentNum, (int)RoomStatus.Y];
+                    _roomInfo[_roomCount, (int)RoomStatus.W] = _roomInfo[parentNum, (int)RoomStatus.W];
+                    _roomInfo[_roomCount, (int)RoomStatus.H] = _roomInfo[parentNum, (int)RoomStatus.H] - _line;
+
+                    // è¦ªã®éƒ¨å±‹ã‚’æ•´å½¢ã™ã‚‹
+                    _roomInfo[parentNum, (int)RoomStatus.Y] += _roomInfo[_roomCount, (int)RoomStatus.H];
+                    _roomInfo[parentNum, (int)RoomStatus.H] -= _roomInfo[_roomCount, (int)RoomStatus.H];
+                }
+                // ã‚«ã‚¦ãƒ³ãƒˆã‚’åŠ ç®—
+                _roomCount++;
+            }
+
+            // åˆ†å‰²ã—ãŸä¸­ã«ãƒ©ãƒ³ãƒ€ãƒ ãªå¤§ãã•ã®éƒ¨å±‹ã‚’ç”Ÿæˆ
+            for (var i = 0; i < _roomNum; i++)
+            {
+                // ç”Ÿæˆåº§æ¨™ã®è¨­å®š
+                _roomInfo[i, (int)RoomStatus.Rx] = UnityEngine.Random.Range(_roomInfo[i, (int)RoomStatus.X] + OffsetWall, (_roomInfo[i, (int)RoomStatus.X] + _roomInfo[i, (int)RoomStatus.W]) - (_roomMin + OffsetWall));
+                _roomInfo[i, (int)RoomStatus.Ry] = UnityEngine.Random.Range(_roomInfo[i, (int)RoomStatus.Y] + OffsetWall, (_roomInfo[i, (int)RoomStatus.Y] + _roomInfo[i, (int)RoomStatus.H]) - (_roomMin + OffsetWall));
+
+                // éƒ¨å±‹ã®å¤§ãã•ã‚’è¨­å®š
+                _roomInfo[i, (int)RoomStatus.RW] = UnityEngine.Random.Range(_roomMin, _roomInfo[i, (int)RoomStatus.W] - (_roomInfo[i, (int)RoomStatus.Rx] - _roomInfo[i, (int)RoomStatus.X]) - Offset);
+                _roomInfo[i, (int)RoomStatus.Rh] = UnityEngine.Random.Range(_roomMin, _roomInfo[i, (int)RoomStatus.H] - (_roomInfo[i, (int)RoomStatus.Ry] - _roomInfo[i, (int)RoomStatus.Y]) - Offset);
+            }
+
+            // ãƒãƒƒãƒ—ä¸Šæ›¸ã
+            for (var count = 0; count < _roomNum; count++)
+            {
+                // å–å¾—ã—ãŸéƒ¨å±‹ã®ç¢ºèª
+                for (var h = 0; h < _roomInfo[count, (int)RoomStatus.H]; h++)
+                {
+                    for (var w = 0; w < _roomInfo[count, (int)RoomStatus.W]; w++)
+                    {
+                        // éƒ¨å±‹ãƒã‚§ãƒƒã‚¯ãƒã‚¤ãƒ³ãƒˆ
+                        _mapKind[w + _roomInfo[count, (int)RoomStatus.X], h + _roomInfo[count, (int)RoomStatus.Y]] = (int)ObjectType.Wall;
+                    }
+
+                }
+
+                // ç”Ÿæˆã—ãŸéƒ¨å±‹
+                for (var h = 0; h < _roomInfo[count, (int)RoomStatus.Rh]; h++)
+                {
+                    for (var w = 0; w < _roomInfo[count, (int)RoomStatus.RW]; w++)
+                    {
+                        _mapKind[w + _roomInfo[count, (int)RoomStatus.Rx], h + _roomInfo[count, (int)RoomStatus.Ry]] = (int)ObjectType.Ground;
+                    }
+                }
+            }
+
+            // é“ã®ç”Ÿæˆ
+            var splitLength = new int[4];
+
+            // éƒ¨å±‹ã‹ã‚‰ä¸€ç•ªè¿‘ã„å¢ƒç•Œç·šã‚’èª¿ã¹ã‚‹(åå­—ã«èª¿ã¹ã‚‹)
+            for (var nowRoom = 0; nowRoom < _roomNum; nowRoom++)
+            {
+                // å·¦ã®å£ã‹ã‚‰ã®è·é›¢
+                splitLength[0] = _roomInfo[nowRoom, (int)RoomStatus.X] > 0 ?
+                    _roomInfo[nowRoom, (int)RoomStatus.Rx] - _roomInfo[nowRoom, (int)RoomStatus.X] : int.MaxValue;
+                // å³ã®å£ã‹ã‚‰ã®è·é›¢
+                splitLength[1] = (_roomInfo[nowRoom, (int)RoomStatus.X] + _roomInfo[nowRoom, (int)RoomStatus.W]) < _mapSize ?
+                    (_roomInfo[nowRoom, (int)RoomStatus.X] + _roomInfo[nowRoom, (int)RoomStatus.W]) - (_roomInfo[nowRoom, (int)RoomStatus.Rx] + _roomInfo[nowRoom, (int)RoomStatus.RW]) : int.MaxValue;
+
+                // ä¸‹ã®å£ã‹ã‚‰ã®è·é›¢
+                splitLength[2] = _roomInfo[nowRoom, (int)RoomStatus.Y] > 0 ?
+                    _roomInfo[nowRoom, (int)RoomStatus.Ry] - _roomInfo[nowRoom, (int)RoomStatus.Y] : int.MaxValue;
+                // ä¸Šã®å£ã‹ã‚‰ã®è·é›¢
+                splitLength[3] = (_roomInfo[nowRoom, (int)RoomStatus.Y] + _roomInfo[nowRoom, (int)RoomStatus.H]) < _mapSize ?
+                    (_roomInfo[nowRoom, (int)RoomStatus.Y] + _roomInfo[nowRoom, (int)RoomStatus.H]) - (_roomInfo[nowRoom, (int)RoomStatus.Ry] + _roomInfo[nowRoom, (int)RoomStatus.Rh]) : int.MaxValue;
+
+                // ãƒãƒƒã‚¯ã‚¹ã§ãªã„ç‰©ã®ã¿å…ˆã¸
+                for (var j = 0; j < splitLength.Length; j++)
+                {
+                    if (splitLength[j] == int.MaxValue) continue;
+                    // ä¸Šä¸‹å·¦å³åˆ¤å®š
+                    int roodPoint;// é“ã‚’å¼•ãå ´æ‰€
+                    if (j < 2)
+                    {
+                        // é“ã‚’å¼•ãå ´æ‰€ã‚’æ±ºå®š
+                        roodPoint = UnityEngine.Random.Range(_roomInfo[nowRoom, (int)RoomStatus.Ry] + Offset, _roomInfo[nowRoom, (int)RoomStatus.Ry] + _roomInfo[nowRoom, (int)RoomStatus.Rh] - Offset);
+
+                        // ãƒãƒƒãƒ—ã«æ›¸ãè¾¼ã‚€
+                        for (var w = 1; w <= splitLength[j]; w++)
+                        {
+                            // å·¦å³åˆ¤å®š
+                            if (j == 0)
+                            {
+                                // å·¦
+                                _mapKind[(-w) + _roomInfo[nowRoom, (int)RoomStatus.Rx], roodPoint] = (int)ObjectType.Road;
+                            }
+                            else
+                            {
+                                // å³
+                                _mapKind[w + _roomInfo[nowRoom, (int)RoomStatus.Rx] + _roomInfo[nowRoom, (int)RoomStatus.RW] - Offset, roodPoint] = (int)ObjectType.Road;
+
+                                // æœ€å¾Œ
+                                if (w == splitLength[j])
+                                {
+                                    // ä¸€ã¤å¤šãä½œã‚‹
+                                    _mapKind[w + Offset + _roomInfo[nowRoom, (int)RoomStatus.Rx] + _roomInfo[nowRoom, (int)RoomStatus.RW] - Offset, roodPoint] = (int)ObjectType.Road;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // é“ã‚’å¼•ãå ´æ‰€ã‚’æ±ºå®š
+                        roodPoint = UnityEngine.Random.Range(_roomInfo[nowRoom, (int)RoomStatus.Rx] + Offset, _roomInfo[nowRoom, (int)RoomStatus.Rx] + _roomInfo[nowRoom, (int)RoomStatus.RW] - Offset);
+
+                        // ãƒãƒƒãƒ—ã«æ›¸ãè¾¼ã‚€
+                        for (var h = 1; h <= splitLength[j]; h++)
+                        {
+                            // ä¸Šä¸‹åˆ¤å®š
+                            if (j == 2)
+                            {
+                                // ä¸‹
+                                _mapKind[roodPoint, (-h) + _roomInfo[nowRoom, (int)RoomStatus.Ry]] = (int)ObjectType.Road;
+                            }
+                            else
+                            {
+                                // ä¸Š
+                                _mapKind[roodPoint, h + _roomInfo[nowRoom, (int)RoomStatus.Ry] + _roomInfo[nowRoom, (int)RoomStatus.Rh] - Offset] = (int)ObjectType.Road;
+
+                                // æœ€å¾Œ
+                                if (h == splitLength[j])
+                                {
+                                    // ä¸€ã¤å¤šãä½œã‚‹
+                                    _mapKind[roodPoint, h + Offset + _roomInfo[nowRoom, (int)RoomStatus.Ry] + _roomInfo[nowRoom, (int)RoomStatus.Rh] - Offset] = (int)ObjectType.Road;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // é“ã®æ¥ç¶š
+            for (var nowRoom = 0; nowRoom < _roomNum; nowRoom++)
+            {
+                var roadVec1 = 0;// é“ã®å§‹ç‚¹
+                var roadVec2 = 0;// é“ã®çµ‚ç‚¹
+                // é“ã‚’ç¹‹ã’ã‚‹
+                for (var roodScan = 0; roodScan < _roomInfo[nowRoom, (int)RoomStatus.W]; roodScan++)
+                {
+                    // é“ã‚’æ¤œç´¢
+                    if (_mapKind[roodScan + _roomInfo[nowRoom, (int)RoomStatus.X],
+                            _roomInfo[nowRoom, (int)RoomStatus.Y]] != (int)ObjectType.Road) continue;
+                    // é“ã®åº§æ¨™ã‚»ãƒƒãƒˆ
+                    if (roadVec1 == 0)
+                    {
+                        // å§‹ç‚¹ã‚»ãƒƒãƒˆ
+                        roadVec1 = roodScan + _roomInfo[nowRoom, (int)RoomStatus.X];
+                    }
+                    else
+                    {
+                        // çµ‚ç‚¹ã‚»ãƒƒãƒˆ
+                        roadVec2 = roodScan + _roomInfo[nowRoom, (int)RoomStatus.X];
+                    }
+                }
+                // é“ã‚’å¼•ã
+                for (var roadSet = roadVec1; roadSet < roadVec2; roadSet++)
+                {
+                    // å¢ƒç•Œç·šã‚’ä¸Šæ›¸ã
+                    _mapKind[roadSet, _roomInfo[nowRoom, (int)RoomStatus.Y]] = (int)ObjectType.Road;
+                }
+
+                roadVec1 = 0;
+                roadVec2 = 0;
+
+                for (var roadScan = 0; roadScan < _roomInfo[nowRoom, (int)RoomStatus.H]; roadScan++)
+                {
+                    // é“ã‚’æ¤œç´¢
+                    if (_mapKind[_roomInfo[nowRoom, (int)RoomStatus.X],
+                            roadScan + _roomInfo[nowRoom, (int)RoomStatus.Y]] != (int)ObjectType.Road) continue;
+                    // é“ã®åº§æ¨™ã‚»ãƒƒãƒˆ
+                    if (roadVec1 == 0)
+                    {
+                        // å§‹ç‚¹ã‚»ãƒƒãƒˆ
+                        roadVec1 = roadScan + _roomInfo[nowRoom, (int)RoomStatus.Y];
+                    }
+                    else
+                    {
+                        // çµ‚ç‚¹ã‚»ãƒƒãƒˆ
+                        roadVec2 = roadScan + _roomInfo[nowRoom, (int)RoomStatus.Y];
+                    }
+                }
+                // é“ã‚’å¼•ã
+                for (var roadSet = roadVec1; roadSet < roadVec2; roadSet++)
+                {
+                    // å¢ƒç•Œç·šã‚’ä¸Šæ›¸ã
+                    _mapKind[_roomInfo[nowRoom, (int)RoomStatus.X], roadSet] = (int)ObjectType.Road;
+                }
+            }
+
+            // è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
+            var groundParent = new GameObject("Ground");
+            var wallParent = new GameObject("Wall");
+            var roadParent = new GameObject("Road");
+
+            // é…åˆ—ã«ãƒ—ãƒ¬ãƒãƒ–ã‚’å…¥ã‚Œã‚‹
+            var objectParents = new [] { groundParent, wallParent, roadParent };
+
+            // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã™ã‚‹
+            for (var nowH = 0; nowH < _mapSize; nowH++)
+            {
+                for (var nowW = 0; nowW < _mapSize; nowW++)
+                {
+                    // å£ã®ç”Ÿæˆ
+                    if (_mapKind[nowW, nowH] == (int)ObjectType.Wall)
+                    {
+                        Instantiate(
+                            _mapObjects[_mapKind[nowW, nowH]],
+                            new Vector3(
+                                _defaultPosition.x + nowW * _mapObjects[_mapKind[nowW, nowH]].transform.localScale.x,
+                                _defaultPosition.y + (_mapObjects[(int)ObjectType.Wall].transform.localScale.y - _mapObjects[(int)ObjectType.Ground].transform.localScale.y) * 0.5f,
+                                _defaultPosition.z + nowH * _mapObjects[_mapKind[nowW, nowH]].transform.localScale.z),
+                            Quaternion.identity,objectParents[_mapKind[nowW, nowH]].transform);
+                    }
+
+                    // éƒ¨å±‹ã®ç”Ÿæˆ
+                    if (_mapKind[nowW, nowH] == (int)ObjectType.Ground)
+                    {
+                        Instantiate(
+                            _mapObjects[_mapKind[nowW, nowH]],
+                            new Vector3(
+                                _defaultPosition.x + nowW * _mapObjects[_mapKind[nowW, nowH]].transform.localScale.x,
+                                _defaultPosition.y,
+                                _defaultPosition.z + nowH * _mapObjects[_mapKind[nowW, nowH]].transform.localScale.z),
+                            Quaternion.identity, objectParents[_mapKind[nowW, nowH]].transform);
+                    }
+
+                    // é€šè·¯ã®ç”Ÿæˆ
+                    if (_mapKind[nowW, nowH] == (int)ObjectType.Road)
+                    {
+                        Instantiate(
+                            _mapObjects[_mapKind[nowW, nowH]],
+                            new Vector3(
+                                _defaultPosition.x + nowW * _mapObjects[_mapKind[nowW, nowH]].transform.localScale.x,
+                                _defaultPosition.y,
+                                _defaultPosition.z + nowH * _mapObjects[_mapKind[nowW, nowH]].transform.localScale.z),
+                            Quaternion.identity,objectParents[_mapKind[nowW, nowH]].transform);
+                    }
+
+                }
+            }
+        }
+
+        // åˆ†å‰²ç‚¹ã®ã‚»ãƒƒãƒˆ(int x, int y)ã€å¤§ãã„æ–¹ã‚’åˆ†å‰²ã™ã‚‹
+        private bool SplitPoint(int x, int y)
+        {
+            // åˆ†å‰²ä½ç½®ã®æ±ºå®š
+            if (x > y)
+            {
+                _line = UnityEngine.Random.Range(_roomMin + (OffsetWall * 2), x - (OffsetWall * 2 + _roomMin));// ç¸¦å‰²ã‚Š
+                return true;
             }
             else
             {
-                // æ“¾
-                roomStatus[roomCount, (int)RoomStatus.x] = roomStatus[parentNum, (int)RoomStatus.x];
-                roomStatus[roomCount, (int)RoomStatus.y] = roomStatus[parentNum, (int)RoomStatus.y];
-                roomStatus[roomCount, (int)RoomStatus.w] = roomStatus[parentNum, (int)RoomStatus.w];
-                roomStatus[roomCount, (int)RoomStatus.h] = roomStatus[parentNum, (int)RoomStatus.h] - line;
-
-                // e‚Ì•”‰®‚ğ®Œ`‚·‚é
-                roomStatus[parentNum, (int)RoomStatus.y] += roomStatus[roomCount, (int)RoomStatus.h];
-                roomStatus[parentNum, (int)RoomStatus.h] -= roomStatus[roomCount, (int)RoomStatus.h];
-            }
-            // ƒJƒEƒ“ƒg‚ğ‰ÁZ
-            roomCount++;
-        }
-
-        // •ªŠ„‚µ‚½’†‚Éƒ‰ƒ“ƒ_ƒ€‚È‘å‚«‚³‚Ì•”‰®‚ğ¶¬
-        for (int i = 0; i < roomNum; i++)
-        {
-            // ¶¬À•W‚Ìİ’è
-            roomStatus[i, (int)RoomStatus.rx] = Random.Range(roomStatus[i, (int)RoomStatus.x] + offsetWall, (roomStatus[i, (int)RoomStatus.x] + roomStatus[i, (int)RoomStatus.w]) - (roomMin + offsetWall));
-            roomStatus[i, (int)RoomStatus.ry] = Random.Range(roomStatus[i, (int)RoomStatus.y] + offsetWall, (roomStatus[i, (int)RoomStatus.y] + roomStatus[i, (int)RoomStatus.h]) - (roomMin + offsetWall));
-
-            // •”‰®‚Ì‘å‚«‚³‚ğİ’è
-            roomStatus[i, (int)RoomStatus.rw] = Random.Range(roomMin, roomStatus[i, (int)RoomStatus.w] - (roomStatus[i, (int)RoomStatus.rx] - roomStatus[i, (int)RoomStatus.x]) - offset);
-            roomStatus[i, (int)RoomStatus.rh] = Random.Range(roomMin, roomStatus[i, (int)RoomStatus.h] - (roomStatus[i, (int)RoomStatus.ry] - roomStatus[i, (int)RoomStatus.y]) - offset);
-        }
-
-        // ƒ}ƒbƒvã‘‚«
-        for (int count = 0; count < roomNum; count++)
-        {
-            // æ“¾‚µ‚½•”‰®‚ÌŠm”F
-            for (int h = 0; h < roomStatus[count, (int)RoomStatus.h]; h++)
-            {
-                for (int w = 0; w < roomStatus[count, (int)RoomStatus.w]; w++)
-                {
-                    // •”‰®ƒ`ƒFƒbƒNƒ|ƒCƒ“ƒg
-                    _mapKind[w + roomStatus[count, (int)RoomStatus.x], h + roomStatus[count, (int)RoomStatus.y]] = (int)objectType.wall;
-                }
-
-            }
-
-            // ¶¬‚µ‚½•”‰®
-            for (int h = 0; h < roomStatus[count, (int)RoomStatus.rh]; h++)
-            {
-                for (int w = 0; w < roomStatus[count, (int)RoomStatus.rw]; w++)
-                {
-                    _mapKind[w + roomStatus[count, (int)RoomStatus.rx], h + roomStatus[count, (int)RoomStatus.ry]] = (int)objectType.ground;
-                }
+                _line = UnityEngine.Random.Range(_roomMin + (OffsetWall * 2), y - (OffsetWall * 2 + _roomMin));// æ¨ªå‰²ã‚Š
+                return false;
             }
         }
-
-        // “¹‚Ì¶¬
-        int[] splitLength = new int[4];
-        int roodPoint = 0;// “¹‚ğˆø‚­êŠ
-
-        // •”‰®‚©‚çˆê”Ô‹ß‚¢‹«ŠEü‚ğ’²‚×‚é(\š‚É’²‚×‚é)
-        for (int nowRoom = 0; nowRoom < roomNum; nowRoom++)
+        
+        // éƒ¨å±‹ã®ä¸­å¿ƒåº§æ¨™ã‚’è¨ˆç®—ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
+        public Vector3 GetRoomCenters(int roomNum)
         {
-            // ¶‚Ì•Ç‚©‚ç‚Ì‹——£
-            splitLength[0] = roomStatus[nowRoom, (int)RoomStatus.x] > 0 ?
-                roomStatus[nowRoom, (int)RoomStatus.rx] - roomStatus[nowRoom, (int)RoomStatus.x] : int.MaxValue;
-            // ‰E‚Ì•Ç‚©‚ç‚Ì‹——£
-            splitLength[1] = (roomStatus[nowRoom, (int)RoomStatus.x] + roomStatus[nowRoom, (int)RoomStatus.w]) < _mapSize ?
-                (roomStatus[nowRoom, (int)RoomStatus.x] + roomStatus[nowRoom, (int)RoomStatus.w]) - (roomStatus[nowRoom, (int)RoomStatus.rx] + roomStatus[nowRoom, (int)RoomStatus.rw]) : int.MaxValue;
+            var value = Vector3.zero;
+                var centerX = _roomInfo[roomNum, (int)RoomStatus.Rx] + _roomInfo[roomNum, (int)RoomStatus.RW] / 2f;
+                var centerZ = _roomInfo[roomNum, (int)RoomStatus.Ry] + _roomInfo[roomNum, (int)RoomStatus.Rh] / 2f;
 
-            // ‰º‚Ì•Ç‚©‚ç‚Ì‹——£
-            splitLength[2] = roomStatus[nowRoom, (int)RoomStatus.y] > 0 ?
-                roomStatus[nowRoom, (int)RoomStatus.ry] - roomStatus[nowRoom, (int)RoomStatus.y] : int.MaxValue;
-            // ã‚Ì•Ç‚©‚ç‚Ì‹——£
-            splitLength[3] = (roomStatus[nowRoom, (int)RoomStatus.y] + roomStatus[nowRoom, (int)RoomStatus.h]) < _mapSize ?
-                (roomStatus[nowRoom, (int)RoomStatus.y] + roomStatus[nowRoom, (int)RoomStatus.h]) - (roomStatus[nowRoom, (int)RoomStatus.ry] + roomStatus[nowRoom, (int)RoomStatus.rh]) : int.MaxValue;
-
-            // ƒ}ƒbƒNƒX‚Å‚È‚¢•¨‚Ì‚İæ‚Ö
-            for (int j = 0; j < splitLength.Length; j++)
-            {
-                if (splitLength[j] != int.MaxValue)
-                {
-                    // ã‰º¶‰E”»’è
-                    if (j < 2)
-                    {
-                        // “¹‚ğˆø‚­êŠ‚ğŒˆ’è
-                        roodPoint = Random.Range(roomStatus[nowRoom, (int)RoomStatus.ry] + offset, roomStatus[nowRoom, (int)RoomStatus.ry] + roomStatus[nowRoom, (int)RoomStatus.rh] - offset);
-
-                        // ƒ}ƒbƒv‚É‘‚«‚Ş
-                        for (int w = 1; w <= splitLength[j]; w++)
-                        {
-                            // ¶‰E”»’è
-                            if (j == 0)
-                            {
-                                // ¶
-                                _mapKind[(-w) + roomStatus[nowRoom, (int)RoomStatus.rx], roodPoint] = (int)objectType.road;
-                            }
-                            else
-                            {
-                                // ‰E
-                                _mapKind[w + roomStatus[nowRoom, (int)RoomStatus.rx] + roomStatus[nowRoom, (int)RoomStatus.rw] - offset, roodPoint] = (int)objectType.road;
-
-                                // ÅŒã
-                                if (w == splitLength[j])
-                                {
-                                    // ˆê‚Â‘½‚­ì‚é
-                                    _mapKind[w + offset + roomStatus[nowRoom, (int)RoomStatus.rx] + roomStatus[nowRoom, (int)RoomStatus.rw] - offset, roodPoint] = (int)objectType.road;
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        // “¹‚ğˆø‚­êŠ‚ğŒˆ’è
-                        roodPoint = Random.Range(roomStatus[nowRoom, (int)RoomStatus.rx] + offset, roomStatus[nowRoom, (int)RoomStatus.rx] + roomStatus[nowRoom, (int)RoomStatus.rw] - offset);
-
-                        // ƒ}ƒbƒv‚É‘‚«‚Ş
-                        for (int h = 1; h <= splitLength[j]; h++)
-                        {
-                            // ã‰º”»’è
-                            if (j == 2)
-                            {
-                                // ‰º
-                                _mapKind[roodPoint, (-h) + roomStatus[nowRoom, (int)RoomStatus.ry]] = (int)objectType.road;
-                            }
-                            else
-                            {
-                                // ã
-                                _mapKind[roodPoint, h + roomStatus[nowRoom, (int)RoomStatus.ry] + roomStatus[nowRoom, (int)RoomStatus.rh] - offset] = (int)objectType.road;
-
-                                // ÅŒã
-                                if (h == splitLength[j])
-                                {
-                                    // ˆê‚Â‘½‚­ì‚é
-                                    _mapKind[roodPoint, h + offset + roomStatus[nowRoom, (int)RoomStatus.ry] + roomStatus[nowRoom, (int)RoomStatus.rh] - offset] = (int)objectType.road;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        int roadVec1 = 0;// “¹‚Ìn“_
-        int roadVec2 = 0;// “¹‚ÌI“_
-
-        // “¹‚ÌÚ‘±
-        for (int nowRoom = 0; nowRoom < roomNum; nowRoom++)
-        {
-            roadVec1 = 0;
-            roadVec2 = 0;
-            // “¹‚ğŒq‚°‚é
-            for (int roodScan = 0; roodScan < roomStatus[nowRoom, (int)RoomStatus.w]; roodScan++)
-            {
-                // “¹‚ğŒŸõ
-                if (_mapKind[roodScan + roomStatus[nowRoom, (int)RoomStatus.x], roomStatus[nowRoom, (int)RoomStatus.y]] == (int)objectType.road)
-                {
-                    // “¹‚ÌÀ•WƒZƒbƒg
-                    if (roadVec1 == 0)
-                    {
-                        // n“_ƒZƒbƒg
-                        roadVec1 = roodScan + roomStatus[nowRoom, (int)RoomStatus.x];
-                    }
-                    else
-                    {
-                        // I“_ƒZƒbƒg
-                        roadVec2 = roodScan + roomStatus[nowRoom, (int)RoomStatus.x];
-                    }
-                }
-            }
-            // “¹‚ğˆø‚­
-            for (int roadSet = roadVec1; roadSet < roadVec2; roadSet++)
-            {
-                // ‹«ŠEü‚ğã‘‚«
-                _mapKind[roadSet, roomStatus[nowRoom, (int)RoomStatus.y]] = (int)objectType.road;
-            }
-
-            roadVec1 = 0;
-            roadVec2 = 0;
-
-            for (int roadScan = 0; roadScan < roomStatus[nowRoom, (int)RoomStatus.h]; roadScan++)
-            {
-                // “¹‚ğŒŸõ
-                if (_mapKind[roomStatus[nowRoom, (int)RoomStatus.x], roadScan + roomStatus[nowRoom, (int)RoomStatus.y]] == (int)objectType.road)
-                {
-                    // “¹‚ÌÀ•WƒZƒbƒg
-                    if (roadVec1 == 0)
-                    {
-                        // n“_ƒZƒbƒg
-                        roadVec1 = roadScan + roomStatus[nowRoom, (int)RoomStatus.y];
-                    }
-                    else
-                    {
-                        // I“_ƒZƒbƒg
-                        roadVec2 = roadScan + roomStatus[nowRoom, (int)RoomStatus.y];
-                    }
-                }
-            }
-            // “¹‚ğˆø‚­
-            for (int roadSet = roadVec1; roadSet < roadVec2; roadSet++)
-            {
-                // ‹«ŠEü‚ğã‘‚«
-                _mapKind[roomStatus[nowRoom, (int)RoomStatus.x], roadSet] = (int)objectType.road;
-            }
-        }
-
-        // eƒIƒuƒWƒFƒNƒg‚Ì¶¬
-        var groundParent = new GameObject("Ground");
-        var wallParent = new GameObject("Wall");
-        var roadParent = new GameObject("Road");
-
-        // ”z—ñ‚ÉƒvƒŒƒnƒu‚ğ“ü‚ê‚é
-        var objectParents = new GameObject[] { groundParent, wallParent, roadParent };
-
-        // ƒIƒuƒWƒFƒNƒg‚ğ¶¬‚·‚é
-        for (int nowH = 0; nowH < _mapSize; nowH++)
-        {
-            for (int nowW = 0; nowW < _mapSize; nowW++)
-            {
-                // •Ç‚Ì¶¬
-                if (_mapKind[nowW, nowH] == (int)objectType.wall)
-                {
-                    GameObject mazeObject = Instantiate(
-                        mapObjects[_mapKind[nowW, nowH]],
-                        new Vector3(
-                            defaultPosition.x + nowW * mapObjects[_mapKind[nowW, nowH]].transform.localScale.x,
-                            defaultPosition.y + (mapObjects[(int)objectType.wall].transform.localScale.y - mapObjects[(int)objectType.ground].transform.localScale.y) * 0.5f,
-                            defaultPosition.z + nowH * mapObjects[_mapKind[nowW, nowH]].transform.localScale.z),
-                        Quaternion.identity,objectParents[_mapKind[nowW, nowH]].transform);
-                }
-
-                // •”‰®‚Ì¶¬
-                if (_mapKind[nowW, nowH] == (int)objectType.ground)
-                {
-                    GameObject mazeObject = Instantiate(
-                        mapObjects[_mapKind[nowW, nowH]],
-                        new Vector3(
-                            defaultPosition.x + nowW * mapObjects[_mapKind[nowW, nowH]].transform.localScale.x,
-                            defaultPosition.y,
-                            defaultPosition.z + nowH * mapObjects[_mapKind[nowW, nowH]].transform.localScale.z),
-                        Quaternion.identity, objectParents[_mapKind[nowW, nowH]].transform);
-                }
-
-                // ’Ê˜H‚Ì¶¬
-                if (_mapKind[nowW, nowH] == (int)objectType.road)
-                {
-                    GameObject mazeObject = Instantiate(
-                        mapObjects[_mapKind[nowW, nowH]],
-                        new Vector3(
-                            defaultPosition.x + nowW * mapObjects[_mapKind[nowW, nowH]].transform.localScale.x,
-                            defaultPosition.y,
-                            defaultPosition.z + nowH * mapObjects[_mapKind[nowW, nowH]].transform.localScale.z),
-                        Quaternion.identity,objectParents[_mapKind[nowW, nowH]].transform);
-                }
-
-            }
+                value.x = _defaultPosition.x + centerX * _mapObjects[(int)ObjectType.Ground].transform.localScale.x;
+                value.y = _defaultPosition.y + _mapObjects[(int)ObjectType.Ground].transform.localScale.y;
+                value.z = _defaultPosition.z + centerZ * _mapObjects[(int)ObjectType.Ground].transform.localScale.z;
+            return value;
         }
     }
-
-    // •ªŠ„“_‚ÌƒZƒbƒg(int x, int y)A‘å‚«‚¢•û‚ğ•ªŠ„‚·‚é
-    private bool SplitPoint(int x, int y)
-    {
-        // •ªŠ„ˆÊ’u‚ÌŒˆ’è
-        if (x > y)
-        {
-            line = Random.Range(roomMin + (offsetWall * 2), x - (offsetWall * 2 + roomMin));// cŠ„‚è
-            return true;
-        }
-        else
-        {
-            line = Random.Range(roomMin + (offsetWall * 2), y - (offsetWall * 2 + roomMin));// ‰¡Š„‚è
-            return false;
-        }
-    }
-
 }
