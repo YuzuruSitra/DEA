@@ -16,7 +16,7 @@ namespace PartnerNPC
         private readonly Dictionary<PartnerAIState, int> _utilities = new()
         {
             { PartnerAIState.Stay, 50 },
-            { PartnerAIState.Follow, 50 },
+            { PartnerAIState.Follow, 0 },
             { PartnerAIState.FreeWalk, 50 },
             { PartnerAIState.Event, 0 }
         };
@@ -93,7 +93,7 @@ namespace PartnerNPC
                 if (key == _currentState)
                     _utilities[key] = key is PartnerAIState.Event or PartnerAIState.Follow ? 0 : _utilities[key] -= 25;
                 else
-                    _utilities[key] += 10;
+                    _utilities[key] = key is PartnerAIState.Follow ? 0 : _utilities[key] += 10;
                 _utilities[key] = Math.Clamp(_utilities[key], 0, 100);
             }
         }
@@ -115,7 +115,7 @@ namespace PartnerNPC
             }
             else
             {
-                UpdateUtilities();
+                _utilities[PartnerAIState.FreeWalk] = 70;
             }
 
             NextState();

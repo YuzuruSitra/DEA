@@ -8,10 +8,10 @@ namespace PartnerNPC
         
         private readonly Transform _npcTransform;
         private readonly NavMeshAgent _agent;
-        private readonly float _speed = 3.0f;
+        private readonly float _speed = 4.0f;
         private float _currentWait;
-        private const float WaitTime = 2.0f;
-        private const float Range = 4.0f;
+        private const float WaitTime = 1.0f;
+        private const float Range = 5.0f;
         private const float AngleRange = 60f;
         private const float DestinationThreshold = 1.25f;
         private const float StateTime = 6.0f;
