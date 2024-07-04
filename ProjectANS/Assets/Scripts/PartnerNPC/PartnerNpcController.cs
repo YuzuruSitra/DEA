@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Debug;
+using Player;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -20,13 +21,17 @@ namespace PartnerNPC
             { PartnerAIState.Event, 0 }
         };
         private DebugColor _debugColor;
+        private PlayerAreaChecker _playerAreaChecker;
         
         private void Start()
         {
+            var player = GameObject.FindWithTag("Player");
+            _playerAreaChecker = player.GetComponent<PlayerAreaChecker>();
+            _playerAreaChecker.OnPlayerRoomChanged += OutRoomFollow;
             _debugColor = new DebugColor(GetComponent<Renderer>().material);
             _agent = GetComponent<NavMeshAgent>();
             _states.Add(PartnerAIState.Stay, new StayState(gameObject));
-            _states.Add(PartnerAIState.Follow, new FollowState(GameObject.FindWithTag("Player"), _agent));
+            _states.Add(PartnerAIState.Follow, new FollowState(player, _agent));
             _states.Add(PartnerAIState.FreeWalk, new FreeWalkState(gameObject, _agent));
             _states.Add(PartnerAIState.Event, new EventState());
 
@@ -86,11 +91,34 @@ namespace PartnerNPC
             foreach (var key in keysToUpdate)
             {
                 if (key == _currentState)
-                    _utilities[key] = (key == PartnerAIState.Event) ? 0 : _utilities[key] -= 25;
+                    _utilities[key] = key is PartnerAIState.Event or PartnerAIState.Follow ? 0 : _utilities[key] -= 25;
                 else
                     _utilities[key] += 10;
                 _utilities[key] = Math.Clamp(_utilities[key], 0, 100);
             }
+        }
+
+        private void OutRoomFollow(bool inRoom)
+        {
+            Debug.Log(inRoom);
+            if (!inRoom)
+            {
+                var keysToUpdate = new List<PartnerAIState>(_utilities.Keys);
+                foreach (var key in keysToUpdate)
+                {
+                    if (key == PartnerAIState.Follow)
+                        _utilities[key] = 100;
+                    else
+                        _utilities[key] -= 10;
+                    _utilities[key] = Math.Clamp(_utilities[key], 0, 100);
+                }
+            }
+            else
+            {
+                UpdateUtilities();
+            }
+
+            NextState();
         }
 
         private void DebugColor(PartnerAIState newState)

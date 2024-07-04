@@ -6,27 +6,26 @@ namespace System
 {
     public class GameManager : MonoBehaviour
     {
-        [SerializeField] private GameObject _playerPrefab;
-        [SerializeField] private GameObject _partnerPrefab;
+        [SerializeField] private GameObject _player;
+        [SerializeField] private GameObject _partner;
         [SerializeField] private StageGenerator _stageGenerator;
-        private Vector3 _playerInsPos = Vector3.zero;
-        private Vector3 _partnerInsPos = Vector3.zero;
-        [SerializeField] private CinemachineVirtualCamera _vCam;
+        private Vector3 _playerSetPos = Vector3.zero;
+        private Vector3 _partnerSetPos = Vector3.zero;
         [SerializeField] private NavMeshBaker _navMeshBaker;
         private void Awake()
         {
             _stageGenerator.MapGenerate();
             _navMeshBaker.BakeNavMesh();
-            _playerInsPos.x = _stageGenerator.RoomInfo[0, (int) StageGenerator.RoomStatus.CenterX];
-            _playerInsPos.y = 5;
-            _playerInsPos.z = _stageGenerator.RoomInfo[0, (int) StageGenerator.RoomStatus.CenterZ];
-            var player = Instantiate(_playerPrefab, _playerInsPos, Quaternion.identity);
-            _vCam.Follow = player.transform;
+            _playerSetPos.x = _stageGenerator.RoomInfo[0, (int) StageGenerator.RoomStatus.CenterX];
+            _playerSetPos.y = 3;
+            _playerSetPos.z = _stageGenerator.RoomInfo[0, (int) StageGenerator.RoomStatus.CenterZ];
+            _player.transform.position = _playerSetPos;
             
-            _partnerInsPos.x = _stageGenerator.RoomInfo[0, (int) StageGenerator.RoomStatus.CenterX] - (_partnerPrefab.transform.localScale.x + _playerPrefab.transform.localScale.x);
-            _partnerInsPos.y = 5;
-            _partnerInsPos.z = _stageGenerator.RoomInfo[0, (int) StageGenerator.RoomStatus.CenterZ];
-            Instantiate(_partnerPrefab, _partnerInsPos, Quaternion.identity);
+            _partnerSetPos.x = _stageGenerator.RoomInfo[0, (int) StageGenerator.RoomStatus.CenterX] - (_partner.transform.localScale.x + _player.transform.localScale.x);
+            _partnerSetPos.y = 3;
+            _partnerSetPos.z = _stageGenerator.RoomInfo[0, (int) StageGenerator.RoomStatus.CenterZ];
+            _partner.transform.position = _partnerSetPos;
+            _partner.SetActive(true);
         }
     }
 }

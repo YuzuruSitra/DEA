@@ -14,7 +14,8 @@ namespace System.Map
         [SerializeField] private int _roomNum;
         // Minimum room size.
         [SerializeField] private int _roomMin = 4;
-        private int _roomCount;                      // 部屋カウント
+        public int RoomCount { get; private set; }
+
         private int _line; // 分割点
         public int[,] RoomInfo { get; private set; }
         [SerializeField] private Transform _mapParent;
@@ -73,13 +74,13 @@ namespace System.Map
             }
 
             // フロアを入れる
-            RoomInfo[_roomCount, (int)RoomStatus.X] = 0;
-            RoomInfo[_roomCount, (int)RoomStatus.Z] = 0;
-            RoomInfo[_roomCount, (int)RoomStatus.W] = _mapSize;
-            RoomInfo[_roomCount, (int)RoomStatus.H] = _mapSize;
+            RoomInfo[RoomCount, (int)RoomStatus.X] = 0;
+            RoomInfo[RoomCount, (int)RoomStatus.Z] = 0;
+            RoomInfo[RoomCount, (int)RoomStatus.W] = _mapSize;
+            RoomInfo[RoomCount, (int)RoomStatus.H] = _mapSize;
 
             // カウント追加
-            _roomCount++;
+            RoomCount++;
 
             // 部屋の数だけ分割する
             for (var splitNum = 0; splitNum < _roomNum - 1; splitNum++)
@@ -105,29 +106,29 @@ namespace System.Map
                 if (SplitPoint(RoomInfo[parentNum, (int)RoomStatus.W], RoomInfo[parentNum, (int)RoomStatus.H]))
                 {
                     // 取得
-                    RoomInfo[_roomCount, (int)RoomStatus.X] = RoomInfo[parentNum, (int)RoomStatus.X];
-                    RoomInfo[_roomCount, (int)RoomStatus.Z] = RoomInfo[parentNum, (int)RoomStatus.Z];
-                    RoomInfo[_roomCount, (int)RoomStatus.W] = RoomInfo[parentNum, (int)RoomStatus.W] - _line;
-                    RoomInfo[_roomCount, (int)RoomStatus.H] = RoomInfo[parentNum, (int)RoomStatus.H];
+                    RoomInfo[RoomCount, (int)RoomStatus.X] = RoomInfo[parentNum, (int)RoomStatus.X];
+                    RoomInfo[RoomCount, (int)RoomStatus.Z] = RoomInfo[parentNum, (int)RoomStatus.Z];
+                    RoomInfo[RoomCount, (int)RoomStatus.W] = RoomInfo[parentNum, (int)RoomStatus.W] - _line;
+                    RoomInfo[RoomCount, (int)RoomStatus.H] = RoomInfo[parentNum, (int)RoomStatus.H];
 
                     // 親の部屋を整形する
-                    RoomInfo[parentNum, (int)RoomStatus.X] += RoomInfo[_roomCount, (int)RoomStatus.W];
-                    RoomInfo[parentNum, (int)RoomStatus.W] -= RoomInfo[_roomCount, (int)RoomStatus.W];
+                    RoomInfo[parentNum, (int)RoomStatus.X] += RoomInfo[RoomCount, (int)RoomStatus.W];
+                    RoomInfo[parentNum, (int)RoomStatus.W] -= RoomInfo[RoomCount, (int)RoomStatus.W];
                 }
                 else
                 {
                     // 取得
-                    RoomInfo[_roomCount, (int)RoomStatus.X] = RoomInfo[parentNum, (int)RoomStatus.X];
-                    RoomInfo[_roomCount, (int)RoomStatus.Z] = RoomInfo[parentNum, (int)RoomStatus.Z];
-                    RoomInfo[_roomCount, (int)RoomStatus.W] = RoomInfo[parentNum, (int)RoomStatus.W];
-                    RoomInfo[_roomCount, (int)RoomStatus.H] = RoomInfo[parentNum, (int)RoomStatus.H] - _line;
+                    RoomInfo[RoomCount, (int)RoomStatus.X] = RoomInfo[parentNum, (int)RoomStatus.X];
+                    RoomInfo[RoomCount, (int)RoomStatus.Z] = RoomInfo[parentNum, (int)RoomStatus.Z];
+                    RoomInfo[RoomCount, (int)RoomStatus.W] = RoomInfo[parentNum, (int)RoomStatus.W];
+                    RoomInfo[RoomCount, (int)RoomStatus.H] = RoomInfo[parentNum, (int)RoomStatus.H] - _line;
 
                     // 親の部屋を整形する
-                    RoomInfo[parentNum, (int)RoomStatus.Z] += RoomInfo[_roomCount, (int)RoomStatus.H];
-                    RoomInfo[parentNum, (int)RoomStatus.H] -= RoomInfo[_roomCount, (int)RoomStatus.H];
+                    RoomInfo[parentNum, (int)RoomStatus.Z] += RoomInfo[RoomCount, (int)RoomStatus.H];
+                    RoomInfo[parentNum, (int)RoomStatus.H] -= RoomInfo[RoomCount, (int)RoomStatus.H];
                 }
                 // カウントを加算
-                _roomCount++;
+                RoomCount++;
             }
 
             // 分割した中にランダムな大きさの部屋を生成

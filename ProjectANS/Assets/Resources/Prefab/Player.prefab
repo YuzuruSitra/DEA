@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 1760760396146400920}
   - component: {fileID: 1760760396146400933}
   - component: {fileID: 1760760396146400922}
+  - component: {fileID: 5175135260814262374}
   - component: {fileID: 1760760395279627887}
   m_Layer: 0
   m_Name: Player
@@ -196,6 +197,19 @@ MonoBehaviour:
   _walkSpeed: 4
   _runSpeed: 8
   _gravity: 20
+--- !u!114 &5175135260814262374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6605718370045475725}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee3e0cf271528544fa328255611621bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stageGenerator: {fileID: 0}
 --- !u!208 &1760760395279627887
 NavMeshObstacle:
   m_ObjectHideFlags: 0
