@@ -12,7 +12,7 @@ namespace PartnerNPC
         private float _currentWait;
         private const float WaitTime = 1.0f;
         private const float Range = 5.0f;
-        private const float AngleRange = 60f;
+        private const float AngleRange = 90f;
         private const float DestinationThreshold = 1.25f;
         private const float StateTime = 6.0f;
         private float _remainTime;

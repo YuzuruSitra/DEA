@@ -18,7 +18,7 @@ namespace Player
         private Vector3 _moveDirection = Vector3.zero;
         private Vector3 _direction = Vector3.zero;
         private InRoomChecker _inRoomChecker;
-        public bool IsInRoom { get; private set; }
+        public int StayRoomNum { get; private set; }
         
         private void Start()
         {
@@ -28,7 +28,7 @@ namespace Player
 
         private void Update()
         {
-            IsInRoom = _inRoomChecker.CheckInRoom(transform.position);
+            StayRoomNum = _inRoomChecker.CheckStayRoomNum(transform.position);
             
             var horizontal = Input.GetAxis("Horizontal");
             var vertical = Input.GetAxis("Vertical");

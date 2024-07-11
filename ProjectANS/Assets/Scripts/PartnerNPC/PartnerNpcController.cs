@@ -22,6 +22,7 @@ namespace PartnerNPC
         };
         private DebugColor _debugColor;
         private PlayerMover _playerMover;
+        private InRoomChecker _inRoomChecker;
         
         private void Start()
         {
@@ -29,6 +30,7 @@ namespace PartnerNPC
             _playerMover = player.GetComponent<PlayerMover>();
             _debugColor = new DebugColor(GetComponent<Renderer>().material);
             _agent = GetComponent<NavMeshAgent>();
+            _inRoomChecker = new InRoomChecker();
             _states.Add(PartnerAIState.Stay, new StayState(gameObject));
             _states.Add(PartnerAIState.Follow, new FollowState(player, _agent));
             _states.Add(PartnerAIState.FreeWalk, new FreeWalkState(gameObject, _agent));
@@ -43,7 +45,7 @@ namespace PartnerNPC
         {
             _states[_currentState].UpdateState();
             if (_states[_currentState].IsStateFin) NextState();
-            OutRoomFollow(_playerMover.IsInRoom);
+            OutRoomFollow();
         }
 
         private void NextState()
@@ -98,9 +100,11 @@ namespace PartnerNPC
             }
         }
 
-        private void OutRoomFollow(bool inRoom)
+        private void OutRoomFollow()
         {
-            if (!inRoom)
+            var stayRoom = _inRoomChecker.CheckStayRoomNum(transform.position);
+            var playerStayRoom = _playerMover.StayRoomNum;
+            if (stayRoom != playerStayRoom || stayRoom == InRoomChecker.RoadNum)
             {
                 if (_currentState == PartnerAIState.Follow) return;
                 var keysToUpdate = new List<PartnerAIState>(_utilities.Keys);
@@ -145,6 +149,5 @@ namespace PartnerNPC
                     throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
             }
         }
-
     }
 }
