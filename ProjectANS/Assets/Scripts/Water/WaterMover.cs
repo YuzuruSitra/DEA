@@ -7,6 +7,7 @@ namespace Water
     {
         [SerializeField] private float _yPosMin;
         [SerializeField] private float _yPosMax;
+        public float YPosMax => _yPosMax;
         [SerializeField] private float _upTime;
         private float _upSpeed;
 

@@ -1,0 +1,44 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Water
+{
+    public class WaterFloatHandler : MonoBehaviour
+    {
+        private WaterMover _waterMover;
+        private int _fieldObjLayer;
+        private float _waterHalfHeight;
+        private float _floatMax;
+        private readonly List<Transform> _objList = new();
+
+        private void Start()
+        {
+            _fieldObjLayer = LayerMask.NameToLayer("FieldObj");
+            _waterMover = GetComponent<WaterMover>();
+            _waterHalfHeight = transform.localScale.y / 2.0f;
+            _floatMax = _waterMover.YPosMax + _waterHalfHeight - 0.1f;
+        }
+
+        private void Update()
+        {
+            if (_objList.Count == 0) return;
+            var waterSurfaceY = transform.position.y + _waterHalfHeight;
+            foreach (var t in _objList)
+            {
+                var objFloatMax = _floatMax - t.localScale.y / 2.0f;
+                var newY = (waterSurfaceY > objFloatMax) ? objFloatMax : waterSurfaceY;
+
+                if (!(t.position.y < objFloatMax)) continue;
+                var objPos = t.position;
+                objPos.y = newY;
+                t.position = objPos;
+            }
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.layer == _fieldObjLayer) return;
+            _objList.Add(other.transform);
+        }
+    }
+}

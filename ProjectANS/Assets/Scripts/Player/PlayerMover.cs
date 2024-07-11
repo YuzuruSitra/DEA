@@ -11,9 +11,6 @@ namespace Player
         [Header("走行速度")]
         [SerializeField]
         private float _runSpeed;
-        [Header("重力係数")]
-        [SerializeField]
-        private float _gravity;
         private CharacterController _controller;
         private Vector3 _moveDirection = Vector3.zero;
         private Vector3 _direction = Vector3.zero;
@@ -37,10 +34,6 @@ namespace Player
             _moveDirection.z = vertical;
             
             var speed = Input.GetKey(KeyCode.LeftShift) ? _runSpeed : _walkSpeed;
-            
-            if (_controller.isGrounded)
-                _moveDirection.y = 0;
-            _moveDirection.y -= _gravity * Time.deltaTime;
             
             if (horizontal != 0 || vertical != 0)
             {
