@@ -21,13 +21,12 @@ namespace PartnerNPC
             { PartnerAIState.Event, 0 }
         };
         private DebugColor _debugColor;
-        private PlayerAreaChecker _playerAreaChecker;
+        private PlayerMover _playerMover;
         
         private void Start()
         {
             var player = GameObject.FindWithTag("Player");
-            _playerAreaChecker = player.GetComponent<PlayerAreaChecker>();
-            _playerAreaChecker.OnPlayerRoomChanged += OutRoomFollow;
+            _playerMover = player.GetComponent<PlayerMover>();
             _debugColor = new DebugColor(GetComponent<Renderer>().material);
             _agent = GetComponent<NavMeshAgent>();
             _states.Add(PartnerAIState.Stay, new StayState(gameObject));
@@ -44,6 +43,7 @@ namespace PartnerNPC
         {
             _states[_currentState].UpdateState();
             if (_states[_currentState].IsStateFin) NextState();
+            OutRoomFollow(_playerMover.IsInRoom);
         }
 
         private void NextState()
@@ -100,9 +100,9 @@ namespace PartnerNPC
 
         private void OutRoomFollow(bool inRoom)
         {
-            Debug.Log(inRoom);
             if (!inRoom)
             {
+                if (_currentState == PartnerAIState.Follow) return;
                 var keysToUpdate = new List<PartnerAIState>(_utilities.Keys);
                 foreach (var key in keysToUpdate)
                 {
@@ -112,13 +112,16 @@ namespace PartnerNPC
                         _utilities[key] -= 10;
                     _utilities[key] = Math.Clamp(_utilities[key], 0, 100);
                 }
+                DebugColor(PartnerAIState.Follow);
+                _states[_currentState].ExitState();
+                _states[PartnerAIState.Follow].EnterState();
+                _currentState = PartnerAIState.Follow;
             }
             else
             {
-                _utilities[PartnerAIState.FreeWalk] = 70;
+                if (_currentState != PartnerAIState.Follow) return;
+                NextState();
             }
-
-            NextState();
         }
 
         private void DebugColor(PartnerAIState newState)

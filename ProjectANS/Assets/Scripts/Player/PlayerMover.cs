@@ -4,7 +4,7 @@ namespace Player
 {
     public class PlayerMover : MonoBehaviour
     {
-        //private Transform _parent;
+        // private Transform _parent;
         [Header("歩行速度")]
         [SerializeField]
         private float _walkSpeed;
@@ -17,14 +17,19 @@ namespace Player
         private CharacterController _controller;
         private Vector3 _moveDirection = Vector3.zero;
         private Vector3 _direction = Vector3.zero;
-
+        private InRoomChecker _inRoomChecker;
+        public bool IsInRoom { get; private set; }
+        
         private void Start()
         {
             _controller = GetComponent<CharacterController>();
+            _inRoomChecker = new InRoomChecker();
         }
 
         private void Update()
         {
+            IsInRoom = _inRoomChecker.CheckInRoom(transform.position);
+            
             var horizontal = Input.GetAxis("Horizontal");
             var vertical = Input.GetAxis("Vertical");
             
