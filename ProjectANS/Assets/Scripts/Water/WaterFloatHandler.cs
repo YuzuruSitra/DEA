@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,12 +6,13 @@ namespace Water
 {
     public class WaterFloatHandler : MonoBehaviour
     {
+        [SerializeField] private float _terrainY;
         private WaterMover _waterMover;
         private int _fieldObjLayer;
         private float _waterHalfHeight;
         private float _floatMax;
         private readonly List<Transform> _objList = new();
-
+        
         private void Start()
         {
             _fieldObjLayer = LayerMask.NameToLayer("FieldObj");
@@ -23,12 +25,13 @@ namespace Water
         {
             if (_objList.Count == 0) return;
             var waterSurfaceY = transform.position.y + _waterHalfHeight;
+
             foreach (var t in _objList)
             {
-                var objFloatMax = _floatMax - t.localScale.y / 2.0f;
-                var newY = (waterSurfaceY > objFloatMax) ? objFloatMax : waterSurfaceY;
-
-                if (!(t.position.y < objFloatMax)) continue;
+                var objHalfHeight = t.localScale.y / 2.0f;
+                var objFloatMax = _floatMax - objHalfHeight;
+                var objFloatMin = _terrainY + objHalfHeight;
+                var newY = Math.Clamp(waterSurfaceY, objFloatMin, objFloatMax);
                 var objPos = t.position;
                 objPos.y = newY;
                 t.position = objPos;

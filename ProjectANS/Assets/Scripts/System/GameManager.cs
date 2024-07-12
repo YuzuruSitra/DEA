@@ -1,5 +1,4 @@
 using System.Map;
-using Cinemachine;
 using UnityEngine;
 
 namespace System
@@ -17,12 +16,12 @@ namespace System
             _stageGenerator.MapGenerate();
             _navMeshBaker.BakeNavMesh();
             _playerSetPos.x = _stageGenerator.RoomInfo[0, (int) StageGenerator.RoomStatus.CenterX];
-            _playerSetPos.y = 3;
+            _playerSetPos.y = 1.88f;
             _playerSetPos.z = _stageGenerator.RoomInfo[0, (int) StageGenerator.RoomStatus.CenterZ];
             _player.transform.position = _playerSetPos;
             
             _partnerSetPos.x = _stageGenerator.RoomInfo[0, (int) StageGenerator.RoomStatus.CenterX] - (_partner.transform.localScale.x + _player.transform.localScale.x);
-            _partnerSetPos.y = 3;
+            _partnerSetPos.y = 1.88f;
             _partnerSetPos.z = _stageGenerator.RoomInfo[0, (int) StageGenerator.RoomStatus.CenterZ];
             _partner.transform.position = _partnerSetPos;
             _partner.SetActive(true);
