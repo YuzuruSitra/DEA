@@ -1,7 +1,6 @@
-using System.Map;
 using UnityEngine;
 
-namespace Player
+namespace System.Map
 {
     public class InRoomChecker
     {
@@ -13,19 +12,19 @@ namespace Player
 
             for (var i = 0; i < _stageGenerator.RoomCount; i++)
             {
-                // 部屋の四隅の座標を取得
+                // 部屋�?�四隅の座標を取�?
                 var topLeftZ = roomInfo[i, (int)StageGenerator.RoomStatus.TopLeftZ];
                 var bottomLeftX = roomInfo[i, (int)StageGenerator.RoomStatus.BottomLeftX];
                 var bottomLeftZ = roomInfo[i, (int)StageGenerator.RoomStatus.BottomLeftZ];
                 var bottomRightX = roomInfo[i, (int)StageGenerator.RoomStatus.BottomRightX];
 
-                // プレイヤーの座標を整数に変換して範囲内にあるか判定
-                var playerX = Mathf.FloorToInt(pos.x);
-                var playerZ = Mathf.FloorToInt(pos.z);
+                // プレイヤーの座標を整数に変換して�?囲�?にあるか判�?
+                var targetX = Mathf.FloorToInt(pos.x);
+                var targetZ = Mathf.FloorToInt(pos.z);
 
-                // 範囲内にあるかどうかの判定
-                var isInRoom = playerX >= bottomLeftX && playerX <= bottomRightX &&
-                               playerZ >= bottomLeftZ && playerZ <= topLeftZ;
+                // �?囲�?にあるかど�?か�?�判�?
+                var isInRoom = targetX >= bottomLeftX && targetX <= bottomRightX &&
+                               targetZ >= bottomLeftZ && targetZ <= topLeftZ;
 
                 if (isInRoom) return i;
             }
