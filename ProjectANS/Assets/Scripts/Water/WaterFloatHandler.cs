@@ -9,6 +9,7 @@ namespace Water
         [SerializeField] private float _terrainY;
         private WaterMover _waterMover;
         private int _fieldObjLayer;
+        private int _otherLayer;
         private float _waterHalfHeight;
         private float _floatMax;
         private readonly List<Transform> _objList = new();
@@ -16,12 +17,13 @@ namespace Water
         private void Start()
         {
             _fieldObjLayer = LayerMask.NameToLayer("FieldObj");
+            _otherLayer = LayerMask.NameToLayer("Other");
             _waterMover = GetComponent<WaterMover>();
             _waterHalfHeight = transform.localScale.y / 2.0f;
             _floatMax = _waterMover.YPosMax + _waterHalfHeight - 0.1f;
         }
 
-        private void Update()
+        private void LateUpdate()
         {
             if (_objList.Count == 0) return;
             var waterSurfaceY = transform.position.y + _waterHalfHeight;
@@ -41,6 +43,7 @@ namespace Water
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.layer == _fieldObjLayer) return;
+            if (other.gameObject.layer == _otherLayer) return;
             _objList.Add(other.transform);
         }
     }
