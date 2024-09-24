@@ -6,6 +6,7 @@ TagManager:
   tags:
   - StageGenerator
   - PostprocessVolime
+  - StageCube
   layers:
   - Default
   - TransparentFX
