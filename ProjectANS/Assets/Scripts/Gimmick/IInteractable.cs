@@ -1,3 +1,4 @@
+
 namespace Gimmick
 {
     public interface IInteractable

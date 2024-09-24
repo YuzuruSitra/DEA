@@ -6,7 +6,6 @@ namespace Player
     public class PlayerInteraction : MonoBehaviour
     {
         private IInteractable _currentInteractable;
-
         private void Update()
         {
             // インタラクションキーのチェック
