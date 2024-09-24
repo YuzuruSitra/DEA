@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 1760760396146400933}
   - component: {fileID: 1760760396146400922}
   - component: {fileID: 1554752539215061860}
+  - component: {fileID: 8080795062543869515}
   - component: {fileID: 1760760395279627887}
   m_Layer: 0
   m_Name: Player
@@ -209,6 +210,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _waterTransform: {fileID: 0}
+  _sinkTime: 10
+--- !u!114 &8080795062543869515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6605718370045475725}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a77e52a0b17046b088cebbe03fe5dc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _itemSets:
+  - kind: 0
+    prefab: {fileID: 8757679059945114329, guid: d03afaec5d41c4a039c5df3201e4cf80, type: 3}
+    count: 0
 --- !u!208 &1760760395279627887
 NavMeshObstacle:
   m_ObjectHideFlags: 0
