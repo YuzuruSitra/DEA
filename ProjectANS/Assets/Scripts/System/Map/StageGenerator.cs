@@ -14,6 +14,7 @@ namespace System.Map
         [SerializeField] private int _roomNum;
         // Minimum room size.
         [SerializeField] private int _roomMin = 4;
+        [SerializeField] private int _heightCount;
         public int RoomCount { get; private set; }
 
         private int _line; // 分割点
@@ -321,13 +322,19 @@ namespace System.Map
                     // 壁の生成
                     if (_mapKind[nowW, nowH] == (int)ObjectType.Wall)
                     {
-                        Instantiate(
-                            _mapObjects[_mapKind[nowW, nowH]],
-                            new Vector3(
-                                _defaultPosition.x + nowW * _mapObjects[_mapKind[nowW, nowH]].transform.localScale.x,
-                                _defaultPosition.y + (_mapObjects[(int)ObjectType.Wall].transform.localScale.y - _mapObjects[(int)ObjectType.Ground].transform.localScale.y) * 0.5f,
-                                _defaultPosition.z + nowH * _mapObjects[_mapKind[nowW, nowH]].transform.localScale.z),
-                            Quaternion.identity, _mapParent);
+                        var paddingY = 0.0f;
+                        var addValue = _mapObjects[(int)ObjectType.Wall].transform.localScale.y;
+                        for (var i = 0; i < _heightCount; i++)
+                        {
+                            Instantiate(
+                                _mapObjects[_mapKind[nowW, nowH]],
+                                new Vector3(
+                                    _defaultPosition.x + nowW * _mapObjects[_mapKind[nowW, nowH]].transform.localScale.x,
+                                    _defaultPosition.y + paddingY,
+                                    _defaultPosition.z + nowH * _mapObjects[_mapKind[nowW, nowH]].transform.localScale.z),
+                                Quaternion.identity, _mapParent);
+                            paddingY += addValue;
+                        }
                     }
 
                     // 部屋の生成

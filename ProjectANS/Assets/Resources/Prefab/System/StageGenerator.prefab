@@ -48,6 +48,7 @@ MonoBehaviour:
   _mapSize: 50
   _roomNum: 7
   _roomMin: 4
+  _heightCount: 3
   _mapParent: {fileID: 0}
   _mapObjects:
   - {fileID: 1464445895424974910, guid: 9b843fbef5ee14bf39f372dcdf809a25, type: 3}
