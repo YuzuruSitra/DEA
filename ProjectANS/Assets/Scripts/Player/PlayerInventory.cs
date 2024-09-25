@@ -9,9 +9,9 @@ namespace Player
         [Serializable]
         public struct ItemPrefabSet
         {
-            public ItemKind kind;
-            public GameObject prefab;
-            public int count;
+            public ItemKind Kind;
+            public GameObject Prefab;
+            public int Count;
         }
         [SerializeField]
         private ItemPrefabSet[] _itemSets;
@@ -19,11 +19,12 @@ namespace Player
         // アイテムをインベントリに追加する
         public void AddItem(ItemKind item)
         {
+            Debug.Log("Add Inventory : " + item);
             for (int i = 0; i < _itemSets.Length; i++)
             {
-                if (_itemSets[i].kind == item)
+                if (_itemSets[i].Kind == item)
                 {
-                    _itemSets[i].count++;
+                    _itemSets[i].Count++;
                     return;
                 }
             }
