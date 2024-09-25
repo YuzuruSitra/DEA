@@ -155,11 +155,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8728822740203815916, guid: c3590d0cea7f7c14789025c8c6fa2527, type: 3}
       propertyPath: _defaultPosition.x
-      value: -50
+      value: -50.5
       objectReference: {fileID: 0}
     - target: {fileID: 8728822740203815916, guid: c3590d0cea7f7c14789025c8c6fa2527, type: 3}
       propertyPath: _defaultPosition.z
-      value: -50
+      value: -50.5
       objectReference: {fileID: 0}
     - target: {fileID: 8728822740203815917, guid: c3590d0cea7f7c14789025c8c6fa2527, type: 3}
       propertyPath: m_Name
@@ -167,7 +167,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8728822740203815919, guid: c3590d0cea7f7c14789025c8c6fa2527, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8728822740203815919, guid: c3590d0cea7f7c14789025c8c6fa2527, type: 3}
       propertyPath: m_LocalPosition.x
@@ -319,9 +319,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 318923799}
   - {fileID: 1858575462}
   - {fileID: 2129841907}
-  - {fileID: 318923799}
   - {fileID: 2031677079}
   m_Father: {fileID: 0}
   m_RootOrder: 6
@@ -787,7 +787,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 644327297}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2129841908
 MonoBehaviour:
@@ -1044,7 +1044,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8479815699149559122, guid: 340ce10d23ef7e64a9fe0d52cc3c5da3, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8479815699149559122, guid: 340ce10d23ef7e64a9fe0d52cc3c5da3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1114,5 +1114,9 @@ PrefabInstance:
       propertyPath: _stageGenerator
       value: 
       objectReference: {fileID: 1236862248}
+    - target: {fileID: 8479815699149559123, guid: 340ce10d23ef7e64a9fe0d52cc3c5da3, type: 3}
+      propertyPath: _gimmickGenerator
+      value: 
+      objectReference: {fileID: 2129841908}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 340ce10d23ef7e64a9fe0d52cc3c5da3, type: 3}

@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6960620dd3d5455ea0945061c87da97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _defaultPosition: {x: 0, y: 0, z: 0}
+  _defaultPosition: {x: -50.5, y: 0, z: -50.5}
   _mapSize: 50
   _roomNum: 7
   _roomMin: 4
