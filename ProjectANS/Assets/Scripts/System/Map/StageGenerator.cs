@@ -16,12 +16,14 @@ namespace System.Map
         [SerializeField] private int _roomMin = 4;
         [SerializeField] private int _heightCount;
         public int RoomCount { get; private set; }
+        public float GroundPosY { get; private set; }
 
         private int _line; // 分割点
         public int[,] RoomInfo { get; private set; }
         [SerializeField] private Transform _mapParent;
 
-        public enum RoomStatus                     // 部屋の配列ステータス
+        // 部屋の配列ステータス
+        public enum RoomStatus
         {
             X,// マップ座標ｘ
             Z,// マップ座標ｙ
@@ -58,7 +60,8 @@ namespace System.Map
         
         public void MapGenerate()
         {
-            // 部屋（StartX、StartY、幅、高さ）
+            GroundPosY = _defaultPosition.y + _mapObjects[(int)ObjectType.Ground].transform.localScale.y / 2.0f;
+
             RoomInfo = new int[_roomNum, Enum.GetNames(typeof(RoomStatus)).Length];
 
             // フロア設定
