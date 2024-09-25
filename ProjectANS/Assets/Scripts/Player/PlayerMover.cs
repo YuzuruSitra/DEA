@@ -17,7 +17,12 @@ namespace Player
         private Vector3 _direction = Vector3.zero;
         private InRoomChecker _inRoomChecker;
         public int StayRoomNum { get; private set; }
-        
+        private bool _inWater;
+
+        // 重力の値
+        [SerializeField]
+        private float _gravity = -9.81f;
+
         private void Start()
         {
             _controller = GetComponent<CharacterController>();
@@ -33,6 +38,12 @@ namespace Player
             
             _moveDirection.x = horizontal;
             _moveDirection.z = vertical;
+
+            // Falling.
+            if (!_controller.isGrounded && !_inWater)
+            {
+                _moveDirection.y += _gravity * Time.deltaTime;
+            }
             
             var speed = Input.GetKey(KeyCode.LeftShift) ? _runSpeed : _walkSpeed;
             
@@ -46,5 +57,22 @@ namespace Player
             
             _controller.Move(_moveDirection * (speed * Time.deltaTime));
         }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Water"))
+            {
+                _inWater = true;
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.CompareTag("Water"))
+            {
+                _inWater = false;
+            }
+        }
+
     }
 }

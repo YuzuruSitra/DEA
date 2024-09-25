@@ -7,6 +7,7 @@ TagManager:
   - StageGenerator
   - PostprocessVolime
   - StageCube
+  - Water
   layers:
   - Default
   - TransparentFX
