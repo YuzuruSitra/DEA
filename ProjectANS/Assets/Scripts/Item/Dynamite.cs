@@ -22,7 +22,7 @@ namespace Item
         private bool _isUsed;
         [SerializeField]
         private float _rayLength = 1.5f; // ƒŒƒC‚Ì’·‚³‚ðŽw’è
-        private Ray[] _rays = new Ray[8];
+        private readonly Ray[] _rays = new Ray[8];
 
         private void Start()
         {
@@ -54,16 +54,14 @@ namespace Item
 
         public void UseEffect()
         {
-            for (int i = 0; i < _rays.Length; i++)
+            for (var i = 0; i < _rays.Length; i++)
             {
                 _rays[i].origin = transform.position;
 
-                if (Physics.Raycast(_rays[i], out var hit, _rayLength))
+                if (!Physics.Raycast(_rays[i], out var hit, _rayLength)) continue;
+                if (hit.collider.CompareTag("StageCube"))
                 {
-                    if (hit.collider.CompareTag("StageCube"))
-                    {
-                        Destroy(hit.collider.gameObject);
-                    }
+                    Destroy(hit.collider.gameObject);
                 }
             }
         }

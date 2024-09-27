@@ -225,9 +225,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _itemSets:
-  - Kind: 0
-    Prefab: {fileID: 0}
-    Count: 0
+  - _kind: 0
+    _prefab: {fileID: 8757679059945114329, guid: d03afaec5d41c4a039c5df3201e4cf80, type: 3}
+    _count: 0
 --- !u!208 &1760760395279627887
 NavMeshObstacle:
   m_ObjectHideFlags: 0

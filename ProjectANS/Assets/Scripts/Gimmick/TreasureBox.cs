@@ -7,19 +7,22 @@ namespace Gimmick
     public class TreasureBox : MonoBehaviour, IInteractable
     {
         [SerializeField]
-        private ItemKind[] _containeItem;
+        private ItemKind[] _containItem;
         private ItemKind _outItem;
+        private bool _isOpen;
 
-        void Start()
+        private void Start()
         {
-            var number = UnityEngine.Random.Range(0, _containeItem.Length);
-            _outItem = _containeItem[number];
+            var number = UnityEngine.Random.Range(0, _containItem.Length);
+            _outItem = _containItem[number];
         }
 
         public void Interact()
         {
+            if (_isOpen) return;
             var inventory = GameObject.FindWithTag("Player").GetComponent<PlayerInventory>();
             inventory.AddItem(_outItem);
+            _isOpen = true;
         }
     }
 }

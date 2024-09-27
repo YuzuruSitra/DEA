@@ -11,14 +11,14 @@ namespace Gimmick
         public enum GimmickKind
         {
             Water,
-            TeresureBox
+            TreasureBox
         }
         [Serializable]
         public struct GimmickInfo
         {
-            public GimmickKind Kind;
-            public GameObject Prefab;
-            public bool IsRandomGenerate;
+            public GimmickKind _kind;
+            public GameObject _prefab;
+            public bool _isRandomGenerate;
         }
         [SerializeField]
         private GimmickInfo[] _gimmickInfo;
@@ -29,9 +29,9 @@ namespace Gimmick
             var insList = new List<GameObject>();
             foreach (var gimmick in _gimmickInfo)
             {
-                if (gimmick.IsRandomGenerate)
+                if (gimmick._isRandomGenerate)
                 {
-                    insList.Add(gimmick.Prefab);
+                    insList.Add(gimmick._prefab);
                 }
             }
             // 必要な値のインスタンス

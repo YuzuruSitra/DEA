@@ -45,11 +45,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gimmickInfo:
-  - Kind: 0
-    Prefab: {fileID: 5770162165112864712, guid: 665899e9444a41341b741d81fbbfc0ba, type: 3}
-    IsLaunchGenerate: 1
-    IsRandomGenerate: 0
-  - Kind: 1
-    Prefab: {fileID: 2554345950509929801, guid: da51274905dade84493783b8e6fe7e8d, type: 3}
-    IsLaunchGenerate: 0
-    IsRandomGenerate: 1
+  - _kind: 0
+    _prefab: {fileID: 5770162165112864712, guid: 665899e9444a41341b741d81fbbfc0ba, type: 3}
+    _isRandomGenerate: 0
+  - _kind: 1
+    _prefab: {fileID: 2554345950509929801, guid: da51274905dade84493783b8e6fe7e8d, type: 3}
+    _isRandomGenerate: 1
