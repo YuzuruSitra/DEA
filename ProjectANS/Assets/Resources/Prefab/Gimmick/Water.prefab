@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 5770162165112864726}
   m_Layer: 0
   m_Name: Water
-  m_TagString: Untagged
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 5770162165112864712}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -1.6, z: 0}
-  m_LocalScale: {x: 98, y: 5, z: 98}
+  m_LocalScale: {x: 49, y: 5, z: 49}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -128,9 +128,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac2e2f872aa3214409fcf312d6c4b590, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _yPosMin: -1.6
-  _yPosMax: 1.4
-  _upTime: 60
+  _yPosMin: -2.1
+  _yPosMax: -0.01
+  _upTime: 10
 --- !u!114 &5770162165112864726
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,4 +143,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f6d17213a7142d4b9d1791c8b8b876b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _terrainY: 1
+  _terrainY: 0.5
