@@ -33,16 +33,27 @@ namespace Player
 
         public void IncreaseItemNum()
         {
-            _currentItemNum++;
-            if (_itemSets.Length <= _currentItemNum) _currentItemNum = 0;
-            _onItemNumChanged?.Invoke(_itemSets[_currentItemNum]._sprites);
+            ChangeItemNum(1); // 次のアイテムに進む
         }
-        
+
         public void DecreaseItemNum()
         {
-            _currentItemNum--;
-            if (_currentItemNum < 0) _currentItemNum = _itemSets.Length - 1;
-            _onItemNumChanged?.Invoke(_itemSets[_currentItemNum]._sprites);
+            ChangeItemNum(-1); // 前のアイテムに戻る
+        }
+
+        private void ChangeItemNum(int step)
+        {
+            var newIndex = (_currentItemNum + step + _itemSets.Length) % _itemSets.Length;
+            foreach (var t in _itemSets)
+            {
+                if (_itemSets[newIndex]._count > 0)
+                {
+                    _currentItemNum = newIndex;
+                    _onItemNumChanged?.Invoke(_itemSets[_currentItemNum]._sprites);
+                    return;
+                }
+                newIndex = (newIndex + step + _itemSets.Length) % _itemSets.Length;
+            }
         }
 
         // アイテムをインベントリに追加する
