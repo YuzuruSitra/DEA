@@ -37,7 +37,7 @@ namespace Item
             directions[7] = (Vector3.back + Vector3.left).normalized;      // -Z -X •ûŒü
 
             // Še•ûŒü‚ÉŒü‚¯‚½Ray‚ğ‰Šú‰»
-            for (int i = 0; i < directions.Length; i++)
+            for (var i = 0; i < directions.Length; i++)
             {
                 _rays[i] = new Ray(transform.position, directions[i]);
             }

@@ -33,12 +33,12 @@ namespace Player
 
         public void IncreaseItemNum()
         {
-            ChangeItemNum(1); // 次のアイテムに進む
+            ChangeItemNum(1);
         }
 
         public void DecreaseItemNum()
         {
-            ChangeItemNum(-1); // 前のアイテムに戻る
+            ChangeItemNum(-1);
         }
 
         private void ChangeItemNum(int step)
@@ -49,11 +49,12 @@ namespace Player
                 if (_itemSets[newIndex]._count > 0)
                 {
                     _currentItemNum = newIndex;
-                    _onItemNumChanged?.Invoke(_itemSets[_currentItemNum]._sprites);
+                    _onItemNumChanged?.Invoke(t._sprites);
                     return;
                 }
                 newIndex = (newIndex + step + _itemSets.Length) % _itemSets.Length;
             }
+            _onItemNumChanged?.Invoke(null);
         }
 
         // アイテムをインベントリに追加する
@@ -66,6 +67,12 @@ namespace Player
                 _itemSets[i]._count++;
                 return;
             }
+        }
+
+        public GameObject UseItem()
+        {
+            _itemSets[_currentItemNum]._count--;
+            return _itemSets[_currentItemNum]._prefab;
         }
     }
 }
