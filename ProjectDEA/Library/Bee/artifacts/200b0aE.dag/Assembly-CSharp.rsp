@@ -379,6 +379,7 @@
 "Assets/Scripts/Player/PlayerMover.cs"
 "Assets/Scripts/Player/PlayerVignette.cs"
 "Assets/Scripts/PostProcess/VignetteHandler.cs"
+"Assets/Scripts/UI/PanelSwitcher.cs"
 "Assets/Scripts/Water/WaterFloatHandler.cs"
 "Assets/Scripts/Water/WaterMover.cs"
 -langversion:9.0
