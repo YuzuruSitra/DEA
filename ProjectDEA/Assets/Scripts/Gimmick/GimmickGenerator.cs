@@ -1,6 +1,6 @@
 using UnityEngine;
 using System;
-using System.Map;
+using Manager.Map;
 using System.Collections.Generic;
 
 namespace Gimmick
@@ -25,7 +25,7 @@ namespace Gimmick
 
         public void GenerateGimmick(StageGenerator stageGenerator)
         {
-            // 生成対象のギミックをリスト化
+            // 生�?�対象のギミックをリスト化
             var insList = new List<GameObject>();
             foreach (var gimmick in _gimmickInfo)
             {
@@ -34,11 +34,11 @@ namespace Gimmick
                     insList.Add(gimmick._prefab);
                 }
             }
-            // 必要な値のインスタンス
+            // �?要な値のインスタンス
             var groundY = stageGenerator.GroundPosY;
             var roomCount = stageGenerator.RoomCount;
             var roomInfo = stageGenerator.RoomInfo;
-            // 全ての部屋にギミックを一つ生成
+            // 全ての部屋にギミックを一つ生�??
             for (var i = 0; i < roomCount; i++)
             {
                 var insGimmick = insList[ UnityEngine.Random.Range(0, insList.Count) ];

@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Debug;
+using Manager.Debug;
 using Player;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
-using System.Map;
+using Manager.Map;
 
 namespace PartnerNPC
 {

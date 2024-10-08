@@ -1,5 +1,5 @@
 using UnityEngine;
-using System.Map;
+using Manager.Map;
 
 namespace Player
 {
