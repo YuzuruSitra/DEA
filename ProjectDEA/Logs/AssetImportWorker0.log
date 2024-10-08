@@ -2101,3 +2101,51 @@ AssetImportParameters requested are different than current active one (requested
   custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
   custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
   custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 1891.406270 seconds.
+  path: Assets/Resources/2DSprite
+  artifactKey: Guid(782c425ec71544e5f809732ce87fb297) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/2DSprite using Guid(782c425ec71544e5f809732ce87fb297) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '559f96008c4d5f9bc22151fe061f31e0') in 0.003203 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 5.249186 seconds.
+  path: Assets/Resources/Sprite
+  artifactKey: Guid(782c425ec71544e5f809732ce87fb297) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Sprite using Guid(782c425ec71544e5f809732ce87fb297) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1298c4cfb1923e5f76ecb91e9f6a15e7') in 0.000771 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 77.046118 seconds.
+  path: Assets/Resources/Sprite/ダイナマイトのアイコン素材.png
+  artifactKey: Guid(68a2b9dc143d043e3b7c00623740c487) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Sprite/ダイナマイトのアイコン素材.png using Guid(68a2b9dc143d043e3b7c00623740c487) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1b591582567f6945c67d044b8bc5f6d9') in 0.118639 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 120.336877 seconds.
+  path: Assets/Resources/Sprite/ダイナマイトのアイコン素材.png
+  artifactKey: Guid(68a2b9dc143d043e3b7c00623740c487) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Sprite/ダイナマイトのアイコン素材.png using Guid(68a2b9dc143d043e3b7c00623740c487) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '345f3ce530e511fe756f75bfe32b5a96') in 0.057236 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 602.058405 seconds.
+  path: Assets/Scripts/Item/Dynamite.cs
+  artifactKey: Guid(fc9b06d786fc34dbfb26f7fe057dd8fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/Item/Dynamite.cs using Guid(fc9b06d786fc34dbfb26f7fe057dd8fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3e3c24fd37d9ec9623389ca79e91c222') in 0.001175 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 7.386827 seconds.
+  path: Assets/Resources/Sprite/Dynamite.png
+  artifactKey: Guid(68a2b9dc143d043e3b7c00623740c487) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Sprite/Dynamite.png using Guid(68a2b9dc143d043e3b7c00623740c487) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1256d618faec377e2c8acb0c93c1392d') in 0.019880 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
