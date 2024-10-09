@@ -18,7 +18,7 @@ namespace UI
                 var cd = imageObj.transform.GetChild(0).gameObject;
                 var gcd = cd.transform.GetChild(0).gameObject;
                 var image = gcd.GetComponent<Image>();
-                image.sprite = t._sprites;
+                image.sprite = t._sprite;
             }
         }
 

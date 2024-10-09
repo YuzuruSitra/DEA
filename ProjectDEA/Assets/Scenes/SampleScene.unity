@@ -1380,10 +1380,6 @@ PrefabInstance:
       value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: 6605718370045475724, guid: 8e5104a78aff44444b5e9d2a1e6ec283, type: 3}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6605718370045475724, guid: 8e5104a78aff44444b5e9d2a1e6ec283, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -1431,17 +1427,10 @@ PrefabInstance:
       propertyPath: _itemSpriteHandler
       value: 
       objectReference: {fileID: 1790175172}
-    - target: {fileID: 8080795062543869515, guid: 8e5104a78aff44444b5e9d2a1e6ec283, type: 3}
-      propertyPath: _itemSets.Array.data[0]._sprites
-      value: 
-      objectReference: {fileID: 21300000, guid: 68a2b9dc143d043e3b7c00623740c487, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6605718370045475725, guid: 8e5104a78aff44444b5e9d2a1e6ec283, type: 3}
-      insertIndex: 7
-      addedObject: {fileID: 1788910977}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e5104a78aff44444b5e9d2a1e6ec283, type: 3}
 --- !u!114 &1236862248 stripped
 MonoBehaviour:
@@ -1961,19 +1950,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a77e52a0b17046b088cebbe03fe5dc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1788910977
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1788910962}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8351ef11b85c3c449b274135c3bbb864, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playerInventory: {fileID: 1788910971}
 --- !u!4 &1790175171 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7788972587695996445, guid: 53f1c0424f98f904089f0280b9c795bb, type: 3}

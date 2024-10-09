@@ -12,12 +12,13 @@ namespace Player
         {
             public ItemKind _kind;
             public GameObject _prefab;
-            public Sprite _sprites;
+            public Sprite _sprite;
             public int _count;
         }
         [SerializeField] private ItemPrefabSet[] _itemSets;
         [SerializeField] private ItemSpriteHandler _itemSpriteHandler;
-        private int _currentItemNum;
+        private const int ErrorValue = -1;
+        private int _currentItemNum = ErrorValue;
         private Action<Sprite> _onItemNumChanged;
         
         private void Start()
@@ -33,28 +34,45 @@ namespace Player
 
         public void IncreaseItemNum()
         {
-            ChangeItemNum(1);
+            int startIndex = Math.Max(_currentItemNum, 0);
+
+            for (int i = 1; i <= _itemSets.Length; i++)
+            {
+                int newIndex = (startIndex + i) % _itemSets.Length;
+
+                if (_itemSets[newIndex]._count > 0)
+                {
+                    ChangeItemNum(newIndex);
+                    return;
+                }
+            }
+
+            ChangeItemNum(ErrorValue);
         }
 
         public void DecreaseItemNum()
         {
-            ChangeItemNum(-1);
-        }
+            int startIndex = _currentItemNum == ErrorValue ? _itemSets.Length - 1 : _currentItemNum;
 
-        private void ChangeItemNum(int step)
-        {
-            var newIndex = (_currentItemNum + step + _itemSets.Length) % _itemSets.Length;
-            foreach (var t in _itemSets)
+            for (int i = 1; i <= _itemSets.Length; i++)
             {
+                int newIndex = (startIndex - i + _itemSets.Length) % _itemSets.Length;
+
                 if (_itemSets[newIndex]._count > 0)
                 {
-                    _currentItemNum = newIndex;
-                    _onItemNumChanged?.Invoke(t._sprites);
+                    ChangeItemNum(newIndex);
                     return;
                 }
-                newIndex = (newIndex + step + _itemSets.Length) % _itemSets.Length;
             }
-            _onItemNumChanged?.Invoke(null);
+
+            ChangeItemNum(ErrorValue);
+        }
+
+        private void ChangeItemNum(int value)
+        {
+            _currentItemNum = value;
+            var sprite = _currentItemNum != ErrorValue ? _itemSets[value]._sprite : null;
+            _onItemNumChanged?.Invoke(sprite);
         }
 
         // アイテムをインベントリに追加する
@@ -65,14 +83,18 @@ namespace Player
             {
                 if (_itemSets[i]._kind != item) continue;
                 _itemSets[i]._count++;
-                return;
+                if (_currentItemNum == ErrorValue) ChangeItemNum(i);
+                break;
             }
         }
 
         public GameObject UseItem()
         {
-            _itemSets[_currentItemNum]._count--;
-            return _itemSets[_currentItemNum]._prefab;
+            if (_currentItemNum == ErrorValue) return null;
+            var itemSet = _itemSets[_currentItemNum];
+            itemSet._count--;
+            if (itemSet._count <= 0) ChangeItemNum(ErrorValue);
+            return itemSet._prefab;
         }
     }
 }

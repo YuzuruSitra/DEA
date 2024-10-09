@@ -17,6 +17,7 @@ namespace Player
         private void InsItem()
         {
             var item = _playerInventory.UseItem();
+            if (item == null) return;
             Instantiate(item);
         }
     }
