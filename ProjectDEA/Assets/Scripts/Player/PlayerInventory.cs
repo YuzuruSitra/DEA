@@ -91,10 +91,10 @@ namespace Player
         public GameObject UseItem()
         {
             if (_currentItemNum == ErrorValue) return null;
-            var itemSet = _itemSets[_currentItemNum];
-            itemSet._count--;
-            if (itemSet._count <= 0) ChangeItemNum(ErrorValue);
-            return itemSet._prefab;
+            var outItem = _itemSets[_currentItemNum]._prefab;
+            _itemSets[_currentItemNum]._count--;
+            if (_itemSets[_currentItemNum]._count <= 0) ChangeItemNum(ErrorValue);
+            return outItem;
         }
     }
 }
