@@ -83,6 +83,7 @@ namespace Player
             {
                 if (_itemSets[i]._kind != item) continue;
                 _itemSets[i]._count++;
+                if (_itemSets[i]._count == 1) _itemUIHandler.ChangeVisibleFrame(_itemSets);
                 _onItemCountChanged?.Invoke(_itemSets[i]._count);
                 if (_currentItemNum == ErrorValue) ChangeItemNum(i);
                 break;
@@ -94,9 +95,12 @@ namespace Player
             if (_currentItemNum == ErrorValue) return null;
             var outItem = _itemSets[_currentItemNum]._prefab;
             _itemSets[_currentItemNum]._count = Math.Max(0, _itemSets[_currentItemNum]._count - 1);
+            if (_itemSets[_currentItemNum]._count <= 0) _itemUIHandler.ChangeVisibleFrame(_itemSets);
             _onItemCountChanged?.Invoke(_itemSets[_currentItemNum]._count);
             if (_itemSets[_currentItemNum]._count <= 0) ChangeItemNum(ErrorValue);
             return outItem;
         }
     }
 }
+
+// リファクタリング予定
