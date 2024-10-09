@@ -18,9 +18,9 @@ namespace Player
             var item = _playerInventory.UseItem();
             if (item == null) return;
 
-            bool frontBlocked = Physics.Raycast(transform.position, transform.forward, _checkRayLength, ~_ignoreLayerMask);
-            bool rightBlocked = Physics.Raycast(transform.position, transform.right, _checkRayLength, ~_ignoreLayerMask);
-            bool leftBlocked = Physics.Raycast(transform.position, -transform.right, _checkRayLength, ~_ignoreLayerMask);
+            var frontBlocked = Physics.Raycast(transform.position, transform.forward, _checkRayLength, ~_ignoreLayerMask);
+            var rightBlocked = Physics.Raycast(transform.position, transform.right, _checkRayLength, ~_ignoreLayerMask);
+            var leftBlocked = Physics.Raycast(transform.position, -transform.right, _checkRayLength, ~_ignoreLayerMask);
 
             var basePos = transform.position;
 
@@ -36,7 +36,7 @@ namespace Player
             }
 
             spawnPosition.x = Mathf.Round(spawnPosition.x * 2) / 2;
-            spawnPosition.y = Mathf.Round(spawnPosition.x * 2) / 2;
+            spawnPosition.y = Mathf.Round(spawnPosition.y * 2) / 2;
             spawnPosition.z = Mathf.Round(spawnPosition.z * 2) / 2;
 
             Instantiate(item, spawnPosition, Quaternion.identity);
