@@ -12,14 +12,13 @@ GameObject:
   - component: {fileID: 1848776907480865827}
   - component: {fileID: 1660121192148216252}
   - component: {fileID: 7962704951239252608}
-  - component: {fileID: 6770862772179171226}
-  m_Layer: 0
-  m_Name: Dynamite
+  m_Layer: 8
+  m_Name: DynamitePredict
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4891049673715983307
 Transform:
   m_ObjectHideFlags: 0
@@ -29,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 8757679059945114329}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.5, y: 2, z: -8}
+  m_LocalPosition: {x: 84, y: 0, z: 88}
   m_LocalScale: {x: 0.5, y: 0.75, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -63,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e1d5273a054b145318393e72a5bd5489, type: 2}
+  - {fileID: 2100000, guid: de1720df00031434a952a056fc7e6ad7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -100,27 +99,9 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6770862772179171226
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8757679059945114329}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc9b06d786fc34dbfb26f7fe057dd8fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _name: Dynamite
-  _itemKind: 0
-  _description: "\u5468\u56F2\u3092\u7206\u7834\u3059\u308B"
-  _isConsumable: 1
-  _detonationTime: 5
-  _rayLength: 0.9

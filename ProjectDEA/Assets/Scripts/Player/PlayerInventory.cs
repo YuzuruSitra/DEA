@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using Item;
 using UI;
-using UnityEngine.Serialization;
 
 namespace Player
 {
@@ -13,19 +12,27 @@ namespace Player
         {
             public ItemKind _kind;
             public GameObject _prefab;
+            public GameObject _predict;
             public Sprite _sprite;
             public int _count;
         }
         [SerializeField] private ItemPrefabSet[] _itemSets;
-        [FormerlySerializedAs("_itemSpriteHandler")] [SerializeField] private ItemUIHandler _itemUIHandler;
+        [SerializeField] private ItemUIHandler _itemUIHandler;
         private const int ErrorValue = -1;
         private int _currentItemNum = ErrorValue;
         private Action<Sprite> _onItemNumChanged;
         private Action<int> _onItemCountChanged;
-        
+        public GameObject CurrentPredict => _currentItemNum == ErrorValue ? null : _itemSets[_currentItemNum]._predict;
+
         private void Start()
         {
             _itemUIHandler.SetInventoryFrame(_itemSets);
+            for (var i = 0; i < _itemSets.Length; i++)
+            {
+                if ( _itemSets[i]._predict == null) continue;
+                _itemSets[i]._predict = Instantiate(_itemSets[i]._predict);
+            }
+            
             _onItemNumChanged += _itemUIHandler.ChangeItemImage;
             _onItemCountChanged += _itemUIHandler.ChangeItemCount;
         }
@@ -70,6 +77,8 @@ namespace Player
 
         private void ChangeItemNum(int value)
         {
+            if (_currentItemNum != ErrorValue && _itemSets[_currentItemNum]._predict != null) _itemSets[_currentItemNum]._predict.SetActive(false);
+            if (value != ErrorValue && _itemSets[value]._predict != null) _itemSets[value]._predict.SetActive(true);
             _currentItemNum = value;
             var sprite = _currentItemNum != ErrorValue ? _itemSets[value]._sprite : null;
             _onItemNumChanged?.Invoke(sprite);

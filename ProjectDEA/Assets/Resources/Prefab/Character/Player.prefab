@@ -255,9 +255,10 @@ MonoBehaviour:
   _itemSets:
   - _kind: 0
     _prefab: {fileID: 8757679059945114329, guid: d03afaec5d41c4a039c5df3201e4cf80, type: 3}
+    _predict: {fileID: 8757679059945114329, guid: 04cfc027a9dc2d34d90f2f1821174499, type: 3}
     _sprite: {fileID: 21300000, guid: 68a2b9dc143d043e3b7c00623740c487, type: 3}
     _count: 0
-  _itemSpriteHandler: {fileID: 0}
+  _itemUIHandler: {fileID: 0}
 --- !u!114 &3829574359663982564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -271,7 +272,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerInventory: {fileID: 8080795062543869515}
-  _checkRayLength: 0.99
+  _checkRayLength: 1.25
   _ignoreLayerMask:
     serializedVersion: 2
     m_Bits: 272
