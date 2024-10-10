@@ -77,8 +77,7 @@ namespace Player
 
         private void ChangeItemNum(int value)
         {
-            if (_currentItemNum != ErrorValue && _itemSets[_currentItemNum]._predict != null) _itemSets[_currentItemNum]._predict.SetActive(false);
-            if (value != ErrorValue && _itemSets[value]._predict != null) _itemSets[value]._predict.SetActive(true);
+            if (_currentItemNum != ErrorValue) ChangePredictActive(_itemSets[_currentItemNum]._predict, false);
             _currentItemNum = value;
             var sprite = _currentItemNum != ErrorValue ? _itemSets[value]._sprite : null;
             _onItemNumChanged?.Invoke(sprite);
@@ -109,6 +108,13 @@ namespace Player
             if (_itemSets[_currentItemNum]._count <= 0) ChangeItemNum(ErrorValue);
             return outItem;
         }
+
+        public void ChangePredictActive(GameObject predict, bool isVisible)
+        {
+            if (predict == null) return;
+            predict.SetActive(isVisible);
+        }
+        
     }
 }
 
