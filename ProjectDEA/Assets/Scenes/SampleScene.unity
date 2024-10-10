@@ -229,6 +229,18 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 192555716806968237, guid: 92011385e39004d179acf9ebe6f9ffb7, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 192555716806968237, guid: 92011385e39004d179acf9ebe6f9ffb7, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 192555716806968237, guid: 92011385e39004d179acf9ebe6f9ffb7, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 192555716806968237, guid: 92011385e39004d179acf9ebe6f9ffb7, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.7
       objectReference: {fileID: 0}
@@ -267,6 +279,38 @@ PrefabInstance:
     - target: {fileID: 192555716806968237, guid: 92011385e39004d179acf9ebe6f9ffb7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 192555716806968237, guid: 92011385e39004d179acf9ebe6f9ffb7, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 192555716806968238, guid: 92011385e39004d179acf9ebe6f9ffb7, type: 3}
+      propertyPath: m_Speed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 192555716806968238, guid: 92011385e39004d179acf9ebe6f9ffb7, type: 3}
+      propertyPath: m_Height
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 192555716806968238, guid: 92011385e39004d179acf9ebe6f9ffb7, type: 3}
+      propertyPath: m_Radius
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 192555716806968238, guid: 92011385e39004d179acf9ebe6f9ffb7, type: 3}
+      propertyPath: m_AutoBraking
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 192555716806968238, guid: 92011385e39004d179acf9ebe6f9ffb7, type: 3}
+      propertyPath: m_Acceleration
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 192555716806968238, guid: 92011385e39004d179acf9ebe6f9ffb7, type: 3}
+      propertyPath: m_AngularSpeed
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 192555716806968238, guid: 92011385e39004d179acf9ebe6f9ffb7, type: 3}
+      propertyPath: m_StoppingDistance
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1435,6 +1479,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: NavMeshBaker
       objectReference: {fileID: 0}
+    - target: {fileID: 7244631010069882042, guid: 2365272c1d50be74eaf8c60caa1e8e90, type: 3}
+      propertyPath: m_DefaultArea
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7244631010069882042, guid: 2365272c1d50be74eaf8c60caa1e8e90, type: 3}
+      propertyPath: m_UseGeometry
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7244631010069882042, guid: 2365272c1d50be74eaf8c60caa1e8e90, type: 3}
+      propertyPath: m_CollectObjects
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1751,6 +1807,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GimmickGenerator
       objectReference: {fileID: 0}
+    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _mapParent
+      value: 
+      objectReference: {fileID: 1099377172}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

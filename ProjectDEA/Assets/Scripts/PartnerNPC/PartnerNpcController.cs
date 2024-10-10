@@ -51,10 +51,10 @@ namespace PartnerNPC
 
         private void NextState()
         {
-            // 選定�?��?を挟む
+            // 選定�?��?を挟む
             UpdateUtilities();
             var newState = SelectState();
-            // �?バッグ処�?
+            // �?バッグ処�?
             DebugColor(newState);
             _states[_currentState].ExitState();
             _states[newState].EnterState();
@@ -133,7 +133,7 @@ namespace PartnerNPC
         {
             switch (newState)
             {
-                // �?バッグ処�?
+                // �?バッグ処�?
                 case PartnerAIState.Stay:
                     _debugColor.ChangeColor(Color.blue);
                     break;

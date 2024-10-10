@@ -20,12 +20,11 @@ namespace Gimmick
             public GameObject _prefab;
             public bool _isRandomGenerate;
         }
-        [SerializeField]
-        private GimmickInfo[] _gimmickInfo;
+        [SerializeField] private GimmickInfo[] _gimmickInfo;
+        [SerializeField] private Transform _mapParent;
 
         public void GenerateGimmick(StageGenerator stageGenerator)
         {
-            // 生�?�対象のギミックをリスト化
             var insList = new List<GameObject>();
             foreach (var gimmick in _gimmickInfo)
             {
@@ -34,11 +33,11 @@ namespace Gimmick
                     insList.Add(gimmick._prefab);
                 }
             }
-            // �?要な値のインスタンス
+
             var groundY = stageGenerator.GroundPosY;
             var roomCount = stageGenerator.RoomCount;
             var roomInfo = stageGenerator.RoomInfo;
-            // 全ての部屋にギミックを一つ生�??
+
             for (var i = 0; i < roomCount; i++)
             {
                 var insGimmick = insList[ UnityEngine.Random.Range(0, insList.Count) ];
@@ -52,11 +51,11 @@ namespace Gimmick
                 var insPosZ = UnityEngine.Random.Range(rangeMinZ, rangeMaxZ + 1);
                 var insPosY = groundY + insGimmick.transform.localScale.y / 2.0f;
                 var insPos = SetVector3(insPosX, insPosY, insPosZ);
-                Instantiate(insGimmick, insPos, Quaternion.identity);
+                Instantiate(insGimmick, insPos, Quaternion.identity, _mapParent);
             }
         }
 
-        private Vector3 SetVector3(int x, float y, int z)
+        private static Vector3 SetVector3(int x, float y, int z)
         {
             var insPos = Vector3.zero;
             insPos.x = x;
