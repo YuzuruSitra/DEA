@@ -13,7 +13,7 @@ namespace Gimmick
 
         private void Start()
         {
-            var number = UnityEngine.Random.Range(0, _containItem.Length);
+            var number = Random.Range(0, _containItem.Length);
             _outItem = _containItem[number];
         }
 

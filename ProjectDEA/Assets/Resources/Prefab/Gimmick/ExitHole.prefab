@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3642446942052040873}
   - component: {fileID: 6020714165402002375}
   - component: {fileID: 3852097198962263116}
+  - component: {fileID: 2016285285174747294}
   m_Layer: 0
   m_Name: DoorMesh
   m_TagString: Untagged
@@ -122,6 +123,18 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &2016285285174747294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6166337571595857406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5921de8db235f4b42a5501f85316b013, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1231460770774067541
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -184,7 +197,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: d1f04176d4cc6534c845769164ea86dc, type: 2}
     - target: {fileID: 919132149155446097, guid: 57eda2a4114c9bf45a67196adf422ad2, type: 3}
       propertyPath: m_Name
-      value: ExitDoor
+      value: ExitHole
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 57eda2a4114c9bf45a67196adf422ad2, type: 3}
       propertyPath: m_Layer
