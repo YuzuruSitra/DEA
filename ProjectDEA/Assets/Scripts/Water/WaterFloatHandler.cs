@@ -26,6 +26,7 @@ namespace Water
         private void LateUpdate()
         {
             if (_objList.Count == 0) return;
+            _objList.RemoveAll(t => t == null);
             var waterSurfaceY = transform.position.y + _waterHalfHeight;
 
             foreach (var t in _objList)
