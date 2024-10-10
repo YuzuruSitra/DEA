@@ -14,7 +14,7 @@ namespace Manager.Map
         // Number of rooms.
         [SerializeField] private int _roomNum;
         // Minimum room size.
-        [SerializeField] private int _roomMin = 4;
+        [SerializeField] private int _roomMin;
         [SerializeField] private int _heightCount;
         public int RoomCount { get; private set; }
         public float GroundPosY { get; private set; }

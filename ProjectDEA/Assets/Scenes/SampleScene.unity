@@ -143,6 +143,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 644327297}
     m_Modifications:
     - target: {fileID: 8728822740203815916, guid: c3590d0cea7f7c14789025c8c6fa2527, type: 3}
+      propertyPath: _roomMin
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8728822740203815916, guid: c3590d0cea7f7c14789025c8c6fa2527, type: 3}
+      propertyPath: _roomNum
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8728822740203815916, guid: c3590d0cea7f7c14789025c8c6fa2527, type: 3}
       propertyPath: _mapParent
       value: 
       objectReference: {fileID: 1099377172}
@@ -1693,6 +1701,42 @@ PrefabInstance:
       propertyPath: _mapParent
       value: 
       objectReference: {fileID: 1099377172}
+    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[2]._kind
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[1]._prefab
+      value: 
+      objectReference: {fileID: 2150027754712339460, guid: 0668de6c0982e374abcfcd9a907f510e, type: 3}
+    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[2]._prefab
+      value: 
+      objectReference: {fileID: 2554345950509929801, guid: da51274905dade84493783b8e6fe7e8d, type: 3}
+    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[1]._isJustOne
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[1]._isRoomGenerate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[2]._isRoomGenerate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[1]._isRandomGenerate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[2]._isRandomGenerate
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
