@@ -35,10 +35,10 @@ namespace Player
 
             var basePos = transform.position;
             Vector3 spawnPosition;
-            
+    
             if (!frontBlocked)
             {
-                spawnPosition = basePos + transform.forward;    
+                spawnPosition = basePos + transform.forward;
             }
             else if (!rightBlocked)
             {
@@ -53,9 +53,9 @@ namespace Player
                 return Vector3.zero;
             }
             
-            spawnPosition.x = Mathf.Round(spawnPosition.x * 2) / 2;
-            spawnPosition.y = Mathf.Round(spawnPosition.y * 2) / 2;
-            spawnPosition.z = Mathf.Round(spawnPosition.z * 2) / 2;
+            spawnPosition.x = Mathf.Floor(spawnPosition.x) + 0.5f;
+            spawnPosition.y = Mathf.Round(spawnPosition.y);
+            spawnPosition.z = Mathf.Floor(spawnPosition.z) + 0.5f;
 
             return spawnPosition;
         }
