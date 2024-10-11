@@ -1,40 +1,30 @@
-using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class DungeonLayerHandler : MonoBehaviour
+namespace Manager
 {
-    [SerializeField]
-    private int _currentLayer;
-    public Action<int> ChangeLayer;
-
-    private void Awake()
+    public class DungeonLayerHandler : MonoBehaviour
     {
-        var target = GameObject.FindGameObjectWithTag("DungeonLayerHandler");
-        bool checkResult = target != null && target != gameObject;
+        public int CurrentLayer { get; private set; }
 
-        if (checkResult)
+        private void Awake()
         {
-            Destroy(gameObject);
-            return;
+            var target = GameObject.FindGameObjectWithTag("DungeonLayerHandler");
+            var checkResult = target != null && target != gameObject;
+
+            if (checkResult)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            DontDestroyOnLoad(gameObject);
         }
-        DontDestroyOnLoad(gameObject);
-    }
 
-    private void Start()
-    {
-        ChangeLayerCount(_currentLayer);
-    }
-
-    public void NextDungeonLayer()
-    {
-        ChangeLayerCount(_currentLayer++);
-        SceneManager.LoadScene("DungeonScene");
-    }
-
-    private void ChangeLayerCount(int layer)
-    {
-        _currentLayer = layer;
-        ChangeLayer?.Invoke(layer);
+        public void NextDungeonLayer()
+        {
+            CurrentLayer++;
+            SceneManager.LoadScene("DungeonScene");
+        }
+        
     }
 }

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.17628084, g: 0.22062771, b: 0.30295062, a: 1}
+  m_IndirectSpecularColor: {r: 0.17628044, g: 0.2206273, b: 0.30294964, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -132,17 +132,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &205568018 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5615190876592182372, guid: 4cc008e8b45608e4a9e69dbefa33516f, type: 3}
-  m_PrefabInstance: {fileID: 287728599965972872}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 159350fff54ba1943b7d3338648917d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &218187597
@@ -305,19 +294,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 271848547}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 205568018}
-        m_TargetAssemblyTypeName: DungeonLayerHandler, Assembly-CSharp
-        m_MethodName: NextDungeonLayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &271848547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1689,6 +1666,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LayerText (TMP)
       objectReference: {fileID: 0}
+    - target: {fileID: 6727300587780418474, guid: 63b3ae84bad23bc419f843f7fccba07c, type: 3}
+      propertyPath: _button
+      value: 
+      objectReference: {fileID: 271848546}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

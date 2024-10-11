@@ -1,25 +1,25 @@
-using UnityEngine;
+using Manager;
 using TMPro;
+using UnityEngine;
 
-public class LayerUIHandler : MonoBehaviour
+namespace UI
 {
-    private TextMeshProUGUI _layerText;
-    private DungeonLayerHandler _layerHandler;
-
-    void Start()
+    public class LayerUIHandler : MonoBehaviour
     {
-        _layerText = GetComponent<TextMeshProUGUI>();
-        _layerHandler = GameObject.FindWithTag("DungeonLayerHandler").GetComponent<DungeonLayerHandler>();
-        _layerHandler.ChangeLayer += ChangeLayerText;
-    }
+        private TextMeshProUGUI _layerText;
+        [SerializeField]
+        private DungeonLayerHandler _layerHandler;
+        
+        private void Start()
+        {
+            _layerText = GetComponent<TextMeshProUGUI>();
+            _layerHandler = GameObject.FindWithTag("DungeonLayerHandler").GetComponent<DungeonLayerHandler>();
+            ChangeLayerText(_layerHandler.CurrentLayer);
+        }
 
-    private void OnDestroy()
-    {
-        _layerHandler.ChangeLayer -= ChangeLayerText;
-    }
-
-    private void ChangeLayerText(int layer)
-    {
-        _layerText.text = layer + "F";
+        private void ChangeLayerText(int layer)
+        {
+            _layerText.text = layer + "F";
+        }
     }
 }
