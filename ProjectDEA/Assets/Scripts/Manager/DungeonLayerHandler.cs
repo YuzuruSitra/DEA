@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class DungeonLayerHandler : MonoBehaviour
 {
+    [SerializeField]
     private int _currentLayer;
     public Action<int> ChangeLayer;
 
@@ -28,7 +29,7 @@ public class DungeonLayerHandler : MonoBehaviour
     public void NextDungeonLayer()
     {
         ChangeLayerCount(_currentLayer++);
-        SceneManager.LoadScene("MainScene");
+        SceneManager.LoadScene("DungeonScene");
     }
 
     private void ChangeLayerCount(int layer)
