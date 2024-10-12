@@ -2167,6 +2167,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1099377172}
     - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _maxGimmickPerRoom
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _gimmickInfo.Array.size
       value: 3
       objectReference: {fileID: 0}
