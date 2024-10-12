@@ -1,5 +1,7 @@
+using Manager;
 using Player;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace UI
@@ -11,14 +13,14 @@ namespace UI
         [SerializeField] private Button _itemIncreaseBt;
         [SerializeField] private Button _itemDecreaseBt;
         [SerializeField] private PanelSwitcher _panelSwitcher;
-        [SerializeField] private PlayerInventory _playerInventory;
         
         private void Start()
         {
             _openInventoryBt.onClick.AddListener(_panelSwitcher.OpenInventoryPanel);
             _closeInventoryBt.onClick.AddListener(_panelSwitcher.CloseInventoryPanel);
-            _itemIncreaseBt.onClick.AddListener(_playerInventory.IncreaseItemNum);
-            _itemDecreaseBt.onClick.AddListener(_playerInventory.DecreaseItemNum);
+            var inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
+            _itemIncreaseBt.onClick.AddListener(inventoryHandler.IncreaseItemNum);
+            _itemDecreaseBt.onClick.AddListener(inventoryHandler.DecreaseItemNum);
         }
     }
 }

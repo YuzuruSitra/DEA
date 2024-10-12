@@ -1,11 +1,11 @@
 using System;
-using UnityEngine;
 using Item;
 using UI;
+using UnityEngine;
 
-namespace Player
+namespace Manager
 {
-    public class PlayerInventory : MonoBehaviour
+    public class InventoryHandler : MonoBehaviour
     {
         [Serializable]
         public struct ItemPrefabSet
@@ -17,22 +17,30 @@ namespace Player
             public int _count;
         }
         [SerializeField] private ItemPrefabSet[] _itemSets;
-        [SerializeField] private ItemUIHandler _itemUIHandler;
+        private ItemUIHandler _itemUIHandler;
         private const int ErrorValue = -1;
         private int _currentItemNum = ErrorValue;
         private Action<Sprite> _onItemNumChanged;
         private Action<int> _onItemCountChanged;
         public GameObject CurrentPredict => _currentItemNum == ErrorValue ? null : _itemSets[_currentItemNum]._predict;
 
+        private void Awake()
+        {
+            CheckSingleton();
+        }
+
         private void Start()
         {
+            // Setting UI.
+            _itemUIHandler = GameObject.FindWithTag("ItemUIHandler").GetComponent<ItemUIHandler>();
             _itemUIHandler.SetInventoryFrame(_itemSets);
+            // Setting predict.
             for (var i = 0; i < _itemSets.Length; i++)
             {
                 if ( _itemSets[i]._predict == null) continue;
                 _itemSets[i]._predict = Instantiate(_itemSets[i]._predict);
             }
-            
+            // Add listener.
             _onItemNumChanged += _itemUIHandler.ChangeItemImage;
             _onItemCountChanged += _itemUIHandler.ChangeItemCount;
         }
@@ -41,6 +49,19 @@ namespace Player
         {
             _onItemNumChanged -= _itemUIHandler.ChangeItemImage;
             _onItemCountChanged -= _itemUIHandler.ChangeItemCount;
+        }
+        
+        private void CheckSingleton()
+        {
+            var target = GameObject.FindGameObjectWithTag(gameObject.tag);
+            var checkResult = target != null && target != gameObject;
+
+            if (checkResult)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            DontDestroyOnLoad(gameObject);
         }
 
         public void IncreaseItemNum()
@@ -86,7 +107,7 @@ namespace Player
         // アイテムをインベントリに追加する
         public void AddItem(ItemKind item)
         {
-            Debug.Log("Add Inventory : " + item);
+            UnityEngine.Debug.Log("Add Inventory : " + item);
             for (var i = 0; i < _itemSets.Length; i++)
             {
                 if (_itemSets[i]._kind != item) continue;
@@ -117,5 +138,3 @@ namespace Player
         
     }
 }
-
-// リファクタリング予定

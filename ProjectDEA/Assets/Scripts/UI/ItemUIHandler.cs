@@ -1,3 +1,4 @@
+using Manager;
 using Player;
 using TMPro;
 using Unity.VisualScripting;
@@ -14,7 +15,7 @@ namespace UI
         [SerializeField] private TextMeshProUGUI _itemCountText;
         [SerializeField] private GameObject[] _itemFrames;
 
-        public void SetInventoryFrame(PlayerInventory.ItemPrefabSet[] itemSet)
+        public void SetInventoryFrame(InventoryHandler.ItemPrefabSet[] itemSet)
         {
             _itemFrames = new GameObject[itemSet.Length];
             for (var i = 0; i < itemSet.Length; i++)
@@ -28,7 +29,7 @@ namespace UI
             }
         }
 
-        public void ChangeVisibleFrame(PlayerInventory.ItemPrefabSet[] itemSet)
+        public void ChangeVisibleFrame(InventoryHandler.ItemPrefabSet[] itemSet)
         {
             for (var i = 0; i < itemSet.Length; i++)
             {

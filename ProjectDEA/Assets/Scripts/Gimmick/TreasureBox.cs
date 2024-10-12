@@ -1,5 +1,6 @@
 using UnityEngine;
 using Item;
+using Manager;
 using Player;
 
 namespace Gimmick
@@ -10,18 +11,19 @@ namespace Gimmick
         private ItemKind[] _containItem;
         private ItemKind _outItem;
         private bool _isOpen;
-
+        private InventoryHandler _inventoryHandler;
+        
         private void Start()
         {
             var number = Random.Range(0, _containItem.Length);
             _outItem = _containItem[number];
+            _inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
         }
 
         public void Interact()
         {
             if (_isOpen) return;
-            var inventory = GameObject.FindWithTag("Player").GetComponent<PlayerInventory>();
-            inventory.AddItem(_outItem);
+            _inventoryHandler.AddItem(_outItem);
             _isOpen = true;
         }
     }

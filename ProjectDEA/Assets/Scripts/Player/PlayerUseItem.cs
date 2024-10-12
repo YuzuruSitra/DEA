@@ -1,3 +1,5 @@
+using System;
+using Manager;
 using UnityEngine;
 
 namespace Player
@@ -9,13 +11,18 @@ namespace Player
             None,
             Predict,
         }
-        private InsState _insState = InsState.None;
-        [SerializeField] private PlayerInventory _playerInventory;
+        private InsState _insState = InsState.None; 
+        private InventoryHandler _inventoryHandler;
         [SerializeField] private float _checkRayLength;
         [SerializeField] private LayerMask _ignoreLayerMask;
 
         private Vector3 _predictedPosition;
-        
+
+        private void Start()
+        {
+            _inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
+        }
+
         private void Update()
         {
             HandleItemUsage();
@@ -23,13 +30,13 @@ namespace Player
 
         private void HandleItemUsage()
         {
-            var predict = _playerInventory.CurrentPredict;
+            var predict = _inventoryHandler.CurrentPredict;
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 switch (_insState)
                 {
                     case InsState.None:
-                        _playerInventory.ChangePredictActive(predict, true);
+                        _inventoryHandler.ChangePredictActive(predict, true);
                         _insState = InsState.Predict;
                         break;
                     case InsState.Predict:
@@ -45,15 +52,15 @@ namespace Player
             if (Input.GetMouseButtonDown(1))
             {
                 _insState = InsState.None;
-                _playerInventory.ChangePredictActive(predict, false);
+                _inventoryHandler.ChangePredictActive(predict, false);
             }
         }
 
         private void MovePrediction()
         {
             _predictedPosition = CalculateSpawnPosition();
-            if (_playerInventory.CurrentPredict == null) return;
-            _playerInventory.CurrentPredict.transform.position = _predictedPosition;
+            if (_inventoryHandler.CurrentPredict == null) return;
+            _inventoryHandler.CurrentPredict.transform.position = _predictedPosition;
         }
 
         private Vector3 CalculateSpawnPosition()
@@ -79,7 +86,7 @@ namespace Player
 
         private void PlaceItem()
         {
-            var item = _playerInventory.UseItem();
+            var item = _inventoryHandler.UseItem();
             if (item == null || _predictedPosition == Vector3.zero) return;
 
             Instantiate(item, _predictedPosition, Quaternion.identity);

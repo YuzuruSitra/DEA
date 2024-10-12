@@ -9,7 +9,12 @@ namespace Manager
 
         private void Awake()
         {
-            var target = GameObject.FindGameObjectWithTag("DungeonLayerHandler");
+            CheckSingleton();
+        }
+
+        private void CheckSingleton()
+        {
+            var target = GameObject.FindGameObjectWithTag(gameObject.tag);
             var checkResult = target != null && target != gameObject;
 
             if (checkResult)

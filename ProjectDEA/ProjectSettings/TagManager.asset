@@ -9,6 +9,8 @@ TagManager:
   - StageCube
   - Water
   - DungeonLayerHandler
+  - ItemUIHandler
+  - InventoryHandler
   layers:
   - Default
   - TransparentFX
