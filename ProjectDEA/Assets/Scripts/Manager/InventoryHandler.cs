@@ -23,7 +23,8 @@ namespace Manager
         private Action<Sprite> _onItemNumChanged;
         private Action<int> _onItemCountChanged;
         public GameObject CurrentPredict => _currentItemNum == ErrorValue ? null : _itemSets[_currentItemNum]._predict;
-
+        private bool _addedListener;
+        
         private void Awake()
         {
             CheckSingleton();
@@ -43,10 +44,12 @@ namespace Manager
             // Add listener.
             _onItemNumChanged += _itemUIHandler.ChangeItemImage;
             _onItemCountChanged += _itemUIHandler.ChangeItemCount;
+            _addedListener = true;
         }
 
         private void OnDestroy()
         {
+            if (!_addedListener) return;
             _onItemNumChanged -= _itemUIHandler.ChangeItemImage;
             _onItemCountChanged -= _itemUIHandler.ChangeItemCount;
         }

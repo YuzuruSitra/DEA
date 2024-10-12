@@ -26,6 +26,7 @@ namespace Player
         private void Start()
         {
             _controller = GetComponent<CharacterController>();
+            _controller.enabled = true;
             _inRoomChecker = new InRoomChecker();
         }
 
