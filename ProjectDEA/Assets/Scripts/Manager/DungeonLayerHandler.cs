@@ -6,6 +6,7 @@ namespace Manager
     public class DungeonLayerHandler : MonoBehaviour
     {
         public int CurrentLayer { get; private set; }
+        [SerializeField] private int _maxLayer;
 
         private void Awake()
         {
@@ -23,12 +24,18 @@ namespace Manager
                 return;
             }
             DontDestroyOnLoad(gameObject);
+            CurrentLayer = 1;
         }
 
         public void NextDungeonLayer()
         {
-            CurrentLayer++;
-            SceneManager.LoadScene("DungeonScene");
+            if (CurrentLayer < _maxLayer)
+            {
+                CurrentLayer++;
+                SceneManager.LoadScene("DungeonIn");
+                return;
+            }
+            SceneManager.LoadScene("DungeonTop");
         }
         
     }
