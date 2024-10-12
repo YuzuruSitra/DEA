@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using Manager.Map;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Gimmick
 {
@@ -40,54 +41,82 @@ namespace Gimmick
         
         public void GenerateGimmick(StageGenerator stageGenerator)
         {
-            _gimmickInsCount = new int[_gimmickInfo.Length];
-            // 生成対象のリスト作成
-            var insList = new List<GimmickInfo>();
-            foreach (var gimmick in _gimmickInfo)
-                if (gimmick._isRoomGenerate)
-                    insList.Add(gimmick);
-
             var roomCount = stageGenerator.RoomCount;
+            var exitHoleRoom = stageGenerator.RoomCount - 1;
             var groundY = stageGenerator.GroundPosY;
             var roomInfo = stageGenerator.RoomInfo;
+            _gimmickInsCount = new int[_gimmickInfo.Length];
+            
+            // 各部屋のギミック生成数を事前に決定
+            var roomGimmickCount = new int[roomCount];
+            for (var i = 0; i < roomCount; i++)
+            {
+                roomGimmickCount[i] = UnityEngine.Random.Range(1, _maxGimmickPerRoom + 1);
+                if (i == exitHoleRoom) roomGimmickCount[i]--;
+            }
+            
             // 生成必須対象のリスト作成
             var neededInsList = new List<GimmickInfo>();
-            foreach (var target in insList)
+            foreach (var target in _gimmickInfo)
             {
+                if (!target._isRoomGenerate) continue;
                 if (target._minCount == LimitValue) continue;
-                for (var i = 0; i < target._minCount; i++)
+                neededInsList.AddRange(Enumerable.Repeat(target, target._minCount));
+                _gimmickInsCount[(int)target._kind] = target._minCount;
+            }
+            
+            // 生成必須対象の部屋割り当て
+            var neededInsTargetRoom = new List<int>();
+            var availableRoomIndexes = new List<int>();
+
+            // 各部屋に生成必須ギミックを割り当てるためのリストを準備
+            for (var i = 0; i < roomCount; i++)
+            {
+                for (var j = 0; j < roomGimmickCount[i]; j++)
                 {
-                    neededInsList.Add(target);
+                    availableRoomIndexes.Add(i);
                 }
             }
 
+            // 生成必須ギミックの部屋割り当て
+            for (var i = 0; i < neededInsList.Count(); i++)
+            {
+                // 割り当て可能な部屋がなくなった場合は終了
+                if (availableRoomIndexes.Count == 0) break;
+
+                var targetNum = UnityEngine.Random.Range(0, availableRoomIndexes.Count);
+                neededInsTargetRoom.Add(availableRoomIndexes[targetNum]);
+                availableRoomIndexes.RemoveAt(targetNum);
+            }
+            
+            // 生成対象のリスト作成
+            var insList = new List<GimmickInfo>();
+            foreach (var target in _gimmickInfo)
+            {
+                if (!target._isRoomGenerate) continue;
+                if (target._maxCount != LimitValue && target._maxCount <= _gimmickInsCount[(int)target._kind]) continue;
+                insList.Add(target);
+            }
+            
             for (var i = 0; i < roomCount; i++)
             {
-                // Determine the number of gimmicks produced
-                var gimmickCount = UnityEngine.Random.Range(1, _maxGimmickPerRoom + 1);
                 // Create a list of gimmick coordinates for each room
                 var placedGimmickInfo = new List<PlacedGimmickInfo>();
                 // Generate Exit
-                if (i == roomCount - 1)
-                {
-                    gimmickCount--;
-                    InsGimmick(groundY, roomInfo, i, _gimmickInfo[(int)GimmickKind.ExitHole]._prefab, placedGimmickInfo);
-                }
+                if (i == exitHoleRoom) InsGimmick(groundY, roomInfo, i, _gimmickInfo[(int)GimmickKind.ExitHole]._prefab, placedGimmickInfo);
                 
-                for (var j = 0; j < gimmickCount; j++)
+                for (var j = 0; j < roomGimmickCount[i]; j++)
                 {
                     if (insList.Count == 0) break;
-                    GimmickInfo gimmickInfo;
-                    if (neededInsList.Count > 0)
+                    var gimmickInfo = insList[UnityEngine.Random.Range(0, insList.Count)];
+                    // 生成必須対象の生成部屋か確認しマッチした場合はセット
+                    var list = neededInsTargetRoom;
+                    for (var index = 0; index < list.Count(); index++)
                     {
-                        var num = UnityEngine.Random.Range(0, neededInsList.Count);
-                        gimmickInfo = neededInsList[num];
-                        neededInsList.RemoveAt(num);
-                    }
-                    else
-                    {
-                        var num = UnityEngine.Random.Range(0, insList.Count);
-                        gimmickInfo = insList[num];
+                        var targetRoom = neededInsTargetRoom[index];
+                        if (i != targetRoom) continue;
+                        gimmickInfo = neededInsList[index];
+                        neededInsTargetRoom.RemoveAt(index);
                     }
 
                     var targetNum = (int)gimmickInfo._kind;

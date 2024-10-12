@@ -2055,6 +2055,22 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2150027754712339460, guid: 0668de6c0982e374abcfcd9a907f510e, type: 3}
     - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[2]._maxCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[2]._minCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[3]._maxCount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[3]._minCount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _gimmickInfo.Array.data[2]._isRoomGenerate
       value: 1
       objectReference: {fileID: 0}
