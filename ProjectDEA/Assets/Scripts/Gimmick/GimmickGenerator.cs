@@ -12,7 +12,8 @@ namespace Gimmick
         {
             Water,
             ExitHole,
-            TreasureBox
+            TreasureBox,
+            KeyOut
         }
 
         [Serializable]

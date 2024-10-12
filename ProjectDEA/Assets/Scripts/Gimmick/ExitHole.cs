@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Cinemachine;
 using Manager;
@@ -10,6 +11,7 @@ namespace Gimmick
         private DungeonLayerHandler _dungeonLayerHandler;
         [SerializeField] private CinemachineVirtualCameraBase _vCam;
         private const int Priority = 15;
+        public event Action Destroyed;
         
         private void Start()
         {

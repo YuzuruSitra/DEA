@@ -1,7 +1,8 @@
+using System;
 using UnityEngine;
 using Item;
 using Manager;
-using Player;
+using Random = UnityEngine.Random;
 
 namespace Gimmick
 {
@@ -12,6 +13,7 @@ namespace Gimmick
         private ItemKind _outItem;
         private bool _isOpen;
         private InventoryHandler _inventoryHandler;
+        public event Action Destroyed;
         
         private void Start()
         {

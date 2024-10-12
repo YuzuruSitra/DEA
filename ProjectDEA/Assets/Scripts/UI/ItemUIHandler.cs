@@ -1,7 +1,6 @@
+using Item;
 using Manager;
-using Player;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,8 +13,29 @@ namespace UI
         [SerializeField] private Image _itemImage;
         [SerializeField] private TextMeshProUGUI _itemCountText;
         [SerializeField] private GameObject[] _itemFrames;
+        [SerializeField] private TextMeshProUGUI _keyText;
+        private InventoryHandler _inventoryHandler;
+        
+        private void Start()
+        {
+            _inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
+            SetInventoryFrame(_inventoryHandler.ItemSets);
+            _inventoryHandler.OnItemSpriteChanged += ChangeItemImage;
+            _inventoryHandler.OnItemCountChanged += ChangeItemCount;
+            _inventoryHandler.OnKeyCountChanged += ChangeKeyCount;
+            _inventoryHandler.OnItemLineupChanged += ChangeVisibleFrame;
+            ChangeKeyCount(_inventoryHandler.ItemSets[(int)ItemKind.Key]._count);
+        }
 
-        public void SetInventoryFrame(InventoryHandler.ItemPrefabSet[] itemSet)
+        private void OnDestroy()
+        {
+            _inventoryHandler.OnItemSpriteChanged -= ChangeItemImage;
+            _inventoryHandler.OnItemCountChanged -= ChangeItemCount;
+            _inventoryHandler.OnKeyCountChanged -= ChangeKeyCount;
+            _inventoryHandler.OnItemLineupChanged -= ChangeVisibleFrame;
+        }
+
+        private void SetInventoryFrame(InventoryHandler.ItemPrefabSet[] itemSet)
         {
             _itemFrames = new GameObject[itemSet.Length];
             for (var i = 0; i < itemSet.Length; i++)
@@ -29,7 +49,7 @@ namespace UI
             }
         }
 
-        public void ChangeVisibleFrame(InventoryHandler.ItemPrefabSet[] itemSet)
+        private void ChangeVisibleFrame(InventoryHandler.ItemPrefabSet[] itemSet)
         {
             for (var i = 0; i < itemSet.Length; i++)
             {
@@ -37,12 +57,12 @@ namespace UI
             }
         }
 
-        public void ChangeItemImage(Sprite sprite)
+        private void ChangeItemImage(Sprite sprite)
         {
             _itemImage.sprite = sprite;
         }
 
-        public void ChangeItemCount(int value)
+        private void ChangeItemCount(int value)
         {
             if (value == 0)
             {
@@ -53,5 +73,11 @@ namespace UI
                 _itemCountText.text = "×" + value;
             }
         }
+
+        private void ChangeKeyCount(int value)
+        {
+            _keyText.text = "Key × " + value;
+        }
+        
     }
 }

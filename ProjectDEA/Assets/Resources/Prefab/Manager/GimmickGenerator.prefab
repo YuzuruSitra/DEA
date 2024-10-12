@@ -24,13 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8934308311292872761}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8934308311292872767
 MonoBehaviour:
@@ -47,7 +47,19 @@ MonoBehaviour:
   _gimmickInfo:
   - _kind: 0
     _prefab: {fileID: 5770162165112864712, guid: 665899e9444a41341b741d81fbbfc0ba, type: 3}
-    _isRandomGenerate: 0
+    _isRoomGenerate: 0
+    _isJustOne: 0
   - _kind: 1
+    _prefab: {fileID: 2150027754712339460, guid: 0668de6c0982e374abcfcd9a907f510e, type: 3}
+    _isRoomGenerate: 0
+    _isJustOne: 0
+  - _kind: 2
     _prefab: {fileID: 2554345950509929801, guid: da51274905dade84493783b8e6fe7e8d, type: 3}
-    _isRandomGenerate: 1
+    _isRoomGenerate: 1
+    _isJustOne: 0
+  - _kind: 3
+    _prefab: {fileID: 7994663201004478321, guid: 484e5fe6106d25d43b07e99a22fb22b0, type: 3}
+    _isRoomGenerate: 1
+    _isJustOne: 0
+  _maxGimmickPerRoom: 3
+  _mapParent: {fileID: 0}

@@ -20,6 +20,12 @@ namespace Player
         private void Start()
         {
             _inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
+            _inventoryHandler.OnItemNumChanged += ResetState;
+        }
+
+        private void OnDestroy()
+        {
+            _inventoryHandler.OnItemNumChanged -= ResetState;
         }
 
         private void Update()
@@ -29,18 +35,18 @@ namespace Player
 
         private void HandleItemUsage()
         {
-            var predict = _inventoryHandler.CurrentPredict;
+            if (!_inventoryHandler.CurrentIsUse) return;
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 switch (_insState)
                 {
                     case InsState.None:
-                        _inventoryHandler.ChangePredictActive(predict, true);
+                        _inventoryHandler.ChangePredictActive(_inventoryHandler.CurrentPredict, true);
                         _insState = InsState.Predict;
                         break;
                     case InsState.Predict:
                         PlaceItem();
-                        _insState = InsState.None;
+                        ResetState();
                         break;
                 }
             }
@@ -48,11 +54,7 @@ namespace Player
             if (_insState == InsState.Predict) MovePrediction();
             
             // Chancel.
-            if (Input.GetMouseButtonDown(1))
-            {
-                _insState = InsState.None;
-                _inventoryHandler.ChangePredictActive(predict, false);
-            }
+            if (Input.GetMouseButtonDown(1)) ResetState();
         }
 
         private void MovePrediction()
@@ -87,8 +89,14 @@ namespace Player
         {
             var item = _inventoryHandler.UseItem();
             if (item == null || _predictedPosition == Vector3.zero) return;
-
+            
             Instantiate(item, _predictedPosition, Quaternion.identity);
+        }
+
+        private void ResetState()
+        {
+            _insState = InsState.None;
+            _inventoryHandler.ChangePredictActive(_inventoryHandler.CurrentPredict, false);
         }
     }
 }

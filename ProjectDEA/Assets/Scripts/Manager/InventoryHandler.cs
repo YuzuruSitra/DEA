@@ -1,6 +1,5 @@
 using System;
 using Item;
-using UI;
 using UnityEngine;
 
 namespace Manager
@@ -15,43 +14,33 @@ namespace Manager
             public GameObject _predict;
             public Sprite _sprite;
             public int _count;
+            public bool _isUse;
         }
         [SerializeField] private ItemPrefabSet[] _itemSets;
-        private ItemUIHandler _itemUIHandler;
+        public ItemPrefabSet[] ItemSets => _itemSets;
         private const int ErrorValue = -1;
         private int _currentItemNum = ErrorValue;
-        private Action<Sprite> _onItemNumChanged;
-        private Action<int> _onItemCountChanged;
+        public Action OnItemNumChanged;
+        public Action<Sprite> OnItemSpriteChanged;
+        public Action<int> OnItemCountChanged;
+        public Action<int> OnKeyCountChanged;
+        public Action<ItemPrefabSet[]> OnItemLineupChanged;
+        public bool CurrentIsUse => _currentItemNum != ErrorValue && _itemSets[_currentItemNum]._isUse;
         public GameObject CurrentPredict => _currentItemNum == ErrorValue ? null : _itemSets[_currentItemNum]._predict;
-        private bool _addedListener;
         
         private void Awake()
         {
             CheckSingleton();
         }
 
-        private void Start()
+        private void OnEnable()
         {
-            // Setting UI.
-            _itemUIHandler = GameObject.FindWithTag("ItemUIHandler").GetComponent<ItemUIHandler>();
-            _itemUIHandler.SetInventoryFrame(_itemSets);
             // Setting predict.
             for (var i = 0; i < _itemSets.Length; i++)
             {
                 if ( _itemSets[i]._predict == null) continue;
                 _itemSets[i]._predict = Instantiate(_itemSets[i]._predict);
             }
-            // Add listener.
-            _onItemNumChanged += _itemUIHandler.ChangeItemImage;
-            _onItemCountChanged += _itemUIHandler.ChangeItemCount;
-            _addedListener = true;
-        }
-
-        private void OnDestroy()
-        {
-            if (!_addedListener) return;
-            _onItemNumChanged -= _itemUIHandler.ChangeItemImage;
-            _onItemCountChanged -= _itemUIHandler.ChangeItemCount;
         }
         
         private void CheckSingleton()
@@ -101,10 +90,27 @@ namespace Manager
 
         private void ChangeItemNum(int value)
         {
-            if (_currentItemNum != ErrorValue) ChangePredictActive(_itemSets[_currentItemNum]._predict, false);
+            if (_currentItemNum != ErrorValue)
+            {
+                ChangePredictActive(_itemSets[_currentItemNum]._predict, false);
+            }
             _currentItemNum = value;
             var sprite = _currentItemNum != ErrorValue ? _itemSets[value]._sprite : null;
-            _onItemNumChanged?.Invoke(sprite);
+            OnItemSpriteChanged?.Invoke(sprite);
+            OnItemNumChanged?.Invoke();
+            ChangeItemCount();
+        }
+
+        private void ChangeItemCount()
+        {
+            if (_currentItemNum == ErrorValue )
+            {
+                OnItemCountChanged?.Invoke(0);
+                return;
+            }
+            OnItemCountChanged?.Invoke(_itemSets[_currentItemNum]._count);
+            if (_itemSets[_currentItemNum]._kind == ItemKind.Key) 
+                OnKeyCountChanged?.Invoke(_itemSets[_currentItemNum]._count);
         }
 
         // アイテムをインベントリに追加する
@@ -115,8 +121,8 @@ namespace Manager
             {
                 if (_itemSets[i]._kind != item) continue;
                 _itemSets[i]._count++;
-                if (_itemSets[i]._count == 1) _itemUIHandler.ChangeVisibleFrame(_itemSets);
-                _onItemCountChanged?.Invoke(_itemSets[i]._count);
+                if (_currentItemNum == i) ChangeItemCount();
+                if (_itemSets[i]._count == 1) OnItemLineupChanged(_itemSets);
                 if (_currentItemNum == ErrorValue) ChangeItemNum(i);
                 break;
             }
@@ -127,9 +133,13 @@ namespace Manager
             if (_currentItemNum == ErrorValue) return null;
             var outItem = _itemSets[_currentItemNum]._prefab;
             _itemSets[_currentItemNum]._count = Math.Max(0, _itemSets[_currentItemNum]._count - 1);
-            if (_itemSets[_currentItemNum]._count <= 0) _itemUIHandler.ChangeVisibleFrame(_itemSets);
-            _onItemCountChanged?.Invoke(_itemSets[_currentItemNum]._count);
-            if (_itemSets[_currentItemNum]._count <= 0) ChangeItemNum(ErrorValue);
+            ChangeItemCount();
+            
+            if (_itemSets[_currentItemNum]._count <= 0)
+            {
+                OnItemLineupChanged(_itemSets);
+                ChangeItemNum(ErrorValue);
+            }
             return outItem;
         }
 

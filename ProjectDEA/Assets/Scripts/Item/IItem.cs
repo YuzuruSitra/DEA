@@ -11,6 +11,7 @@ namespace Item
 
     public enum ItemKind
     {
+        Key,
         Dynamite
     }
 }
