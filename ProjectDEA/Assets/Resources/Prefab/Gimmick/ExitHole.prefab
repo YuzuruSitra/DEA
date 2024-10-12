@@ -135,6 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5921de8db235f4b42a5501f85316b013, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _neededKeyCount: 3
   _vCam: {fileID: 3091908894691827812}
 --- !u!1001 &1231460770774067541
 PrefabInstance:
