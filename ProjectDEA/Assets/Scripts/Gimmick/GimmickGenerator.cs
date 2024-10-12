@@ -22,9 +22,11 @@ namespace Gimmick
             public GimmickKind _kind;
             public GameObject _prefab;
             public bool _isRoomGenerate;
-            public bool _isJustOne;
+            public int _minCount; // 0 no limit
+            public int _maxCount; // 0 no limit
         }
 
+        private const int LimitValue = 0;
         private struct PlacedGimmickInfo
         {
             public Vector3 InsMinPos;
@@ -32,11 +34,14 @@ namespace Gimmick
         }
         
         [SerializeField] private GimmickInfo[] _gimmickInfo;
+        private int[] _gimmickInsCount;
         [SerializeField] private int _maxGimmickPerRoom;
         [SerializeField] private Transform _mapParent;
         
         public void GenerateGimmick(StageGenerator stageGenerator)
         {
+            _gimmickInsCount = new int[_gimmickInfo.Length];
+            // 生成対象のリスト作成
             var insList = new List<GimmickInfo>();
             foreach (var gimmick in _gimmickInfo)
                 if (gimmick._isRoomGenerate)
@@ -45,6 +50,16 @@ namespace Gimmick
             var roomCount = stageGenerator.RoomCount;
             var groundY = stageGenerator.GroundPosY;
             var roomInfo = stageGenerator.RoomInfo;
+            // 生成必須対象のリスト作成
+            var neededInsList = new List<GimmickInfo>();
+            foreach (var target in insList)
+            {
+                if (target._minCount == LimitValue) continue;
+                for (var i = 0; i < target._minCount; i++)
+                {
+                    neededInsList.Add(target);
+                }
+            }
 
             for (var i = 0; i < roomCount; i++)
             {
@@ -62,11 +77,31 @@ namespace Gimmick
                 for (var j = 0; j < gimmickCount; j++)
                 {
                     if (insList.Count == 0) break;
-                    var gimmickNum = UnityEngine.Random.Range(0, insList.Count);
-                    var gimmickInfo = insList[gimmickNum];
-                    
+                    GimmickInfo gimmickInfo;
+                    if (neededInsList.Count > 0)
+                    {
+                        var num = UnityEngine.Random.Range(0, neededInsList.Count);
+                        gimmickInfo = neededInsList[num];
+                        neededInsList.RemoveAt(num);
+                    }
+                    else
+                    {
+                        var num = UnityEngine.Random.Range(0, insList.Count);
+                        gimmickInfo = insList[num];
+                    }
+
+                    var targetNum = (int)gimmickInfo._kind;
+                    _gimmickInsCount[targetNum]++;
                     // Gimmicks that can generate only one are removed from the list
-                    if (gimmickInfo._isJustOne) insList.RemoveAt(gimmickNum);
+                    if (gimmickInfo._maxCount != LimitValue && gimmickInfo._maxCount <= _gimmickInsCount[targetNum])
+                    {
+                        // Use Find to directly locate the item to remove
+                        var itemToRemove = insList.Find(item => item._kind == gimmickInfo._kind);
+                        if (itemToRemove._kind == gimmickInfo._kind)
+                        {
+                            insList.Remove(itemToRemove);
+                        }
+                    }
 
                     // Generate gimmicks and register them in the coordinate list
                     InsGimmick(groundY, roomInfo, i, gimmickInfo._prefab, placedGimmickInfo);
