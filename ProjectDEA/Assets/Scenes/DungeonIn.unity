@@ -154,6 +154,18 @@ PrefabInstance:
       propertyPath: _mapParent
       value: 
       objectReference: {fileID: 1099377172}
+    - target: {fileID: 8728822740203815916, guid: c3590d0cea7f7c14789025c8c6fa2527, type: 3}
+      propertyPath: _mapObjects.Array.data[0]
+      value: 
+      objectReference: {fileID: 838244580287624110, guid: 751b5f90899ca674daf8efb10b33def5, type: 3}
+    - target: {fileID: 8728822740203815916, guid: c3590d0cea7f7c14789025c8c6fa2527, type: 3}
+      propertyPath: _mapObjects.Array.data[1]
+      value: 
+      objectReference: {fileID: 3094397351079303851, guid: aec58227b077b394abe9afe5713d6abf, type: 3}
+    - target: {fileID: 8728822740203815916, guid: c3590d0cea7f7c14789025c8c6fa2527, type: 3}
+      propertyPath: _mapObjects.Array.data[2]
+      value: 
+      objectReference: {fileID: 838244580287624110, guid: bbefd4f6c33e0ff43acc863ec101b9ac, type: 3}
     - target: {fileID: 8728822740203815917, guid: c3590d0cea7f7c14789025c8c6fa2527, type: 3}
       propertyPath: m_Name
       value: StageGenerator

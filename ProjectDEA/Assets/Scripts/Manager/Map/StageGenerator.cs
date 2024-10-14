@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Random = System.Random;
 
 namespace Manager.Map
 {
@@ -22,6 +23,12 @@ namespace Manager.Map
         private int _line; // 分割線
         public int[,] RoomInfo { get; private set; }
         [SerializeField] private Transform _mapParent;
+        private readonly Vector3[] _roadRot = {
+            new(0, 0, 0),
+            new(0, 90, 0),
+            new(0, 180, 0),
+            new(0, 270, 0)
+        };
 
         // 部屋ステータス
         public enum RoomStatus
@@ -299,6 +306,8 @@ namespace Manager.Map
                     {
                         var paddingY = 0.0f;
                         var addValue = _mapObjects[(int)ObjectType.Wall].transform.localScale.y;
+                        var rnd = UnityEngine.Random.Range(0, _roadRot.Length);
+                        var insRot = Quaternion.Euler(_roadRot[rnd]);
                         for (var i = 0; i < _heightCount; i++)
                         {
                             Instantiate(
@@ -307,7 +316,7 @@ namespace Manager.Map
                                     _defaultPosition.x + nowW * _mapObjects[_mapKind[nowW, nowH]].transform.localScale.x,
                                     _defaultPosition.y + paddingY,
                                     _defaultPosition.z + nowH * _mapObjects[_mapKind[nowW, nowH]].transform.localScale.z),
-                                Quaternion.identity, _mapParent);
+                                insRot, _mapParent);
                             paddingY += addValue;
                         }
                     }
@@ -327,13 +336,15 @@ namespace Manager.Map
                     // 通路の生成
                     if (_mapKind[nowW, nowH] == (int)ObjectType.Road)
                     {
+                        var rnd = UnityEngine.Random.Range(0, _roadRot.Length);
+                        var insRot = Quaternion.Euler(_roadRot[rnd]);
                         Instantiate(
                             _mapObjects[_mapKind[nowW, nowH]],
                             new Vector3(
                                 _defaultPosition.x + nowW * _mapObjects[_mapKind[nowW, nowH]].transform.localScale.x,
                                 _defaultPosition.y,
                                 _defaultPosition.z + nowH * _mapObjects[_mapKind[nowW, nowH]].transform.localScale.z),
-                            Quaternion.identity, _mapParent);
+                            insRot, _mapParent);
                     }
 
                 }
