@@ -13,8 +13,8 @@ namespace Gimmick
         {
             Water,
             ExitObelisk,
-            TreasureBox,
-            KeyOut
+            ObeliskKeyOut,
+            TreasureBox
         }
 
         [Serializable]
