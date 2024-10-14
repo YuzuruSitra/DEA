@@ -14,6 +14,11 @@ namespace Gimmick
         private bool _isOpen;
         private InventoryHandler _inventoryHandler;
         public event Action Destroyed;
+
+        [SerializeField] private GameObject _boxTop;
+        [SerializeField] private Collider _boxTopCol;
+        [SerializeField] private float _openDuration;
+        [SerializeField] private Vector3 _targetRot;
         
         private void Start()
         {
@@ -27,6 +32,24 @@ namespace Gimmick
             if (_isOpen) return;
             _inventoryHandler.AddItem(_outItem);
             _isOpen = true;
+            StartCoroutine(RotateBoxTop());
+        }
+        
+        private System.Collections.IEnumerator RotateBoxTop()
+        {
+            _boxTopCol.enabled = true;
+            var startRotation = _boxTop.transform.localRotation;
+            var endRotation = Quaternion.Euler(_targetRot);
+
+            var elapsedTime = 0f;
+            
+            while (elapsedTime < _openDuration)
+            {
+                _boxTop.transform.localRotation = Quaternion.Slerp(startRotation, endRotation, elapsedTime / _openDuration);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+            _boxTop.transform.localRotation = endRotation;
         }
     }
 }
