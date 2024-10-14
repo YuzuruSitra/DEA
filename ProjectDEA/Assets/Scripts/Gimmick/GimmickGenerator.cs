@@ -12,7 +12,7 @@ namespace Gimmick
         public enum GimmickKind
         {
             Water,
-            ExitHole,
+            ExitObelisk,
             TreasureBox,
             KeyOut
         }
@@ -42,17 +42,17 @@ namespace Gimmick
         public void GenerateGimmick(StageGenerator stageGenerator)
         {
             var roomCount = stageGenerator.RoomCount;
-            var exitHoleRoom = stageGenerator.RoomCount - 1;
             var groundY = stageGenerator.GroundPosY;
             var roomInfo = stageGenerator.RoomInfo;
             _gimmickInsCount = new int[_gimmickInfo.Length];
+            var exitObeliskRoom = CalcMostBigRoom(roomCount, roomInfo);
             
             // 各部屋のギミック生成数を事前に決定
             var roomGimmickCount = new int[roomCount];
             for (var i = 0; i < roomCount; i++)
             {
                 roomGimmickCount[i] = UnityEngine.Random.Range(1, _maxGimmickPerRoom + 1);
-                if (i == exitHoleRoom) roomGimmickCount[i]--;
+                if (i == exitObeliskRoom) roomGimmickCount[i]--;
             }
             
             // 生成必須対象のリスト作成
@@ -103,7 +103,7 @@ namespace Gimmick
                 // Create a list of gimmick coordinates for each room
                 var placedGimmickInfo = new List<PlacedGimmickInfo>();
                 // Generate Exit
-                if (i == exitHoleRoom) InsGimmick(groundY, roomInfo, i, _gimmickInfo[(int)GimmickKind.ExitHole]._prefab, placedGimmickInfo);
+                if (i == exitObeliskRoom) InsGimmick(groundY, roomInfo, i, _gimmickInfo[(int)GimmickKind.ExitObelisk]._prefab, placedGimmickInfo);
                 
                 for (var j = 0; j < roomGimmickCount[i]; j++)
                 {
@@ -209,11 +209,27 @@ namespace Gimmick
             Instantiate(insObj, careInsPos, insObj.transform.rotation, _mapParent);
         }
 
-        private Vector3 CalcDiffPos(Vector3 pos, float valueX, float valueZ)
+        private static Vector3 CalcDiffPos(Vector3 pos, float valueX, float valueZ)
         {
             pos.x += valueX;
             pos.z += valueZ;
             return pos;
         }
+
+        private static int CalcMostBigRoom(int roomCount, int[,] roomInfo)
+        {
+            var mostBigRoom = 0;
+            var currentSize = 0;
+            for (var i = 0; i < roomCount; i++)
+            {
+                var size = roomInfo[i, (int)StageGenerator.RoomStatus.Rw] *
+                           roomInfo[i, (int)StageGenerator.RoomStatus.Rh];
+                if (currentSize >= size) continue;
+                mostBigRoom = i;
+                currentSize = size;
+            }
+            return mostBigRoom;
+        }
+        
     }
 }
