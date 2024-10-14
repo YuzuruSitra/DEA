@@ -5,13 +5,10 @@ namespace Player
 {
     public class PlayerMover : MonoBehaviour
     {
-        // private Transform _parent;
         [Header("歩行速度")]
-        [SerializeField]
-        private float _walkSpeed;
+        [SerializeField] private float _walkSpeed;
         [Header("走行速度")]
-        [SerializeField]
-        private float _runSpeed;
+        [SerializeField] private float _runSpeed;
         private CharacterController _controller;
         private Vector3 _moveDirection = Vector3.zero;
         private Vector3 _direction = Vector3.zero;
@@ -20,8 +17,14 @@ namespace Player
         private bool _inWater;
 
         // 重力の値
-        [SerializeField]
-        private float _gravity = -9.81f;
+        [SerializeField] private float _gravity = -9.81f;
+
+        // 現在の移動速度
+        private float _currentSpeed;
+        public float CurrentSpeedRatio => _currentSpeed / _runSpeed;
+
+        // 速度の変化にかかる時間
+        [SerializeField] private float _speedTransitionTime;
 
         private void Start()
         {
@@ -39,15 +42,22 @@ namespace Player
             
             _moveDirection.x = horizontal;
             _moveDirection.z = vertical;
-
+            
+            // 走るか歩くかの目標速度を設定
+            var targetSpeed = Input.GetKey(KeyCode.LeftShift) ? _runSpeed : _walkSpeed;
             // Falling.
             if (!_controller.isGrounded && !_inWater)
             {
                 _moveDirection.y += _gravity * Time.deltaTime;
             }
-            
-            var speed = Input.GetKey(KeyCode.LeftShift) ? _runSpeed : _walkSpeed;
-            
+            else
+            {
+                if (horizontal == 0 && vertical == 0) targetSpeed = 0;
+            }
+            // 現在の速度を 0.1 秒かけて目標速度に向かって補間
+            _currentSpeed = Mathf.Lerp(_currentSpeed, targetSpeed, Time.deltaTime / _speedTransitionTime);
+
+            // 回転処理
             if (horizontal != 0 || vertical != 0)
             {
                 _direction.x = horizontal;
@@ -55,8 +65,9 @@ namespace Player
                 _direction.y = 0;
                 transform.rotation = Quaternion.LookRotation(_direction);
             }
-            
-            _controller.Move(_moveDirection * (speed * Time.deltaTime));
+
+            // 移動処理
+            _controller.Move(_moveDirection * (_currentSpeed * Time.deltaTime));
         }
 
         private void OnTriggerEnter(Collider other)
@@ -74,6 +85,5 @@ namespace Player
                 _inWater = false;
             }
         }
-
     }
 }

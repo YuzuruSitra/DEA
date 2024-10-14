@@ -1111,6 +1111,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2002799768244149595, guid: af343f917a18a974dbde0989ed8e63db, type: 3}
+      propertyPath: _runSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2002799768244149595, guid: af343f917a18a974dbde0989ed8e63db, type: 3}
+      propertyPath: _walkSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2002799768244149595, guid: af343f917a18a974dbde0989ed8e63db, type: 3}
+      propertyPath: _speedTransitionTime
+      value: 0.35
+      objectReference: {fileID: 0}
     - target: {fileID: 2283786242572857940, guid: af343f917a18a974dbde0989ed8e63db, type: 3}
       propertyPath: _waterTransform
       value: 
@@ -1119,10 +1131,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 2690993595501631969, guid: af343f917a18a974dbde0989ed8e63db, type: 3}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
+    - target: {fileID: 4167501387800434166, guid: af343f917a18a974dbde0989ed8e63db, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: ed8cb3e9e6d1e674baee4d37064fa5a0, type: 2}
     - target: {fileID: 6541468794001565378, guid: af343f917a18a974dbde0989ed8e63db, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2

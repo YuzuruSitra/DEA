@@ -458,8 +458,9 @@ GameObject:
   - component: {fileID: 2002799768244149595}
   - component: {fileID: 2817494418154973700}
   - component: {fileID: 2283786242572857940}
+  - component: {fileID: 4351832874976852339}
   m_Layer: 0
-  m_Name: Player 1
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -536,9 +537,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e230a5d5a21d5d408905b7b1de94ab8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _walkSpeed: 4
-  _runSpeed: 8
+  _walkSpeed: 2
+  _runSpeed: 4
   _gravity: -1.5
+  _speedTransitionTime: 0.35
 --- !u!114 &2817494418154973700
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -569,6 +571,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _waterTransform: {fileID: 0}
   _sinkTime: 10
+--- !u!114 &4351832874976852339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2690993595501631969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9624a9f2d3a77f54a814c5863775ddff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerMover: {fileID: 2002799768244149595}
+  _animator: {fileID: 4167501387800434166}
 --- !u!1 &2807252121575003483
 GameObject:
   m_ObjectHideFlags: 0
@@ -997,7 +1013,7 @@ Animator:
   m_GameObject: {fileID: 4182577645330876602}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: a58d63122b09e9144938cd6a1ece4824, type: 3}
-  m_Controller: {fileID: 9100000, guid: b60dc9aa529b314489f628aa3b57c470, type: 2}
+  m_Controller: {fileID: 9100000, guid: ed8cb3e9e6d1e674baee4d37064fa5a0, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
