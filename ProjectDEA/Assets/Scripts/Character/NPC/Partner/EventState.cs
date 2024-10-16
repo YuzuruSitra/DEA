@@ -1,9 +1,8 @@
-
 using UnityEngine;
 
-namespace PartnerNPC
+namespace Character.NPC.Partner
 {
-    public class EventState : IPartnerAIState
+    public class EventState : INpcAiState
     {
         private const float StateTime = 5.0f;
         private float _remainTime;

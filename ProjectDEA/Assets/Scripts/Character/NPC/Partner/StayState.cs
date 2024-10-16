@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace PartnerNPC
+namespace Character.NPC.Partner
 {
-    public class StayState : IPartnerAIState
+    public class StayState : INpcAiState
     {
         private readonly Transform _npcTransform;
         private const float AngleRange = 120f;

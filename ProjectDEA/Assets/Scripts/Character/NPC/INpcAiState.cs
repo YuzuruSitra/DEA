@@ -1,6 +1,6 @@
-namespace PartnerNPC
+namespace Character.NPC
 {
-    public interface IPartnerAIState
+    public interface INpcAiState
     {
         bool IsStateFin { get; }
         void EnterState();

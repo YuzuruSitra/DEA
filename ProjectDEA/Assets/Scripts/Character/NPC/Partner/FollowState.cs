@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace PartnerNPC
+namespace Character.NPC.Partner
 {
-    public class FollowState : IPartnerAIState
+    public class FollowState : INpcAiState
     {
         private readonly Transform _player;
         private readonly NavMeshAgent _agent;

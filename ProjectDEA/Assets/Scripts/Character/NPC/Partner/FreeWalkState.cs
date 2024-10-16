@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace PartnerNPC
+namespace Character.NPC.Partner
 {
-    public class FreeWalkState : IPartnerAIState
+    public class FreeWalkState : INpcAiState
     {
         
         private readonly Transform _npcTransform;

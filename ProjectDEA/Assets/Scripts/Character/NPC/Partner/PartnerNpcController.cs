@@ -1,19 +1,19 @@
 using System;
 using System.Collections.Generic;
 using Manager.Debug;
+using Manager.Map;
 using Player;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
-using Manager.Map;
 
-namespace PartnerNPC
+namespace Character.NPC.Partner
 {
     public class PartnerNpcController : MonoBehaviour
     {
         private NavMeshAgent _agent;
         private PartnerAIState _currentState;
-        private readonly Dictionary<PartnerAIState, IPartnerAIState> _states = new();
+        private readonly Dictionary<PartnerAIState, INpcAiState> _states = new();
         private readonly Dictionary<PartnerAIState, int> _utilities = new()
         {
             { PartnerAIState.Stay, 50 },
