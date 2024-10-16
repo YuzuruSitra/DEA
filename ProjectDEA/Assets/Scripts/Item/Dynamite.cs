@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace Item
@@ -13,27 +14,38 @@ namespace Item
         [SerializeField] private bool _isConsumable;
         public bool IsConsumable => _isConsumable;
         [SerializeField] private float _detonationTime;
-        private float _currentTime;
+        private float _attackAnimTime;
         private bool _isUsed;
         [SerializeField] private float _rayLength = 1.5f;
+        [SerializeField] private float _animPaddingTime;
+        [SerializeField] private Animator _animator;
+        [SerializeField] private AnimationClip _attackClip;
+        private float _animWaitTime;
+        private static readonly int Bomb = Animator.StringToHash("Bomb");
 
-        private void Update()
+        private void Start()
         {
-            if (_isUsed) return;
-
-            _currentTime += Time.deltaTime;
-            if (!(_currentTime > _detonationTime)) return;
             UseEffect();
-            _isUsed = true;
         }
-
+        
         public void UseEffect()
         {
+            _animWaitTime = _attackClip.length - _animPaddingTime;
+            _detonationTime -= _animWaitTime;
+            StartCoroutine(BombEffect());
+        }
+
+        private IEnumerator BombEffect()
+        {
+            yield return new WaitForSeconds(_detonationTime);
+            _animator.SetTrigger(Bomb);
+            yield return new WaitForSeconds(_animWaitTime);
             var directions = SetDirections();
+            var adPos = AdjustedPosition();   
             
-            var adPos = AdjustedPosition();
             PerformRaycastInDirections(directions, adPos);
             PerformRaycastInDirections(directions, adPos + Vector3.up);
+            yield return new WaitForSeconds(_animPaddingTime);
             Destroy(gameObject);
         }
 

@@ -16,6 +16,7 @@ namespace Player
         [SerializeField] private LayerMask _ignoreLayerMask;
 
         private Vector3 _predictedPosition;
+        private Quaternion _predictedRotation;
 
         private void Start()
         {
@@ -60,8 +61,10 @@ namespace Player
         private void MovePrediction()
         {
             _predictedPosition = CalculateSpawnPosition();
+            _predictedRotation = transform.rotation * Quaternion.Euler(0, 180, 0);
             if (_inventoryHandler.CurrentPredict == null) return;
             _inventoryHandler.CurrentPredict.transform.position = _predictedPosition;
+            _inventoryHandler.CurrentPredict.transform.rotation = _predictedRotation;
         }
 
         private Vector3 CalculateSpawnPosition()
@@ -89,8 +92,7 @@ namespace Player
         {
             var item = _inventoryHandler.UseItem();
             if (item == null || _predictedPosition == Vector3.zero) return;
-            
-            Instantiate(item, _predictedPosition, Quaternion.identity);
+            Instantiate(item, _predictedPosition, _predictedRotation);
         }
 
         private void ResetState()
