@@ -17,14 +17,16 @@ namespace Character.NPC.EnemyDragon
         [SerializeField] private float _speed;
         [SerializeField] private float _attackSpeed;
         [SerializeField] private float _attackRotSpeed;
+        public DragonAnimCtrl.AnimState AnimState => _states[CurrentState].CurrentAnim;
         private void Start()
         {
             _agent = GetComponent<NavMeshAgent>();
+            _states.Add(AIState.Null, null);
             _states.Add(AIState.Stay, new StayState(gameObject, _stateTimeRange, _stayTimeBase));
             _states.Add(AIState.Attack, new AttackState(gameObject, _agent, _attackSpeed, _attackRotSpeed));
             _states.Add(AIState.FreeWalk, new FreeWalkState(gameObject, _agent, _stateTimeRange, _walkTimeBase, _speed));
 
-            CurrentState = AIState.FreeWalk;
+            CurrentState = AIState.Stay;
             _states[CurrentState].EnterState();
         }
 
@@ -34,9 +36,9 @@ namespace Character.NPC.EnemyDragon
             if (_states[CurrentState].IsStateFin) NextState();
         }
 
-        private void NextState()
+        private void NextState(AIState state = AIState.Null)
         {
-            var newState = SelectState();
+            var newState = state == AIState.Null ? SelectState() : state;
             Debug.Log(newState);
             _states[CurrentState].ExitState();
             _states[newState].EnterState();
@@ -54,6 +56,7 @@ namespace Character.NPC.EnemyDragon
         public void OnAttackState(Vector3 target)
         {
             _agent.destination = target;
+            NextState(AIState.Attack);
         }
     }
 }

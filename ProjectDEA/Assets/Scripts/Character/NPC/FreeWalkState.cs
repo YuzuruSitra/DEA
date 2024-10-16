@@ -1,3 +1,4 @@
+using Character.NPC.EnemyDragon;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -5,6 +6,8 @@ namespace Character.NPC
 {
     public class FreeWalkState : INpcAiState
     {
+        public DragonAnimCtrl.AnimState CurrentAnim { get; private set; }
+
         private readonly Transform _npcTransform;
         private readonly NavMeshAgent _agent;
         private readonly float _speed;
@@ -36,6 +39,7 @@ namespace Character.NPC
             _agent.isStopped = false;
             SetRandomDestination();
             _agent.speed = _speed;
+            CurrentAnim = DragonAnimCtrl.AnimState.IsWalk;
             _currentWait = WaitTime;
         }
 
@@ -65,6 +69,7 @@ namespace Character.NPC
         {
             _agent.isStopped = true;
             _agent.speed = 0;
+            CurrentAnim = DragonAnimCtrl.AnimState.Idole;
         }
 
         // ランダムな通れる目的地を設定

@@ -1,9 +1,11 @@
+using Character.NPC.EnemyDragon;
 using UnityEngine;
 
 namespace Character.NPC
 {
     public class EventState : INpcAiState
     {
+        public DragonAnimCtrl.AnimState CurrentAnim { get; private set; }
         private const float StateTime = 5.0f;
         private float _remainTime;
         // 仮

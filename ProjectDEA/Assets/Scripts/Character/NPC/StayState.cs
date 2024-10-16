@@ -1,9 +1,11 @@
+using Character.NPC.EnemyDragon;
 using UnityEngine;
 
 namespace Character.NPC
 {
     public class StayState : INpcAiState
     {
+        public DragonAnimCtrl.AnimState CurrentAnim { get; private set; }
         private readonly Transform _npcTransform;
         private const float AngleRange = 120f;
         private readonly float _tRange;
@@ -31,6 +33,7 @@ namespace Character.NPC
             SetDirection();
             _isRotating = true;
             _waitTime = WaitTime;
+            CurrentAnim = DragonAnimCtrl.AnimState.Idole;
         }
         
         public void UpdateState()

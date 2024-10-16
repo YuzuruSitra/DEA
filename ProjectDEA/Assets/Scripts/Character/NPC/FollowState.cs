@@ -1,3 +1,4 @@
+using Character.NPC.EnemyDragon;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -5,6 +6,7 @@ namespace Character.NPC
 {
     public class FollowState : INpcAiState
     {
+        public DragonAnimCtrl.AnimState CurrentAnim { get; private set; }
         private readonly Transform _player;
         private readonly NavMeshAgent _agent;
         private const float Speed = 8.0f;

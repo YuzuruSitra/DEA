@@ -1,3 +1,4 @@
+using Character.NPC.EnemyDragon;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -5,6 +6,7 @@ namespace Character.NPC
 {
     public class AttackState : INpcAiState
     {
+        public DragonAnimCtrl.AnimState CurrentAnim => DragonAnimCtrl.AnimState.Idole;
         private readonly Transform _npcTransform;
         private readonly NavMeshAgent _agent;
         private readonly float _speed;
@@ -33,10 +35,11 @@ namespace Character.NPC
         {
             if (_isRotating)
             {
+                Debug.Log("a");
                 RotateTowardsTarget();
                 return;
             }
-            
+            Debug.Log("b");
             // 回転が完了したらNavMeshAgentを使って突進
             _agent.isStopped = false;
             _agent.speed = _speed;
@@ -56,9 +59,9 @@ namespace Character.NPC
 
             // 現在の回転をターゲット方向に徐々に近づける
             _npcTransform.rotation = Quaternion.Slerp(_npcTransform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
-
+            
             // 回転がほぼ完了したら移動に切り替える
-            if (Quaternion.Angle(_npcTransform.rotation, targetRotation) < 1f)
+            if (Quaternion.Angle(_npcTransform.rotation, targetRotation) < 15f)
             {
                 _isRotating = false;
             }
