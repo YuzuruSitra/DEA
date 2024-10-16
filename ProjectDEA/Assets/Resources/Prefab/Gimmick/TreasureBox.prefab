@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1301426570034333042}
   - component: {fileID: 7684526474886431321}
   - component: {fileID: 4365416916330110011}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ChestV2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -187,7 +187,7 @@ GameObject:
   - component: {fileID: 2517002948370175642}
   - component: {fileID: 6874048287558546244}
   - component: {fileID: 2302644483369722967}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -292,7 +292,7 @@ GameObject:
   - component: {fileID: 5736420462110651438}
   - component: {fileID: 2558122985334114037}
   - component: {fileID: 4220184765452962934}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ChestV2_Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -396,7 +396,7 @@ GameObject:
   - component: {fileID: 9202061681512113681}
   - component: {fileID: 8956814492468615719}
   - component: {fileID: 221517646242635965}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ChestV2_Lock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
