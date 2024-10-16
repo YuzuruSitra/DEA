@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 namespace Character.NPC.EnemyDragon
 {
@@ -8,41 +9,51 @@ namespace Character.NPC.EnemyDragon
     {
         private NavMeshAgent _agent;
         [SerializeField] private List<AIState> _drawableState;
-        private AIState _currentState;
+        public AIState CurrentState { get; private set; }
         private readonly Dictionary<AIState, INpcAiState> _states = new();
-        
+        [SerializeField] private float _stateTimeRange;
+        [SerializeField] private float _stayTimeBase;
+        [SerializeField] private float _walkTimeBase;
+        [SerializeField] private float _speed;
+        [SerializeField] private float _attackSpeed;
+        [SerializeField] private float _attackRotSpeed;
         private void Start()
         {
             _agent = GetComponent<NavMeshAgent>();
-            _states.Add(AIState.Stay, new StayState(gameObject));
-            _states.Add(AIState.Attack, new AttackState());
-            _states.Add(AIState.FreeWalk, new FreeWalkState(gameObject, _agent));
+            _states.Add(AIState.Stay, new StayState(gameObject, _stateTimeRange, _stayTimeBase));
+            _states.Add(AIState.Attack, new AttackState(gameObject, _agent, _attackSpeed, _attackRotSpeed));
+            _states.Add(AIState.FreeWalk, new FreeWalkState(gameObject, _agent, _stateTimeRange, _walkTimeBase, _speed));
 
-            _currentState = AIState.FreeWalk;
-            _states[_currentState].EnterState();
+            CurrentState = AIState.FreeWalk;
+            _states[CurrentState].EnterState();
         }
 
         private void Update()
         {
-            _states[_currentState].UpdateState();
-            if (_states[_currentState].IsStateFin) NextState();
+            _states[CurrentState].UpdateState();
+            if (_states[CurrentState].IsStateFin) NextState();
         }
 
         private void NextState()
         {
             var newState = SelectState();
-            _states[_currentState].ExitState();
+            Debug.Log(newState);
+            _states[CurrentState].ExitState();
             _states[newState].EnterState();
-            _currentState = newState;
+            CurrentState = newState;
         }
 
         private AIState SelectState()
         {
-            var drawableState = _drawableState;
-            drawableState.Remove(_currentState);
+            var drawableState = new List<AIState>(_drawableState);
+            drawableState.Remove(CurrentState);
             var rnd = Random.Range(0, drawableState.Count);
             return drawableState[rnd];
         }
-        
+
+        public void OnAttackState(Vector3 target)
+        {
+            _agent.destination = target;
+        }
     }
 }

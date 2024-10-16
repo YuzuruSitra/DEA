@@ -1,8 +1,7 @@
-using System;
 using Gimmick;
 using UnityEngine;
 
-namespace Player
+namespace Character.Player
 {
     public class PlayerInteraction : MonoBehaviour
     {

@@ -6,7 +6,8 @@ namespace Character.NPC
     {
         private readonly Transform _npcTransform;
         private const float AngleRange = 120f;
-        private const float StateTime = 5.0f;
+        private readonly float _tRange;
+        private readonly float _stateTimeBase;
         private const float WaitTime = 2.0f;
         private const float RotationSpeed = 1.0f;
 
@@ -17,14 +18,16 @@ namespace Character.NPC
 
         public bool IsStateFin => (_remainTime <= 0);
 
-        public StayState(GameObject npc)
+        public StayState(GameObject npc, float stateTimeRange, float stateTimeBase)
         {
             _npcTransform = npc.transform;
+            _tRange = stateTimeRange;
+            _stateTimeBase = stateTimeBase;
         }
         
         public void EnterState()
         {
-            _remainTime = StateTime;
+            _remainTime = Random.Range(_stateTimeBase - _tRange, _stateTimeBase + _tRange);
             SetDirection();
             _isRotating = true;
             _waitTime = WaitTime;
@@ -62,7 +65,6 @@ namespace Character.NPC
 
         private void RotateTowardsTarget()
         {
-            var currentDirection = _npcTransform.forward;
             var currentRotation = _npcTransform.rotation;
             
             var targetRotation = Quaternion.LookRotation(_targetDirection);
