@@ -12,14 +12,13 @@ namespace Character.NPC.Partner
     public class PartnerNpcController : MonoBehaviour
     {
         private NavMeshAgent _agent;
-        private PartnerAIState _currentState;
-        private readonly Dictionary<PartnerAIState, INpcAiState> _states = new();
-        private readonly Dictionary<PartnerAIState, int> _utilities = new()
+        private AIState _currentState;
+        private readonly Dictionary<AIState, INpcAiState> _states = new();
+        private readonly Dictionary<AIState, int> _utilities = new()
         {
-            { PartnerAIState.Stay, 50 },
-            { PartnerAIState.Follow, 0 },
-            { PartnerAIState.FreeWalk, 50 },
-            { PartnerAIState.Event, 0 }
+            { AIState.Stay, 50 },
+            { AIState.Attack, 0 },
+            { AIState.FreeWalk, 50 },
         };
         private DebugColor _debugColor;
         private PlayerMover _playerMover;
@@ -32,12 +31,11 @@ namespace Character.NPC.Partner
             _debugColor = new DebugColor(GetComponent<Renderer>().material);
             _agent = GetComponent<NavMeshAgent>();
             _inRoomChecker = new InRoomChecker();
-            _states.Add(PartnerAIState.Stay, new StayState(gameObject));
-            _states.Add(PartnerAIState.Follow, new FollowState(player, _agent));
-            _states.Add(PartnerAIState.FreeWalk, new FreeWalkState(gameObject, _agent));
-            _states.Add(PartnerAIState.Event, new EventState());
+            _states.Add(AIState.Stay, new StayState(gameObject));
+            _states.Add(AIState.Attack, new FollowState(player, _agent));
+            _states.Add(AIState.FreeWalk, new FreeWalkState(gameObject, _agent));
 
-            _currentState = PartnerAIState.FreeWalk;
+            _currentState = AIState.FreeWalk;
             _states[_currentState].EnterState();
             DebugColor(_currentState);
         }
@@ -61,12 +59,12 @@ namespace Character.NPC.Partner
             _currentState = newState;
         }
 
-        private PartnerAIState SelectState()
+        private AIState SelectState()
         {
-            if (_utilities.Count == 0) return PartnerAIState.Stay;
+            if (_utilities.Count == 0) return AIState.Stay;
 
             var maxUtility = int.MinValue;
-            var selectedState = PartnerAIState.Stay;
+            var selectedState = AIState.Stay;
             var countMaxUtility = 0;
 
             // Iterate through _utilities to find the state with the highest utility
@@ -90,13 +88,13 @@ namespace Character.NPC.Partner
 
         private void UpdateUtilities()
         {
-            var keysToUpdate = new List<PartnerAIState>(_utilities.Keys); // Create a list of keys to iterate over
+            var keysToUpdate = new List<AIState>(_utilities.Keys); // Create a list of keys to iterate over
             foreach (var key in keysToUpdate)
             {
                 if (key == _currentState)
-                    _utilities[key] = key is PartnerAIState.Event or PartnerAIState.Follow ? 0 : _utilities[key] -= 25;
+                    _utilities[key] = key is AIState.Attack ? 0 : _utilities[key] -= 25;
                 else
-                    _utilities[key] = key is PartnerAIState.Follow ? 0 : _utilities[key] += 10;
+                    _utilities[key] = key is AIState.Attack ? 0 : _utilities[key] += 10;
                 _utilities[key] = Math.Clamp(_utilities[key], 0, 100);
             }
         }
@@ -107,47 +105,42 @@ namespace Character.NPC.Partner
             var playerStayRoom = _playerMover.StayRoomNum;
             if (stayRoom != playerStayRoom || stayRoom == InRoomChecker.RoadNum)
             {
-                if (_currentState == PartnerAIState.Follow) return;
-                var keysToUpdate = new List<PartnerAIState>(_utilities.Keys);
+                if (_currentState == AIState.Attack) return;
+                var keysToUpdate = new List<AIState>(_utilities.Keys);
                 foreach (var key in keysToUpdate)
                 {
-                    if (key == PartnerAIState.Follow)
+                    if (key == AIState.Attack)
                         _utilities[key] = 100;
                     else
                         _utilities[key] -= 10;
                     _utilities[key] = Math.Clamp(_utilities[key], 0, 100);
                 }
-                DebugColor(PartnerAIState.Follow);
+                DebugColor(AIState.Attack);
                 _states[_currentState].ExitState();
-                _states[PartnerAIState.Follow].EnterState();
-                _currentState = PartnerAIState.Follow;
+                _states[AIState.Attack].EnterState();
+                _currentState = AIState.Attack;
             }
             else
             {
-                if (_currentState != PartnerAIState.Follow) return;
+                if (_currentState != AIState.Attack) return;
                 NextState();
             }
         }
 
-        private void DebugColor(PartnerAIState newState)
+        private void DebugColor(AIState newState)
         {
             switch (newState)
             {
                 // �?バッグ処�?
-                case PartnerAIState.Stay:
+                case AIState.Stay:
                     _debugColor.ChangeColor(Color.blue);
                     break;
-                case PartnerAIState.Follow:
+                case AIState.Attack:
                     _debugColor.ChangeColor(Color.cyan);
                     break;
-                case PartnerAIState.FreeWalk:
+                case AIState.FreeWalk:
                     _debugColor.ChangeColor(Color.green);
                     break;
-                case PartnerAIState.Event:
-                    _debugColor.ChangeColor(Color.red);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
             }
         }
     }

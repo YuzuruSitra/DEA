@@ -947,7 +947,7 @@ GameObject:
   - component: {fileID: 2019830515}
   - component: {fileID: 2019830514}
   m_Layer: 0
-  m_Name: Enemy_Dragon
+  m_Name: EnemyDragon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1605,18 +1605,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2002799768244149595, guid: af343f917a18a974dbde0989ed8e63db, type: 3}
-      propertyPath: _runSpeed
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2002799768244149595, guid: af343f917a18a974dbde0989ed8e63db, type: 3}
-      propertyPath: _walkSpeed
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2002799768244149595, guid: af343f917a18a974dbde0989ed8e63db, type: 3}
-      propertyPath: _speedTransitionTime
-      value: 0.35
-      objectReference: {fileID: 0}
     - target: {fileID: 2283786242572857940, guid: af343f917a18a974dbde0989ed8e63db, type: 3}
       propertyPath: _waterTransform
       value: 
@@ -1625,10 +1613,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 4167501387800434166, guid: af343f917a18a974dbde0989ed8e63db, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: ed8cb3e9e6d1e674baee4d37064fa5a0, type: 2}
     - target: {fileID: 6541468794001565378, guid: af343f917a18a974dbde0989ed8e63db, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2
@@ -1672,68 +1656,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7811460594838383490, guid: af343f917a18a974dbde0989ed8e63db, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1888449965349577877}
-    - targetCorrespondingSourceObject: {fileID: 7811460594838383490, guid: af343f917a18a974dbde0989ed8e63db, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1888449965349577878}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: af343f917a18a974dbde0989ed8e63db, type: 3}
---- !u!1 &1888449965349577876 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7811460594838383490, guid: af343f917a18a974dbde0989ed8e63db, type: 3}
-  m_PrefabInstance: {fileID: 1888449965349577875}
-  m_PrefabAsset: {fileID: 0}
---- !u!64 &1888449965349577877
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1888449965349577876}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300002, guid: b96201848d117da4ca7dc3ade4bd59de, type: 3}
---- !u!54 &1888449965349577878
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1888449965349577876}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 126
-  m_CollisionDetection: 0
 --- !u!4 &1900697945481513060
 Transform:
   m_ObjectHideFlags: 0
@@ -2692,6 +2616,8 @@ GameObject:
   - component: {fileID: 6959929828172302029}
   - component: {fileID: 8176628330245078741}
   - component: {fileID: 8176628330245078742}
+  - component: {fileID: 8176628330245078744}
+  - component: {fileID: 8176628330245078743}
   m_Layer: 0
   m_Name: DragonSoulEater
   m_TagString: Untagged
@@ -3956,6 +3882,46 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: f14db21b5e70e3d4ab6f0e158099a341, type: 3}
+--- !u!114 &8176628330245078743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4658783143837601479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f09f022e8f2e03e4e86c704f5db28271, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _drawableState: 0000000002000000
+--- !u!54 &8176628330245078744
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4658783143837601479}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &8190408802414782063
 GameObject:
   m_ObjectHideFlags: 0

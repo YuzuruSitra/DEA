@@ -8,11 +8,10 @@ namespace Character.NPC
         void ExitState();
     }
 
-    public enum PartnerAIState
+    public enum AIState
     {
         Stay,
-        Follow,
-        FreeWalk,
-        Event
+        Attack,
+        FreeWalk
     }
 }

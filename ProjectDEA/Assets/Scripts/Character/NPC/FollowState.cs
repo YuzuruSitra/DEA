@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Character.NPC.Partner
+namespace Character.NPC
 {
     public class FollowState : INpcAiState
     {

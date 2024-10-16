@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Character.NPC.Partner
+namespace Character.NPC
 {
     public class StayState : INpcAiState
     {
