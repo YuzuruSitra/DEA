@@ -19,7 +19,7 @@ namespace Character.NPC
         private readonly float _tRange;
         private float _remainTime;
         private Vector3 _rotateDirection;
-        private const float WallDetectDistance = 1.0f;
+        private const float WallDetectDistance = 1.5f;
         private const int RayCount = 5;
         private const float RayAngleOffset = 15.0f;
         public bool IsStateFin => (_remainTime <= 0);
@@ -148,7 +148,7 @@ namespace Character.NPC
             for (var i = 0; i < RayCount; i++)
             {
                 var angle = (i - 2) * RayAngleOffset;
-                var rayDirection = Quaternion.Euler(0, angle, 0) * _npcTransform.forward * 1.5f;
+                var rayDirection = Quaternion.Euler(0, angle, 0) * _npcTransform.forward;
                 var rayOrigin = _npcTransform.position;
 
                 Debug.DrawRay(rayOrigin, rayDirection * WallDetectDistance, Color.red);

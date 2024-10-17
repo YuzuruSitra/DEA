@@ -17,13 +17,14 @@ namespace Character.NPC.EnemyDragon
         [SerializeField] private float _speed;
         [SerializeField] private float _attackSpeed;
         [SerializeField] private float _attackRotSpeed;
+        [SerializeField] private float _attackAcceleration;
         public DragonAnimCtrl.AnimState AnimState => _states[CurrentState].CurrentAnim;
         private void Start()
         {
             _agent = GetComponent<NavMeshAgent>();
             _states.Add(AIState.Null, null);
             _states.Add(AIState.Stay, new StayState(gameObject, _stateTimeRange, _stayTimeBase));
-            _states.Add(AIState.Attack, new AttackState(gameObject, _agent, _attackSpeed, _attackRotSpeed));
+            _states.Add(AIState.Attack, new AttackState(gameObject, _agent,_attackSpeed, _attackAcceleration, _attackRotSpeed));
             _states.Add(AIState.FreeWalk, new FreeWalkState(gameObject, _agent, _stateTimeRange, _walkTimeBase, _speed));
 
             CurrentState = AIState.Stay;
