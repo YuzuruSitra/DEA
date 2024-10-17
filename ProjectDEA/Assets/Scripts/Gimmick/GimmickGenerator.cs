@@ -14,7 +14,8 @@ namespace Gimmick
             Water,
             ExitObelisk,
             ObeliskKeyOut,
-            TreasureBox
+            TreasureBox,
+            EnemySpawnArea
         }
 
         [Serializable]
