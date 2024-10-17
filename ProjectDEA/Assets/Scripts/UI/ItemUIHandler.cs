@@ -76,7 +76,7 @@ namespace UI
 
         private void ChangeKeyCount(int value)
         {
-            _keyText.text = "Key × " + value;
+            _keyText.text = "× " + value;
         }
         
     }

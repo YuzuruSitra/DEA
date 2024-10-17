@@ -6,9 +6,11 @@ namespace Character.Player
     public class PlayerHpHandler : MonoBehaviour
     {
         [SerializeField] private int _maxHp;
+        public int MaxHp => _maxHp;
         public int CurrentHp { get; private set; }
+        public Action<int> OnChangeHp;
 
-        private void Start()
+        private void Awake()
         {
             CurrentHp = _maxHp;
         }
@@ -16,7 +18,7 @@ namespace Character.Player
         public void ReceiveDamage(int damage)
         {
             CurrentHp = Math.Max(CurrentHp - damage, 0);
-            Debug.Log(CurrentHp);
+            OnChangeHp?.Invoke(CurrentHp);
         }
     }
 }
