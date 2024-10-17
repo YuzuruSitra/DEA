@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Character.Player;
 using UnityEngine;
@@ -8,6 +9,7 @@ namespace Character.NPC.EnemyDragon
 {
     public class DragonController : MonoBehaviour
     {
+        [SerializeField] private int _currentHp;
         private NavMeshAgent _agent;
         [SerializeField] private List<AIState> _drawableState;
         public AIState CurrentState { get; private set; }
@@ -23,6 +25,8 @@ namespace Character.NPC.EnemyDragon
         [SerializeField] private int _giveDamage;
         private const float UpperDuration = 0.5f;
         public DragonAnimCtrl.AnimState AnimState => _states[CurrentState].CurrentAnim;
+        public Action GetDamage;
+        
         private void Start()
         {
             _agent = GetComponent<NavMeshAgent>();
@@ -61,6 +65,12 @@ namespace Character.NPC.EnemyDragon
         {
             _agent.destination = target;
             NextState(AIState.Attack);
+        }
+
+        public void OnGetDamage(int damage)
+        {
+            _currentHp = Math.Max(_currentHp - damage, 0);
+            GetDamage?.Invoke();
         }
         
         private void OnCollisionEnter(Collision other)

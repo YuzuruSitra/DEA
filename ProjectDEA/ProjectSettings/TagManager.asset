@@ -11,6 +11,7 @@ TagManager:
   - DungeonLayerHandler
   - ItemUIHandler
   - InventoryHandler
+  - EnemyDragon
   layers:
   - Default
   - TransparentFX

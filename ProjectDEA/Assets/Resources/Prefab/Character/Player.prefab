@@ -572,6 +572,7 @@ MonoBehaviour:
   _attackSpeed: 2
   _playerAnimationCnt: {fileID: 4351832874976852339}
   _playerMover: {fileID: 2002799768244149595}
+  _attackDamage: 0
 --- !u!114 &2817494418154973700
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2748,6 +2749,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: b96201848d117da4ca7dc3ade4bd59de, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b96201848d117da4ca7dc3ade4bd59de, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b96201848d117da4ca7dc3ade4bd59de, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b96201848d117da4ca7dc3ade4bd59de, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -2787,6 +2800,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b96201848d117da4ca7dc3ade4bd59de, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: b96201848d117da4ca7dc3ade4bd59de, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -2801,6 +2818,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100000, guid: b96201848d117da4ca7dc3ade4bd59de, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6178512573376449581}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: b96201848d117da4ca7dc3ade4bd59de, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2734616614877005109}
   m_SourcePrefab: {fileID: 100100000, guid: b96201848d117da4ca7dc3ade4bd59de, type: 3}
 --- !u!4 &7811460594838157218 stripped
 Transform:
@@ -2827,7 +2847,7 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
@@ -2861,3 +2881,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &2734616614877005109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7811460594838383490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74871bd776befc64499582c3649bcd39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerAttackHandler: {fileID: 51901469298106324}

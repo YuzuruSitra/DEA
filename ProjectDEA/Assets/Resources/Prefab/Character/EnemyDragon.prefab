@@ -1097,12 +1097,12 @@ GameObject:
   - component: {fileID: 7134229576755512900}
   - component: {fileID: 4893729096472378383}
   - component: {fileID: 6095459324729375478}
-  - component: {fileID: 7649166955196977459}
+  - component: {fileID: 8325319749802006510}
   - component: {fileID: 831041083737528293}
   - component: {fileID: 8377227291900932156}
   m_Layer: 0
   m_Name: EnemyDragon
-  m_TagString: Untagged
+  m_TagString: EnemyDragon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1185,6 +1185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f09f022e8f2e03e4e86c704f5db28271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentHp: 0
   _drawableState: 0100000003000000
   _stateTimeRange: 1
   _stayTimeBase: 4
@@ -1226,8 +1227,8 @@ MonoBehaviour:
   _searchRange: 3.5
   _rayCount: 9
   _losingDistance: 4.5
---- !u!136 &7649166955196977459
-CapsuleCollider:
+--- !u!65 &8325319749802006510
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1244,11 +1245,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.55
-  m_Height: 0.7
-  m_Direction: 2
-  m_Center: {x: 0, y: 0.05, z: 0.15}
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1.3, z: 0.8}
+  m_Center: {x: 0, y: 0.15, z: 0.05}
 --- !u!54 &831041083737528293
 Rigidbody:
   m_ObjectHideFlags: 0

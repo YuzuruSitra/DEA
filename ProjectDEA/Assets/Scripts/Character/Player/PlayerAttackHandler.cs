@@ -10,6 +10,10 @@ namespace Character.Player
         private float _currentTime;
         [SerializeField] private PlayerAnimationCnt _playerAnimationCnt;
         [SerializeField] private PlayerMover _playerMover;
+        [SerializeField] private int _attackDamage;
+        public int AttackDamage => _attackDamage;
+        public bool IsAttacking => _playerAnimationCnt.IsAttacking;
+
         private void Update()
         {
             _currentTime -= Time.deltaTime;
