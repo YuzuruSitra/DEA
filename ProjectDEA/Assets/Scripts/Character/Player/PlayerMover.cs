@@ -34,6 +34,12 @@ namespace Character.Player
         private void Update()
         {
             if (_isPushed) return;
+            if (_playerAnimationCnt.IsAttacking) return;
+            InputMove();
+        }
+
+        private void InputMove()
+        {
             var horizontal = Input.GetAxis("Horizontal");
             var vertical = Input.GetAxis("Vertical");
             
@@ -67,6 +73,18 @@ namespace Character.Player
             _controller.Move(_moveDirection * (_currentSpeed * Time.deltaTime));
             var speedRatio = _currentSpeed / _runSpeed;
             _playerAnimationCnt.SetSpeed(speedRatio);
+        }
+
+        public IEnumerator AttackMove(float time, float speed)
+        {
+            var elapsedTime = 0f;
+            var halfT = time / 2.0f;
+            while (elapsedTime < time)
+            {
+                elapsedTime += Time.deltaTime;
+                if (halfT < elapsedTime) _controller.Move(transform.forward * (speed * Time.deltaTime));
+                yield return null;
+            }
         }
         
         // プレイヤーを滑らかに上昇させるコルーチン
