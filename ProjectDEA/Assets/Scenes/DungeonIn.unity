@@ -2083,6 +2083,10 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7134229576755512900, guid: 633936ba670d5224ab9a13be9af82373, type: 3}
+      propertyPath: _walkTimeBase
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7134229576755512900, guid: 633936ba670d5224ab9a13be9af82373, type: 3}
       propertyPath: _attackRotSpeed
       value: 10
       objectReference: {fileID: 0}
@@ -2144,7 +2148,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8377227291900932156, guid: 633936ba670d5224ab9a13be9af82373, type: 3}
       propertyPath: m_Acceleration
-      value: 4
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 8377227291900932156, guid: 633936ba670d5224ab9a13be9af82373, type: 3}
       propertyPath: m_StoppingDistance

@@ -35,11 +35,9 @@ namespace Character.NPC
         {
             if (_isRotating)
             {
-                Debug.Log("a");
                 RotateTowardsTarget();
                 return;
             }
-            Debug.Log("b");
             // 回転が完了したらNavMeshAgentを使って突進
             _agent.isStopped = false;
             _agent.speed = _speed;
