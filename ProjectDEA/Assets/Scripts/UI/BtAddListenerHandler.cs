@@ -1,5 +1,4 @@
 using Manager;
-using Player;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;

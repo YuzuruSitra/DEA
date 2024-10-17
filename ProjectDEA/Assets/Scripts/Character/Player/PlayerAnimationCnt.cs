@@ -1,17 +1,23 @@
 using UnityEngine;
 
-namespace Player
+namespace Character.Player
 {
     public class PlayerAnimationCnt : MonoBehaviour
     {
-        [SerializeField] private PlayerMover _playerMover;
         [SerializeField] private Animator _animator;
         private static readonly int Speed = Animator.StringToHash("Speed");
-
-        private void Update()
+        private static readonly int IsDamaged = Animator.StringToHash("IsDamaged");
+        
+        public void SetSpeed(float speedRatio)
         {
-            _animator.SetFloat(Speed, _playerMover.CurrentSpeedRatio);
+            _animator.SetFloat(Speed, speedRatio);
         }
+
+        public void SetIsDamaged(bool active)
+        {
+            _animator.SetBool(IsDamaged, active);
+        }
+        
         
     }
 }

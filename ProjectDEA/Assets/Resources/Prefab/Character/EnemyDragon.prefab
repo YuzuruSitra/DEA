@@ -1193,6 +1193,8 @@ MonoBehaviour:
   _attackSpeed: 8
   _attackRotSpeed: 10
   _attackAcceleration: 5
+  _launchPower: 15
+  _giveDamage: 10
 --- !u!114 &4893729096472378383
 MonoBehaviour:
   m_ObjectHideFlags: 0

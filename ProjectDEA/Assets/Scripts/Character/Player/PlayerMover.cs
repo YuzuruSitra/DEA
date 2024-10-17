@@ -1,7 +1,7 @@
+using System.Collections;
 using UnityEngine;
-using Manager.Map;
 
-namespace Player
+namespace Character.Player
 {
     public class PlayerMover : MonoBehaviour
     {
@@ -10,18 +10,17 @@ namespace Player
         [Header("走行速度")]
         [SerializeField] private float _runSpeed;
         private CharacterController _controller;
+        [SerializeField] private PlayerAnimationCnt _playerAnimationCnt;
         private Vector3 _moveDirection = Vector3.zero;
         private Vector3 _direction = Vector3.zero;
-        private InRoomChecker _inRoomChecker;
-        public int StayRoomNum { get; private set; }
         private bool _inWater;
+        private bool _isPushed;
 
         // 重力の値
         [SerializeField] private float _gravity = -9.81f;
 
         // 現在の移動速度
         private float _currentSpeed;
-        public float CurrentSpeedRatio => _currentSpeed / _runSpeed;
 
         // 速度の変化にかかる時間
         [SerializeField] private float _speedTransitionTime;
@@ -30,13 +29,11 @@ namespace Player
         {
             _controller = GetComponent<CharacterController>();
             _controller.enabled = true;
-            _inRoomChecker = new InRoomChecker();
         }
 
         private void Update()
         {
-            StayRoomNum = _inRoomChecker.CheckStayRoomNum(transform.position);
-            
+            if (_isPushed) return;
             var horizontal = Input.GetAxis("Horizontal");
             var vertical = Input.GetAxis("Vertical");
             
@@ -68,6 +65,37 @@ namespace Player
 
             // 移動処理
             _controller.Move(_moveDirection * (_currentSpeed * Time.deltaTime));
+            var speedRatio = _currentSpeed / _runSpeed;
+            _playerAnimationCnt.SetSpeed(speedRatio);
+        }
+        
+        // プレイヤーを滑らかに上昇させるコルーチン
+        public IEnumerator PushMoveUp(float duration, float initialUpwardForce)
+        {
+            _isPushed = true;
+            _playerAnimationCnt.SetIsDamaged(true);
+            var elapsedTime = 0f;
+
+            while (elapsedTime < duration)
+            {
+                // 経過時間を加算
+                elapsedTime += Time.deltaTime;
+
+                // 残り時間に応じて力を減少させる (最初が最大で、時間が経つにつれて減少)
+                var upwardForce = initialUpwardForce * (1 - (elapsedTime / duration));
+
+                // 上向きの速度を計算
+                var upwardVelocity = Vector3.zero;
+                upwardVelocity.y = upwardForce;
+
+                // Moveメソッドを使って移動させる
+                _controller.Move(upwardVelocity * Time.deltaTime);
+
+                // 次のフレームまで待つ
+                yield return null;
+            }
+            _playerAnimationCnt.SetIsDamaged(false);
+            _isPushed = false;
         }
 
         private void OnTriggerEnter(Collider other)

@@ -1,7 +1,7 @@
 using Manager;
 using UnityEngine;
 
-namespace Player
+namespace Character.Player
 {
     public class PlayerUseItem : MonoBehaviour
     {

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Manager.Debug;
 using Manager.Map;
-using Player;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;

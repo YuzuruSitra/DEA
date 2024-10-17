@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Character.Player;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -18,6 +19,9 @@ namespace Character.NPC.EnemyDragon
         [SerializeField] private float _attackSpeed;
         [SerializeField] private float _attackRotSpeed;
         [SerializeField] private float _attackAcceleration;
+        [SerializeField] private float _launchPower;
+        [SerializeField] private int _giveDamage;
+        private const float UpperDuration = 0.5f;
         public DragonAnimCtrl.AnimState AnimState => _states[CurrentState].CurrentAnim;
         private void Start()
         {
@@ -40,7 +44,6 @@ namespace Character.NPC.EnemyDragon
         private void NextState(AIState state = AIState.Null)
         {
             var newState = state == AIState.Null ? SelectState() : state;
-            Debug.Log(newState);
             _states[CurrentState].ExitState();
             _states[newState].EnterState();
             CurrentState = newState;
@@ -58,6 +61,19 @@ namespace Character.NPC.EnemyDragon
         {
             _agent.destination = target;
             NextState(AIState.Attack);
+        }
+        
+        private void OnCollisionEnter(Collision other)
+        {
+            if (CurrentState != AIState.Attack) return;
+
+            if (!other.collider.CompareTag("Player")) return;
+            
+            // プレイヤーのCharacterControllerを取得
+            var playerHub = other.collider.GetComponent<PlayerClasHub>();
+            if (playerHub == null) return;
+            StartCoroutine(playerHub.PlayerMover.PushMoveUp(UpperDuration, _launchPower));
+            playerHub.PlayerHpHandler.ReceiveDamage(_giveDamage);
         }
     }
 }

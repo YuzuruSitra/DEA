@@ -1,7 +1,7 @@
 using PostProcess;
 using UnityEngine;
 
-namespace Player
+namespace Character.Player
 {
     public class PlayerVignette : MonoBehaviour
     {
