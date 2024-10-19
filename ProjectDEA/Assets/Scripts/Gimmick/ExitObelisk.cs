@@ -7,13 +7,15 @@ using UnityEngine;
 
 namespace Gimmick
 {
-    public class ExitHole : MonoBehaviour, IInteractable
+    public class ExitObelisk : MonoBehaviour, IInteractable
     {
         private DungeonLayerHandler _dungeonLayerHandler;
         private InventoryHandler _inventoryHandler;
 
-        [SerializeField] private int _neededKeyCount;
+        private const int NeededKeyCount = 4;
+        private int _setKeyCount;
         [SerializeField] private CinemachineVirtualCameraBase _vCam;
+        [SerializeField] private GameObject[] _obeliskSids;
         private const int Priority = 15;
         public event Action Destroyed;
         
@@ -25,20 +27,22 @@ namespace Gimmick
         
         public void Interact()
         {
-            if (OnCertification())
+            if (_setKeyCount >= NeededKeyCount)
             {
                 _vCam.Priority = Priority;
                 StartCoroutine(ExitLayer());
+                return;
             }
-            else
-            {
-                Debug.Log("Authentication Failed");
-            }
+
+            if (_inventoryHandler.CurrentItemNum != (int)ItemKind.Key) return;
+            _inventoryHandler.UseItem();
+            SetKey();
         }
 
-        private bool OnCertification()
+        private void SetKey()
         {
-            return _neededKeyCount <= _inventoryHandler.ItemSets[(int)ItemKind.Key]._count;
+            if (_setKeyCount < _obeliskSids.Length) _obeliskSids[_setKeyCount].SetActive(true);
+            _setKeyCount++;
         }
 
         private IEnumerator ExitLayer()

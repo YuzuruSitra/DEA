@@ -19,14 +19,14 @@ namespace Manager
         [SerializeField] private ItemPrefabSet[] _itemSets;
         public ItemPrefabSet[] ItemSets => _itemSets;
         private const int ErrorValue = -1;
-        private int _currentItemNum = ErrorValue;
+        public int CurrentItemNum { get; private set; }
         public Action OnItemNumChanged;
         public Action<Sprite> OnItemSpriteChanged;
         public Action<int> OnItemCountChanged;
         public Action<int> OnKeyCountChanged;
         public Action<ItemPrefabSet[]> OnItemLineupChanged;
-        public bool CurrentIsUse => _currentItemNum != ErrorValue && _itemSets[_currentItemNum]._isUse;
-        public GameObject CurrentPredict => _currentItemNum == ErrorValue ? null : _itemSets[_currentItemNum]._predict;
+        public bool CurrentIsUse => CurrentItemNum != ErrorValue && _itemSets[CurrentItemNum]._isUse;
+        public GameObject CurrentPredict => CurrentItemNum == ErrorValue ? null : _itemSets[CurrentItemNum]._predict;
         
         private void Awake()
         {
@@ -41,6 +41,8 @@ namespace Manager
                 if ( _itemSets[i]._predict == null) continue;
                 _itemSets[i]._predict = Instantiate(_itemSets[i]._predict);
             }
+
+            CurrentItemNum = ErrorValue;
         }
         
         private void CheckSingleton()
@@ -58,7 +60,7 @@ namespace Manager
 
         public void IncreaseItemNum()
         {
-            var startIndex = Math.Max(_currentItemNum, 0);
+            var startIndex = Math.Max(CurrentItemNum, 0);
 
             for (var i = 1; i <= _itemSets.Length; i++)
             {
@@ -74,7 +76,7 @@ namespace Manager
 
         public void DecreaseItemNum()
         {
-            var startIndex = _currentItemNum == ErrorValue ? _itemSets.Length - 1 : _currentItemNum;
+            var startIndex = CurrentItemNum == ErrorValue ? _itemSets.Length - 1 : CurrentItemNum;
 
             for (var i = 1; i <= _itemSets.Length; i++)
             {
@@ -90,12 +92,12 @@ namespace Manager
 
         private void ChangeItemNum(int value)
         {
-            if (_currentItemNum != ErrorValue)
+            if (CurrentItemNum != ErrorValue)
             {
-                ChangePredictActive(_itemSets[_currentItemNum]._predict, false);
+                ChangePredictActive(_itemSets[CurrentItemNum]._predict, false);
             }
-            _currentItemNum = value;
-            var sprite = _currentItemNum != ErrorValue ? _itemSets[value]._sprite : null;
+            CurrentItemNum = value;
+            var sprite = CurrentItemNum != ErrorValue ? _itemSets[value]._sprite : null;
             OnItemSpriteChanged?.Invoke(sprite);
             OnItemNumChanged?.Invoke();
             ChangeItemCount();
@@ -103,14 +105,14 @@ namespace Manager
 
         private void ChangeItemCount()
         {
-            if (_currentItemNum == ErrorValue )
+            if (CurrentItemNum == ErrorValue )
             {
                 OnItemCountChanged?.Invoke(0);
                 return;
             }
-            OnItemCountChanged?.Invoke(_itemSets[_currentItemNum]._count);
-            if (_itemSets[_currentItemNum]._kind == ItemKind.Key) 
-                OnKeyCountChanged?.Invoke(_itemSets[_currentItemNum]._count);
+            OnItemCountChanged?.Invoke(_itemSets[CurrentItemNum]._count);
+            if (_itemSets[CurrentItemNum]._kind == ItemKind.Key) 
+                OnKeyCountChanged?.Invoke(_itemSets[CurrentItemNum]._count);
         }
 
         // アイテムをインベントリに追加する
@@ -121,21 +123,21 @@ namespace Manager
             {
                 if (_itemSets[i]._kind != item) continue;
                 _itemSets[i]._count++;
-                if (_currentItemNum == i) ChangeItemCount();
+                if (CurrentItemNum == i) ChangeItemCount();
                 if (_itemSets[i]._count == 1) OnItemLineupChanged(_itemSets);
-                if (_currentItemNum == ErrorValue) ChangeItemNum(i);
+                if (CurrentItemNum == ErrorValue) ChangeItemNum(i);
                 break;
             }
         }
 
         public GameObject UseItem()
         {
-            if (_currentItemNum == ErrorValue) return null;
-            var outItem = _itemSets[_currentItemNum]._prefab;
-            _itemSets[_currentItemNum]._count = Math.Max(0, _itemSets[_currentItemNum]._count - 1);
+            if (CurrentItemNum == ErrorValue) return null;
+            var outItem = _itemSets[CurrentItemNum]._prefab;
+            _itemSets[CurrentItemNum]._count = Math.Max(0, _itemSets[CurrentItemNum]._count - 1);
             ChangeItemCount();
             
-            if (_itemSets[_currentItemNum]._count <= 0)
+            if (_itemSets[CurrentItemNum]._count <= 0)
             {
                 OnItemLineupChanged(_itemSets);
                 ChangeItemNum(ErrorValue);

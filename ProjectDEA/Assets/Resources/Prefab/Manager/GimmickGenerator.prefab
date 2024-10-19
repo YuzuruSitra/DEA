@@ -48,18 +48,27 @@ MonoBehaviour:
   - _kind: 0
     _prefab: {fileID: 5770162165112864712, guid: 665899e9444a41341b741d81fbbfc0ba, type: 3}
     _isRoomGenerate: 0
-    _isJustOne: 0
+    _minCount: 0
+    _maxCount: 0
   - _kind: 1
-    _prefab: {fileID: 2150027754712339460, guid: 0668de6c0982e374abcfcd9a907f510e, type: 3}
+    _prefab: {fileID: 7026341457107977238, guid: 71b4a5aca50943a45b74365fa88e7de2, type: 3}
     _isRoomGenerate: 0
-    _isJustOne: 0
+    _minCount: 0
+    _maxCount: 0
   - _kind: 2
-    _prefab: {fileID: 2554345950509929801, guid: da51274905dade84493783b8e6fe7e8d, type: 3}
+    _prefab: {fileID: 2869468326224258088, guid: 0776075db77427c4281eab03e7a961b4, type: 3}
     _isRoomGenerate: 1
-    _isJustOne: 0
+    _minCount: 4
+    _maxCount: 4
   - _kind: 3
-    _prefab: {fileID: 7994663201004478321, guid: 484e5fe6106d25d43b07e99a22fb22b0, type: 3}
+    _prefab: {fileID: 2093334473890586168, guid: 112178d8c0d9d2145b83920f66f58076, type: 3}
     _isRoomGenerate: 1
-    _isJustOne: 0
+    _minCount: 0
+    _maxCount: 0
+  - _kind: 4
+    _prefab: {fileID: 3132479909828540323, guid: 4f05c0d14baee264fa056814974ce73c, type: 3}
+    _isRoomGenerate: 1
+    _minCount: 0
+    _maxCount: 0
   _maxGimmickPerRoom: 3
   _mapParent: {fileID: 0}

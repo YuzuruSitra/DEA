@@ -1295,13 +1295,13 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 919146295182704823, guid: af343f917a18a974dbde0989ed8e63db, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 421140039854e8c42938a8cb73d3480c, type: 2}
-    - target: {fileID: 919146295182704823, guid: af343f917a18a974dbde0989ed8e63db, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: f4d4c14c788b8cf42a001fc3ef8ec7de, type: 2}
+    - target: {fileID: 1987016267545938754, guid: af343f917a18a974dbde0989ed8e63db, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1987016267545938754, guid: af343f917a18a974dbde0989ed8e63db, type: 3}
       propertyPath: m_SlopeLimit
       value: 75
@@ -2296,20 +2296,8 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1099377172}
     - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
-      propertyPath: _maxGimmickPerRoom
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _gimmickInfo.Array.size
       value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
-      propertyPath: _gimmickInfo.Array.data[2]._kind
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
-      propertyPath: _gimmickInfo.Array.data[3]._kind
-      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _gimmickInfo.Array.data[4]._kind
@@ -2338,26 +2326,6 @@ PrefabInstance:
     - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _gimmickInfo.Array.data[2]._minCount
       value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
-      propertyPath: _gimmickInfo.Array.data[3]._maxCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
-      propertyPath: _gimmickInfo.Array.data[3]._minCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
-      propertyPath: _gimmickInfo.Array.data[4]._maxCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
-      propertyPath: _gimmickInfo.Array.data[4]._minCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
-      propertyPath: _gimmickInfo.Array.data[2]._isRoomGenerate
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _gimmickInfo.Array.data[4]._isRoomGenerate
