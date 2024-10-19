@@ -1,4 +1,4 @@
-using PostProcess;
+using Manager.Cam.PostProcess;
 using UnityEngine;
 
 namespace Character.Player

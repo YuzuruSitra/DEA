@@ -5,7 +5,7 @@ namespace Manager.Map
     public class InRoomChecker
     {
         private readonly StageGenerator _stageGenerator = GameObject.FindWithTag("StageGenerator").GetComponent<StageGenerator>();
-        public const int RoadNum = -1;
+        public const int ErrorRoomNum = -1;
         public int CheckStayRoomNum(Vector3 pos)
         {
             var roomInfo = _stageGenerator.RoomInfo;
@@ -20,12 +20,12 @@ namespace Manager.Map
                 var targetX = Mathf.FloorToInt(pos.x);
                 var targetZ = Mathf.FloorToInt(pos.z);
 
-                var isInRoom = targetX >= bottomLeftX && targetX <= bottomRightX &&
-                               targetZ >= bottomLeftZ && targetZ <= topLeftZ;
+                var isInRoom = targetX >= bottomLeftX && targetX + 1 < bottomRightX &&
+                               targetZ >= bottomLeftZ && targetZ + 1 < topLeftZ;
 
                 if (isInRoom) return i;
             }
-            return RoadNum;
+            return ErrorRoomNum;
         }
     }
 }

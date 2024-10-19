@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 
-namespace PostProcess
+namespace Manager.Cam.PostProcess
 {
     public class VignetteHandler
     {
