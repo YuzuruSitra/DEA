@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace Character.NPC.EnemyDragon
@@ -10,13 +9,14 @@ namespace Character.NPC.EnemyDragon
             Idole,
             IsWalk,
             IsRun,
-            IsGetHit
+            IsScream
         }
         [SerializeField] private Animator _animator;
         [SerializeField] private DragonController _dragonController;
         private static readonly int Idle = Animator.StringToHash("IsIdle");
         private static readonly int Walk = Animator.StringToHash("IsWalk");
         private static readonly int Run = Animator.StringToHash("IsRun");
+        private static readonly int Scream = Animator.StringToHash("IsScream");
         private static readonly int IsGetHit = Animator.StringToHash("IsGetHit");
 
         private void Start()
@@ -50,6 +50,10 @@ namespace Character.NPC.EnemyDragon
                     AllAnimOff();
                     _animator.SetBool(Run, true);
                     break;
+                case AnimState.IsScream:
+                    AllAnimOff();
+                    _animator.SetBool(Scream, true);
+                    break;
             }
         }
 
@@ -57,6 +61,8 @@ namespace Character.NPC.EnemyDragon
         {
             _animator.SetBool(Idle, false);
             _animator.SetBool(Walk, false);
+            _animator.SetBool(Run, false);
+            _animator.SetBool(Scream, false);
         }
         
     }

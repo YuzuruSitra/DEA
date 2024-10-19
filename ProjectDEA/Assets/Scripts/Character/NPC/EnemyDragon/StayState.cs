@@ -1,10 +1,10 @@
-using Character.NPC.EnemyDragon;
 using UnityEngine;
 
-namespace Character.NPC
+namespace Character.NPC.EnemyDragon
 {
     public class StayState : INpcAiState
     {
+        public bool IsAttacking { get; }
         public DragonAnimCtrl.AnimState CurrentAnim { get; private set; }
         private readonly Transform _npcTransform;
         private const float AngleRange = 120f;
@@ -25,6 +25,7 @@ namespace Character.NPC
             _npcTransform = npc.transform;
             _tRange = stateTimeRange;
             _stateTimeBase = stateTimeBase;
+            IsAttacking = false;
         }
         
         public void EnterState()

@@ -149,7 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _yPosMin: -2.1
   _yPosMax: -0.01
-  _upTime: 120
+  _upTime: 600
 --- !u!114 &5770162165112864726
 MonoBehaviour:
   m_ObjectHideFlags: 0

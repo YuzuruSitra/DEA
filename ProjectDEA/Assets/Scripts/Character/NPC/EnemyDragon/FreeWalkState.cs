@@ -1,11 +1,11 @@
-using Character.NPC.EnemyDragon;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Character.NPC
+namespace Character.NPC.EnemyDragon
 {
     public class FreeWalkState : INpcAiState
     {
+        public bool IsAttacking { get; }
         public DragonAnimCtrl.AnimState CurrentAnim { get; private set; }
 
         private readonly Transform _npcTransform;
@@ -36,6 +36,7 @@ namespace Character.NPC
             _tRange = stateTimeRange;
             _walkTimeBase = walkTimeBase;
             _speed = speed;
+            IsAttacking = false;
         }
 
         public void EnterState()

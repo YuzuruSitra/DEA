@@ -1,11 +1,11 @@
-using Character.NPC.EnemyDragon;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Character.NPC
+namespace Character.NPC.EnemyDragon
 {
     public class FollowState : INpcAiState
     {
+        public bool IsAttacking { get; }
         public DragonAnimCtrl.AnimState CurrentAnim { get; private set; }
         private readonly Transform _player;
         private readonly NavMeshAgent _agent;
@@ -16,6 +16,7 @@ namespace Character.NPC
         {
             _player = player.transform;
             _agent = agent;
+            IsAttacking = false;
         }
         
         public void EnterState()

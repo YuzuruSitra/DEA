@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Character.Player;
 using UnityEngine;
@@ -21,8 +22,12 @@ namespace Character.NPC.EnemyDragon
         [SerializeField] private float _attackSpeed;
         [SerializeField] private float _attackRotSpeed;
         [SerializeField] private float _attackAcceleration;
+        [SerializeField] private float _screamTime;
         [SerializeField] private float _launchPower;
         [SerializeField] private int _giveDamage;
+        [SerializeField] private int _counterWaitTime;
+        private WaitForSeconds _counterWaitForSeconds;
+        private Coroutine _counterCoroutine;
         private const float UpperDuration = 0.5f;
         public DragonAnimCtrl.AnimState AnimState => _states[CurrentState].CurrentAnim;
         public Action GetDamage;
@@ -30,9 +35,10 @@ namespace Character.NPC.EnemyDragon
         private void Start()
         {
             _agent = GetComponent<NavMeshAgent>();
+            _counterWaitForSeconds = new WaitForSeconds(_counterWaitTime);
             _states.Add(AIState.Null, null);
             _states.Add(AIState.Stay, new StayState(gameObject, _stateTimeRange, _stayTimeBase));
-            _states.Add(AIState.Attack, new AttackState(gameObject, _agent,_attackSpeed, _attackAcceleration, _attackRotSpeed));
+            _states.Add(AIState.Attack, new AttackState(gameObject, _agent, _screamTime, _attackSpeed, _attackAcceleration, _attackRotSpeed));
             _states.Add(AIState.FreeWalk, new FreeWalkState(gameObject, _agent, _stateTimeRange, _walkTimeBase, _speed));
 
             CurrentState = AIState.Stay;
@@ -67,15 +73,23 @@ namespace Character.NPC.EnemyDragon
             NextState(AIState.Attack);
         }
 
-        public void OnGetDamage(int damage)
+        public void OnGetDamage(int damage, Vector3 targetPos)
         {
             _currentHp = Math.Max(_currentHp - damage, 0);
             GetDamage?.Invoke();
+            _counterCoroutine ??= StartCoroutine(CounterAttackStateChange(targetPos));
+        }
+
+        private IEnumerator CounterAttackStateChange(Vector3 targetPos)
+        {
+            yield return _counterWaitForSeconds;
+            if (CurrentState != AIState.Attack) OnAttackState(targetPos);
+            _counterCoroutine = null;
         }
         
         private void OnCollisionEnter(Collision other)
         {
-            if (CurrentState != AIState.Attack) return;
+            if (!_states[CurrentState].IsAttacking) return;
 
             if (!other.collider.CompareTag("Player")) return;
             

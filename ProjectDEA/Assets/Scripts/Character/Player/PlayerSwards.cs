@@ -1,4 +1,3 @@
-using System;
 using Character.NPC.EnemyDragon;
 using UnityEngine;
 
@@ -19,7 +18,7 @@ namespace Character.Player
             if (!_playerAttackHandler.IsAttacking) return;
             if (!other.CompareTag("EnemyDragon")) return;
             var dragon = other.gameObject.GetComponent<DragonController>();
-            dragon.OnGetDamage(_power);
+            dragon.OnGetDamage(_power, _playerAttackHandler.gameObject.transform.position);
         }
     }
 }
