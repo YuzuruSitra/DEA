@@ -585,8 +585,8 @@ GameObject:
   - component: {fileID: 962086488}
   - component: {fileID: 962086487}
   m_Layer: 7
-  m_Name: PostprocessVolime
-  m_TagString: PostprocessVolime
+  m_Name: PostprocessVolume
+  m_TagString: PostprocessVolume
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1307,6 +1307,10 @@ PrefabInstance:
       value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 2283786242572857940, guid: af343f917a18a974dbde0989ed8e63db, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2283786242572857940, guid: af343f917a18a974dbde0989ed8e63db, type: 3}
       propertyPath: _waterTransform
       value: 
       objectReference: {fileID: 33970466}
@@ -1686,6 +1690,18 @@ PrefabInstance:
       propertyPath: _player
       value: 
       objectReference: {fileID: 1724793315}
+    - target: {fileID: 3492862875178262538, guid: c28eb008f535209409d86b56fdb91e86, type: 3}
+      propertyPath: _vignetteDuration
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3492862875178262538, guid: c28eb008f535209409d86b56fdb91e86, type: 3}
+      propertyPath: _roadVignetteValue
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3492862875178262538, guid: c28eb008f535209409d86b56fdb91e86, type: 3}
+      propertyPath: _roomVignetteValue
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 5347650687914222714, guid: c28eb008f535209409d86b56fdb91e86, type: 3}
       propertyPath: m_Follow
       value: 
