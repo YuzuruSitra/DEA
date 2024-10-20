@@ -629,6 +629,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _vCam: {fileID: 6911818133899438971}
   _exitParticle: {fileID: 3566834156473401448}
+  _exitParticleDuration: 2
   _obeliskSides:
   - {fileID: 8268912249757156547}
   - {fileID: 5031909516341330653}
@@ -2030,7 +2031,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3456768597155298676, guid: 6d1949d730dd25045a52c73f3fec8118, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.09
+      value: -0.45
       objectReference: {fileID: 0}
     - target: {fileID: 3456768597155298676, guid: 6d1949d730dd25045a52c73f3fec8118, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2070,11 +2071,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3456768597155298679, guid: 6d1949d730dd25045a52c73f3fec8118, type: 3}
       propertyPath: playOnAwake
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456768597155298679, guid: 6d1949d730dd25045a52c73f3fec8118, type: 3}
+      propertyPath: ShapeModule.m_Scale.x
+      value: 105
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456768597155298679, guid: 6d1949d730dd25045a52c73f3fec8118, type: 3}
+      propertyPath: ShapeModule.m_Scale.y
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456768597155298679, guid: 6d1949d730dd25045a52c73f3fec8118, type: 3}
+      propertyPath: ShapeModule.m_Scale.z
+      value: 105
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456768597155298679, guid: 6d1949d730dd25045a52c73f3fec8118, type: 3}
+      propertyPath: ShapeModule.m_Position.y
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456768597155298679, guid: 6d1949d730dd25045a52c73f3fec8118, type: 3}
+      propertyPath: InitialModule.maxNumParticles
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 3456768597155298679, guid: 6d1949d730dd25045a52c73f3fec8118, type: 3}
       propertyPath: InitialModule.startSize.scalar
-      value: 0.8
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456768597155298679, guid: 6d1949d730dd25045a52c73f3fec8118, type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3456768597155298679, guid: 6d1949d730dd25045a52c73f3fec8118, type: 3}
       propertyPath: InitialModule.startColor.maxColor.b

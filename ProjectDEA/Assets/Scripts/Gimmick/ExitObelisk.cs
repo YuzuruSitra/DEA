@@ -16,6 +16,10 @@ namespace Gimmick
         private int _setKeyCount;
         [SerializeField] private CinemachineVirtualCameraBase _vCam;
         [SerializeField] private ParticleSystem _exitParticle;
+        [SerializeField] private float _exitParticleDuration;
+        private const int ParticleFactor = 7;
+        private Coroutine _rateTimeCoroutine;
+        
         [SerializeField] private GameObject[] _obeliskSides;
         [SerializeField] private ParticleSystem[] _obeliskSideParticles;
         [SerializeField] private float _sideEffectWaitTime;
@@ -43,7 +47,8 @@ namespace Gimmick
             if (_setKeyCount >= _obeliskSides.Length) return;
             _inventoryHandler.UseItem();
             StartCoroutine(SetKey());
-            if (_setKeyCount >= _obeliskSides.Length) _exitParticle.Play();
+            if (_rateTimeCoroutine != null) StopCoroutine(_rateTimeCoroutine);
+            _rateTimeCoroutine = StartCoroutine(ChangeParticleRateTime(_setKeyCount * ParticleFactor));
         }
 
         private IEnumerator SetKey()
@@ -59,6 +64,29 @@ namespace Gimmick
         {
             yield return new WaitForSeconds(3.0f);
             _dungeonLayerHandler.NextDungeonLayer();
+        }
+        
+        private IEnumerator ChangeParticleRateTime(float targetRate)
+        {
+            var emission = _exitParticle.emission;
+            var startValue = emission.rateOverTime.constant;
+            var elapsedTime = 0f;
+
+            while (elapsedTime < _exitParticleDuration)
+            {
+                var newRate = Mathf.Lerp(startValue, targetRate, elapsedTime / _exitParticleDuration);
+                var rate = emission.rateOverTime;
+                rate.constant = newRate;
+                emission.rateOverTime = rate;
+
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+            var finalRate = emission.rateOverTime;
+            finalRate.constant = targetRate;
+            emission.rateOverTime = finalRate;
+
+            _rateTimeCoroutine = null;
         }
         
     }
