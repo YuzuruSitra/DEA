@@ -1,6 +1,7 @@
 using System;
 using Item;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Manager
 {
@@ -11,6 +12,7 @@ namespace Manager
         {
             public ItemKind _kind;
             public GameObject _prefab;
+            public GameObject _currentPrefab;
             public GameObject _predict;
             public Sprite _sprite;
             public int _count;
@@ -26,22 +28,34 @@ namespace Manager
         public Action<int> OnKeyCountChanged;
         public Action<ItemPrefabSet[]> OnItemLineupChanged;
         public bool CurrentIsUse => CurrentItemNum != ErrorValue && _itemSets[CurrentItemNum]._isUse;
-        public GameObject CurrentPredict => CurrentItemNum == ErrorValue ? null : _itemSets[CurrentItemNum]._predict;
+        public GameObject CurrentPredict => CurrentItemNum == ErrorValue ? null : _itemSets[CurrentItemNum]._currentPrefab;
         
         private void Awake()
         {
             CheckSingleton();
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+        
+        private void OnDestroy()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+        
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            OnInitial();
         }
 
-        private void OnEnable()
+        private void OnInitial()
         {
             // Setting predict.
             for (var i = 0; i < _itemSets.Length; i++)
             {
-                if ( _itemSets[i]._predict == null) continue;
-                _itemSets[i]._predict = Instantiate(_itemSets[i]._predict);
+                if (_itemSets[i]._predict == null) continue;
+                _itemSets[i]._currentPrefab = Instantiate(_itemSets[i]._predict);
+                UnityEngine.Debug.Log(_itemSets[i]._kind);
             }
-
+            
             CurrentItemNum = ErrorValue;
         }
         
@@ -49,7 +63,7 @@ namespace Manager
         {
             var target = GameObject.FindGameObjectWithTag(gameObject.tag);
             var checkResult = target != null && target != gameObject;
-
+            
             if (checkResult)
             {
                 Destroy(gameObject);
@@ -94,7 +108,7 @@ namespace Manager
         {
             if (CurrentItemNum != ErrorValue)
             {
-                ChangePredictActive(_itemSets[CurrentItemNum]._predict, false);
+                ChangePredictActive(_itemSets[CurrentItemNum]._currentPrefab, false);
             }
             CurrentItemNum = value;
             var sprite = CurrentItemNum != ErrorValue ? _itemSets[value]._sprite : null;
@@ -136,12 +150,10 @@ namespace Manager
             var outItem = _itemSets[CurrentItemNum]._prefab;
             _itemSets[CurrentItemNum]._count = Math.Max(0, _itemSets[CurrentItemNum]._count - 1);
             ChangeItemCount();
-            
-            if (_itemSets[CurrentItemNum]._count <= 0)
-            {
-                OnItemLineupChanged(_itemSets);
-                ChangeItemNum(ErrorValue);
-            }
+
+            if (_itemSets[CurrentItemNum]._count > 0) return outItem;
+            OnItemLineupChanged(_itemSets);
+            ChangeItemNum(ErrorValue);
             return outItem;
         }
 
