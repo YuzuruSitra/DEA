@@ -15,7 +15,11 @@ namespace Gimmick
         private const int NeededKeyCount = 4;
         private int _setKeyCount;
         [SerializeField] private CinemachineVirtualCameraBase _vCam;
-        [SerializeField] private GameObject[] _obeliskSids;
+        [SerializeField] private ParticleSystem _exitParticle;
+        [SerializeField] private GameObject[] _obeliskSides;
+        [SerializeField] private ParticleSystem[] _obeliskSideParticles;
+        [SerializeField] private float _sideEffectWaitTime;
+        private WaitForSeconds _sideEffectWaitForSeconds;
         private const int Priority = 15;
         public event Action Destroyed;
         
@@ -23,6 +27,7 @@ namespace Gimmick
         {
             _dungeonLayerHandler = GameObject.FindWithTag("DungeonLayerHandler").GetComponent<DungeonLayerHandler>();
             _inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
+            _sideEffectWaitForSeconds = new WaitForSeconds(_sideEffectWaitTime);
         }
         
         public void Interact()
@@ -35,14 +40,19 @@ namespace Gimmick
             }
 
             if (_inventoryHandler.CurrentItemNum != (int)ItemKind.Key) return;
+            if (_setKeyCount >= _obeliskSides.Length) return;
             _inventoryHandler.UseItem();
-            SetKey();
+            StartCoroutine(SetKey());
+            if (_setKeyCount >= _obeliskSides.Length) _exitParticle.Play();
         }
 
-        private void SetKey()
+        private IEnumerator SetKey()
         {
-            if (_setKeyCount < _obeliskSids.Length) _obeliskSids[_setKeyCount].SetActive(true);
+            var currentKey = _setKeyCount;
             _setKeyCount++;
+            _obeliskSideParticles[currentKey].Play();
+            yield return _sideEffectWaitForSeconds;
+            _obeliskSides[currentKey].SetActive(true);
         }
 
         private IEnumerator ExitLayer()
