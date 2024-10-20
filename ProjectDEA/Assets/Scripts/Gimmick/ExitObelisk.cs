@@ -12,7 +12,7 @@ namespace Gimmick
         private DungeonLayerHandler _dungeonLayerHandler;
         private InventoryHandler _inventoryHandler;
 
-        private const int NeededKeyCount = 1;
+        private const int NeededKeyCount = 4;
         private int _setKeyCount;
         [SerializeField] private CinemachineVirtualCameraBase _vCam;
         [SerializeField] private ParticleSystem _exitParticle;
