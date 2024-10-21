@@ -7,7 +7,7 @@ namespace Manager
     {
         public int CurrentLayer { get; private set; }
         [SerializeField] private int _maxLayer;
-
+        
         private void Awake()
         {
             CheckSingleton();
@@ -24,18 +24,18 @@ namespace Manager
                 return;
             }
             DontDestroyOnLoad(gameObject);
-            CurrentLayer = 1;
+            CurrentLayer = _maxLayer;
         }
 
         public void NextDungeonLayer()
         {
-            if (CurrentLayer < _maxLayer)
+            if (CurrentLayer > 1)
             {
-                CurrentLayer++;
+                CurrentLayer--;
                 SceneManager.LoadScene("DungeonIn");
                 return;
             }
-            SceneManager.LoadScene("DungeonTop");
+            SceneManager.LoadScene("ResultScene");
         }
         
     }

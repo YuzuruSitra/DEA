@@ -1264,17 +1264,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &46027587 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4260340617714617939, guid: 10dfe7734ba9e3e4a8552476e63ca9cc, type: 3}
-  m_PrefabInstance: {fileID: 46027583}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &46027588 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5004777035170264058, guid: 10dfe7734ba9e3e4a8552476e63ca9cc, type: 3}
@@ -27600,6 +27589,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aec58227b077b394abe9afe5713d6abf, type: 3}
+--- !u!114 &1788785283 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6779665765908454905, guid: 10dfe7734ba9e3e4a8552476e63ca9cc, type: 3}
+  m_PrefabInstance: {fileID: 46027583}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1791854999
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33140,7 +33140,7 @@ PrefabInstance:
     - target: {fileID: 5017094842559685932, guid: 53f1c0424f98f904089f0280b9c795bb, type: 3}
       propertyPath: _itemImage
       value: 
-      objectReference: {fileID: 46027587}
+      objectReference: {fileID: 1788785283}
     - target: {fileID: 5017094842559685932, guid: 53f1c0424f98f904089f0280b9c795bb, type: 3}
       propertyPath: _itemCountText
       value: 
@@ -33685,6 +33685,10 @@ PrefabInstance:
     - target: {fileID: 1816231766380288764, guid: 4cc008e8b45608e4a9e69dbefa33516f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5615190876592182372, guid: 4cc008e8b45608e4a9e69dbefa33516f, type: 3}
+      propertyPath: _maxLayer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7224660543054146775, guid: 4cc008e8b45608e4a9e69dbefa33516f, type: 3}
       propertyPath: m_Name
