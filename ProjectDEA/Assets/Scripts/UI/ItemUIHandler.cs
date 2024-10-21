@@ -66,7 +66,7 @@ namespace UI
         {
             if (value == 0)
             {
-                _itemCountText.text = "---";
+                _itemCountText.text = "-";
             }
             else
             {

@@ -72,6 +72,11 @@ namespace Manager
             DontDestroyOnLoad(gameObject);
         }
 
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.F)) IncreaseItemNum();
+        }
+
         public void IncreaseItemNum()
         {
             var startIndex = Math.Max(CurrentItemNum, 0);
@@ -79,22 +84,6 @@ namespace Manager
             for (var i = 1; i <= _itemSets.Length; i++)
             {
                 var newIndex = (startIndex + i) % _itemSets.Length;
-
-                if (_itemSets[newIndex]._count <= 0) continue;
-                ChangeItemNum(newIndex);
-                return;
-            }
-
-            ChangeItemNum(ErrorValue);
-        }
-
-        public void DecreaseItemNum()
-        {
-            var startIndex = CurrentItemNum == ErrorValue ? _itemSets.Length - 1 : CurrentItemNum;
-
-            for (var i = 1; i <= _itemSets.Length; i++)
-            {
-                var newIndex = (startIndex - i + _itemSets.Length) % _itemSets.Length;
 
                 if (_itemSets[newIndex]._count <= 0) continue;
                 ChangeItemNum(newIndex);

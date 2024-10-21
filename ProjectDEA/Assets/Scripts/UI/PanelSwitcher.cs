@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace UI
@@ -6,14 +7,15 @@ namespace UI
     {
         [SerializeField] private GameObject _inventoryPanel;
 
-        public void OpenInventoryPanel()
+        private void Update()
         {
-            _inventoryPanel.SetActive(true);
+            if (Input.GetKeyDown(KeyCode.Tab)) ChangeInventoryPanel();
         }
 
-        public void CloseInventoryPanel()
+        private void ChangeInventoryPanel()
         {
-            _inventoryPanel.SetActive(false);
+            var active = _inventoryPanel.activeSelf;
+            _inventoryPanel.SetActive(!active);
         }
     }
 }
