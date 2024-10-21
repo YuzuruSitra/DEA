@@ -28,6 +28,7 @@ namespace Character.Player
 
         public void SetSpeed(float speedRatio)
         {
+            speedRatio = Mathf.Max(speedRatio, 0.1f);
             _animator.SetFloat(Speed, speedRatio);
         }
 
