@@ -59,6 +59,10 @@ namespace UI
 
         private void ChangeItemImage(Sprite sprite)
         {
+            if (_itemImage.sprite == sprite) return;
+            var color = _itemImage.color;
+            color.a = sprite == null ? 0 : 1.0f;
+            _itemImage.color = color;
             _itemImage.sprite = sprite;
         }
 
