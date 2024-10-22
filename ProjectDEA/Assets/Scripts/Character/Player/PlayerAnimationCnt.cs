@@ -11,6 +11,7 @@ namespace Character.Player
         private static readonly int IsDamaged = Animator.StringToHash("IsDamaged");
         private static readonly int IsAttack = Animator.StringToHash("IsAttack");
         private static readonly int AttackType = Animator.StringToHash("AttackType");
+        private static readonly int IsDie = Animator.StringToHash("IsDie");
         [SerializeField] private AnimationClip[] _attackClips;
         private WaitForSeconds[] _attackWait;
         private Coroutine _attackRoutine;
@@ -36,6 +37,12 @@ namespace Character.Player
         {
             _animator.SetBool(IsDamaged, active);
         }
+        
+        public void SetIsDie()
+        {
+            _animator.SetBool(IsDie, true);
+        }
+        
         public void AttackActive()
         {
             var attackType = Random.Range(0, 2);

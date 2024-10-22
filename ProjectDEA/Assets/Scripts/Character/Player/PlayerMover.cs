@@ -11,6 +11,7 @@ namespace Character.Player
         [SerializeField] private float _runSpeed;
         private CharacterController _controller;
         [SerializeField] private PlayerAnimationCnt _playerAnimationCnt;
+        [SerializeField] private PlayerHpHandler _playerHpHandler;
         private Vector3 _moveDirection = Vector3.zero;
         private Vector3 _direction = Vector3.zero;
         private bool _inWater;
@@ -40,8 +41,9 @@ namespace Character.Player
 
         private void InputMove()
         {
-            var horizontal = Input.GetAxis("Horizontal");
-            var vertical = Input.GetAxis("Vertical");
+            var isDie = _playerHpHandler.IsDie;
+            var horizontal = isDie? 0 : Input.GetAxis("Horizontal");
+            var vertical = isDie? 0 : Input.GetAxis("Vertical");
             
             _moveDirection.x = horizontal;
             _moveDirection.z = vertical;
@@ -90,6 +92,8 @@ namespace Character.Player
         // プレイヤーを滑らかに上昇させるコルーチン
         public IEnumerator PushMoveUp(float duration, float initialUpwardForce)
         {
+            var isDie = _playerHpHandler.IsDie;
+            if (isDie) yield break;
             _isPushed = true;
             _playerAnimationCnt.SetIsDamaged(true);
             var elapsedTime = 0f;

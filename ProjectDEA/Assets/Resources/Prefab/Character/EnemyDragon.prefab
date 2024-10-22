@@ -1196,7 +1196,7 @@ MonoBehaviour:
   _attackAcceleration: 5
   _screamTime: 1
   _launchPower: 8
-  _giveDamage: 10
+  _giveDamage: 20
   _counterWaitTime: 1
 --- !u!114 &4893729096472378383
 MonoBehaviour:

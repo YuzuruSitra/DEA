@@ -537,6 +537,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aa72172886d6444a828ab836692bc8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerAnimationCnt: {fileID: 4351832874976852339}
   _maxHp: 100
 --- !u!114 &2002799768244149595
 MonoBehaviour:
@@ -553,6 +554,7 @@ MonoBehaviour:
   _walkSpeed: 2
   _runSpeed: 4
   _playerAnimationCnt: {fileID: 4351832874976852339}
+  _playerHpHandler: {fileID: 1623497148600613073}
   _gravity: -1.5
   _speedTransitionTime: 0.35
 --- !u!114 &51901469298106324
