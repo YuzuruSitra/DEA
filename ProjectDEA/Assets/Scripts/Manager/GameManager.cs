@@ -1,25 +1,103 @@
 using Manager.Map;
 using UnityEngine;
 using Gimmick;
+using UnityEngine.SceneManagement;
 
 namespace Manager
 {
     public class GameManager : MonoBehaviour
     {
-        [SerializeField] private GameObject _player;
-        [SerializeField] private StageGenerator _stageGenerator;
-        [SerializeField] private GimmickGenerator _gimmickGenerator;
-        private Vector3 _playerSetPos = Vector3.zero;
-        [SerializeField] private NavMeshBaker _navMeshBaker;
+        [SerializeField] private int _targetFrameRate;
+
         private void Awake()
         {
-            _stageGenerator.MapGenerate();
-            _gimmickGenerator.GenerateGimmick(_stageGenerator);
-            _navMeshBaker.BakeNavMesh();
-            _playerSetPos.x = _stageGenerator.RoomInfo[0, (int) StageGenerator.RoomStatus.CenterX];
-            _playerSetPos.y = 1.88f;
-            _playerSetPos.z = _stageGenerator.RoomInfo[0, (int) StageGenerator.RoomStatus.CenterZ];
-            _player.transform.position = _playerSetPos;
+            CheckSingleton();
+        }
+
+        private void OnEnable()
+        {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        private void OnDestroy()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        // シーンがロードされたときに実行されるメソッド
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            switch (scene.name)
+            {
+                case "TitleScene":
+                    HandleTitleScene();
+                    break;
+                case "DungeonStart":
+                    HandleDungeonStartScene();
+                    break;
+                case "DungeonIn":
+                    HandleDungeonInScene();
+                    break;
+                case "ResultScene":
+                    HandleResultScene();
+                    break;
+            }
+        }
+        
+        private void HandleTitleScene()
+        {
+            if (Application.targetFrameRate != _targetFrameRate) Application.targetFrameRate = _targetFrameRate;
+
+            if (Cursor.visible) return;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
+
+        private static void HandleDungeonStartScene()
+        {
+            if (!Cursor.visible) return;
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        
+        private void HandleDungeonInScene()
+        {
+            var stageGenerator = GameObject.FindWithTag("StageGenerator").GetComponent<StageGenerator>();
+            stageGenerator.MapGenerate();
+            var gimmickGenerator = GameObject.FindWithTag("GimmickGenerator").GetComponent<GimmickGenerator>();
+            gimmickGenerator.GenerateGimmick(stageGenerator);
+            var navMeshBaker = GameObject.FindWithTag("NavMeshBaker").GetComponent<NavMeshBaker>();
+            navMeshBaker.BakeNavMesh();
+            var playerSetPos = Vector3.zero;
+            playerSetPos.x = stageGenerator.RoomInfo[0, (int) StageGenerator.RoomStatus.CenterX];
+            playerSetPos.y = 1.88f;
+            playerSetPos.z = stageGenerator.RoomInfo[0, (int) StageGenerator.RoomStatus.CenterZ];
+            var player = GameObject.FindWithTag("Player");
+            player.transform.position = playerSetPos;
+            
+            if (!Cursor.visible) return;
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+
+        private static void HandleResultScene()
+        {
+            if (Cursor.visible) return;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
+
+        private void CheckSingleton()
+        {
+            var target = GameObject.FindGameObjectWithTag(gameObject.tag);
+            var checkResult = target != null && target != gameObject;
+            
+            if (checkResult)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            DontDestroyOnLoad(gameObject);
         }
     }
 }

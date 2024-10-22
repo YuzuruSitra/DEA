@@ -43,6 +43,11 @@ namespace Manager
         
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
+            if (SceneManager.GetActiveScene().name == "ResultScene")
+            {
+                Destroy(gameObject);
+                return;
+            }
             OnInitial();
         }
 
@@ -53,7 +58,6 @@ namespace Manager
             {
                 if (_itemSets[i]._predict == null) continue;
                 _itemSets[i]._currentPrefab = Instantiate(_itemSets[i]._predict);
-                UnityEngine.Debug.Log(_itemSets[i]._kind);
             }
             
             CurrentItemNum = ErrorValue;
