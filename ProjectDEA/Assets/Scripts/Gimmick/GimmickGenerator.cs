@@ -15,7 +15,8 @@ namespace Gimmick
             ExitObelisk,
             ObeliskKeyOut,
             TreasureBox,
-            EnemySpawnArea
+            EnemySpawnArea,
+            BornOut
         }
 
         [Serializable]
@@ -39,6 +40,7 @@ namespace Gimmick
         private int[] _gimmickInsCount;
         [SerializeField] private int _maxGimmickPerRoom;
         [SerializeField] private Transform _mapParent;
+        public int BornCount { get; private set; }
         
         public void GenerateGimmick(StageGenerator stageGenerator)
         {

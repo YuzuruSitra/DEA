@@ -45,11 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gimmickInfo:
-  - _kind: 0
-    _prefab: {fileID: 5770162165112864712, guid: 665899e9444a41341b741d81fbbfc0ba, type: 3}
-    _isRoomGenerate: 0
-    _minCount: 0
-    _maxCount: 0
   - _kind: 1
     _prefab: {fileID: 7026341457107977238, guid: 71b4a5aca50943a45b74365fa88e7de2, type: 3}
     _isRoomGenerate: 0
@@ -70,5 +65,10 @@ MonoBehaviour:
     _isRoomGenerate: 1
     _minCount: 0
     _maxCount: 0
-  _maxGimmickPerRoom: 3
+  - _kind: 5
+    _prefab: {fileID: 8537474661332395588, guid: e3ba9312425adf24db405ea02e487903, type: 3}
+    _isRoomGenerate: 1
+    _minCount: 5
+    _maxCount: 0
+  _maxGimmickPerRoom: 4
   _mapParent: {fileID: 0}

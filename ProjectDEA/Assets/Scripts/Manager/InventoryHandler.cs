@@ -11,6 +11,8 @@ namespace Manager
         public struct ItemPrefabSet
         {
             public ItemKind _kind;
+            public string _name;
+            public string _description;
             public GameObject _prefab;
             public GameObject _currentPrefab;
             public GameObject _predict;
@@ -81,7 +83,7 @@ namespace Manager
             if (Input.GetKeyDown(KeyCode.F)) IncreaseItemNum();
         }
 
-        public void IncreaseItemNum()
+        private void IncreaseItemNum()
         {
             var startIndex = Math.Max(CurrentItemNum, 0);
 
