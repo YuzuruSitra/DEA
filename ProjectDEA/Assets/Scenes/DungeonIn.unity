@@ -485,6 +485,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6538296079297429715, guid: 10dfe7734ba9e3e4a8552476e63ca9cc, type: 3}
+      propertyPath: _panelSwitcher
+      value: 
+      objectReference: {fileID: 341408351}
     - target: {fileID: 7101061431409066640, guid: 10dfe7734ba9e3e4a8552476e63ca9cc, type: 3}
       propertyPath: m_fontAsset
       value: 
@@ -562,6 +566,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 10dfe7734ba9e3e4a8552476e63ca9cc, type: 3}
+--- !u!114 &341408351 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2489764831776359219, guid: 10dfe7734ba9e3e4a8552476e63ca9cc, type: 3}
+  m_PrefabInstance: {fileID: 341408350}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3143c407a4cd4e8297d42b193c4228c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &341408352 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6268831606193633540, guid: 10dfe7734ba9e3e4a8552476e63ca9cc, type: 3}
@@ -1607,40 +1622,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1099377172}
     - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
-      propertyPath: _gimmickInfo.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
-      propertyPath: _gimmickInfo.Array.data[4]._kind
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
-      propertyPath: _gimmickInfo.Array.data[1]._prefab
-      value: 
-      objectReference: {fileID: 7026341457107977238, guid: 71b4a5aca50943a45b74365fa88e7de2, type: 3}
-    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
-      propertyPath: _gimmickInfo.Array.data[2]._prefab
-      value: 
-      objectReference: {fileID: 2869468326224258088, guid: 0776075db77427c4281eab03e7a961b4, type: 3}
-    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
-      propertyPath: _gimmickInfo.Array.data[3]._prefab
-      value: 
-      objectReference: {fileID: 2093334473890586168, guid: 112178d8c0d9d2145b83920f66f58076, type: 3}
-    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
-      propertyPath: _gimmickInfo.Array.data[4]._prefab
-      value: 
-      objectReference: {fileID: 3132479909828540323, guid: 4f05c0d14baee264fa056814974ce73c, type: 3}
-    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _gimmickInfo.Array.data[2]._maxCount
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _gimmickInfo.Array.data[2]._minCount
       value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
-      propertyPath: _gimmickInfo.Array.data[4]._isRoomGenerate
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

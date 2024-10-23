@@ -11,7 +11,6 @@ namespace Gimmick
         private const int PaddingThreshold = 1;
         public enum GimmickKind
         {
-            Water,
             ExitObelisk,
             ObeliskKeyOut,
             TreasureBox,
@@ -100,14 +99,16 @@ namespace Gimmick
                 if (target._maxCount != LimitValue && target._maxCount <= _gimmickInsCount[(int)target._kind]) continue;
                 insList.Add(target);
             }
-            
+
             for (var i = 0; i < roomCount; i++)
             {
                 // Create a list of gimmick coordinates for each room
                 var placedGimmickInfo = new List<PlacedGimmickInfo>();
                 // Generate Exit
-                if (i == exitObeliskRoom) InsGimmick(groundY, roomInfo, i, _gimmickInfo[(int)GimmickKind.ExitObelisk]._prefab, placedGimmickInfo);
-                
+                if (i == exitObeliskRoom)
+                    InsGimmick(groundY, roomInfo, i, _gimmickInfo[(int)GimmickKind.ExitObelisk],
+                        placedGimmickInfo);
+
                 for (var j = 0; j < roomGimmickCount[i]; j++)
                 {
                     if (insList.Count == 0) break;
@@ -124,6 +125,7 @@ namespace Gimmick
 
                     var targetNum = (int)gimmickInfo._kind;
                     _gimmickInsCount[targetNum]++;
+
                     // Gimmicks that can generate only one are removed from the list
                     if (gimmickInfo._maxCount != LimitValue && gimmickInfo._maxCount <= _gimmickInsCount[targetNum])
                     {
@@ -136,7 +138,7 @@ namespace Gimmick
                     }
 
                     // Generate gimmicks and register them in the coordinate list
-                    InsGimmick(groundY, roomInfo, i, gimmickInfo._prefab, placedGimmickInfo);
+                    InsGimmick(groundY, roomInfo, i, gimmickInfo, placedGimmickInfo);
                 }
             }
         }
@@ -150,8 +152,9 @@ namespace Gimmick
             return insPos;
         }
 
-        private void InsGimmick(float groundY, int[,] roomInfo, int roomNum, GameObject insObj, List<PlacedGimmickInfo> placedGimmickList)
+        private void InsGimmick(float groundY, int[,] roomInfo, int roomNum, GimmickInfo gimmickInfo, List<PlacedGimmickInfo> placedGimmickList)
         {
+            var insObj = gimmickInfo._prefab;
             var halfScaleX = insObj.transform.localScale.x / 2.0f;
             var halfScaleZ = insObj.transform.localScale.z / 2.0f;
             var paddingX = (int)Math.Ceiling(halfScaleX) + PaddingThreshold;
@@ -210,6 +213,8 @@ namespace Gimmick
             placedGimmickList.Add(info);
 
             Instantiate(insObj, careInsPos, insObj.transform.rotation, _mapParent);
+            if (gimmickInfo._kind == GimmickKind.BornOut) BornCount++;
+            Debug.Log(BornCount);
         }
 
         private static Vector3 CalcDiffPos(Vector3 pos, float valueX, float valueZ)
