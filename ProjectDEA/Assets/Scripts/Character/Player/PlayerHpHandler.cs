@@ -1,4 +1,5 @@
 using System;
+using Manager;
 using UnityEngine;
 
 namespace Character.Player
@@ -12,6 +13,7 @@ namespace Character.Player
         public Action<int> OnChangeHp;
         private Action _onDie;
         public bool IsDie { get; private set; }
+        private DungeonLayerHandler _dungeonLayerHandler;
 
         private void Awake()
         {
@@ -20,12 +22,15 @@ namespace Character.Player
 
         private void Start()
         {
+            _dungeonLayerHandler = GameObject.FindWithTag("DungeonLayerHandler").GetComponent<DungeonLayerHandler>();
             _onDie += _playerAnimationCnt.SetIsDie;
+            _onDie += _dungeonLayerHandler.PlayerDeathNext;
         }
         
         private void OnDestroy()
         {
             _onDie -= _playerAnimationCnt.SetIsDie;
+            _onDie -= _dungeonLayerHandler.PlayerDeathNext;
         }
 
         public void ReceiveDamage(int damage)

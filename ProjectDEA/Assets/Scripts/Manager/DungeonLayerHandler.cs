@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,6 +8,7 @@ namespace Manager
     {
         public int CurrentLayer { get; private set; }
         [SerializeField] private int _maxLayer;
+        public bool IsGameClear { get; private set; }
         
         private void Awake()
         {
@@ -35,8 +37,20 @@ namespace Manager
                 SceneManager.LoadScene("DungeonIn");
                 return;
             }
+            IsGameClear = true;
             SceneManager.LoadScene("ResultScene");
         }
-        
+
+        public void PlayerDeathNext()
+        {
+            IsGameClear = false;
+            StartCoroutine(WaitForDeathNext());
+        }
+
+        private IEnumerator WaitForDeathNext()
+        {
+            yield return new WaitForSeconds(4.0f);
+            SceneManager.LoadScene("ResultScene");
+        }
     }
 }
