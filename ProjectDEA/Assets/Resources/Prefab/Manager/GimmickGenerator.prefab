@@ -71,4 +71,5 @@ MonoBehaviour:
     _minCount: 5
     _maxCount: 8
   _maxGimmickPerRoom: 4
+  _minGimmickPerRoom: 2
   _mapParent: {fileID: 0}

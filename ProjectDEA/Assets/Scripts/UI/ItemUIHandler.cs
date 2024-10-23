@@ -52,7 +52,8 @@ namespace UI
                 var cd2 = imageObj.transform.GetChild(1).gameObject;
                 var descriptionText = cd2.GetComponent<TextMeshProUGUI>();
                 descriptionText.text = itemSet[i]._description;
-                
+                Debug.Log(descriptionText.text);
+
                 var cd3 = imageObj.transform.GetChild(2).gameObject;
                 var countText = cd3.GetComponent<TextMeshProUGUI>();
                 countText.text = "×" + itemSet[i]._count;

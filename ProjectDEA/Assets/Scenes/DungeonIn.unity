@@ -489,6 +489,10 @@ PrefabInstance:
       propertyPath: _panelSwitcher
       value: 
       objectReference: {fileID: 341408351}
+    - target: {fileID: 6538296079297429715, guid: 10dfe7734ba9e3e4a8552476e63ca9cc, type: 3}
+      propertyPath: _gimmickGenerator
+      value: 
+      objectReference: {fileID: 8934308311530751692}
     - target: {fileID: 7101061431409066640, guid: 10dfe7734ba9e3e4a8552476e63ca9cc, type: 3}
       propertyPath: m_fontAsset
       value: 
@@ -1532,34 +1536,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7877430349819697090, guid: 1e2705ac0ea558c4fa22038987c28071, type: 3}
-      propertyPath: _itemSets.Array.data[1]._kind
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7877430349819697090, guid: 1e2705ac0ea558c4fa22038987c28071, type: 3}
-      propertyPath: _itemSets.Array.data[1]._isUse
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7877430349819697090, guid: 1e2705ac0ea558c4fa22038987c28071, type: 3}
-      propertyPath: _itemSets.Array.data[0]._prefab
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7877430349819697090, guid: 1e2705ac0ea558c4fa22038987c28071, type: 3}
-      propertyPath: _itemSets.Array.data[0]._sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 3dd7070fb10e77b4aa40b69f45b8a91b, type: 3}
-    - target: {fileID: 7877430349819697090, guid: 1e2705ac0ea558c4fa22038987c28071, type: 3}
-      propertyPath: _itemSets.Array.data[1]._prefab
-      value: 
-      objectReference: {fileID: 3244715098771652903, guid: 014aca1e472a6f849b8fe6dd0e01be23, type: 3}
-    - target: {fileID: 7877430349819697090, guid: 1e2705ac0ea558c4fa22038987c28071, type: 3}
-      propertyPath: _itemSets.Array.data[0]._predict
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7877430349819697090, guid: 1e2705ac0ea558c4fa22038987c28071, type: 3}
-      propertyPath: _itemSets.Array.data[1]._predict
-      value: 
-      objectReference: {fileID: 4086957854919441518, guid: 98cdcd7faf06e5346b443aef0e30d2d6, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1634,6 +1610,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+--- !u!114 &8934308311530751692 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8934308311292872767, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+  m_PrefabInstance: {fileID: 8934308311530751691}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d579e7b9cc4134d0db9ecd4d8fe5a4aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &9176632088696239450 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5347650687914222714, guid: c28eb008f535209409d86b56fdb91e86, type: 3}

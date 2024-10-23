@@ -27,7 +27,7 @@ namespace Gimmick
             public int _minCount; // 0 no limit
             public int _maxCount; // 0 no limit
         }
-
+        
         private const int LimitValue = 0;
         private struct PlacedGimmickInfo
         {
@@ -38,8 +38,8 @@ namespace Gimmick
         [SerializeField] private GimmickInfo[] _gimmickInfo;
         private int[] _gimmickInsCount;
         [SerializeField] private int _maxGimmickPerRoom;
+        [SerializeField] private int _minGimmickPerRoom;
         [SerializeField] private Transform _mapParent;
-        public int BornCount { get; private set; }
         
         public void GenerateGimmick(StageGenerator stageGenerator)
         {
@@ -53,7 +53,7 @@ namespace Gimmick
             var roomGimmickCount = new int[roomCount];
             for (var i = 0; i < roomCount; i++)
             {
-                roomGimmickCount[i] = UnityEngine.Random.Range(1, _maxGimmickPerRoom + 1);
+                roomGimmickCount[i] = UnityEngine.Random.Range(_minGimmickPerRoom, _maxGimmickPerRoom + 1);
                 if (i == exitObeliskRoom) roomGimmickCount[i]--;
             }
             
@@ -108,7 +108,7 @@ namespace Gimmick
                 if (i == exitObeliskRoom)
                     InsGimmick(groundY, roomInfo, i, _gimmickInfo[(int)GimmickKind.ExitObelisk],
                         placedGimmickInfo);
-
+                
                 for (var j = 0; j < roomGimmickCount[i]; j++)
                 {
                     if (insList.Count == 0) break;
@@ -136,7 +136,7 @@ namespace Gimmick
                             insList.Remove(itemToRemove);
                         }
                     }
-
+                    
                     // Generate gimmicks and register them in the coordinate list
                     InsGimmick(groundY, roomInfo, i, gimmickInfo, placedGimmickInfo);
                 }
@@ -201,6 +201,7 @@ namespace Gimmick
             
             // Randomly selected coordinates
             if (carefulValidPos.Count <= 0) return;
+            
             var randomIndex = UnityEngine.Random.Range(0, carefulValidPos.Count);
             var careInsPos = carefulValidPos[randomIndex];
             
@@ -213,8 +214,6 @@ namespace Gimmick
             placedGimmickList.Add(info);
 
             Instantiate(insObj, careInsPos, insObj.transform.rotation, _mapParent);
-            if (gimmickInfo._kind == GimmickKind.BornOut) BornCount++;
-            Debug.Log(BornCount);
         }
 
         private static Vector3 CalcDiffPos(Vector3 pos, float valueX, float valueZ)
