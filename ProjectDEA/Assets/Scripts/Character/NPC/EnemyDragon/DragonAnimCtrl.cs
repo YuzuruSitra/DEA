@@ -18,24 +18,34 @@ namespace Character.NPC.EnemyDragon
         private static readonly int Run = Animator.StringToHash("IsRun");
         private static readonly int Scream = Animator.StringToHash("IsScream");
         private static readonly int IsGetHit = Animator.StringToHash("IsGetHit");
+        private static readonly int IsDie = Animator.StringToHash("IsDie");
 
         private void Start()
         {
             _dragonController.GetDamage += GetHitAnim;
+            _dragonController.DoDeath += GetDeathAnim;
         }
 
         private void OnDestroy()
         {
             _dragonController.GetDamage -= GetHitAnim;
+            _dragonController.DoDeath -= GetDeathAnim;
         }
 
         private void GetHitAnim()
         {
-            _animator.SetTrigger(IsGetHit);   
+            _animator.SetTrigger(IsGetHit);
         }
-
+        
+        private void GetDeathAnim()
+        {
+            AllAnimOff();
+            _animator.SetBool(IsDie, true);
+        }
+        
         private void Update()
         {
+            if (_dragonController._isDeath) return;
             switch (_dragonController.AnimState)
             {
                 case AnimState.Idole:
@@ -63,6 +73,7 @@ namespace Character.NPC.EnemyDragon
             _animator.SetBool(Walk, false);
             _animator.SetBool(Run, false);
             _animator.SetBool(Scream, false);
+            _animator.SetBool(IsDie, false);
         }
         
     }

@@ -1185,7 +1185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f09f022e8f2e03e4e86c704f5db28271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentHp: 0
+  _currentHp: 100
   _drawableState: 0100000003000000
   _stateTimeRange: 1
   _stayTimeBase: 4

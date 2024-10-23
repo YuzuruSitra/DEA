@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Character.Player;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace Character.NPC.EnemyDragon
@@ -31,6 +32,8 @@ namespace Character.NPC.EnemyDragon
         private const float UpperDuration = 0.5f;
         public DragonAnimCtrl.AnimState AnimState => _states[CurrentState].CurrentAnim;
         public Action GetDamage;
+        public bool _isDeath;
+        public Action DoDeath;
         
         private void Start()
         {
@@ -41,12 +44,13 @@ namespace Character.NPC.EnemyDragon
             _states.Add(AIState.Attack, new AttackState(gameObject, _agent, _screamTime, _attackSpeed, _attackAcceleration, _attackRotSpeed));
             _states.Add(AIState.FreeWalk, new FreeWalkState(gameObject, _agent, _stateTimeRange, _walkTimeBase, _speed));
 
+            _isDeath = false;
             CurrentState = AIState.Stay;
             _states[CurrentState].EnterState();
         }
-
         private void Update()
         {
+            if (_isDeath) return;
             _states[CurrentState].UpdateState();
             if (_states[CurrentState].IsStateFin) NextState();
         }
@@ -76,6 +80,12 @@ namespace Character.NPC.EnemyDragon
         public void OnGetDamage(int damage, Vector3 targetPos)
         {
             _currentHp = Math.Max(_currentHp - damage, 0);
+            if (_currentHp == 0)
+            {
+                _isDeath = true;
+                DoDeath?.Invoke();
+                return;
+            }
             GetDamage?.Invoke();
             _counterCoroutine ??= StartCoroutine(CounterAttackStateChange(targetPos));
         }
