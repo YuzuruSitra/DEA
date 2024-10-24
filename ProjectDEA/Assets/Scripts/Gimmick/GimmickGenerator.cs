@@ -53,7 +53,6 @@ namespace Gimmick
             var exitObeliskRoom = CalcMostBigRoom(roomCount, roomInfo);
             
             _obeliskKeyRooms = Enumerable.Range(0, stageGenerator.RoomCount).OrderBy(x => UnityEngine.Random.Range(0, stageGenerator.RoomCount)).Take(4).ToArray();
-            Debug.Log(string.Join(", ", _obeliskKeyRooms));
             
             // 各部屋のギミック生成数を事前に決定
             var roomGimmickCount = new int[roomCount];
@@ -138,7 +137,6 @@ namespace Gimmick
                             if (variable != i) continue;
                             gimmickInfo = _gimmickInfo[(int)GimmickKind.ObeliskKeyOut];
                             isInsKey = true;
-                            Debug.Log("a");
                             _insKeyCount++;
                         }
                     }
