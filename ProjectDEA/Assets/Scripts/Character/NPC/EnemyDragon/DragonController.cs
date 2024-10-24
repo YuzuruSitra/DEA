@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Character.Player;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace Character.NPC.EnemyDragon
@@ -32,7 +31,7 @@ namespace Character.NPC.EnemyDragon
         private const float UpperDuration = 0.5f;
         public DragonAnimCtrl.AnimState AnimState => _states[CurrentState].CurrentAnim;
         public Action GetDamage;
-        public bool _isDeath;
+        public bool IsDeath { get; private set; }
         public Action DoDeath;
         
         private void Start()
@@ -44,13 +43,14 @@ namespace Character.NPC.EnemyDragon
             _states.Add(AIState.Attack, new AttackState(gameObject, _agent, _screamTime, _attackSpeed, _attackAcceleration, _attackRotSpeed));
             _states.Add(AIState.FreeWalk, new FreeWalkState(gameObject, _agent, _stateTimeRange, _walkTimeBase, _speed));
 
-            _isDeath = false;
+            IsDeath = false;
+            _agent.isStopped = true;
             CurrentState = AIState.Stay;
             _states[CurrentState].EnterState();
         }
         private void Update()
         {
-            if (_isDeath) return;
+            if (IsDeath) return;
             _states[CurrentState].UpdateState();
             if (_states[CurrentState].IsStateFin) NextState();
         }
@@ -82,7 +82,8 @@ namespace Character.NPC.EnemyDragon
             _currentHp = Math.Max(_currentHp - damage, 0);
             if (_currentHp == 0)
             {
-                _isDeath = true;
+                IsDeath = true;
+                _agent.isStopped = false;
                 DoDeath?.Invoke();
                 return;
             }
