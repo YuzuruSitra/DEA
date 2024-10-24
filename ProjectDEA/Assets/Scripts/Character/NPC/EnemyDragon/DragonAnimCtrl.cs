@@ -46,7 +46,6 @@ namespace Character.NPC.EnemyDragon
         private void Update()
         {
             if (_dragonController.IsDeath) return;
-            Debug.Log("a");
             switch (_dragonController.AnimState)
             {
                 case AnimState.Idole:

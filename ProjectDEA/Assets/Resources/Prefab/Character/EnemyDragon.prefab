@@ -1198,6 +1198,7 @@ MonoBehaviour:
   _launchPower: 8
   _giveDamage: 20
   _counterWaitTime: 1
+  _deathWait: 3
 --- !u!114 &4893729096472378383
 MonoBehaviour:
   m_ObjectHideFlags: 0

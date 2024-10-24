@@ -27,6 +27,8 @@ namespace Character.NPC.EnemyDragon
         [SerializeField] private int _giveDamage;
         [SerializeField] private int _counterWaitTime;
         private WaitForSeconds _counterWaitForSeconds;
+        [SerializeField] private float _deathWait;
+        private WaitForSeconds _deathWaitForSeconds;
         private Coroutine _counterCoroutine;
         private const float UpperDuration = 0.5f;
         public DragonAnimCtrl.AnimState AnimState => _states[CurrentState].CurrentAnim;
@@ -38,16 +40,24 @@ namespace Character.NPC.EnemyDragon
         {
             _agent = GetComponent<NavMeshAgent>();
             _counterWaitForSeconds = new WaitForSeconds(_counterWaitTime);
+            _deathWaitForSeconds = new WaitForSeconds(_deathWait);
             _states.Add(AIState.Null, null);
             _states.Add(AIState.Stay, new StayState(gameObject, _stateTimeRange, _stayTimeBase));
             _states.Add(AIState.Attack, new AttackState(gameObject, _agent, _screamTime, _attackSpeed, _attackAcceleration, _attackRotSpeed));
             _states.Add(AIState.FreeWalk, new FreeWalkState(gameObject, _agent, _stateTimeRange, _walkTimeBase, _speed));
-
-            IsDeath = false;
-            _agent.isStopped = true;
             CurrentState = AIState.Stay;
             _states[CurrentState].EnterState();
         }
+
+        private void OnEnable()
+        {
+            IsDeath = false;
+            _agent.isStopped = false;
+            if (_states.Count == 0) return;
+            CurrentState = AIState.Stay;
+            _states[CurrentState].EnterState();
+        }
+        
         private void Update()
         {
             if (IsDeath) return;
@@ -79,12 +89,14 @@ namespace Character.NPC.EnemyDragon
 
         public void OnGetDamage(int damage, Vector3 targetPos)
         {
+            if (IsDeath) return;
             _currentHp = Math.Max(_currentHp - damage, 0);
             if (_currentHp == 0)
             {
                 IsDeath = true;
-                _agent.isStopped = false;
+                _agent.isStopped = true;
                 DoDeath?.Invoke();
+                StartCoroutine(DeathDisable());
                 return;
             }
             GetDamage?.Invoke();
@@ -96,6 +108,12 @@ namespace Character.NPC.EnemyDragon
             yield return _counterWaitForSeconds;
             if (CurrentState != AIState.Attack) OnAttackState(targetPos);
             _counterCoroutine = null;
+        }
+
+        private IEnumerator DeathDisable()
+        {
+            yield return _deathWaitForSeconds;
+            gameObject.SetActive(false);
         }
         
         private void OnCollisionEnter(Collision other)

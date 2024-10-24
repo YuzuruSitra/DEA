@@ -118,5 +118,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a3d09268d94c5a46ab16ed423960d75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _insEnemyList:
-  - {fileID: 4030906121409994668, guid: 633936ba670d5224ab9a13be9af82373, type: 3}
+  _targetDragon: {fileID: 7134229576755512900, guid: 633936ba670d5224ab9a13be9af82373, type: 3}
