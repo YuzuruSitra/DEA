@@ -4,6 +4,7 @@ namespace Character.Player
 {
     public class PlayerAttackHandler : MonoBehaviour
     {
+        private bool _isCanAttack = true;
         [SerializeField] private float _attackCt;
         [SerializeField] private float _attackMoveTime;
         [SerializeField] private float _attackSpeed;
@@ -16,6 +17,7 @@ namespace Character.Player
 
         private void Update()
         {
+            if (!_isCanAttack) return;
             _currentTime -= Time.deltaTime;
             if (0 < _currentTime) return;
             if (Input.GetMouseButtonDown(0)) OnAttack();
@@ -26,6 +28,11 @@ namespace Character.Player
             _playerAnimationCnt.AttackActive();
             StartCoroutine(_playerMover.AttackMove(_attackMoveTime, _attackSpeed));
             _currentTime = _attackCt;
+        }
+        
+        public void SetCanAttackState(bool active)
+        {
+            _isCanAttack = active;
         }
     }
 }

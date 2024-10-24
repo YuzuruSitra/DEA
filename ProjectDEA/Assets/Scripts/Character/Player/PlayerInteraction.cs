@@ -5,9 +5,11 @@ namespace Character.Player
 {
     public class PlayerInteraction : MonoBehaviour
     {
+        private bool _isInteractable = true;
         private IInteractable _currentInteractable;
         private void Update()
         {
+            if (!_isInteractable) return;
             // インタラクションキーのチェック
             if (!Input.GetKeyDown(KeyCode.E) || _currentInteractable == null) return;
             _currentInteractable.Interact();
@@ -32,6 +34,11 @@ namespace Character.Player
         {
             _currentInteractable.Destroyed -= ResetCurrentTarget;
             _currentInteractable = null;
+        }
+        
+        public void SetInteractableState(bool active)
+        {
+            _isInteractable = active;
         }
     }
 }

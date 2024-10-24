@@ -8,7 +8,7 @@ namespace UI
         private const string ErrorMessage = "";
         
         
-        public void AddLog(string message)
+        public void AddLog(string message, bool isDisable = true)
         {
             var previousMessage = message;
 
@@ -18,7 +18,7 @@ namespace UI
                 var currentMessage = t.TMPro.enabled ? t.TMPro.text : ErrorMessage;
         
                 // メッセージを設定
-                t.ReceiveMessage(previousMessage);
+                t.ReceiveMessage(previousMessage, isDisable);
         
                 // エラーメッセージがあれば、以降の処理をスキップ
                 if (currentMessage == ErrorMessage) return;
@@ -27,5 +27,14 @@ namespace UI
                 previousMessage = currentMessage;
             }
         }
+
+        public void AllOnDisableTMPro()
+        {
+            foreach (var t in _logTextDisable)
+            {
+                t.OnDisableTMPro();
+            }
+        }
+        
     }
 }

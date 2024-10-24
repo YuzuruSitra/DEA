@@ -5,6 +5,7 @@ namespace Character.Player
 {
     public class PlayerMover : MonoBehaviour
     {
+        private bool _isWalkable = true;
         [Header("歩行速度")]
         [SerializeField] private float _walkSpeed;
         [Header("走行速度")]
@@ -34,6 +35,7 @@ namespace Character.Player
 
         private void Update()
         {
+            if (!_isWalkable) return;
             if (_isPushed) return;
             if (_playerAnimationCnt.IsAttacking) return;
             InputMove();
@@ -120,20 +122,9 @@ namespace Character.Player
             _isPushed = false;
         }
 
-        private void OnTriggerEnter(Collider other)
+        public void SetWalkableState(bool active)
         {
-            if (other.CompareTag("Water"))
-            {
-                _inWater = true;
-            }
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            if (other.CompareTag("Water"))
-            {
-                _inWater = false;
-            }
+            _isWalkable = active;
         }
     }
 }

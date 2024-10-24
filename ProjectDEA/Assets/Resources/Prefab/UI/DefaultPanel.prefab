@@ -147,6 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a19dd8bfe0bf9c4788003cf195f402c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tmPro: {fileID: 7944819895326570294}
   _disableTime: 3
 --- !u!1 &152213970997311285
 GameObject:
@@ -504,6 +505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a19dd8bfe0bf9c4788003cf195f402c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tmPro: {fileID: 2672971349823959022}
   _disableTime: 3.5
 --- !u!1 &1562687514456576070
 GameObject:
@@ -1508,6 +1510,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a19dd8bfe0bf9c4788003cf195f402c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tmPro: {fileID: 5434645691862685963}
   _disableTime: 4
 --- !u!1 &2846916487939210062
 GameObject:

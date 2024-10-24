@@ -5,6 +5,7 @@ namespace Character.Player
 {
     public class PlayerUseItem : MonoBehaviour
     {
+        private bool _isCanUseItem = true;
         private enum InsState
         {
             None,
@@ -31,6 +32,7 @@ namespace Character.Player
 
         private void Update()
         {
+            if (!_isCanUseItem) return;
             HandleItemUsage();
         }
 
@@ -99,6 +101,11 @@ namespace Character.Player
         {
             _insState = InsState.None;
             _inventoryHandler.ChangePredictActive(_inventoryHandler.CurrentPredict, false);
+        }
+        
+        public void SetCanUseItemState(bool active)
+        {
+            _isCanUseItem = active;
         }
     }
 }

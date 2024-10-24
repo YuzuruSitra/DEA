@@ -525,6 +525,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerMover: {fileID: 2002799768244149595}
   _playerHpHandler: {fileID: 1623497148600613073}
+  _playerInteraction: {fileID: 84256381744762583}
+  _playerAttackHandler: {fileID: 51901469298106324}
+  _playerUseItem: {fileID: 2817494418154973700}
 --- !u!114 &1623497148600613073
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -8,5 +8,16 @@ namespace Character.Player
         public PlayerMover PlayerMover => _playerMover;
         [SerializeField] private PlayerHpHandler _playerHpHandler;
         public PlayerHpHandler PlayerHpHandler => _playerHpHandler;
+        [SerializeField] private PlayerInteraction _playerInteraction;
+        [SerializeField] private PlayerAttackHandler _playerAttackHandler;
+        [SerializeField] private PlayerUseItem _playerUseItem;
+        
+        public void SetPlayerFreedom(bool isFreedom)
+        {
+            _playerMover.SetWalkableState(isFreedom);
+            _playerInteraction.SetInteractableState(isFreedom);
+            _playerAttackHandler.SetCanAttackState(isFreedom);
+            _playerUseItem.SetCanUseItemState(isFreedom);
+        }
     }
 }

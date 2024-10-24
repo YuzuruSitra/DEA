@@ -1,5 +1,7 @@
 using System;
+using Gimmick;
 using Item;
+using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -31,6 +33,9 @@ namespace Manager
         public Action<ItemPrefabSet[]> OnItemLineupChanged;
         public bool CurrentIsUse => CurrentItemNum != ErrorValue && _itemSets[CurrentItemNum]._isUse;
         public GameObject CurrentPredict => CurrentItemNum == ErrorValue ? null : _itemSets[CurrentItemNum]._currentPrefab;
+        private LogTextHandler _logTextHandler;
+        private const string LogTemplate = "を手に入れた。";
+        private const string LogObeliskTemplate = "破片は集まった。オベリスクへ向かおう。";
         
         private void Awake()
         {
@@ -55,6 +60,7 @@ namespace Manager
 
         private void OnInitial()
         {
+            _logTextHandler = GameObject.FindWithTag("LogTextHandler").GetComponent<LogTextHandler>();
             // Setting predict.
             for (var i = 0; i < _itemSets.Length; i++)
             {
@@ -127,15 +133,25 @@ namespace Manager
         // アイテムをインベントリに追加する
         public void AddItem(ItemKind item)
         {
-            UnityEngine.Debug.Log("Add Inventory : " + item);
             for (var i = 0; i < _itemSets.Length; i++)
             {
                 if (_itemSets[i]._kind != item) continue;
                 _itemSets[i]._count++;
+                var message = _itemSets[i]._name + LogTemplate;
+                _logTextHandler.AddLog(message);
+                if (item == ItemKind.Key) CheckObeliskCount();
                 if (CurrentItemNum == i) ChangeItemCount();
                 if (_itemSets[i]._count == 1) OnItemLineupChanged(_itemSets);
                 if (CurrentItemNum == ErrorValue) ChangeItemNum(i);
                 break;
+            }
+        }
+
+        private void CheckObeliskCount()
+        {
+            if (_itemSets[(int)ItemKind.Key]._count == ExitObelisk.NeededKeyCount)
+            {
+                _logTextHandler.AddLog(LogObeliskTemplate);
             }
         }
 

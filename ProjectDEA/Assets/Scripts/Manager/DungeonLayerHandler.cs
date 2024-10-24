@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -26,7 +28,13 @@ namespace Manager
                 return;
             }
             DontDestroyOnLoad(gameObject);
+            SceneManager.sceneLoaded += SceneLoaded;
             CurrentLayer = _maxLayer;
+        }
+
+        private void OnDestroy()
+        {
+            SceneManager.sceneLoaded -= SceneLoaded;
         }
 
         public void NextDungeonLayer()
@@ -39,6 +47,13 @@ namespace Manager
             }
             IsGameClear = true;
             SceneManager.LoadScene("ResultScene");
+        }
+        
+        void SceneLoaded (Scene nextScene, LoadSceneMode mode)
+        {
+            if (CurrentLayer == _maxLayer) return;
+            var logTextHandler = GameObject.FindWithTag("LogTextHandler").GetComponent<LogTextHandler>();
+            logTextHandler.AddLog("また一つ降りられた。\n残るは" + CurrentLayer +"Fだ。");
         }
 
         public void PlayerDeathNext()
