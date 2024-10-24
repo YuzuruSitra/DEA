@@ -12,6 +12,7 @@ namespace Manager
         [SerializeField] private DungeonLayerHandler _dungeonLayerHandler;
         [SerializeField] private LogTextHandler _logTextHandler;
         [SerializeField] private PlayerClasHub _playerClasHub;
+        [SerializeField] private PanelSwitcher _panelSwitcher;
         [SerializeField] private CinemachineVirtualCameraBase[] _vCams;
         [SerializeField] private float _inputPaddingTime;
         private float _inputCurrentTime;
@@ -52,6 +53,7 @@ namespace Manager
         private IEnumerator TutorialCoroutine()
         {
             _isTutorial = true;
+            _panelSwitcher.ChangeIsManipulate(false);
             _playerClasHub.SetPlayerFreedom(false);
             var message1 = "ようやく" + _dungeonLayerHandler.CurrentLayer + "Fまで降りられた。";
             _logTextHandler.AddLog(message1, false);
@@ -70,8 +72,10 @@ namespace Manager
             yield return WaitForPlayerInput(4);
             
             _tutorialIndicationUI.SetActive(false);
-            _logTextHandler.AllOnDisableTMPro();
+            
+            _panelSwitcher.ChangeIsManipulate(true);
             _playerClasHub.SetPlayerFreedom(true);
+            _logTextHandler.AllOnDisableTMPro();
             _isTutorial = false;
         }
         
