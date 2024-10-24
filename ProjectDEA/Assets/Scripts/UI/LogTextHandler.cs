@@ -15,7 +15,7 @@ namespace UI
             foreach (var t in _logTextDisable)
             {
                 // 現在のオブジェクトがアクティブかどうかチェック
-                var currentMessage = t.TMPro.enabled ? t.TMPro.text : ErrorMessage;
+                var currentMessage = t.TMPro.enabled ? t.CurrentText : ErrorMessage;
         
                 // メッセージを設定
                 t.ReceiveMessage(previousMessage, isDisable);

@@ -1262,7 +1262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f09f022e8f2e03e4e86c704f5db28271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHp: 125
+  _maxHp: 100
   _drawableState: 0100000003000000
   _stateTimeRange: 1
   _stayTimeBase: 4
@@ -1321,9 +1321,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _canvasObj: {fileID: 9025259999105750824}
   _slider: {fileID: 5115733442536335045}
-  _waitingTime: 3
-  _disabledTime: 1.5
-  _playerHpHandler: {fileID: 7134229576755512900}
+  _waitingTime: 1
+  _disabledTime: 2
+  _dragonController: {fileID: 7134229576755512900}
 --- !u!65 &8325319749802006510
 BoxCollider:
   m_ObjectHideFlags: 0

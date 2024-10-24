@@ -11,7 +11,7 @@ namespace Character.NPC.EnemyDragon
         [SerializeField] private float _waitingTime;
         [SerializeField] private float _disabledTime;
         private WaitForSeconds _disabledWait;
-        [SerializeField] private DragonController _playerHpHandler;
+        [SerializeField] private DragonController _dragonController;
         private Coroutine _coroutine;
         private Camera _camera;
         private int _maxHp;
@@ -19,16 +19,15 @@ namespace Character.NPC.EnemyDragon
         private void Start()
         {
             _camera = Camera.main;
-            _maxHp = _playerHpHandler.CurrentHp;
+            _maxHp = _dragonController.MaxHp;
+            InitialSet();
             
-            _slider.maxValue = _maxHp;
-            _slider.value = _maxHp;
-            
-            _playerHpHandler.ReceiveNewHp += BeInjured;
+            _dragonController.OnReviving += InitialSet;
+            _dragonController.ReceiveNewHp += BeInjured;
             _disabledWait = new WaitForSeconds(_disabledTime);
         }
 
-        private void OnEnable()
+        private void InitialSet()
         {
             _slider.maxValue = _maxHp;
             _slider.value = _maxHp;
@@ -37,7 +36,8 @@ namespace Character.NPC.EnemyDragon
 
         private void OnDestroy()
         {
-            _playerHpHandler.ReceiveNewHp -= BeInjured;
+            _dragonController.OnReviving -= InitialSet;
+            _dragonController.ReceiveNewHp -= BeInjured;
         }
 
         private void LateUpdate() 
@@ -56,14 +56,17 @@ namespace Character.NPC.EnemyDragon
         private IEnumerator ChangeGageAnim(float newHp)
         {
             var elapsedTime = 0f;
+            var startValue = _slider.value;
             while (elapsedTime < _waitingTime)
             {
                 elapsedTime += Time.deltaTime;
-                var currentValue = Mathf.Lerp(_slider.value, newHp, elapsedTime / _waitingTime);
+                // スライダーの値を線形補間する
+                var currentValue = Mathf.Lerp(startValue, newHp, elapsedTime / _waitingTime);
                 _slider.value = currentValue;
+                Debug.Log("Start :"+ startValue + " target :"+newHp + " current :" + _slider.value);
                 yield return null;
             }
-            _slider.value = newHp;
+            _slider.value = newHp; // 最終値を設定
 
             yield return _disabledWait;
             _canvasObj.SetActive(false);

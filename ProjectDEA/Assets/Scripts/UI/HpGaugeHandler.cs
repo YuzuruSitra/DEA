@@ -34,7 +34,7 @@ namespace UI
         private void BeInjured(int newHp)
         {
             if (_coroutine != null) StopCoroutine(_coroutine);
-            _coroutine = StartCoroutine(ChangeGageAnim(newHp));
+            if (gameObject.activeInHierarchy) _coroutine = StartCoroutine(ChangeGageAnim(newHp));
         }
     
         private IEnumerator ChangeGageAnim(float newHp)

@@ -149,6 +149,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tmPro: {fileID: 7944819895326570294}
   _disableTime: 3
+  _charDisplayInterval: 0.025
+  _isAnimation: 0
 --- !u!1 &152213970997311285
 GameObject:
   m_ObjectHideFlags: 0
@@ -507,6 +509,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tmPro: {fileID: 2672971349823959022}
   _disableTime: 3.5
+  _charDisplayInterval: 0.025
+  _isAnimation: 0
 --- !u!1 &1562687514456576070
 GameObject:
   m_ObjectHideFlags: 0
@@ -1512,6 +1516,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tmPro: {fileID: 5434645691862685963}
   _disableTime: 4
+  _charDisplayInterval: 0.025
+  _isAnimation: 1
 --- !u!1 &2846916487939210062
 GameObject:
   m_ObjectHideFlags: 0

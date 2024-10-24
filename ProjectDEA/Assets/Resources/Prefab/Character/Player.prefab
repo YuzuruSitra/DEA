@@ -577,7 +577,7 @@ MonoBehaviour:
   _attackSpeed: 2
   _playerAnimationCnt: {fileID: 4351832874976852339}
   _playerMover: {fileID: 2002799768244149595}
-  _attackDamage: 25
+  _attackDamage: 20
 --- !u!114 &2817494418154973700
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -11,8 +11,8 @@ namespace Character.NPC.EnemyDragon
     public class DragonController : MonoBehaviour
     {
         [SerializeField] private int _maxHp;
+        public int MaxHp => _maxHp;
         private int _currentHp;
-        public int CurrentHp => _currentHp;
         private NavMeshAgent _agent;
         [SerializeField] private List<AIState> _drawableState;
         public AIState CurrentState { get; private set; }
@@ -35,6 +35,7 @@ namespace Character.NPC.EnemyDragon
         private const float UpperDuration = 0.5f;
         public DragonAnimCtrl.AnimState AnimState => _states[CurrentState].CurrentAnim;
         public Action<int> ReceiveNewHp;
+        public Action OnReviving;
         public bool IsDeath { get; private set; }
         
         private void Start()
@@ -52,11 +53,17 @@ namespace Character.NPC.EnemyDragon
 
         private void OnEnable()
         {
+            OnInitialSetUp();
+        }
+
+        private void OnInitialSetUp()
+        {
             IsDeath = false;
             _currentHp = _maxHp;
             if (_states.Count == 0) return;
             CurrentState = AIState.Stay;
             _states[CurrentState].EnterState();
+            OnReviving?.Invoke();
         }
         
         private void Update()
@@ -118,6 +125,7 @@ namespace Character.NPC.EnemyDragon
         
         private void OnCollisionEnter(Collision other)
         {
+            if (_states.Count == 0) return;
             if (!_states[CurrentState].IsAttacking) return;
 
             if (!other.collider.CompareTag("Player")) return;
