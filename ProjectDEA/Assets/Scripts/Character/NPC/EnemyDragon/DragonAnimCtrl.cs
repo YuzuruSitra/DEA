@@ -22,19 +22,20 @@ namespace Character.NPC.EnemyDragon
 
         private void Start()
         {
-            _dragonController.GetDamage += GetHitAnim;
-            _dragonController.DoDeath += GetDeathAnim;
+            _dragonController.ReceiveNewHp += GetHitAnim;
         }
 
         private void OnDestroy()
         {
-            _dragonController.GetDamage -= GetHitAnim;
-            _dragonController.DoDeath -= GetDeathAnim;
+            _dragonController.ReceiveNewHp -= GetHitAnim;
         }
 
-        private void GetHitAnim()
+        private void GetHitAnim(int value)
         {
-            _animator.SetTrigger(IsGetHit);
+            if (value == 0) 
+                GetDeathAnim();
+            else
+                _animator.SetTrigger(IsGetHit);
         }
         
         private void GetDeathAnim()

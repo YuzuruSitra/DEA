@@ -10,7 +10,9 @@ namespace Character.NPC.EnemyDragon
 {
     public class DragonController : MonoBehaviour
     {
-        [SerializeField] private int _currentHp;
+        [SerializeField] private int _maxHp;
+        private int _currentHp;
+        public int CurrentHp => _currentHp;
         private NavMeshAgent _agent;
         [SerializeField] private List<AIState> _drawableState;
         public AIState CurrentState { get; private set; }
@@ -32,9 +34,8 @@ namespace Character.NPC.EnemyDragon
         private Coroutine _counterCoroutine;
         private const float UpperDuration = 0.5f;
         public DragonAnimCtrl.AnimState AnimState => _states[CurrentState].CurrentAnim;
-        public Action GetDamage;
+        public Action<int> ReceiveNewHp;
         public bool IsDeath { get; private set; }
-        public Action DoDeath;
         
         private void Start()
         {
@@ -52,7 +53,7 @@ namespace Character.NPC.EnemyDragon
         private void OnEnable()
         {
             IsDeath = false;
-            _agent.isStopped = false;
+            _currentHp = _maxHp;
             if (_states.Count == 0) return;
             CurrentState = AIState.Stay;
             _states[CurrentState].EnterState();
@@ -91,15 +92,14 @@ namespace Character.NPC.EnemyDragon
         {
             if (IsDeath) return;
             _currentHp = Math.Max(_currentHp - damage, 0);
+            ReceiveNewHp?.Invoke(_currentHp);
             if (_currentHp == 0)
             {
                 IsDeath = true;
                 _agent.isStopped = true;
-                DoDeath?.Invoke();
                 StartCoroutine(DeathDisable());
                 return;
             }
-            GetDamage?.Invoke();
             _counterCoroutine ??= StartCoroutine(CounterAttackStateChange(targetPos));
         }
 
