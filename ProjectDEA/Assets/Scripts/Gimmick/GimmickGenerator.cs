@@ -40,6 +40,9 @@ namespace Gimmick
         [SerializeField] private int _maxGimmickPerRoom;
         [SerializeField] private int _minGimmickPerRoom;
         [SerializeField] private Transform _mapParent;
+        // 絆創膏
+        private int[] _obeliskKeyRooms = new int[4];
+        private int _insKeyCount;
         
         public void GenerateGimmick(StageGenerator stageGenerator)
         {
@@ -48,6 +51,9 @@ namespace Gimmick
             var roomInfo = stageGenerator.RoomInfo;
             _gimmickInsCount = new int[_gimmickInfo.Length];
             var exitObeliskRoom = CalcMostBigRoom(roomCount, roomInfo);
+            
+            _obeliskKeyRooms = Enumerable.Range(0, stageGenerator.RoomCount).OrderBy(x => UnityEngine.Random.Range(0, stageGenerator.RoomCount)).Take(4).ToArray();
+            Debug.Log(string.Join(", ", _obeliskKeyRooms));
             
             // 各部屋のギミック生成数を事前に決定
             var roomGimmickCount = new int[roomCount];
@@ -102,6 +108,7 @@ namespace Gimmick
 
             for (var i = 0; i < roomCount; i++)
             {
+                var isInsKey = false;
                 // Create a list of gimmick coordinates for each room
                 var placedGimmickInfo = new List<PlacedGimmickInfo>();
                 // Generate Exit
@@ -121,6 +128,19 @@ namespace Gimmick
                         if (i != targetRoom) continue;
                         gimmickInfo = neededInsList[index];
                         neededInsTargetRoom.RemoveAt(index);
+                    }
+                    
+                    // 絆創膏
+                    if (_insKeyCount < _obeliskKeyRooms.Length  && !isInsKey)
+                    {
+                        foreach (var variable in _obeliskKeyRooms)
+                        {
+                            if (variable != i) continue;
+                            gimmickInfo = _gimmickInfo[(int)GimmickKind.ObeliskKeyOut];
+                            isInsKey = true;
+                            Debug.Log("a");
+                            _insKeyCount++;
+                        }
                     }
 
                     var targetNum = (int)gimmickInfo._kind;

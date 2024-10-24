@@ -52,24 +52,24 @@ MonoBehaviour:
     _maxCount: 0
   - _kind: 1
     _prefab: {fileID: 2869468326224258088, guid: 0776075db77427c4281eab03e7a961b4, type: 3}
-    _isRoomGenerate: 1
-    _minCount: 4
-    _maxCount: 4
+    _isRoomGenerate: 0
+    _minCount: 0
+    _maxCount: 0
   - _kind: 2
     _prefab: {fileID: 2093334473890586168, guid: 112178d8c0d9d2145b83920f66f58076, type: 3}
     _isRoomGenerate: 1
-    _minCount: 4
-    _maxCount: 4
+    _minCount: 0
+    _maxCount: 0
   - _kind: 3
     _prefab: {fileID: 3132479909828540323, guid: 4f05c0d14baee264fa056814974ce73c, type: 3}
     _isRoomGenerate: 1
-    _minCount: 0
-    _maxCount: 0
+    _minCount: 3
+    _maxCount: 5
   - _kind: 4
     _prefab: {fileID: 8537474661332395588, guid: e3ba9312425adf24db405ea02e487903, type: 3}
     _isRoomGenerate: 1
-    _minCount: 5
-    _maxCount: 8
+    _minCount: 4
+    _maxCount: 0
   _maxGimmickPerRoom: 4
   _minGimmickPerRoom: 2
   _mapParent: {fileID: 0}
