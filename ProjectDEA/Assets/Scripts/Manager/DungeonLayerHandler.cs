@@ -51,7 +51,11 @@ namespace Manager
         
         void SceneLoaded (Scene nextScene, LoadSceneMode mode)
         {
-            if (CurrentLayer == _maxLayer) return;
+            if (nextScene.name == "ResultScene")
+            {
+                Destroy(gameObject);
+                return; 
+            }
             var logTextHandler = GameObject.FindWithTag("LogTextHandler").GetComponent<LogTextHandler>();
             logTextHandler.AddLog("また一つ降りられた。\n残るは" + CurrentLayer +"Fだ。");
         }
