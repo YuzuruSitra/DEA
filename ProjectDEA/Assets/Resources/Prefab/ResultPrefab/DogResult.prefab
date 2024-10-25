@@ -2426,7 +2426,7 @@ GameObject:
   - component: {fileID: 8645805336750078941}
   - component: {fileID: 159776066280517185}
   m_Layer: 8
-  m_Name: DogPolyart
+  m_Name: DogResult
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

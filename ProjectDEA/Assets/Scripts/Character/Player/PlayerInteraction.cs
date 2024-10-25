@@ -7,6 +7,7 @@ namespace Character.Player
     {
         private bool _isInteractable = true;
         private IInteractable _currentInteractable;
+        [SerializeField] private GameObject _indicationUI;
         private void Update()
         {
             if (!_isInteractable) return;
@@ -20,6 +21,7 @@ namespace Character.Player
             var interactable = other.GetComponent<IInteractable>();
             if (interactable == null) return;
             _currentInteractable = interactable;
+            _indicationUI.SetActive(true);
             _currentInteractable.Destroyed += ResetCurrentTarget;
         }
 
@@ -34,6 +36,7 @@ namespace Character.Player
         {
             _currentInteractable.Destroyed -= ResetCurrentTarget;
             _currentInteractable = null;
+            _indicationUI.SetActive(false);
         }
         
         public void SetInteractableState(bool active)
