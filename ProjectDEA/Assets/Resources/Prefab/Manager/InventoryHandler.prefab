@@ -89,3 +89,14 @@ MonoBehaviour:
     _isPut: 0
     _isUse: 1
     _effectedLogText: "\u5C11\u3057\u7B4B\u529B\u304C\u5897\u3057\u305F\u6C17\u304C\u3059\u308B\u3002"
+  - _kind: 4
+    _name: "\u304A\u4F9B\u3048\u30E2\u30CE\u30EA\u30F3\u30B4"
+    _description: "\u5893\u77F3\u306B\u4F9B\u3048\u3089\u308C\u3066\u3044\u305F\u679C\u5B9F\u3002\u79FB\u52D5\u901F\u5EA6\u304C\u4E0A\u304C\u308B\u3002"
+    _prefab: {fileID: 0}
+    _currentPrefab: {fileID: 0}
+    _predict: {fileID: 0}
+    _sprite: {fileID: 21300000, guid: d179bde01c2f6e4468e5e817764f16fd, type: 3}
+    _count: 0
+    _isPut: 0
+    _isUse: 1
+    _effectedLogText: "\u5C11\u3057\u811A\u529B\u304C\u5897\u3057\u305F\u6C17\u304C\u3059\u308B\u3002"

@@ -12,6 +12,7 @@ namespace Item
         Key,
         Dynamite,
         Born,
-        PowerPotion
+        PowerPotion,
+        PowerApple
     }
 }
