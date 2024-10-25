@@ -1,8 +1,7 @@
-using System;
-using UI;
+using Character.Player;
 using UnityEngine;
 
-namespace Character.Player
+namespace Item
 {
     public class UseItemEffects : MonoBehaviour
     {
