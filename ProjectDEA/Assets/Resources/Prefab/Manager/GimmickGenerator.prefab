@@ -70,6 +70,11 @@ MonoBehaviour:
     _isRoomGenerate: 1
     _minCount: 4
     _maxCount: 0
+  - _kind: 5
+    _prefab: {fileID: 6572796558083460292, guid: ac1ddc18ed787584c909c0fce8a7ac07, type: 3}
+    _isRoomGenerate: 0
+    _minCount: 0
+    _maxCount: 0
   _maxGimmickPerRoom: 4
   _minGimmickPerRoom: 2
   _mapParent: {fileID: 0}

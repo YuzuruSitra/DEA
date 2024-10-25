@@ -1,6 +1,7 @@
 using System.Collections;
 using Character.NPC.EnemyDragon;
 using Character.Player;
+using Gimmick;
 using UnityEngine;
 
 namespace Item
@@ -20,11 +21,12 @@ namespace Item
         private bool _isPlayerGive;
         [SerializeField] private int _dragonGiveDamage;
         private bool _isDragonGive;
-        
         private bool _isPutMonument;
+        private GimmickGenerator _gimmickGenerator;
         
         private void Start()
         {
+            _gimmickGenerator = GameObject.FindWithTag("GimmickGenerator").GetComponent<GimmickGenerator>();
             UseEffect();
         }
         
@@ -83,12 +85,25 @@ namespace Item
                     if (obj.CompareTag("StageCube"))
                     {
                         // モニュメントの生成
-                        if (_isPutMonument) continue;
+                        if (!_isPutMonument)
+                        {
+                            _isPutMonument = true;
+                            InsMonument(obj.transform.position);
+                        }
                     }
-
                     Destroy(obj);
                 }
             }
+        }
+
+        private void InsMonument(Vector3 pos)
+        {
+            var monumentPrefab = _gimmickGenerator.GimmickInfos[(int)GimmickGenerator.GimmickKind.Monument]._prefab;
+            var directionToSelf = transform.position - pos;
+            var insRot = Vector3.zero;
+            // 左右方向の判定
+            if (Mathf.Abs(directionToSelf.x) < Mathf.Abs(directionToSelf.z)) insRot.y = 90;
+            Instantiate(monumentPrefab, pos, Quaternion.Euler(insRot));
         }
         
         private static Vector3[] SetDirections()

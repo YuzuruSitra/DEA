@@ -15,7 +15,8 @@ namespace Gimmick
             ObeliskKeyOut,
             TreasureBox,
             EnemySpawnArea,
-            BornOut
+            BornOut,
+            Monument
         }
 
         [Serializable]
@@ -36,6 +37,7 @@ namespace Gimmick
         }
         
         [SerializeField] private GimmickInfo[] _gimmickInfo;
+        public GimmickInfo[] GimmickInfos => _gimmickInfo;
         private int[] _gimmickInsCount;
         [SerializeField] private int _maxGimmickPerRoom;
         [SerializeField] private int _minGimmickPerRoom;
@@ -52,7 +54,7 @@ namespace Gimmick
             _gimmickInsCount = new int[_gimmickInfo.Length];
             var exitObeliskRoom = CalcMostBigRoom(roomCount, roomInfo);
             
-            _obeliskKeyRooms = Enumerable.Range(0, stageGenerator.RoomCount).OrderBy(x => UnityEngine.Random.Range(0, stageGenerator.RoomCount)).Take(4).ToArray();
+            _obeliskKeyRooms = Enumerable.Range(0, stageGenerator.RoomCount).OrderBy(_ => UnityEngine.Random.Range(0, stageGenerator.RoomCount)).Take(4).ToArray();
             
             // 各部屋のギミック生成数を事前に決定
             var roomGimmickCount = new int[roomCount];
