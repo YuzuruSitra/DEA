@@ -63,7 +63,6 @@ namespace Character.NPC.EnemyDragon
                 // スライダーの値を線形補間する
                 var currentValue = Mathf.Lerp(startValue, newHp, elapsedTime / _waitingTime);
                 _slider.value = currentValue;
-                Debug.Log("Start :"+ startValue + " target :"+newHp + " current :" + _slider.value);
                 yield return null;
             }
             _slider.value = newHp; // 最終値を設定
