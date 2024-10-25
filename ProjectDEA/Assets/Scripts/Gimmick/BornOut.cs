@@ -10,9 +10,12 @@ namespace Gimmick
         private const ItemKind OutItem = ItemKind.Born;
         private InventoryHandler _inventoryHandler;
         public event Action Destroyed;
+        public bool IsInteractable { get; private set; }
+
         private void Start()
         {
             _inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
+            IsInteractable = true;
         }
 
         public void Interact()

@@ -26,18 +26,30 @@ namespace Gimmick
         private WaitForSeconds _sideEffectWaitForSeconds;
         private const int Priority = 15;
         public event Action Destroyed;
+        public bool IsInteractable { get; private set; }
+        private bool _isCompleted;
         
         private void Start()
         {
             _dungeonLayerHandler = GameObject.FindWithTag("DungeonLayerHandler").GetComponent<DungeonLayerHandler>();
             _inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
             _sideEffectWaitForSeconds = new WaitForSeconds(_sideEffectWaitTime);
+            _inventoryHandler.OnItemNumChanged += CheckItemInteractable;
         }
-        
+
+        private void OnDestroy()
+        { 
+            if (!_isCompleted) _inventoryHandler.OnItemNumChanged -= CheckItemInteractable;
+        }
+
         public void Interact()
         {
+            if (_isCompleted) return;
             if (_setKeyCount >= NeededKeyCount)
             {
+                _isCompleted = true;
+                IsInteractable = false;
+                _inventoryHandler.OnItemNumChanged -= CheckItemInteractable;
                 _vCam.Priority = Priority;
                 StartCoroutine(ExitLayer());
                 return;
@@ -45,12 +57,12 @@ namespace Gimmick
 
             if (_inventoryHandler.CurrentItemNum != (int)ItemKind.Key) return;
             if (_setKeyCount >= _obeliskSides.Length) return;
-            _inventoryHandler.UseItem();
             StartCoroutine(SetKey());
+            _inventoryHandler.UseItem();
             if (_rateTimeCoroutine != null) StopCoroutine(_rateTimeCoroutine);
             _rateTimeCoroutine = StartCoroutine(ChangeParticleRateTime(_setKeyCount * ParticleFactor));
         }
-
+        
         private IEnumerator SetKey()
         {
             var currentKey = _setKeyCount;
@@ -87,6 +99,12 @@ namespace Gimmick
             emission.rateOverTime = finalRate;
 
             _rateTimeCoroutine = null;
+        }
+
+        private void CheckItemInteractable()
+        {
+            if (_setKeyCount >= NeededKeyCount) return;
+            IsInteractable = _inventoryHandler.CurrentItemNum == (int)ItemKind.Key;
         }
         
     }

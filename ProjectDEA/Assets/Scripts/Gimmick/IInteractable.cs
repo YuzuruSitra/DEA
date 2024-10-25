@@ -6,5 +6,6 @@ namespace Gimmick
     {
         void Interact();
         event Action Destroyed;
+        bool IsInteractable { get; }
     }
 }

@@ -11,8 +11,10 @@ namespace Character.Player
         private void Update()
         {
             if (!_isInteractable) return;
+            if (_currentInteractable == null) return;
+            _indicationUI.SetActive(_currentInteractable.IsInteractable);
             // インタラクションキーのチェック
-            if (!Input.GetKeyDown(KeyCode.E) || _currentInteractable == null) return;
+            if (!Input.GetKeyDown(KeyCode.E) || !_currentInteractable.IsInteractable) return;
             _currentInteractable.Interact();
         }
 
@@ -21,7 +23,6 @@ namespace Character.Player
             var interactable = other.GetComponent<IInteractable>();
             if (interactable == null) return;
             _currentInteractable = interactable;
-            _indicationUI.SetActive(true);
             _currentInteractable.Destroyed += ResetCurrentTarget;
         }
 

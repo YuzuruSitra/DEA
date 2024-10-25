@@ -19,17 +19,20 @@ namespace Gimmick
         [SerializeField] private Collider _boxTopCol;
         [SerializeField] private float _openDuration;
         [SerializeField] private Vector3 _targetRot;
+        public bool IsInteractable { get; private set; }
         
         private void Start()
         {
             var number = Random.Range(0, _containItem.Length);
             _outItem = _containItem[number];
             _inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
+            IsInteractable = true;
         }
 
         public void Interact()
         {
             if (_isOpen) return;
+            IsInteractable = false;
             _inventoryHandler.AddItem(_outItem);
             _isOpen = true;
             StartCoroutine(RotateBoxTop());
