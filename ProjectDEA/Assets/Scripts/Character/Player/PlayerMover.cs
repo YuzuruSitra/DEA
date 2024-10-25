@@ -122,6 +122,12 @@ namespace Character.Player
             _isPushed = false;
         }
 
+        public void ChangeSpeed(float changeValue)
+        {
+            _walkSpeed += changeValue;
+            _runSpeed += changeValue;
+        }
+
         public void SetWalkableState(bool active)
         {
             _isWalkable = active;

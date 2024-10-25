@@ -130,6 +130,10 @@ namespace Character.Player
                     _useItemEffects.PlayerPowerUpper();
                     SendLogText(target._effectedLogText);
                     break;
+                case ItemKind.PowerApple:
+                    _useItemEffects.PlayerSpeedUpper();
+                    SendLogText(target._effectedLogText);
+                    break;
             }
         }
 

@@ -611,6 +611,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerClasHub: {fileID: 5969759676665908825}
   _powerPotionUpValue: 5
+  _addSpeedValue: 0.25
 --- !u!114 &2283786242572857940
 MonoBehaviour:
   m_ObjectHideFlags: 0
