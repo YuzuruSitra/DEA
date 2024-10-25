@@ -1,28 +1,28 @@
 using System.Collections;
+using Character.NPC.EnemyDragon;
+using Character.Player;
 using UnityEngine;
 
 namespace Item
 {
-    public class Dynamite : MonoBehaviour, IItem
+    public class Dynamite : MonoBehaviour
     {
-        [SerializeField] private string _name;
-        public string Name => _name;
-        [SerializeField] private ItemKind _itemKind;
-        public ItemKind ItemKind => _itemKind;
-        [SerializeField] private string _description;
-        public string Description => _description;
-        [SerializeField] private bool _isConsumable;
-        public bool IsConsumable => _isConsumable;
         [SerializeField] private float _detonationTime;
-        private float _attackAnimTime;
-        private bool _isUsed;
-        [SerializeField] private float _rayLength = 1.5f;
+        [SerializeField] private float _rayLength;
         [SerializeField] private float _animPaddingTime;
         [SerializeField] private Animator _animator;
         [SerializeField] private AnimationClip _attackClip;
         private float _animWaitTime;
         private static readonly int Bomb = Animator.StringToHash("Bomb");
+        [SerializeField] private LayerMask _layerToIgnore;
 
+        [SerializeField] private int _playerGiveDamage;
+        private bool _isPlayerGive;
+        [SerializeField] private int _dragonGiveDamage;
+        private bool _isDragonGive;
+        
+        private bool _isPutMonument;
+        
         private void Start()
         {
             UseEffect();
@@ -54,14 +54,39 @@ namespace Item
             foreach (var direction in directions)
             {
                 var ray = new Ray(origin, direction);
-                var hits = Physics.RaycastAll(ray, _rayLength);
+                var hits = Physics.RaycastAll(ray, _rayLength, ~_layerToIgnore);
                 
                 foreach (var hit in hits)
                 {
-                    if (hit.collider.CompareTag("StageCube"))
+                    var obj = hit.collider.gameObject;
+                    
+                    if (obj.CompareTag("Player"))
                     {
-                        Destroy(hit.collider.gameObject);
+                        if (_isPlayerGive) continue;
+                        _isPlayerGive = true;
+                        var playerHub = obj.GetComponent<PlayerClasHub>();
+                        if (playerHub == null) continue;
+                        playerHub.PlayerHpHandler.ReceiveDamage(_playerGiveDamage);
+                        continue;
                     }
+                    
+                    if (obj.CompareTag("EnemyDragon"))
+                    {
+                        if (_isDragonGive) continue;
+                        _isDragonGive = true;
+                        var dragonController = obj.GetComponent<DragonController>();
+                        if (dragonController == null) continue;
+                        dragonController.OnGetDamage(_dragonGiveDamage);
+                        continue;
+                    }
+
+                    if (obj.CompareTag("StageCube"))
+                    {
+                        // モニュメントの生成
+                        if (_isPutMonument) continue;
+                    }
+
+                    Destroy(obj);
                 }
             }
         }

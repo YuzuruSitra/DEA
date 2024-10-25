@@ -75,6 +75,7 @@ namespace Character.Player
         // PutItem
         private void MovePrediction()
         {
+            if (_inventoryHandler.CurrentItemNum == InventoryHandler.ErrorValue) return;
             _predictedPosition = CalculateSpawnPosition();
             _predictedRotation = transform.rotation * Quaternion.Euler(0, 180, 0);
             var currentPrefab = _inventoryHandler.TargetItem._currentPrefab;

@@ -2,9 +2,9 @@ namespace Item
 {
     public interface IItem
     {
-        ItemKind ItemKind { get; }
-        void UseEffect();
-        bool IsConsumable { get; }
+        // ItemKind ItemKind { get; }
+        // void UseEffect();
+        // bool IsConsumable { get; }
     }
 
     public enum ItemKind
