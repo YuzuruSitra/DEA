@@ -10,6 +10,7 @@ namespace Character.Player
         public PlayerHpHandler PlayerHpHandler => _playerHpHandler;
         [SerializeField] private PlayerInteraction _playerInteraction;
         [SerializeField] private PlayerAttackHandler _playerAttackHandler;
+        public PlayerAttackHandler PlayerAttackHandler => _playerAttackHandler;
         [SerializeField] private PlayerUseItem _playerUseItem;
         
         public void SetPlayerFreedom(bool isFreedom)

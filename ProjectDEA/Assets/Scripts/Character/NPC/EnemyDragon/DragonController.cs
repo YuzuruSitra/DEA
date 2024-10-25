@@ -2,6 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Character.Player;
+using Item;
+using Manager;
+using UI;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -37,12 +40,18 @@ namespace Character.NPC.EnemyDragon
         public Action<int> ReceiveNewHp;
         public Action OnReviving;
         public bool IsDeath { get; private set; }
+        private InventoryHandler _inventoryHandler;
+        private const ItemKind OutItem = ItemKind.PowerPotion;
+        private LogTextHandler _logTextHandler;
+        private const string SendLogMessage = "なんとかドラゴンを撃退した。";
         
         private void Start()
         {
             _agent = GetComponent<NavMeshAgent>();
             _counterWaitForSeconds = new WaitForSeconds(_counterWaitTime);
             _deathWaitForSeconds = new WaitForSeconds(_deathWait);
+            _inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
+            _logTextHandler = GameObject.FindWithTag("LogTextHandler").GetComponent<LogTextHandler>();
             _states.Add(AIState.Null, null);
             _states.Add(AIState.Stay, new StayState(gameObject, _stateTimeRange, _stayTimeBase));
             _states.Add(AIState.Attack, new AttackState(gameObject, _agent, _screamTime, _attackSpeed, _attackAcceleration, _attackRotSpeed));
@@ -104,6 +113,8 @@ namespace Character.NPC.EnemyDragon
             {
                 IsDeath = true;
                 _agent.isStopped = true;
+                _logTextHandler.AddLog(SendLogMessage);
+                _inventoryHandler.AddItem(OutItem);
                 StartCoroutine(DeathDisable());
                 return;
             }

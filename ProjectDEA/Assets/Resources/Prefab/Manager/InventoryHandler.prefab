@@ -53,22 +53,39 @@ MonoBehaviour:
     _predict: {fileID: 0}
     _sprite: {fileID: 21300000, guid: 3dd7070fb10e77b4aa40b69f45b8a91b, type: 3}
     _count: 0
+    _isPut: 0
     _isUse: 0
+    _effectedLogText: 
   - _kind: 1
     _name: "\u30C0\u30A4\u30CA\u30DE\u30A4\u30C8"
-    _description: "\u5468\u56F2\u3092\u7206\u7834\u3059\u308B\u3002"
+    _description: "\u7834\u58CA\u306E\u9650\u308A\u3092\u5C3D\u304F\u3059\u3002"
     _prefab: {fileID: 3244715098771652903, guid: 014aca1e472a6f849b8fe6dd0e01be23, type: 3}
     _currentPrefab: {fileID: 0}
     _predict: {fileID: 4086957854919441518, guid: 98cdcd7faf06e5346b443aef0e30d2d6, type: 3}
     _sprite: {fileID: 21300000, guid: 68a2b9dc143d043e3b7c00623740c487, type: 3}
     _count: 0
-    _isUse: 1
+    _isPut: 1
+    _isUse: 0
+    _effectedLogText: "\u5468\u56F2\u3092\u7206\u7834\u3059\u308B\u3002"
   - _kind: 2
     _name: "\u4EA1\u9AB8"
-    _description: "\u30C0\u30F3\u30B8\u30E7\u30F3\u3092\u8131\u51FA\u3067\u304D\u306A\u304B\u3063\u305F\u4EBA\u306E\u4EA1\u9AB8\u3002\u53EF\u80FD\u306A\u9650\u308A\u9023\u308C\u3066\u5E30\u308A\u305F\u3044\u3002"
+    _description: "\u30C0\u30F3\u30B8\u30E7\u30F3\u3067\u529B\u5C3D\u304D\u305F\u8005\u306E\u4EA1\u9AB8\u3002\u53EF\u80FD\u306A\u9650\u308A\u9023\u308C\u3066\u5E30\u308A\u305F\u3044\u3002"
     _prefab: {fileID: 0}
     _currentPrefab: {fileID: 0}
     _predict: {fileID: 0}
     _sprite: {fileID: 21300000, guid: ef9fe74d58c7b6945a90c2862df7bb1a, type: 3}
     _count: 0
+    _isPut: 0
     _isUse: 0
+    _effectedLogText: 
+  - _kind: 3
+    _name: "\u529B\u306E\u30DD\u30FC\u30B7\u30E7\u30F3"
+    _description: "\u653B\u6483\u529B\u304C\u5C11\u3057\u3042\u304C\u308B\u3002"
+    _prefab: {fileID: 0}
+    _currentPrefab: {fileID: 0}
+    _predict: {fileID: 0}
+    _sprite: {fileID: 21300000, guid: 86a6a209ad4dccf4182adbdda114119c, type: 3}
+    _count: 0
+    _isPut: 0
+    _isUse: 1
+    _effectedLogText: "\u5C11\u3057\u7B4B\u529B\u304C\u5897\u3057\u305F\u6C17\u304C\u3059\u308B\u3002"

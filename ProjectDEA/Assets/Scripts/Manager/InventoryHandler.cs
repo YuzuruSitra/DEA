@@ -4,6 +4,7 @@ using Item;
 using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 namespace Manager
 {
@@ -20,19 +21,20 @@ namespace Manager
             public GameObject _predict;
             public Sprite _sprite;
             public int _count;
+            public bool _isPut;
             public bool _isUse;
+            public string _effectedLogText;
         }
         [SerializeField] private ItemPrefabSet[] _itemSets;
         public ItemPrefabSet[] ItemSets => _itemSets;
-        private const int ErrorValue = -1;
+        public const int ErrorValue = -1;
         public int CurrentItemNum { get; private set; }
         public Action OnItemNumChanged;
         public Action<Sprite> OnItemSpriteChanged;
         public Action<int> OnItemCountChanged;
         public Action<int> OnKeyCountChanged;
         public Action<ItemPrefabSet[]> OnItemLineupChanged;
-        public bool CurrentIsUse => CurrentItemNum != ErrorValue && _itemSets[CurrentItemNum]._isUse;
-        public GameObject CurrentPredict => CurrentItemNum == ErrorValue ? null : _itemSets[CurrentItemNum]._currentPrefab;
+        public ItemPrefabSet TargetItem => _itemSets[CurrentItemNum];
         private LogTextHandler _logTextHandler;
         private const string LogTemplate = "を手に入れた。";
         private const string LogObeliskTemplate = "破片は集まった。オベリスクへ向かおう。";

@@ -459,6 +459,7 @@ GameObject:
   - component: {fileID: 2002799768244149595}
   - component: {fileID: 51901469298106324}
   - component: {fileID: 2817494418154973700}
+  - component: {fileID: 3852264020249794046}
   - component: {fileID: 2283786242572857940}
   - component: {fileID: 4351832874976852339}
   m_Layer: 9
@@ -595,6 +596,21 @@ MonoBehaviour:
   _ignoreLayerMask:
     serializedVersion: 2
     m_Bits: 272
+  _useItemEffects: {fileID: 3852264020249794046}
+--- !u!114 &3852264020249794046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2690993595501631969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ec2d26d85c4abe4e8537f69788a5fb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerClasHub: {fileID: 5969759676665908825}
+  _powerPotionUpValue: 5
 --- !u!114 &2283786242572857940
 MonoBehaviour:
   m_ObjectHideFlags: 0

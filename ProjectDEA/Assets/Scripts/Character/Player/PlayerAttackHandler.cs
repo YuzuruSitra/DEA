@@ -34,5 +34,10 @@ namespace Character.Player
         {
             _isCanAttack = active;
         }
+
+        public void ChangeAttackPower(int newDamage)
+        {
+            _attackDamage = newDamage;
+        }
     }
 }

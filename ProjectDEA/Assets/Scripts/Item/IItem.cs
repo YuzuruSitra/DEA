@@ -11,6 +11,7 @@ namespace Item
     {
         Key,
         Dynamite,
-        Born
+        Born,
+        PowerPotion
     }
 }

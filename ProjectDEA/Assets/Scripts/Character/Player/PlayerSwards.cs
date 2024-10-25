@@ -6,19 +6,26 @@ namespace Character.Player
     public class PlayerSwards : MonoBehaviour
     {
         [SerializeField] private PlayerAttackHandler _playerAttackHandler;
-        private int _power;
-
-        private void Start()
-        {
-            _power = _playerAttackHandler.AttackDamage;
-        }
+        private GameObject _currentDragon;
+        private DragonController _currentDragonController;
+        private bool _oneHit;
         
         private void OnTriggerEnter(Collider other)
         {
-            if (!_playerAttackHandler.IsAttacking) return;
+            if (!_playerAttackHandler.IsAttacking)
+            {
+                _oneHit = false;
+                return;
+            }
+            if (_oneHit) return;
             if (!other.CompareTag("EnemyDragon")) return;
-            var dragon = other.gameObject.GetComponent<DragonController>();
-            dragon.OnGetDamage(_power, _playerAttackHandler.gameObject.transform.position);
+            if (_currentDragon != other.gameObject)
+            {
+                _currentDragon = other.gameObject;
+                _currentDragonController = other.gameObject.GetComponent<DragonController>();
+            }
+            _currentDragonController.OnGetDamage(_playerAttackHandler.AttackDamage, _playerAttackHandler.gameObject.transform.position);
+            _oneHit = true;
         }
     }
 }

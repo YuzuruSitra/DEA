@@ -1,4 +1,6 @@
+using Item;
 using Manager;
+using UI;
 using UnityEngine;
 
 namespace Character.Player
@@ -18,10 +20,13 @@ namespace Character.Player
 
         private Vector3 _predictedPosition;
         private Quaternion _predictedRotation;
-
+        [SerializeField] private UseItemEffects _useItemEffects;
+        private LogTextHandler _logTextHandler;
+        
         private void Start()
         {
             _inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
+            _logTextHandler = GameObject.FindWithTag("LogTextHandler").GetComponent<LogTextHandler>();
             _inventoryHandler.OnItemNumChanged += ResetState;
         }
 
@@ -38,35 +43,44 @@ namespace Character.Player
 
         private void HandleItemUsage()
         {
-            if (!_inventoryHandler.CurrentIsUse) return;
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (_inventoryHandler.CurrentItemNum == InventoryHandler.ErrorValue) return;
+            var target = _inventoryHandler.TargetItem;
+            if (target._isPut)
             {
-                switch (_insState)
+                if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    case InsState.None:
-                        _inventoryHandler.ChangePredictActive(_inventoryHandler.CurrentPredict, true);
-                        _insState = InsState.Predict;
-                        break;
-                    case InsState.Predict:
-                        PlaceItem();
-                        ResetState();
-                        break;
+                    switch (_insState)
+                    {
+                        case InsState.None:
+                            _inventoryHandler.ChangePredictActive(target._currentPrefab, true);
+                            _insState = InsState.Predict;
+                            break;
+                        case InsState.Predict:
+                            PlaceItem();
+                            ResetState();
+                            SendLogText(target._effectedLogText);
+                            break;
+                    }
                 }
-            }
-            
-            if (_insState == InsState.Predict) MovePrediction();
-            
-            // Chancel.
-            if (Input.GetMouseButtonDown(1)) ResetState();
-        }
 
+                if (_insState == InsState.Predict) MovePrediction();
+
+                // Chancel.
+                if (Input.GetMouseButtonDown(1)) ResetState();
+            }
+
+            if (target._isUse && Input.GetKeyDown(KeyCode.Space)) DoneUseItem();
+        }
+        
+        // PutItem
         private void MovePrediction()
         {
             _predictedPosition = CalculateSpawnPosition();
             _predictedRotation = transform.rotation * Quaternion.Euler(0, 180, 0);
-            if (_inventoryHandler.CurrentPredict == null) return;
-            _inventoryHandler.CurrentPredict.transform.position = _predictedPosition;
-            _inventoryHandler.CurrentPredict.transform.rotation = _predictedRotation;
+            var currentPrefab = _inventoryHandler.TargetItem._currentPrefab;
+            if (currentPrefab == null) return;
+            currentPrefab.transform.position = _predictedPosition;
+            currentPrefab.transform.rotation = _predictedRotation;
         }
 
         private Vector3 CalculateSpawnPosition()
@@ -99,8 +113,29 @@ namespace Character.Player
 
         private void ResetState()
         {
+            if (_inventoryHandler.CurrentItemNum == InventoryHandler.ErrorValue) return;
             _insState = InsState.None;
-            _inventoryHandler.ChangePredictActive(_inventoryHandler.CurrentPredict, false);
+            _inventoryHandler.ChangePredictActive(_inventoryHandler.TargetItem._currentPrefab, false);
+        }
+        
+        // UseItem
+        private void DoneUseItem()
+        {
+            var target = _inventoryHandler.TargetItem;
+            _inventoryHandler.UseItem();
+            switch (target._kind)
+            {
+                case ItemKind.PowerPotion:
+                    _useItemEffects.PlayerPowerUpper();
+                    SendLogText(target._effectedLogText);
+                    break;
+            }
+        }
+
+        private void SendLogText(string message)
+        {
+            if (message == "") return;
+            _logTextHandler.AddLog(message);
         }
         
         public void SetCanUseItemState(bool active)
