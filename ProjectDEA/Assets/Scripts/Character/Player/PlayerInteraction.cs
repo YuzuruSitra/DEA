@@ -35,8 +35,11 @@ namespace Character.Player
 
         private void ResetCurrentTarget()
         {
-            _currentInteractable.Destroyed -= ResetCurrentTarget;
-            _currentInteractable = null;
+            if (_currentInteractable != null)
+            {
+                _currentInteractable.Destroyed -= ResetCurrentTarget;
+                _currentInteractable = null;
+            }
             _indicationUI.SetActive(false);
         }
         

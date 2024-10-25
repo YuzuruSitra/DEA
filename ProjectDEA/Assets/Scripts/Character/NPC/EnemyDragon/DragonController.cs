@@ -104,7 +104,7 @@ namespace Character.NPC.EnemyDragon
             NextState(AIState.Attack);
         }
 
-        public void OnGetDamage(int damage, Vector3 targetPos)
+        public void OnGetDamage(int damage, Vector3 targetPos = default)
         {
             if (IsDeath) return;
             _currentHp = Math.Max(_currentHp - damage, 0);
@@ -118,6 +118,7 @@ namespace Character.NPC.EnemyDragon
                 StartCoroutine(DeathDisable());
                 return;
             }
+            if (targetPos == default) return;
             _counterCoroutine ??= StartCoroutine(CounterAttackStateChange(targetPos));
         }
 

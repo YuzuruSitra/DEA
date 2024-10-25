@@ -1,4 +1,6 @@
+using System;
 using Character.NPC.EnemyDragon;
+using Gimmick;
 using UnityEngine;
 
 namespace Character.Player
@@ -6,10 +8,20 @@ namespace Character.Player
     public class PlayerSwards : MonoBehaviour
     {
         [SerializeField] private PlayerAttackHandler _playerAttackHandler;
-        private GameObject _currentDragon;
-        private DragonController _currentDragonController;
+        private Transform _playerTrn;
         private bool _oneHit;
         
+        private GameObject _currentDragon;
+        private DragonController _currentDragonController;
+        
+        private GameObject _currentBorn;
+        private BornOut _currentBornOut;
+
+        private void Start()
+        {
+            _playerTrn = _playerAttackHandler.gameObject.transform;
+        }
+
         private void OnTriggerEnter(Collider other)
         {
             if (!_playerAttackHandler.IsAttacking)
@@ -18,14 +30,29 @@ namespace Character.Player
                 return;
             }
             if (_oneHit) return;
-            if (!other.CompareTag("EnemyDragon")) return;
-            if (_currentDragon != other.gameObject)
+            
+            if (other.CompareTag("EnemyDragon"))
             {
-                _currentDragon = other.gameObject;
-                _currentDragonController = other.gameObject.GetComponent<DragonController>();
+                if (_currentDragon != other.gameObject)
+                {
+                    _currentDragon = other.gameObject;
+                    _currentDragonController = _currentDragon.GetComponent<DragonController>();
+                }
+
+                _currentDragonController.OnGetDamage(_playerAttackHandler.AttackDamage, _playerTrn.position);
+                _oneHit = true;
             }
-            _currentDragonController.OnGetDamage(_playerAttackHandler.AttackDamage, _playerAttackHandler.gameObject.transform.position);
-            _oneHit = true;
+
+            if (other.CompareTag("BornOut"))
+            {
+                if (_currentBorn != other.gameObject)
+                {
+                    _currentBorn = other.gameObject;
+                    _currentBornOut = _currentBorn.GetComponent<BornOut>();
+                }
+                _currentBornOut.FlyAwayBorn(_playerTrn.position);
+                _oneHit = true;
+            }
         }
     }
 }
