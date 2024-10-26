@@ -304,3 +304,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bgmAudioSource: {fileID: 1136887322001297524}
   _seAudioSource: {fileID: 5549301470957163256}
+  _fadeDuration: 1
