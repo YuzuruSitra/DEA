@@ -1817,7 +1817,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2155136208021066470}
   - component: {fileID: 5115733442536335045}
-  - component: {fileID: 8082053806694203754}
   m_Layer: 5
   m_Name: HPSlider
   m_TagString: Untagged
@@ -1842,8 +1841,8 @@ RectTransform:
   - {fileID: 2770951604951807806}
   m_Father: {fileID: 1104708310468435712}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 23}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1898,19 +1897,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &8082053806694203754
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6646367343632484213}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db1e8dc3c9ed56048ac1130791fa2664, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _waitingTime: 3
 --- !u!1 &6727189181471308876
 GameObject:
   m_ObjectHideFlags: 0

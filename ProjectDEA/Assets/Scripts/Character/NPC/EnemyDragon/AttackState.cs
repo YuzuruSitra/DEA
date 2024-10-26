@@ -99,7 +99,7 @@ namespace Character.NPC.EnemyDragon
 
         private bool IsStateFinJudgment()
         {
-            return _agent.remainingDistance <= _agent.stoppingDistance;
+            return IsAttacking && _agent.remainingDistance <= _agent.stoppingDistance;
         }
 
         private void SetTargetPosition()

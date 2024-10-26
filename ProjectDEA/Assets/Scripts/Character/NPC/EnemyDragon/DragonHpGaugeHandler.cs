@@ -57,18 +57,19 @@ namespace Character.NPC.EnemyDragon
         {
             var elapsedTime = 0f;
             var startValue = _slider.value;
+            newHp = Mathf.Min(startValue, newHp);  // newHpが現在のスライダー値より高くならないように制限
+
             while (elapsedTime < _waitingTime)
             {
                 elapsedTime += Time.deltaTime;
-                // スライダーの値を線形補間する
-                var currentValue = Mathf.Lerp(startValue, newHp, elapsedTime / _waitingTime);
-                _slider.value = currentValue;
+                var t = Mathf.Clamp01(elapsedTime / _waitingTime); // tを0〜1に制限
+                _slider.value = Mathf.Lerp(startValue, newHp, t);
                 yield return null;
             }
-            _slider.value = newHp; // 最終値を設定
-
+            _slider.value = newHp;
             yield return _disabledWait;
             _canvasObj.SetActive(false);
+            _coroutine = null;
         }
     }
 }
