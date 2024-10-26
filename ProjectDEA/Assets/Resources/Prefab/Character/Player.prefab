@@ -460,7 +460,6 @@ GameObject:
   - component: {fileID: 51901469298106324}
   - component: {fileID: 2817494418154973700}
   - component: {fileID: 3852264020249794046}
-  - component: {fileID: 2283786242572857940}
   - component: {fileID: 4351832874976852339}
   - component: {fileID: 1739906727943873902}
   - component: {fileID: 5984014845965616732}
@@ -617,20 +616,6 @@ MonoBehaviour:
   _powerPotionUpValue: 5
   _addHpValue: 20
   _buffItemAudio: {fileID: 8300000, guid: 6bfd3f7981c065d48bde3780a9fc12f9, type: 3}
---- !u!114 &2283786242572857940
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2690993595501631969}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68a789722baa6254db6bab7860362fbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _waterTransform: {fileID: 0}
-  _sinkTime: 10
 --- !u!114 &4351832874976852339
 MonoBehaviour:
   m_ObjectHideFlags: 0

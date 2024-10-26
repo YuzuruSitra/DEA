@@ -18745,6 +18745,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 844348300}
     m_Modifications:
+    - target: {fileID: 5767397899294283529, guid: 97d88515d36f5eb408dead79290fe708, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6192303899037160930, guid: 97d88515d36f5eb408dead79290fe708, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7134810894747162195, guid: 97d88515d36f5eb408dead79290fe708, type: 3}
       propertyPath: m_text
       value: "\u30FC\u30FC\u30FC"
