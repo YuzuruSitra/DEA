@@ -1,6 +1,7 @@
 using System;
 using Gimmick;
 using Item;
+using Manager.Audio;
 using Manager.PlayData;
 using UI;
 using UnityEngine;
@@ -39,6 +40,8 @@ namespace Manager
         private const string LogTemplate = "を手に入れた。";
         private const string LogObeliskTemplate = "破片は集まった。オベリスクへ向かおう。";
         private AnalysisDataHandler _analysisDataHandler;
+        private SoundHandler _soundHandler;
+        [SerializeField] private AudioClip _pushAudio;
         
         private void Awake()
         {
@@ -87,6 +90,7 @@ namespace Manager
             DontDestroyOnLoad(gameObject);
             
             _analysisDataHandler = GameObject.FindWithTag("AnalysisDataHandler").GetComponent<AnalysisDataHandler>();
+            _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
         }
 
         private void Update()
@@ -104,6 +108,7 @@ namespace Manager
 
                 if (_itemSets[newIndex]._count <= 0) continue;
                 ChangeItemNum(newIndex);
+                if (CurrentItemNum != newIndex) _soundHandler.PlaySe(_pushAudio);
                 return;
             }
 

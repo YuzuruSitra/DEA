@@ -1,3 +1,4 @@
+using Manager.Audio;
 using Manager.PlayData;
 using TMPro;
 using UnityEngine;
@@ -16,9 +17,12 @@ namespace UI
         [SerializeField] private TMP_InputField _inputField;
         [SerializeField] private TextMeshProUGUI _idText;
         [SerializeField] private AnalysisDataHandler _analysisData;
+        private SoundHandler _soundHandler;
+        [SerializeField] private AudioClip _pushAudio;
         
         private void Start()
         {
+            _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
             _startBt.onClick.AddListener(NextScene);
             _devBt.onClick.AddListener(ChangeDevPad);
             _increaseIdBt.onClick.AddListener(IncreasePlayerID);
@@ -27,21 +31,24 @@ namespace UI
             ChangeIdText();
         }
 
-        private static void NextScene()
+        private void NextScene()
         {
             SceneManager.LoadScene("DungeonStart");
+            _soundHandler.PlaySe(_pushAudio);
         }
 
         private void ChangeDevPad()
         {
             var newState = !_devPad.activeSelf;
             _devPad.SetActive(newState);
+            _soundHandler.PlaySe(_pushAudio);
         }
 
         private void IncreasePlayerID()
         {
             _analysisData.PlayerID++;
             ChangeIdText();
+            _soundHandler.PlaySe(_pushAudio);
         }
 
         private void ReducePlayerID()
@@ -49,6 +56,7 @@ namespace UI
             if (_analysisData.PlayerID == 0) return;
             _analysisData.PlayerID--;
             ChangeIdText();
+            _soundHandler.PlaySe(_pushAudio);
         }
 
         private void SetPlayerID(string value)

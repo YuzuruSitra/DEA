@@ -2,6 +2,7 @@ using System.Collections;
 using Character.Player;
 using Cinemachine;
 using Gimmick;
+using Manager.Audio;
 using UI;
 using UnityEngine;
 
@@ -22,9 +23,12 @@ namespace Manager
         [SerializeField] private GameObject _tutorialIndicationUI;
         private bool _isIndicationActive;
         private bool _isTutorial;
+        private SoundHandler _soundHandler;
+        [SerializeField] private AudioClip _pushAudio;
         
         private void Start()
         {
+            _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
             StartCoroutine(TutorialCoroutine());
         }
 
@@ -48,6 +52,7 @@ namespace Manager
             if (!Input.anyKeyDown) return;
             _currentWaitState++;
             _inputCurrentTime = 0;
+            _soundHandler.PlaySe(_pushAudio);
         }
 
         private IEnumerator TutorialCoroutine()

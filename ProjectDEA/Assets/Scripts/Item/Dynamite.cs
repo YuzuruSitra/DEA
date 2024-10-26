@@ -2,6 +2,7 @@ using System.Collections;
 using Character.NPC.EnemyDragon;
 using Character.Player;
 using Gimmick;
+using Manager.Audio;
 using Manager.PlayData;
 using UnityEngine;
 
@@ -25,11 +26,14 @@ namespace Item
         private bool _isPutMonument;
         private GimmickGenerator _gimmickGenerator;
         private AnalysisDataHandler _analysisDataHandler;
+        private SoundHandler _soundHandler;
+        [SerializeField] private AudioClip _bombAudio;
         
         private void Start()
         {
             _gimmickGenerator = GameObject.FindWithTag("GimmickGenerator").GetComponent<GimmickGenerator>();
             _analysisDataHandler = GameObject.FindWithTag("AnalysisDataHandler").GetComponent<AnalysisDataHandler>();
+            _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
             UseEffect();
         }
         
@@ -50,6 +54,7 @@ namespace Item
             
             PerformRaycastInDirections(directions, adPos);
             PerformRaycastInDirections(directions, adPos + Vector3.up);
+            _soundHandler.PlaySe(_bombAudio);
             yield return new WaitForSeconds(_animPaddingTime);
             Destroy(gameObject);
         }

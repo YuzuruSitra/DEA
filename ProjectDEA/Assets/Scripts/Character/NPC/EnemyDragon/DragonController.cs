@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Character.Player;
 using Item;
 using Manager;
+using Manager.Audio;
 using Manager.PlayData;
 using UI;
 using UnityEngine;
@@ -46,7 +47,9 @@ namespace Character.NPC.EnemyDragon
         private LogTextHandler _logTextHandler;
         private const string SendLogMessage = "なんとかドラゴンを撃退した。";
         private AnalysisDataHandler _analysisDataHandler;
-        
+        private SoundHandler _soundHandler;
+        [SerializeField] private AudioClip _hitAudio;
+        [SerializeField] private AudioClip _screamAudio;
         private void Start()
         {
             _agent = GetComponent<NavMeshAgent>();
@@ -55,6 +58,7 @@ namespace Character.NPC.EnemyDragon
             _inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
             _logTextHandler = GameObject.FindWithTag("LogTextHandler").GetComponent<LogTextHandler>();
             _analysisDataHandler = GameObject.FindWithTag("AnalysisDataHandler").GetComponent<AnalysisDataHandler>();
+            _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
             _states.Add(AIState.Null, null);
             _states.Add(AIState.Stay, new StayState(gameObject, _stateTimeRange, _stayTimeBase));
             _states.Add(AIState.Attack, new AttackState(gameObject, _agent, _screamTime, _attackSpeed, _attackAcceleration, _attackRotSpeed));
@@ -103,8 +107,11 @@ namespace Character.NPC.EnemyDragon
 
         public void OnAttackState(Vector3 target)
         {
+            if (IsDeath) return;
+            if (CurrentState == AIState.Attack) return;
             _agent.destination = target;
             NextState(AIState.Attack);
+            _soundHandler.PlaySe(_screamAudio);
         }
 
         public void OnGetDamage(int damage, Vector3 targetPos = default)
@@ -151,6 +158,7 @@ namespace Character.NPC.EnemyDragon
             if (playerHub == null) return;
             StartCoroutine(playerHub.PlayerMover.PushMoveUp(UpperDuration, _launchPower));
             playerHub.PlayerHpHandler.ReceiveDamage(_giveDamage);
+            _soundHandler.PlaySe(_hitAudio);
         }
     }
 }

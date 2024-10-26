@@ -3,6 +3,7 @@ using System.Collections;
 using Cinemachine;
 using Item;
 using Manager;
+using Manager.Audio;
 using UnityEngine;
 
 namespace Gimmick
@@ -29,10 +30,14 @@ namespace Gimmick
         public bool IsInteractable { get; private set; }
         private bool _isCompleted;
         
+        private SoundHandler _soundHandler;
+        [SerializeField] private AudioClip _setKeyAudio;
+        
         private void Start()
         {
             _dungeonLayerHandler = GameObject.FindWithTag("DungeonLayerHandler").GetComponent<DungeonLayerHandler>();
             _inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
+            _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
             _sideEffectWaitForSeconds = new WaitForSeconds(_sideEffectWaitTime);
             _inventoryHandler.OnItemNumChanged += CheckItemInteractable;
         }
@@ -68,6 +73,7 @@ namespace Gimmick
             var currentKey = _setKeyCount;
             _setKeyCount++;
             _obeliskSideParticles[currentKey].Play();
+            _soundHandler.PlaySe(_setKeyAudio);
             yield return _sideEffectWaitForSeconds;
             _obeliskSides[currentKey].SetActive(true);
         }

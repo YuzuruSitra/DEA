@@ -11,7 +11,6 @@ namespace Manager.Audio
 		private float _initialBgmVolume;
 		private Coroutine _fadeCoroutine;
 		
-		
 		private void Awake()
 		{
 			CheckSingleton();
@@ -70,16 +69,16 @@ namespace Manager.Audio
 			_seAudioSource.PlayOneShot(clip);
 		}
 		
-		// BGM音量変更
-		public void SetNewValueBGM(float newValueBGM)
-		{
-			_bgmAudioSource.volume = Mathf.Clamp01(newValueBGM);
-		}
-
-		// BGM音量変更
-		public void SetNewValueSe(float newValueSe)
-		{
-			_seAudioSource.volume = Mathf.Clamp01(newValueSe);
-		}
+		// // BGM音量変更
+		// public void SetNewValueBGM(float newValueBGM)
+		// {
+		// 	_bgmAudioSource.volume = Mathf.Clamp01(newValueBGM);
+		// }
+		//
+		// // BGM音量変更
+		// public void SetNewValueSe(float newValueSe)
+		// {
+		// 	_seAudioSource.volume = Mathf.Clamp01(newValueSe);
+		// }
 	}
 }

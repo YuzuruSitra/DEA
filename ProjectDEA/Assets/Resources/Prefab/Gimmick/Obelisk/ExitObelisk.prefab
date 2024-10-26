@@ -641,6 +641,7 @@ MonoBehaviour:
   - {fileID: 7067835028429730113}
   - {fileID: 2592622398594043930}
   _sideEffectWaitTime: 0.85
+  _setKeyAudio: {fileID: 8300000, guid: d55c70b1db9e71949996ea1c73f087b4, type: 3}
 --- !u!1 &4563023249573816172
 GameObject:
   m_ObjectHideFlags: 0

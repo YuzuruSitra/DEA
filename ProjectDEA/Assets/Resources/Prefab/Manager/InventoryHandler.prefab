@@ -100,3 +100,4 @@ MonoBehaviour:
     _isPut: 0
     _isUse: 1
     _effectedLogText: "\u5C11\u3057\u811A\u529B\u304C\u5897\u3057\u305F\u6C17\u304C\u3059\u308B\u3002"
+  _pushAudio: {fileID: 8300000, guid: 8302fb6948a54f442b70734dc17bd38e, type: 3}

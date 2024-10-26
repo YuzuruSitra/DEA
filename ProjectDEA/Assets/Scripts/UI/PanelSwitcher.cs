@@ -1,5 +1,6 @@
 using System;
 using Character.Player;
+using Manager.Audio;
 using UnityEngine;
 
 namespace UI
@@ -10,6 +11,13 @@ namespace UI
         [SerializeField] private PlayerClasHub _playerClasHub;
         public Action IsOpenInventory;
         private bool _isManipulate = true;
+        private SoundHandler _soundHandler;
+        [SerializeField] private AudioClip _pushAudio;
+        
+        private void Start()
+        {
+            _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
+        }
 
         private void Update()
         {
@@ -23,6 +31,7 @@ namespace UI
             _inventoryPanel.SetActive(!active);
             _playerClasHub.SetPlayerFreedom(active);
             IsOpenInventory?.Invoke();
+            _soundHandler.PlaySe(_pushAudio);
         }
 
         public void ChangeIsManipulate(bool isManipulate)

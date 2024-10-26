@@ -10330,6 +10330,7 @@ MonoBehaviour:
     m_Bits: 400
   _playerGiveDamage: 20
   _dragonGiveDamage: 25
+  _bombAudio: {fileID: 8300000, guid: 8c313aede6c04d544b3ac855c7b587ee, type: 3}
 --- !u!1 &3465962932067444135
 GameObject:
   m_ObjectHideFlags: 0

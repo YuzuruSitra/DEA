@@ -1,4 +1,5 @@
 using System.Collections;
+using Manager.Audio;
 using Manager.PlayData;
 using UI;
 using UnityEngine;
@@ -12,6 +13,9 @@ namespace Manager
         [SerializeField] private int _maxLayer;
         public bool IsGameClear { get; private set; }
         private AnalysisDataHandler _analysisDataHandler;
+        private SoundHandler _soundHandler;
+        [SerializeField] private AudioClip _nextLayerAudio;
+        
         private void Awake()
         {
             CheckSingleton();
@@ -31,6 +35,7 @@ namespace Manager
             SceneManager.sceneLoaded += SceneLoaded;
             CurrentLayer = _maxLayer;
             _analysisDataHandler = GameObject.FindWithTag("AnalysisDataHandler").GetComponent<AnalysisDataHandler>();
+            _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
         }
 
         private void OnDestroy()
@@ -43,6 +48,7 @@ namespace Manager
             if (CurrentLayer > 1)
             {
                 CurrentLayer--;
+                _soundHandler.PlaySe(_nextLayerAudio);
                 SceneManager.LoadScene("DungeonIn");
                 return;
             }
@@ -51,7 +57,7 @@ namespace Manager
             SceneManager.LoadScene("ResultScene");
         }
         
-        void SceneLoaded (Scene nextScene, LoadSceneMode mode)
+        private void SceneLoaded (Scene nextScene, LoadSceneMode mode)
         {
             if (nextScene.name == "ResultScene")
             {

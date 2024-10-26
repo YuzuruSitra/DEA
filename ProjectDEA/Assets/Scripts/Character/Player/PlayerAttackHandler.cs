@@ -1,3 +1,5 @@
+using System;
+using Manager.Audio;
 using UnityEngine;
 
 namespace Character.Player
@@ -14,6 +16,13 @@ namespace Character.Player
         [SerializeField] private int _attackDamage;
         public int AttackDamage => _attackDamage;
         public bool IsAttacking => _playerAnimationCnt.IsAttacking;
+        private SoundHandler _soundHandler;
+        [SerializeField] private AudioClip _attackSeClip;
+
+        private void Start()
+        {
+            _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
+        }
 
         private void Update()
         {
@@ -26,6 +35,7 @@ namespace Character.Player
         private void OnAttack()
         {
             _playerAnimationCnt.AttackActive();
+            _soundHandler.PlaySe(_attackSeClip);
             StartCoroutine(_playerMover.AttackMove(_attackMoveTime, _attackSpeed));
             _currentTime = _attackCt;
         }

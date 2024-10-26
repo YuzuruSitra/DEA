@@ -47,8 +47,10 @@ MonoBehaviour:
   _dungeonLayerHandler: {fileID: 0}
   _logTextHandler: {fileID: 0}
   _playerClasHub: {fileID: 0}
+  _panelSwitcher: {fileID: 0}
   _vCams:
   - {fileID: 0}
   - {fileID: 0}
   _inputPaddingTime: 2
   _tutorialIndicationUI: {fileID: 0}
+  _pushAudio: {fileID: 8300000, guid: 8302fb6948a54f442b70734dc17bd38e, type: 3}

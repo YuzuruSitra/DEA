@@ -45,3 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxLayer: 3
+  _nextLayerAudio: {fileID: 8300000, guid: b5a161f8de40eab46ac8b285b890ba2a, type: 3}
