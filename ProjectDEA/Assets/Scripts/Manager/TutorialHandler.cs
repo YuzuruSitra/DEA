@@ -63,18 +63,26 @@ namespace Manager
             var message1 = "ようやく" + _dungeonLayerHandler.CurrentLayer + "Fまで降りられた。";
             _logTextHandler.AddLog(message1, false);
             yield return WaitForPlayerInput(1);
-
-            var message2 = "これまで通りオベリスクの転移を利用して脱出を目指そう。";
+            
+            var message2 = "このダンジョンは息苦しくて持続的にダメージを受けている気がする。";
             _logTextHandler.AddLog(message2, false);
             yield return WaitForPlayerInput(2);
-
-            ChangeVCam(1);
-            var message3 = "ちょうどオベリスクがある。\nたしか起動には欠片が" + ExitObelisk.NeededKeyCount + "つ必要だったはずだ。";
+            
+            var message3 = "オベリスクの転移による疲労回復がなかったら今頃...";
             _logTextHandler.AddLog(message3, false);
             yield return WaitForPlayerInput(3);
 
-            ChangeVCam(0);
+            var message4 = "これまで通り転移ギミックを利用した脱出を試みよう。";
+            _logTextHandler.AddLog(message4, false);
             yield return WaitForPlayerInput(4);
+
+            ChangeVCam(1);
+            var message5 = "ちょうどオベリスクがある。\nたしか起動には欠片が" + ExitObelisk.NeededKeyCount + "つ必要だったはずだ。";
+            _logTextHandler.AddLog(message5, false);
+            yield return WaitForPlayerInput(5);
+
+            ChangeVCam(0);
+            yield return WaitForPlayerInput(6);
             
             _tutorialIndicationUI.SetActive(false);
             

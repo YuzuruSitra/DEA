@@ -59,13 +59,20 @@ namespace Manager
         
         private void SceneLoaded (Scene nextScene, LoadSceneMode mode)
         {
-            if (nextScene.name == "ResultScene")
+            switch (nextScene.name)
             {
-                Destroy(gameObject);
-                return; 
+                case "ResultScene":
+                    Destroy(gameObject);
+                    return;
+                case "DungeonStart":
+                    return;
+                default:
+                {
+                    var logTextHandler = GameObject.FindWithTag("LogTextHandler").GetComponent<LogTextHandler>();
+                    logTextHandler.AddLog("また一つ降りられた。\n残るは" + CurrentLayer +"Fだ。");
+                    break;
+                }
             }
-            var logTextHandler = GameObject.FindWithTag("LogTextHandler").GetComponent<LogTextHandler>();
-            logTextHandler.AddLog("また一つ降りられた。\n残るは" + CurrentLayer +"Fだ。");
         }
 
         public void PlayerDeathNext()
