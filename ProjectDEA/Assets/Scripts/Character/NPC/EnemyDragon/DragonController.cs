@@ -50,6 +50,7 @@ namespace Character.NPC.EnemyDragon
         private SoundHandler _soundHandler;
         [SerializeField] private AudioClip _hitAudio;
         [SerializeField] private AudioClip _screamAudio;
+        private WaitForSeconds _screamWait;
         private void Start()
         {
             _agent = GetComponent<NavMeshAgent>();
@@ -59,6 +60,8 @@ namespace Character.NPC.EnemyDragon
             _logTextHandler = GameObject.FindWithTag("LogTextHandler").GetComponent<LogTextHandler>();
             _analysisDataHandler = GameObject.FindWithTag("AnalysisDataHandler").GetComponent<AnalysisDataHandler>();
             _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
+            _screamWait = new WaitForSeconds(0.2f);
+            
             _states.Add(AIState.Null, null);
             _states.Add(AIState.Stay, new StayState(gameObject, _stateTimeRange, _stayTimeBase));
             _states.Add(AIState.Attack, new AttackState(gameObject, _agent, _screamTime, _attackSpeed, _attackAcceleration, _attackRotSpeed));
@@ -111,6 +114,12 @@ namespace Character.NPC.EnemyDragon
             if (CurrentState == AIState.Attack) return;
             _agent.destination = target;
             NextState(AIState.Attack);
+            StartCoroutine(ScreamWait());
+        }
+
+        private IEnumerator ScreamWait()
+        {
+            yield return _screamWait;
             _soundHandler.PlaySe(_screamAudio);
         }
 
