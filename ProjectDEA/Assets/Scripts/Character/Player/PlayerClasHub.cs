@@ -12,6 +12,8 @@ namespace Character.Player
         [SerializeField] private PlayerAttackHandler _playerAttackHandler;
         public PlayerAttackHandler PlayerAttackHandler => _playerAttackHandler;
         [SerializeField] private PlayerUseItem _playerUseItem;
+
+        [SerializeField] private PoisonHandler _poisonHandler;
         
         public void SetPlayerFreedom(bool isFreedom)
         {
@@ -19,6 +21,7 @@ namespace Character.Player
             _playerInteraction.SetInteractableState(isFreedom);
             _playerAttackHandler.SetCanAttackState(isFreedom);
             _playerUseItem.SetCanUseItemState(isFreedom);
+            _poisonHandler.ChangeIsAddDamage(isFreedom);
         }
     }
 }
