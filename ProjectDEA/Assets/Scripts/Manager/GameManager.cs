@@ -47,15 +47,13 @@ namespace Manager
         private void HandleTitleScene()
         {
             if (Application.targetFrameRate != _targetFrameRate) Application.targetFrameRate = _targetFrameRate;
-
-            if (Cursor.visible) return;
+            
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
         }
 
         private static void HandleDungeonStartScene()
         {
-            if (!Cursor.visible) return;
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
@@ -75,14 +73,12 @@ namespace Manager
             var player = GameObject.FindWithTag("Player");
             player.transform.position = playerSetPos;
             
-            if (!Cursor.visible) return;
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
 
         private static void HandleResultScene()
         {
-            if (Cursor.visible) return;
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
         }

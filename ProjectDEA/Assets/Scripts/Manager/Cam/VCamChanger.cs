@@ -40,7 +40,7 @@ namespace Manager.Cam
         private void Start()
         {
             _roomChecker = new InRoomChecker();
-            _vignetteHandler = VignetteHandler.Instance;
+            _vignetteHandler = new VignetteHandler();
         }
 
         private void Update()
