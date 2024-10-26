@@ -43,7 +43,7 @@ namespace Character.NPC.EnemyDragon
         public Action OnReviving;
         public bool IsDeath { get; private set; }
         private InventoryHandler _inventoryHandler;
-        private const ItemKind OutItem = ItemKind.PowerPotion;
+        [SerializeField] private ItemKind[] _outItem;
         private LogTextHandler _logTextHandler;
         private const string SendLogMessage = "なんとかドラゴンを撃退した。";
         private AnalysisDataHandler _analysisDataHandler;
@@ -133,7 +133,8 @@ namespace Character.NPC.EnemyDragon
                 IsDeath = true;
                 _agent.isStopped = true;
                 _logTextHandler.AddLog(SendLogMessage);
-                _inventoryHandler.AddItem(OutItem);
+                var item = _outItem[Random.Range(0, _outItem.Length)];
+                _inventoryHandler.AddItem(item);
                 StartCoroutine(DeathDisable());
                 _analysisDataHandler.EnemyKillCount ++;
                 return;

@@ -615,7 +615,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerClasHub: {fileID: 5969759676665908825}
   _powerPotionUpValue: 5
-  _addSpeedValue: 0.25
+  _addHpValue: 20
   _buffItemAudio: {fileID: 8300000, guid: 6bfd3f7981c065d48bde3780a9fc12f9, type: 3}
 --- !u!114 &2283786242572857940
 MonoBehaviour:

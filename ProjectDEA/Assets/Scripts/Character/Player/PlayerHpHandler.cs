@@ -37,6 +37,7 @@ namespace Character.Player
         {
             if (IsDie) return;
             CurrentHp = Math.Max(CurrentHp - damage, 0);
+            CurrentHp = Math.Min(CurrentHp, 100);
             if (CurrentHp <= 0)
             {
                 IsDie = true;

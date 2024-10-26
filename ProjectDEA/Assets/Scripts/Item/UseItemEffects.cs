@@ -8,7 +8,7 @@ namespace Item
     {
         [SerializeField] private PlayerClasHub _playerClasHub;
         [SerializeField] private int _powerPotionUpValue;
-        [SerializeField] private float _addSpeedValue;
+        [SerializeField] private int _addHpValue;
         private SoundHandler _soundHandler;
         [SerializeField] private AudioClip _buffItemAudio;
 
@@ -26,8 +26,8 @@ namespace Item
 
         public void PlayerSpeedUpper()
         {
-            var playerMover = _playerClasHub.PlayerMover;
-            playerMover.ChangeSpeed(_addSpeedValue);
+            var playerHpHandler = _playerClasHub.PlayerHpHandler;
+            playerHpHandler.ReceiveDamage(-_addHpValue);
             _soundHandler.PlaySe(_buffItemAudio);
         }
     }

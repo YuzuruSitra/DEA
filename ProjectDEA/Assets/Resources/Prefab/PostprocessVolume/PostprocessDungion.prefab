@@ -64,5 +64,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _postProcessVolume: {fileID: 4418690600881306453}
   _minIntensity: 0.05
-  _maxIntensity: 0.6
-  _cycleDuration: 2.25
+  _maxIntensity: 0.5
+  _cycleDuration: 2

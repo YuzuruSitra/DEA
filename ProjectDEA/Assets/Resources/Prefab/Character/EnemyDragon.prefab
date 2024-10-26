@@ -1276,6 +1276,7 @@ MonoBehaviour:
   _giveDamage: 20
   _counterWaitTime: 1
   _deathWait: 3
+  _outItem: 0300000004000000
   _hitAudio: {fileID: 8300000, guid: c0af28155565ea942b9f61e2c42a98ab, type: 3}
   _screamAudio: {fileID: 8300000, guid: 4ccabec098230994fb13581c1686f55e, type: 3}
 --- !u!114 &4893729096472378383
