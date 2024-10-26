@@ -48,13 +48,14 @@ namespace Item
         {
             yield return new WaitForSeconds(_detonationTime);
             _animator.SetTrigger(Bomb);
-            yield return new WaitForSeconds(_animWaitTime);
+            yield return new WaitForSeconds(_animWaitTime - 0.2f);
+            _soundHandler.PlaySe(_bombAudio);
+            yield return new WaitForSeconds(0.2f);
             var directions = SetDirections();
             var adPos = AdjustedPosition();   
             
             PerformRaycastInDirections(directions, adPos);
             PerformRaycastInDirections(directions, adPos + Vector3.up);
-            _soundHandler.PlaySe(_bombAudio);
             yield return new WaitForSeconds(_animPaddingTime);
             Destroy(gameObject);
         }

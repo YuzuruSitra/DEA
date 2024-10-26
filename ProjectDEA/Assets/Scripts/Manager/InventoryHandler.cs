@@ -42,6 +42,7 @@ namespace Manager
         private AnalysisDataHandler _analysisDataHandler;
         private SoundHandler _soundHandler;
         [SerializeField] private AudioClip _pushAudio;
+        [SerializeField] private AudioClip _getItemAudio;
         
         private void Awake()
         {
@@ -147,6 +148,7 @@ namespace Manager
                 _itemSets[i]._count++;
                 var message = _itemSets[i]._name + LogTemplate;
                 _logTextHandler.AddLog(message);
+                _soundHandler.PlaySe(_getItemAudio);
                 switch (item)
                 {
                     case ItemKind.Key:
