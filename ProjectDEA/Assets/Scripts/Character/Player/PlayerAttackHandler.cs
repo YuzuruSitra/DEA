@@ -18,12 +18,12 @@ namespace Character.Player
         public bool IsAttacking => _playerAnimationCnt.IsAttacking;
         private SoundHandler _soundHandler;
         [SerializeField] private AudioClip _attackSeClip;
-
+        
         private void Start()
         {
             _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
         }
-
+        
         private void Update()
         {
             if (!_isCanAttack) return;

@@ -3283,3 +3283,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerAttackHandler: {fileID: 51901469298106324}
+  _attackHitSeClip: {fileID: 8300000, guid: 4f0b3e847c66b4d4bbdf9b225eb68905, type: 3}

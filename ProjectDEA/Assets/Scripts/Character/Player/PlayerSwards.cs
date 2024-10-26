@@ -1,6 +1,7 @@
 using System;
 using Character.NPC.EnemyDragon;
 using Gimmick;
+using Manager.Audio;
 using UnityEngine;
 
 namespace Character.Player
@@ -16,10 +17,13 @@ namespace Character.Player
         
         private GameObject _currentBorn;
         private BornOut _currentBornOut;
-
+        
+        private SoundHandler _soundHandler;
+        [SerializeField] private AudioClip _attackHitSeClip;
         private void Start()
         {
             _playerTrn = _playerAttackHandler.gameObject.transform;
+            _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
         }
 
         private void OnTriggerEnter(Collider other)
@@ -40,6 +44,7 @@ namespace Character.Player
                 }
 
                 _currentDragonController.OnGetDamage(_playerAttackHandler.AttackDamage, _playerTrn.position);
+                _soundHandler.PlaySe(_attackHitSeClip);
                 _oneHit = true;
             }
 
@@ -51,8 +56,10 @@ namespace Character.Player
                     _currentBornOut = _currentBorn.GetComponent<BornOut>();
                 }
                 _currentBornOut.FlyAwayBorn(_playerTrn.position);
+                _soundHandler.PlaySe(_attackHitSeClip);
                 _oneHit = true;
             }
+            
         }
     }
 }
