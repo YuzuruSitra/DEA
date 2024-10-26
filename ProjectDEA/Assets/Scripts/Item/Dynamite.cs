@@ -2,6 +2,7 @@ using System.Collections;
 using Character.NPC.EnemyDragon;
 using Character.Player;
 using Gimmick;
+using Manager.PlayData;
 using UnityEngine;
 
 namespace Item
@@ -23,10 +24,12 @@ namespace Item
         private bool _isDragonGive;
         private bool _isPutMonument;
         private GimmickGenerator _gimmickGenerator;
+        private AnalysisDataHandler _analysisDataHandler;
         
         private void Start()
         {
             _gimmickGenerator = GameObject.FindWithTag("GimmickGenerator").GetComponent<GimmickGenerator>();
+            _analysisDataHandler = GameObject.FindWithTag("AnalysisDataHandler").GetComponent<AnalysisDataHandler>();
             UseEffect();
         }
         
@@ -91,6 +94,8 @@ namespace Item
                             InsMonument(obj.transform.position);
                         }
                     }
+
+                    _analysisDataHandler.DestroyObjCount ++;
                     Destroy(obj);
                 }
             }

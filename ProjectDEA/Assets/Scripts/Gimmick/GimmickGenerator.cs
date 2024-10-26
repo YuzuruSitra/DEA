@@ -3,6 +3,7 @@ using System;
 using Manager.Map;
 using System.Collections.Generic;
 using System.Linq;
+using Manager.PlayData;
 
 namespace Gimmick
 {
@@ -45,9 +46,11 @@ namespace Gimmick
         // 絆創膏
         private int[] _obeliskKeyRooms = new int[4];
         private int _insKeyCount;
-        
+
+        private AnalysisDataHandler _analysisDataHandler;
         public void GenerateGimmick(StageGenerator stageGenerator)
         {
+            _analysisDataHandler = GameObject.FindWithTag("AnalysisDataHandler").GetComponent<AnalysisDataHandler>();
             var roomCount = stageGenerator.RoomCount;
             var groundY = stageGenerator.GroundPosY;
             var roomInfo = stageGenerator.RoomInfo;
@@ -234,6 +237,7 @@ namespace Gimmick
             placedGimmickList.Add(info);
 
             Instantiate(insObj, careInsPos, insObj.transform.rotation, _mapParent);
+            _analysisDataHandler.ChangeGimmicksCount(gimmickInfo._kind);
         }
 
         private static Vector3 CalcDiffPos(Vector3 pos, float valueX, float valueZ)

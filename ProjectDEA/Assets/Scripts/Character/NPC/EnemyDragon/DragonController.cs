@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Character.Player;
 using Item;
 using Manager;
+using Manager.PlayData;
 using UI;
 using UnityEngine;
 using UnityEngine.AI;
@@ -44,6 +45,7 @@ namespace Character.NPC.EnemyDragon
         private const ItemKind OutItem = ItemKind.PowerPotion;
         private LogTextHandler _logTextHandler;
         private const string SendLogMessage = "なんとかドラゴンを撃退した。";
+        private AnalysisDataHandler _analysisDataHandler;
         
         private void Start()
         {
@@ -52,6 +54,7 @@ namespace Character.NPC.EnemyDragon
             _deathWaitForSeconds = new WaitForSeconds(_deathWait);
             _inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
             _logTextHandler = GameObject.FindWithTag("LogTextHandler").GetComponent<LogTextHandler>();
+            _analysisDataHandler = GameObject.FindWithTag("AnalysisDataHandler").GetComponent<AnalysisDataHandler>();
             _states.Add(AIState.Null, null);
             _states.Add(AIState.Stay, new StayState(gameObject, _stateTimeRange, _stayTimeBase));
             _states.Add(AIState.Attack, new AttackState(gameObject, _agent, _screamTime, _attackSpeed, _attackAcceleration, _attackRotSpeed));
@@ -116,6 +119,7 @@ namespace Character.NPC.EnemyDragon
                 _logTextHandler.AddLog(SendLogMessage);
                 _inventoryHandler.AddItem(OutItem);
                 StartCoroutine(DeathDisable());
+                _analysisDataHandler.EnemyKillCount ++;
                 return;
             }
             if (targetPos == default) return;

@@ -65,7 +65,7 @@ GameObject:
   - component: {fileID: 3412342084350299378}
   - component: {fileID: 6615263475276424558}
   - component: {fileID: 1460064856482764902}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Ground_Sand_Mix_A
   m_TagString: Untagged
   m_Icon: {fileID: 0}

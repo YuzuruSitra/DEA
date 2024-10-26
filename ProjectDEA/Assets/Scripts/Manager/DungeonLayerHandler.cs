@@ -1,5 +1,5 @@
-using System;
 using System.Collections;
+using Manager.PlayData;
 using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,7 +11,7 @@ namespace Manager
         public int CurrentLayer { get; private set; }
         [SerializeField] private int _maxLayer;
         public bool IsGameClear { get; private set; }
-        
+        private AnalysisDataHandler _analysisDataHandler;
         private void Awake()
         {
             CheckSingleton();
@@ -30,6 +30,7 @@ namespace Manager
             DontDestroyOnLoad(gameObject);
             SceneManager.sceneLoaded += SceneLoaded;
             CurrentLayer = _maxLayer;
+            _analysisDataHandler = GameObject.FindWithTag("AnalysisDataHandler").GetComponent<AnalysisDataHandler>();
         }
 
         private void OnDestroy()
@@ -46,6 +47,7 @@ namespace Manager
                 return;
             }
             IsGameClear = true;
+            _analysisDataHandler.IsClear = true;
             SceneManager.LoadScene("ResultScene");
         }
         
@@ -63,6 +65,7 @@ namespace Manager
         public void PlayerDeathNext()
         {
             IsGameClear = false;
+            _analysisDataHandler.IsClear = false;
             StartCoroutine(WaitForDeathNext());
         }
 

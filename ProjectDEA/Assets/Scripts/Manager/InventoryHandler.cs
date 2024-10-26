@@ -1,6 +1,7 @@
 using System;
 using Gimmick;
 using Item;
+using Manager.PlayData;
 using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -37,6 +38,7 @@ namespace Manager
         private LogTextHandler _logTextHandler;
         private const string LogTemplate = "を手に入れた。";
         private const string LogObeliskTemplate = "破片は集まった。オベリスクへ向かおう。";
+        private AnalysisDataHandler _analysisDataHandler;
         
         private void Awake()
         {
@@ -83,6 +85,8 @@ namespace Manager
                 return;
             }
             DontDestroyOnLoad(gameObject);
+            
+            _analysisDataHandler = GameObject.FindWithTag("AnalysisDataHandler").GetComponent<AnalysisDataHandler>();
         }
 
         private void Update()
@@ -140,7 +144,16 @@ namespace Manager
                 _itemSets[i]._count++;
                 var message = _itemSets[i]._name + LogTemplate;
                 _logTextHandler.AddLog(message);
-                if (item == ItemKind.Key) CheckObeliskCount();
+                switch (item)
+                {
+                    case ItemKind.Key:
+                        CheckObeliskCount();
+                        break;
+                    case ItemKind.Born:
+                        _analysisDataHandler.PickedBonesCount++;
+                        break;
+                }
+
                 if (CurrentItemNum == i) ChangeItemCount();
                 if (_itemSets[i]._count == 1) OnItemLineupChanged(_itemSets);
                 if (CurrentItemNum == ErrorValue) ChangeItemNum(i);
