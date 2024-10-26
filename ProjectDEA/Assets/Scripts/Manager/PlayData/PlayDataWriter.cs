@@ -20,9 +20,9 @@ namespace Manager.PlayData
 #endif
             _settings = new QuickSaveSettings
             {
-                SecurityMode = SecurityMode.Aes,
+                SecurityMode = SecurityMode.None,
                 Password = "Password",
-                CompressionMode = CompressionMode.Gzip
+                CompressionMode = CompressionMode.None
             };
             
         }
@@ -31,7 +31,7 @@ namespace Manager.PlayData
         public void SetPlayerSlot(int playerId)
         {
             // プレイヤーIDに応じたスロットキーを設定
-            _currentSlotKey = $"SaveData_Player_{playerId}";
+            _currentSlotKey = $"Player_{playerId}";
             _writer = QuickSaveWriter.Create(_currentSlotKey, _settings);
             
             UnityEngine.Debug.Log($"Player Slot changed to: {_currentSlotKey}");

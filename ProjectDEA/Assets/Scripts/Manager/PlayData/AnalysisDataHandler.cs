@@ -10,7 +10,7 @@ namespace Manager.PlayData
     public class AnalysisDataHandler : MonoBehaviour
     {
         private PlayDataWriter _dataWriter;
-        private int _playerID;
+        public int PlayerID { get; set; }
         private bool _isAddListener;
         
         public bool IsClear { get; set; }
@@ -93,7 +93,7 @@ namespace Manager.PlayData
                     ResetCount();
                     break;
                 case "DungeonStart":
-                    _dataWriter.SetPlayerSlot(_playerID);
+                    _dataWriter.SetPlayerSlot(PlayerID);
                     break;
                 case "DungeonIn":
                     _isCountUp = true;
