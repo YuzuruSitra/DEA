@@ -87,13 +87,15 @@ namespace Manager.Cam
                 // 経過時間に応じてvignette値を滑らかに変化させる
                 _vignetteValue = Mathf.Lerp(startValue, targetFactor, elapsedTime / _vignetteDuration);
                 elapsedTime += Time.deltaTime;
-
+                
+                //UnityEngine.Debug.Log(_vignetteValue);
                 // VignetteHandlerを通じて値を反映
                 _vignetteHandler.SetVignetteIntensity(_vignetteValue);
                 yield return null;
             }
 
             _vignetteValue = targetFactor;
+            _vignetteHandler.SetVignetteIntensity(_vignetteValue);
             _vignetteCoroutine = null;
         }
     }
