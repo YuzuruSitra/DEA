@@ -38,7 +38,7 @@ namespace Character.NPC.EnemyDragon
                 var rayDirection = Quaternion.Euler(0, angle, 0) * baseTransform.forward;
                 var rayOrigin = baseTransform.position;
                 
-                Debug.DrawRay(rayOrigin, rayDirection * _searchRange, Color.blue);
+                //Debug.DrawRay(rayOrigin, rayDirection * _searchRange, Color.blue);
 
                 if (!Physics.Raycast(rayOrigin, rayDirection, out var hit, _searchRange)) continue;
                 if (!hit.collider.CompareTag("Player")) continue;

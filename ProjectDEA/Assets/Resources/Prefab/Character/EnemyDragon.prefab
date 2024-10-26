@@ -1268,11 +1268,11 @@ MonoBehaviour:
   _stayTimeBase: 4
   _walkTimeBase: 8
   _speed: 2
-  _attackSpeed: 8
-  _attackRotSpeed: 7
-  _attackAcceleration: 5
-  _screamTime: 1
-  _launchPower: 8
+  _attackSpeed: 8.5
+  _attackRotSpeed: 8
+  _attackAcceleration: 5.5
+  _screamTime: 0.65
+  _launchPower: 8.5
   _giveDamage: 20
   _counterWaitTime: 1
   _deathWait: 3
@@ -1304,8 +1304,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dragonController: {fileID: 7134229576755512900}
   _searchPaddingTime: 3
-  _searchRange: 3.5
-  _rayCount: 9
+  _searchRange: 4
+  _rayCount: 11
   _losingDistance: 4.5
 --- !u!114 &-7896770025007595488
 MonoBehaviour:

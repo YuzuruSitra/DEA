@@ -10327,7 +10327,7 @@ MonoBehaviour:
   _attackClip: {fileID: 7400000, guid: 8f62f51a8bb6f4541a81f98260bb1c38, type: 2}
   _layerToIgnore:
     serializedVersion: 2
-    m_Bits: 272
+    m_Bits: 400
   _playerGiveDamage: 20
   _dragonGiveDamage: 25
 --- !u!1 &3465962932067444135

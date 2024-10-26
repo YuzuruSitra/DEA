@@ -131,8 +131,6 @@ namespace Manager
                 return;
             }
             OnItemCountChanged?.Invoke(_itemSets[CurrentItemNum]._count);
-            if (_itemSets[CurrentItemNum]._kind == ItemKind.Key) 
-                OnKeyCountChanged?.Invoke(_itemSets[CurrentItemNum]._count);
         }
 
         // アイテムをインベントリに追加する
@@ -147,6 +145,7 @@ namespace Manager
                 switch (item)
                 {
                     case ItemKind.Key:
+                        OnKeyCountChanged?.Invoke(_itemSets[i]._count);
                         CheckObeliskCount();
                         break;
                     case ItemKind.Born:
