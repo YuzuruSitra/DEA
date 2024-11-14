@@ -4,105 +4,104 @@ using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
 
-public class PlayerTypeClassifier : MonoBehaviour
+namespace Manager.MetaAI
 {
-    private TcpClient client;
-    private NetworkStream stream;
-    private const string pythonServerIP = "127.0.0.1";
-    private const int pythonServerPort = 5000;
-
-    private List<string> actionLogs = new List<string>();
-
-    void Start()
+    public class PlayerTypeClassifier : MonoBehaviour
     {
-        // Pythonサーバーへ接続
-        ConnectToPythonServer();
-    }
+        private TcpClient _client;
+        private NetworkStream _stream;
+        private const string PythonServerIP = "127.0.0.1";
+        private const int PythonServerPort = 5000;
+        [Header("一度に送るログ数")]
+        [SerializeField] private int _logPerSend;
+        private readonly List<string> _actionLogs = new();
 
-    private void Update()
-    {
-        // var killer = UnityEngine.Random.Range(0, 11);
-        // var achiever = UnityEngine.Random.Range(0, 11);
-        // var explorer = UnityEngine.Random.Range(0, 11);
-        var killer = 6;
-        var achiever = 6;
-        var explorer = 6;
-        if (Input.GetKeyDown(KeyCode.A))
+        private void Start()
         {
-            killer = 10;
-        }
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            achiever = 10;
-        }
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            explorer = 10;
+            // Pythonサーバーへ接続
+            ConnectToPythonServer();
         }
 
-        if (Input.anyKeyDown)
+        private void Update()
         {
-            CollectActionLog(killer, achiever, explorer, (int)Time.time);
-        }
-    }
+            var killer = 6;
+            var achiever = 6;
+            var explorer = 6;
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                killer = 10;
+            }
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                achiever = 10;
+            }
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                explorer = 10;
+            }
 
-    void ConnectToPythonServer()
-    {
-        try
-        {
-            client = new TcpClient(pythonServerIP, pythonServerPort);
-            stream = client.GetStream();
-            Debug.Log("Connected to Python server");
+            if (Input.anyKeyDown)
+            {
+                CollectActionLog(killer, achiever, explorer);
+            }
         }
-        catch (Exception e)
-        {
-            Debug.LogError($"Connection error: {e.Message}");
-        }
-    }
 
-    void CollectActionLog(int killer, int achiever, int explorer, int timeElapsed)
-    {
-        // 行動ログを収集
-        string log = $"Killer: {killer}, Achiever: {achiever}, Explorer: {explorer}, Time: {timeElapsed}";
-        Debug.Log(log);
+        private void ConnectToPythonServer()
+        {
+            try
+            {
+                _client = new TcpClient(PythonServerIP, PythonServerPort);
+                _stream = _client.GetStream();
+                UnityEngine.Debug.Log("Connected to Python server");
+            }
+            catch (Exception e)
+            {
+                UnityEngine.Debug.LogError($"Connection error: {e.Message}");
+            }
+        }
+
+        private void CollectActionLog(int killer, int achiever, int explorer)
+        {
+            // 行動ログを収集
+            var log = $"Killer: {killer}, Achiever: {achiever}, Explorer: {explorer}";
+            UnityEngine.Debug.Log(log);
         
-        actionLogs.Add(log);
+            _actionLogs.Add(log);
 
-        // ログが10個溜まったら送信
-        if (actionLogs.Count >= 10)
-        {
+            // ログが10個溜まったら送信
+            if (_actionLogs.Count < 10) return;
             SendDataToPython();
-            actionLogs.Clear(); // ログをクリア
+            _actionLogs.Clear(); // ログをクリア
         }
-    }
 
-    async void SendDataToPython()
-    {
-        if (client == null || !client.Connected) return;
-
-        try
+        private async void SendDataToPython()
         {
-            // 行動ログデータをシリアライズして送信
-            string data = string.Join(";", actionLogs);
-            byte[] dataBytes = Encoding.UTF8.GetBytes(data);
-            await stream.WriteAsync(dataBytes, 0, dataBytes.Length);
+            if (_client is not { Connected: true }) return;
 
-            // Pythonからのレスポンス受信
-            byte[] buffer = new byte[1024];
-            int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
-            string response = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-            Debug.Log($"Player Type Prediction: {response}");
+            try
+            {
+                // 行動ログデータをシリアライズして送信
+                var data = string.Join(";", _actionLogs);
+                var dataBytes = Encoding.UTF8.GetBytes(data);
+                await _stream.WriteAsync(dataBytes, 0, dataBytes.Length);
+
+                // Pythonからのレスポンス受信
+                var buffer = new byte[1024];
+                var bytesRead = await _stream.ReadAsync(buffer, 0, buffer.Length);
+                var response = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                UnityEngine.Debug.Log($"Player Type Prediction: {response}");
+            }
+            catch (Exception e)
+            {
+                UnityEngine.Debug.LogError($"Data send/receive error: {e.Message}");
+            }
         }
-        catch (Exception e)
+
+        private void OnApplicationQuit()
         {
-            Debug.LogError($"Data send/receive error: {e.Message}");
+            // 終了時に接続を閉じる
+            if (_stream != null) _stream.Close();
+            if (_client != null) _client.Close();
         }
-    }
-
-    void OnApplicationQuit()
-    {
-        // 終了時に接続を閉じる
-        if (stream != null) stream.Close();
-        if (client != null) client.Close();
     }
 }

@@ -25,6 +25,7 @@ def handle_client(conn, addr):
 
             # データのデコードと解析
             action_logs = data.decode('utf-8').strip().split(";")
+            
             if not action_logs[-1]:
                 action_logs = action_logs[:-1]  # 最後が空なら削除
             features = extract_features(action_logs)  # 特徴抽出
@@ -50,7 +51,7 @@ def handle_client(conn, addr):
 
 def extract_features(logs):
     # 各行動スコアとタイムスタンプのリストを生成
-    killer_scores, achiever_scores, explorer_scores, time_stamps = [], [], [], []
+    killer_scores, achiever_scores, explorer_scores = [], [], []
 
     for log in logs:
         try:
@@ -58,17 +59,15 @@ def extract_features(logs):
             killer_score = int(parts[0].split("Killer: ")[1])
             achiever_score = int(parts[1].split("Achiever: ")[1])
             explorer_score = int(parts[2].split("Explorer: ")[1])
-            time_elapsed = int(parts[3].split("Time: ")[1])
 
             killer_scores.append(killer_score)
             achiever_scores.append(achiever_score)
             explorer_scores.append(explorer_score)
-            time_stamps.append(time_elapsed)
         except (IndexError, ValueError):
             print(f"Invalid log format: {log}")
             return None  # 無効なデータは無視
 
-    if not (killer_scores and achiever_scores and explorer_scores and time_stamps):
+    if not (killer_scores and achiever_scores and explorer_scores):
         return None  # データが不足している場合
 
     # スコアの特徴量を計算
@@ -98,12 +97,22 @@ def extract_features(logs):
 def classify_base_type(features):
     # ルールベースでの分類：スコアの高いタイプに基づく基本分類
     total_killer, total_achiever, total_explorer = features[:3]
+    slope_killer, slope_achiever, slope_explorer = features[3:6]
+    moving_avg_killer, moving_avg_achiever, moving_avg_explorer = features[6:9]
     threshold = 5  # スコア差の閾値
+    slope_threshold = 1.5  # 傾きによる変動の閾値
 
+    # 基本スコアに基づく分類
     killer_vs_others = total_killer - max(total_achiever, total_explorer)
     achiever_vs_others = total_achiever - max(total_killer, total_explorer)
     explorer_vs_others = total_explorer - max(total_killer, total_achiever)
+    
+    # 短期的な変動を検出（傾きが大きい場合）
+    if abs(slope_killer) > slope_threshold or abs(slope_achiever) > slope_threshold or abs(slope_explorer) > slope_threshold:
+        print("Short-term fluctuation detected, deferring to SOM.")
+        return None  # 短期的な変動がある場合、SOMに任せる
 
+    # 基本的なルールベースの判定
     if killer_vs_others > threshold:
         return label_mapping['Killer']
     elif achiever_vs_others > threshold:
