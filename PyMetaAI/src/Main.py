@@ -1,20 +1,125 @@
 ﻿import socket
+from collections import deque
 import numpy as np
+from scipy.stats import linregress
 from minisom import MiniSom
-from scipy.stats import linregress  # 傾きを計算するために使用
 
 # ソケットサーバー設定
 HOST = '127.0.0.1'
-PORT = 5000
+PORT = 6000
 
 # プレイヤータイプのラベル
-label_mapping = {'Killer': 0, 'Achiever': 1, 'Explorer': 2}
+label_mapping = {0: 'Killer', 1: 'Achiever', 2: 'Explorer'}
 
-# SOMモデルの初期化（特徴量の次元数に合わせてinput_lenを12に変更）
-som = MiniSom(x=1, y=3, input_len=12, sigma=0.5, learning_rate=0.5)
-som.random_weights_init(np.random.rand(1, 3, 12).reshape(3, 12))  # 初期化
 
-def handle_client(conn, addr):
+class PlayerClassifier:
+    def __init__(self, smoothing_factor=0.3, log_window=10):
+        self.smoothing_factor = smoothing_factor
+        self.log_window = log_window
+        self.logs = deque(maxlen=log_window)  # 過去のログを保持（最大log_window件）
+
+    def add_log(self, new_log):
+        """
+        新しいログを追加し、古いログを削除。
+        """
+        self.logs.append(new_log)
+
+    def preprocess_features(self):
+        """
+        過去のログを基に特徴量を抽出。
+        Returns:
+        - features: Dict 各タイプの特徴量
+        """
+        if not self.logs:
+            return None
+
+        killer_scores, achiever_scores, explorer_scores = [], [], []
+
+        for log in self.logs:
+            killer_scores.append(log.get("Killer", 0))
+            achiever_scores.append(log.get("Achiever", 0))
+            explorer_scores.append(log.get("Explorer", 0))
+
+        # 移動平均を計算
+        def moving_average(data, window=3):
+            return np.convolve(data, np.ones(window) / window, mode='valid') if len(data) >= window else data
+
+        smoothed_killer = moving_average(killer_scores)
+        smoothed_achiever = moving_average(achiever_scores)
+        smoothed_explorer = moving_average(explorer_scores)
+
+        # 傾向の特徴量を計算
+        def calculate_trend_features(scores):
+            slope = linregress(range(len(scores)), scores).slope if len(scores) > 1 else 0
+            variance = np.var(scores)  # 安定度
+            total = sum(scores)  # 合計値
+            return slope, variance, total
+
+        return {
+            "Killer": calculate_trend_features(smoothed_killer),
+            "Achiever": calculate_trend_features(smoothed_achiever),
+            "Explorer": calculate_trend_features(smoothed_explorer),
+        }
+
+
+def classify_base_type(features):
+    slope_scores = {key: slope for key, (slope, _, _) in features.items()}
+
+    # 通常の分類処理
+    most_increasing = max(slope_scores, key=slope_scores.get)
+    most_decreasing = min(slope_scores, key=slope_scores.get)
+    remaining_key = (set(slope_scores.keys()) - {most_increasing, most_decreasing}).pop()
+
+    # 信頼度を計算（仮にスコアの正規化値を使用）
+    max_slope = max(slope_scores.values()) if slope_scores else 1  # もしスロープがゼロしかない場合は1に設定
+    normalized_scores = {key: slope / max_slope if max_slope != 0 else 0 for key, slope in slope_scores.items()}
+
+    return [most_increasing, remaining_key, most_decreasing], normalized_scores
+
+
+# SOMモデルの初期化
+som = MiniSom(x=1, y=3, input_len=9, sigma=0.5, learning_rate=0.5)
+som.random_weights_init(np.random.rand(3, 9))
+
+
+def integrate_predictions(base_type_result, som_result, base_weight=0.7, som_weight=0.3):
+    """
+    ルールベースとSOMの分類結果を加重平均で統合。
+    """
+    base_type, base_scores = base_type_result
+    som_type, som_scores = som_result
+
+    # 両スコアを加重平均
+    combined_scores = {}
+    for key in base_scores:
+        combined_scores[key] = base_scores[key] * base_weight + som_scores[key] * som_weight
+
+    # 最終的な分類はスコア最大値で決定
+    final_type = max(combined_scores, key=combined_scores.get)
+    return final_type, combined_scores
+
+
+def parse_action_logs(log_data):
+    """
+    セミコロン区切りのログデータを辞書形式に変換。
+    """
+    logs = []
+    for log_entry in log_data.split(";"):
+        if not log_entry.strip():
+            continue
+        try:
+            log_dict = {}
+            for pair in log_entry.split(","):
+                key, value = pair.split(":")
+                log_dict[key.strip()] = int(value.strip())
+            logs.append(log_dict)
+        except ValueError:
+            print(f"Invalid log format: {log_entry}")
+            return None
+    return logs
+
+
+def handle_client(conn, addr, classifier):
     with conn:
         print("Connected by", addr)
         while True:
@@ -24,116 +129,56 @@ def handle_client(conn, addr):
                 break
 
             # データのデコードと解析
-            action_logs = data.decode('utf-8').strip().split(";")
-            
-            if not action_logs[-1]:
-                action_logs = action_logs[:-1]  # 最後が空なら削除
-            features = extract_features(action_logs)  # 特徴抽出
-
-            if features is None:
-                conn.sendall("Invalid data".encode('utf-8'))
+            log_data = data.decode('utf-8').strip()
+            new_logs = parse_action_logs(log_data)
+            if not new_logs:
+                conn.sendall("Invalid log format".encode('utf-8'))
                 continue
 
-            # ルールベースで初期分類
-            base_type = classify_base_type(features)
+            # ログを追加
+            for log in new_logs:
+                classifier.add_log(log)
 
-            # SOMを用いたクラスタリングで分類結果の補強
-            winner = som.winner(features)
-            som.update(features, winner, 0.5, 0.5)
-            cluster_type = winner[1]  # y座標をクラスタ番号とする
+            # 特徴量抽出
+            features = classifier.preprocess_features()
+            if not features:
+                conn.sendall("Insufficient data".encode('utf-8'))
+                continue
 
-            # 結果を統合
-            final_prediction = integrate_predictions(base_type, cluster_type)
+            # ルールベース分類
+            base_type_result = classify_base_type(features)
 
-            # 結果をクライアントに送信
-            conn.sendall(str(final_prediction).encode('utf-8'))
-            print(f"Prediction sent: {final_prediction}")
+            # SOM分類
+            feature_vector = [
+                features["Killer"][0], features["Achiever"][0], features["Explorer"][0],  # 傾き
+                features["Killer"][1], features["Achiever"][1], features["Explorer"][1],  # 分散
+                features["Killer"][2], features["Achiever"][2], features["Explorer"][2],  # 合計値
+            ]
+            winner = som.winner(feature_vector)
+            som_type = label_mapping[winner[1]]
+            som_scores = {label_mapping[idx]: 1.0 if idx == winner[1] else 0.0 for idx in range(3)}
 
-def extract_features(logs):
-    # 各行動スコアとタイムスタンプのリストを生成
-    killer_scores, achiever_scores, explorer_scores = [], [], []
+            # 統合結果
+            final_prediction, confidence_scores = integrate_predictions(base_type_result, (som_type, som_scores))
+            # スコアを小数点第2位まで丸める
+            confidence_scores = {key: round(value, 2) for key, value in confidence_scores.items()}
 
-    for log in logs:
-        try:
-            parts = log.split(", ")
-            killer_score = int(parts[0].split("Killer: ")[1])
-            achiever_score = int(parts[1].split("Achiever: ")[1])
-            explorer_score = int(parts[2].split("Explorer: ")[1])
+            # 結果を送信
+            response = {
+                "type": final_prediction,
+                "confidence_scores": confidence_scores
+            }
+            conn.sendall(str(response).encode('utf-8'))
+            print(f"Prediction sent: {response}")
 
-            killer_scores.append(killer_score)
-            achiever_scores.append(achiever_score)
-            explorer_scores.append(explorer_score)
-        except (IndexError, ValueError):
-            print(f"Invalid log format: {log}")
-            return None  # 無効なデータは無視
 
-    if not (killer_scores and achiever_scores and explorer_scores):
-        return None  # データが不足している場合
+# サーバー起動
+classifier = PlayerClassifier(smoothing_factor=0.3, log_window=10)
 
-    # スコアの特徴量を計算
-    total_killer = sum(killer_scores)
-    total_achiever = sum(achiever_scores)
-    total_explorer = sum(explorer_scores)
-
-    slope_killer = linregress(range(len(killer_scores)), killer_scores).slope
-    slope_achiever = linregress(range(len(achiever_scores)), achiever_scores).slope
-    slope_explorer = linregress(range(len(explorer_scores)), explorer_scores).slope
-
-    moving_avg_killer = np.mean(killer_scores[-3:]) if len(killer_scores) >= 3 else np.mean(killer_scores)
-    moving_avg_achiever = np.mean(achiever_scores[-3:]) if len(achiever_scores) >= 3 else np.mean(achiever_scores)
-    moving_avg_explorer = np.mean(explorer_scores[-3:]) if len(explorer_scores) >= 3 else np.mean(explorer_scores)
-
-    variance_killer = np.var(killer_scores)
-    variance_achiever = np.var(achiever_scores)
-    variance_explorer = np.var(explorer_scores)
-
-    return [
-        total_killer, total_achiever, total_explorer,
-        slope_killer, slope_achiever, slope_explorer,
-        moving_avg_killer, moving_avg_achiever, moving_avg_explorer,
-        variance_killer, variance_achiever, variance_explorer
-    ]
-
-def classify_base_type(features):
-    # ルールベースでの分類：スコアの高いタイプに基づく基本分類
-    total_killer, total_achiever, total_explorer = features[:3]
-    slope_killer, slope_achiever, slope_explorer = features[3:6]
-    moving_avg_killer, moving_avg_achiever, moving_avg_explorer = features[6:9]
-    threshold = 5  # スコア差の閾値
-    slope_threshold = 1.5  # 傾きによる変動の閾値
-
-    # 基本スコアに基づく分類
-    killer_vs_others = total_killer - max(total_achiever, total_explorer)
-    achiever_vs_others = total_achiever - max(total_killer, total_explorer)
-    explorer_vs_others = total_explorer - max(total_killer, total_achiever)
-    
-    # 短期的な変動を検出（傾きが大きい場合）
-    if abs(slope_killer) > slope_threshold or abs(slope_achiever) > slope_threshold or abs(slope_explorer) > slope_threshold:
-        print("Short-term fluctuation detected, deferring to SOM.")
-        return None  # 短期的な変動がある場合、SOMに任せる
-
-    # 基本的なルールベースの判定
-    if killer_vs_others > threshold:
-        return label_mapping['Killer']
-    elif achiever_vs_others > threshold:
-        return label_mapping['Achiever']
-    elif explorer_vs_others > threshold:
-        return label_mapping['Explorer']
-    else:
-        return None  # 中間状態として、SOMに任せる
-
-def integrate_predictions(base_type, cluster_type):
-    # ルールベースの予測とクラスタリングの結果を統合
-    if base_type is not None:
-        return base_type
-    else:
-        return cluster_type  # SOMのクラスター結果（0, 1, 2）
-
-# サーバーの起動
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((HOST, PORT))
     s.listen()
     print("Server listening on", (HOST, PORT))
     while True:
         conn, addr = s.accept()
-        handle_client(conn, addr)
+        handle_client(conn, addr, classifier)
