@@ -17,6 +17,7 @@ class PlayerClassifier:
         self.smoothing_factor = smoothing_factor
         self.log_window = log_window
         self.logs = deque(maxlen=log_window)  # 過去のログを保持（最大log_window件）
+        self.currentScores = {}
 
     def add_log(self, new_log):
         """
@@ -26,7 +27,6 @@ class PlayerClassifier:
 
     def preprocess_features(self):
         """
-        過去のログを基に特徴量を抽出。
         Returns:
         - features: Dict 各タイプの特徴量
         """
@@ -40,14 +40,6 @@ class PlayerClassifier:
             achiever_scores.append(log.get("Achiever", 0))
             explorer_scores.append(log.get("Explorer", 0))
 
-        # 移動平均を計算
-        def moving_average(data, window=3):
-            return np.convolve(data, np.ones(window) / window, mode='valid') if len(data) >= window else data
-
-        smoothed_killer = moving_average(killer_scores)
-        smoothed_achiever = moving_average(achiever_scores)
-        smoothed_explorer = moving_average(explorer_scores)
-
         # 傾向の特徴量を計算
         def calculate_trend_features(scores):
             slope = linregress(range(len(scores)), scores).slope if len(scores) > 1 else 0
@@ -56,10 +48,45 @@ class PlayerClassifier:
             return slope, variance, total
 
         return {
-            "Killer": calculate_trend_features(smoothed_killer),
-            "Achiever": calculate_trend_features(smoothed_achiever),
-            "Explorer": calculate_trend_features(smoothed_explorer),
+            "Killer": calculate_trend_features(killer_scores),
+            "Achiever": calculate_trend_features(achiever_scores),
+            "Explorer": calculate_trend_features(explorer_scores),
         }
+
+    def update_score_with_history(self, scores, new_weight=0.7, current_weight=0.3):
+        """
+        過去のスコアを考慮してスコアを更新。
+        Args:
+            scores (dict): 新しいスコア（辞書形式で、各タイプがキー、スコアが値）
+            new_weight (float): 新しいスコアの重み
+            current_weight (float): 現在のスコアの重み
+        Returns:
+            dict: 更新されたスコア（辞書形式）
+        """
+        # 初回呼び出し時は currentScores を初期化
+        if not self.currentScores:
+            self.currentScores = scores
+            return scores  # 初回はそのまま返す
+    
+        # スコア辞書のキーが一致するかチェック
+        if set(scores.keys()) != set(self.currentScores.keys()):
+            raise ValueError("入力されたスコア辞書のキーが現在のスコア辞書と一致しません。")
+    
+        # スコアを更新
+        updated_scores = {}
+        for key in scores:
+            updated_scores[key] = scores[key] * new_weight + self.currentScores[key] * current_weight
+
+        """
+        # デバッグ表示
+        print("過去のスコア: ", {key: round(value, 2) for key, value in self.currentScores.items()})
+        print("過去を考慮した現在のスコア: ", {key: round(value, 2) for key, value in scores.items()})
+        """
+        
+        # 更新後のスコアを反映
+        self.currentScores = updated_scores
+        return updated_scores
+        
 
 
 def classify_base_type(features):
@@ -93,6 +120,9 @@ def integrate_predictions(base_type_result, som_result, base_weight=0.7, som_wei
     combined_scores = {}
     for key in base_scores:
         combined_scores[key] = base_scores[key] * base_weight + som_scores[key] * som_weight
+
+    # 過去のスコアの影響を反映
+    combined_scores = classifier.update_score_with_history(combined_scores)
 
     # 最終的な分類はスコア最大値で決定
     final_type = max(combined_scores, key=combined_scores.get)

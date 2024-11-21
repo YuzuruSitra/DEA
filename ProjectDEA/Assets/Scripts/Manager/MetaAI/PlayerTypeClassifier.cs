@@ -11,7 +11,7 @@ namespace Manager.MetaAI
         private TcpClient _client;
         private NetworkStream _stream;
         private const string PythonServerIP = "127.0.0.1";
-        private const int PythonServerPort = 5000;
+        private const int PythonServerPort = 6000;
         [Header("一度に送るログ数")]
         [SerializeField] private int _logPerSend;
         private readonly List<string> _actionLogs = new();
