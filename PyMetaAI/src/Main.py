@@ -25,13 +25,28 @@ class PlayerClassifier:
         """
         self.logs.append(new_log)
 
-    def preprocess_features(self):
+    def preprocess_features(self, alpha=0.3):
         """
+        特徴量を前処理する。
+
+        Args:
+        - alpha (float): エクスポーネンシャルフィルターの平滑化係数（0 < alpha <= 1）
+
+        短期的な時系列を考慮して、スコアの統合時に過去のスコアと統合することで長期的なスコアを考慮する方針。
         Returns:
         - features: Dict 各タイプの特徴量
         """
         if not self.logs:
             return None
+
+        # ログデータにエクスポーネンシャルフィルターを適用
+        def apply_exponential_filter(scores):
+            filtered_scores = []
+            ema = 0  # 初期値（0でも問題ない）
+            for score in scores:
+                ema = alpha * score + (1 - alpha) * ema  # EMA計算
+                filtered_scores.append(ema)
+            return filtered_scores
 
         killer_scores, achiever_scores, explorer_scores = [], [], []
 
@@ -39,6 +54,11 @@ class PlayerClassifier:
             killer_scores.append(log.get("Killer", 0))
             achiever_scores.append(log.get("Achiever", 0))
             explorer_scores.append(log.get("Explorer", 0))
+
+        # Exponentialフィルター適用
+        killer_scores = apply_exponential_filter(killer_scores)
+        achiever_scores = apply_exponential_filter(achiever_scores)
+        explorer_scores = apply_exponential_filter(explorer_scores)
 
         # 傾向の特徴量を計算
         def calculate_trend_features(scores):
