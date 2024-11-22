@@ -194,12 +194,13 @@ def handle_client(conn, addr, classifier):
             confidence_scores = {key: round(value, 2) for key, value in confidence_scores.items()}
 
             # 結果を送信
-            response = {
+            conn.sendall(str(final_prediction).encode('utf-8'))
+
+            confirmation_log = {
                 "type": final_prediction,
                 "confidence_scores": confidence_scores
             }
-            conn.sendall(str(response).encode('utf-8'))
-            print(f"Prediction sent: {response}")
+            print(f"Prediction sent: {confirmation_log}")
 
 
 # サーバー起動
