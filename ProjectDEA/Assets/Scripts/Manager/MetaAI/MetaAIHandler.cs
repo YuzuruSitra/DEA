@@ -32,10 +32,28 @@ namespace Manager.MetaAI
             { PlayerType.Explorer, 0 }
         };
         
+        private void Awake()
+        {
+            CheckSingleton();
+        }
+        
         private void Start()
         {
             _playerTypeClassifier = new PlayerTypeClassifier(_logPerSend);
             _playerTypeClassifier.ResponsePlayerType += ReceivePlayerType;
+        }
+        
+        private void CheckSingleton()
+        {
+            var target = GameObject.FindGameObjectWithTag(gameObject.tag);
+            var checkResult = target != null && target != gameObject;
+
+            if (checkResult)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            DontDestroyOnLoad(gameObject);
         }
 
         private void OnDestroy()
