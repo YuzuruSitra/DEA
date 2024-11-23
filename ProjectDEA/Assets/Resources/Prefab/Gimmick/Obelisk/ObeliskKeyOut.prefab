@@ -202,3 +202,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99a921c3837a4404ab60c32b40887ef7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _pickedScores:
+  - _type: 0
+    _point: 0

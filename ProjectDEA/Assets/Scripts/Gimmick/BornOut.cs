@@ -2,6 +2,7 @@ using System;
 using Character.NPC.EnemyDragon;
 using Item;
 using Manager;
+using Manager.MetaAI;
 using UnityEngine;
 
 namespace Gimmick
@@ -23,27 +24,32 @@ namespace Gimmick
         private bool _isMoving;
         private bool _hitOneTime;
         private const float MovementThreshold = 0.1f;
-
+        private MetaAIHandler _metaAIHandler;
+        [SerializeField] private MetaAIHandler.AddScores[] _kickedScores;
+        [SerializeField] private MetaAIHandler.AddScores[] _pickedScores;
+        
         private void Start()
         {
             _inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
             IsInteractable = false;
+            _metaAIHandler = GameObject.FindWithTag("MetaAI").GetComponent<MetaAIHandler>();
         }
-
+        
         private void Update()
         {
             _isMoving = _rb.velocity.magnitude > MovementThreshold;
             if (!_isMoving) _hitOneTime = false;
         }
-
+        
         public void Interact()
         {
             if (!IsInteractable) return;
             _inventoryHandler.AddItem(OutItem);
+            _metaAIHandler.SendLogsForMetaAI(_pickedScores);
             Destroy(gameObject);
             Destroyed?.Invoke();
         }
-
+        
         public void FlyAwayBorn(Vector3 playerPos)
         {
             if (_rb.constraints != RigidbodyConstraints.None) _rb.constraints = RigidbodyConstraints.None;
@@ -58,6 +64,7 @@ namespace Gimmick
 
             _rb.AddForce(randomizedDirection * _flyForce, ForceMode.Impulse);
             IsInteractable = true;
+            _metaAIHandler.SendLogsForMetaAI(_kickedScores);
         }
 
         private void OnTriggerEnter(Collider other)

@@ -3,6 +3,7 @@ using Character.NPC.EnemyDragon;
 using Character.Player;
 using Gimmick;
 using Manager.Audio;
+using Manager.MetaAI;
 using Manager.PlayData;
 using UnityEngine;
 
@@ -28,6 +29,8 @@ namespace Item
         private AnalysisDataHandler _analysisDataHandler;
         private SoundHandler _soundHandler;
         [SerializeField] private AudioClip _bombAudio;
+        private MetaAIHandler _metaAIHandler;
+        [SerializeField] private MetaAIHandler.AddScores[] _bombScores;
         
         private void Start()
         {
@@ -42,6 +45,7 @@ namespace Item
             _animWaitTime = _attackClip.length - _animPaddingTime;
             _detonationTime -= _animWaitTime;
             StartCoroutine(BombEffect());
+            _metaAIHandler.SendLogsForMetaAI(_bombScores);
         }
 
         private IEnumerator BombEffect()

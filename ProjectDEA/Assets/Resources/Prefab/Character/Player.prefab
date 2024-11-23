@@ -616,6 +616,9 @@ MonoBehaviour:
   _powerPotionUpValue: 5
   _addHpValue: 20
   _buffItemAudio: {fileID: 8300000, guid: 6bfd3f7981c065d48bde3780a9fc12f9, type: 3}
+  _buffScores:
+  - _type: 0
+    _point: 3
 --- !u!114 &4351832874976852339
 MonoBehaviour:
   m_ObjectHideFlags: 0

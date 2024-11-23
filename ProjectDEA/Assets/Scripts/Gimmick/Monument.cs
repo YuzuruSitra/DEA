@@ -1,6 +1,7 @@
 using System;
 using Item;
 using Manager;
+using Manager.MetaAI;
 using UI;
 using UnityEngine;
 
@@ -14,6 +15,8 @@ namespace Gimmick
         public event Action Destroyed;
         public bool IsInteractable { get; private set; }
         private const string AddLogMessage = "崩れた壁の中から墓石が現れた。";
+        private MetaAIHandler _metaAIHandler;
+        [SerializeField] private MetaAIHandler.AddScores[] _findScores;
         
         private void Start()
         {
@@ -21,12 +24,14 @@ namespace Gimmick
             _logTextHandler.AddLog(AddLogMessage);
             _inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
             IsInteractable = true;
+            _metaAIHandler = GameObject.FindWithTag("MetaAI").GetComponent<MetaAIHandler>();
         }
 
         public void Interact()
         {
             _inventoryHandler.AddItem(OutItem);
             IsInteractable = false;
+            _metaAIHandler.SendLogsForMetaAI(_findScores);
         }
     }
 }

@@ -5,6 +5,7 @@ using Character.Player;
 using Item;
 using Manager;
 using Manager.Audio;
+using Manager.MetaAI;
 using Manager.PlayData;
 using UI;
 using UnityEngine;
@@ -51,6 +52,9 @@ namespace Character.NPC.EnemyDragon
         [SerializeField] private AudioClip _hitAudio;
         [SerializeField] private AudioClip _screamAudio;
         private WaitForSeconds _screamWait;
+        private MetaAIHandler _metaAIHandler;
+        [SerializeField] private MetaAIHandler.AddScores[] _killedScores;
+        
         private void Start()
         {
             _agent = GetComponent<NavMeshAgent>();
@@ -60,6 +64,7 @@ namespace Character.NPC.EnemyDragon
             _logTextHandler = GameObject.FindWithTag("LogTextHandler").GetComponent<LogTextHandler>();
             _analysisDataHandler = GameObject.FindWithTag("AnalysisDataHandler").GetComponent<AnalysisDataHandler>();
             _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
+            _metaAIHandler = GameObject.FindWithTag("MetaAI").GetComponent<MetaAIHandler>();
             _screamWait = new WaitForSeconds(0.2f);
             
             _states.Add(AIState.Null, null);
@@ -128,6 +133,7 @@ namespace Character.NPC.EnemyDragon
             if (IsDeath) return;
             _currentHp = Math.Max(_currentHp - damage, 0);
             ReceiveNewHp?.Invoke(_currentHp);
+            _metaAIHandler.SendLogsForMetaAI(_killedScores);
             if (_currentHp == 0)
             {
                 IsDeath = true;

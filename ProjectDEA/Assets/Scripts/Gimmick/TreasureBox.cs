@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using Item;
 using Manager;
+using Manager.MetaAI;
 using Random = UnityEngine.Random;
 
 namespace Gimmick
@@ -20,6 +21,8 @@ namespace Gimmick
         [SerializeField] private float _openDuration;
         [SerializeField] private Vector3 _targetRot;
         public bool IsInteractable { get; private set; }
+        private MetaAIHandler _metaAIHandler;
+        [SerializeField] private MetaAIHandler.AddScores[] _pickedScores;
         
         private void Start()
         {
@@ -27,6 +30,7 @@ namespace Gimmick
             _outItem = _containItem[number];
             _inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
             IsInteractable = true;
+            _metaAIHandler = GameObject.FindWithTag("MetaAI").GetComponent<MetaAIHandler>();
         }
 
         public void Interact()
@@ -34,6 +38,7 @@ namespace Gimmick
             if (_isOpen) return;
             IsInteractable = false;
             _inventoryHandler.AddItem(_outItem);
+            _metaAIHandler.SendLogsForMetaAI(_pickedScores);
             _isOpen = true;
             StartCoroutine(RotateBoxTop());
         }
