@@ -26,7 +26,7 @@ namespace Manager.PlayData
         private Transform _playerTransform;
         private int _playerCurrentRoom;
         
-        private Dictionary<GimmickGenerator.GimmickKind, int> _gimmicksCount;
+        private Dictionary<GimmickKind, int> _gimmicksCount;
         private const string GimmicksCountKey = "CountKey";
         
         public int EnemyKillCount { get; set; }
@@ -54,10 +54,10 @@ namespace Manager.PlayData
             DontDestroyOnLoad(gameObject);
             _dataWriter = new PlayDataWriter();
             // _gimmicksCountを初期化
-            _gimmicksCount = new Dictionary<GimmickGenerator.GimmickKind, int>();
+            _gimmicksCount = new Dictionary<GimmickKind, int>();
 
             // GimmickKindの全要素を取得し、辞書に初期値0で格納
-            foreach (GimmickGenerator.GimmickKind kind in Enum.GetValues(typeof(GimmickGenerator.GimmickKind)))
+            foreach (GimmickKind kind in Enum.GetValues(typeof(GimmickKind)))
             {
                 _gimmicksCount[kind] = 0;
             }
@@ -116,7 +116,7 @@ namespace Manager.PlayData
             _isCountUp = false;
             _roomMovementCount = 0;
 
-            foreach (GimmickGenerator.GimmickKind kind in Enum.GetValues(typeof(GimmickGenerator.GimmickKind)))
+            foreach (GimmickKind kind in Enum.GetValues(typeof(GimmickKind)))
             {
                 _gimmicksCount[kind] = 0;
             }
@@ -137,9 +137,9 @@ namespace Manager.PlayData
             _dataWriter.SaveDestroyObjCount(DestroyObjCountKey, DestroyObjCount);
         }
 
-        public void ChangeGimmicksCount(GimmickGenerator.GimmickKind insKind)
+        public void ChangeGimmicksCount(GimmickKind insKind)
         {
-            foreach (GimmickGenerator.GimmickKind kind in Enum.GetValues(typeof(GimmickGenerator.GimmickKind)))
+            foreach (GimmickKind kind in Enum.GetValues(typeof(GimmickKind)))
             {
                 if (insKind != kind) continue;
                 _gimmicksCount[kind]++;

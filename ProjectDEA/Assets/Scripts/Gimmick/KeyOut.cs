@@ -5,12 +5,13 @@ using UnityEngine;
 
 namespace Gimmick
 {
-    public class KeyOut : MonoBehaviour,IInteractable
+    public class KeyOut : MonoBehaviour, IInteractable, IGimmickID
     {
         private const ItemKind OutItem = ItemKind.Key;
         private InventoryHandler _inventoryHandler;
         public event Action Destroyed;
         public bool IsInteractable { get; private set; }
+        public int InRoomID { get; set; }
         
         private void Start()
         {

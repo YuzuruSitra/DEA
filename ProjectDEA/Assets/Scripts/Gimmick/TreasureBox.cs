@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 namespace Gimmick
 {
-    public class TreasureBox : MonoBehaviour, IInteractable
+    public class TreasureBox : MonoBehaviour, IInteractable, IGimmickID
     {
         [SerializeField]
         private ItemKind[] _containItem;
@@ -23,6 +23,7 @@ namespace Gimmick
         public bool IsInteractable { get; private set; }
         private MetaAIHandler _metaAIHandler;
         [SerializeField] private MetaAIHandler.AddScores[] _pickedScores;
+        public int InRoomID { get; set; }
         
         private void Start()
         {

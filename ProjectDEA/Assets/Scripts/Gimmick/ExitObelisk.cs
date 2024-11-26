@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Gimmick
 {
-    public class ExitObelisk : MonoBehaviour, IInteractable
+    public class ExitObelisk : MonoBehaviour, IInteractable, IGimmickID
     {
         private DungeonLayerHandler _dungeonLayerHandler;
         private InventoryHandler _inventoryHandler;
@@ -32,6 +32,7 @@ namespace Gimmick
         
         private SoundHandler _soundHandler;
         [SerializeField] private AudioClip _setKeyAudio;
+        public int InRoomID { get; set; }
         
         private void Start()
         {

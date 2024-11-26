@@ -59,7 +59,7 @@ namespace Manager.PlayData
             _writer.Commit();
         }
         // ギミックの生成数の保存
-        public void SaveGimmicksCount(string key, Dictionary<GimmickGenerator.GimmickKind, int> gimmicksCount)
+        public void SaveGimmicksCount(string key, Dictionary<GimmickKind, int> gimmicksCount)
         {
             foreach (var gimmick in gimmicksCount)
             {

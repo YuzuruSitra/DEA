@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Gimmick
 {
-    public class Monument : MonoBehaviour, IInteractable
+    public class Monument : MonoBehaviour, IInteractable, IGimmickID
     {
         private LogTextHandler _logTextHandler;
         private const ItemKind OutItem = ItemKind.PowerApple;
@@ -17,6 +17,7 @@ namespace Gimmick
         private const string AddLogMessage = "崩れた壁の中から墓石が現れた。";
         private MetaAIHandler _metaAIHandler;
         [SerializeField] private MetaAIHandler.AddScores[] _findScores;
+        public int InRoomID { get; set; }
         
         private void Start()
         {

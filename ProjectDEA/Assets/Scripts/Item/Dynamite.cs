@@ -25,7 +25,7 @@ namespace Item
         [SerializeField] private int _dragonGiveDamage;
         private bool _isDragonGive;
         private bool _isPutMonument;
-        private GimmickGenerator _gimmickGenerator;
+        private RoomGimmickGenerator _gimmickGenerator;
         private AnalysisDataHandler _analysisDataHandler;
         private SoundHandler _soundHandler;
         [SerializeField] private AudioClip _bombAudio;
@@ -34,7 +34,7 @@ namespace Item
         
         private void Start()
         {
-            _gimmickGenerator = GameObject.FindWithTag("GimmickGenerator").GetComponent<GimmickGenerator>();
+            _gimmickGenerator = GameObject.FindWithTag("GimmickGenerator").GetComponent<RoomGimmickGenerator>();
             _analysisDataHandler = GameObject.FindWithTag("AnalysisDataHandler").GetComponent<AnalysisDataHandler>();
             _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
             UseEffect();
@@ -113,7 +113,7 @@ namespace Item
 
         private void InsMonument(Vector3 pos)
         {
-            var monumentPrefab = _gimmickGenerator.GimmickInfos[(int)GimmickGenerator.GimmickKind.Monument]._prefab;
+            var monumentPrefab = _gimmickGenerator.GimmickInfos[(int)GimmickKind.Monument]._prefab;
             var directionToSelf = transform.position - pos;
             var insRot = Vector3.zero;
             // 左右方向の判定

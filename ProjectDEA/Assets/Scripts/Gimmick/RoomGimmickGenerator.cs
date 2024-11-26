@@ -3,23 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Manager.Map;
+using Manager.MetaAI;
+using Random = UnityEngine.Random;
 
 namespace Gimmick
 {
     public class RoomGimmickGenerator : MonoBehaviour
     {
         private const int PaddingThreshold = 1;
-        private const int LimitValue = 0;
-
-        public enum GimmickKind
-        {
-            ExitObelisk,
-            ObeliskKeyOut,
-            TreasureBox,
-            EnemySpawnArea,
-            BornOut,
-            Monument
-        }
 
         [Serializable]
         public struct GimmickInfo
@@ -27,9 +18,12 @@ namespace Gimmick
             public GimmickKind _kind;
             public GameObject _prefab;
             public bool _isRoomGenerate;
-            public int _minCount;
-            public int _maxCount;
+            public MetaAIHandler.PlayerType _priorityType;
         }
+        [SerializeField] private GimmickInfo[] _gimmickInfo;
+        public GimmickInfo[] GimmickInfos => _gimmickInfo;
+        
+        private List<GimmickInfo>[] _insSeparateTypeGimmicks;
 
         private struct PlacedGimmickInfo
         {
@@ -37,52 +31,75 @@ namespace Gimmick
             public Vector3 LeftBottomPos;
             public Vector3 RightTopPos;
         }
-
-        [SerializeField] private GimmickInfo[] _gimmickInfo;
-        public GimmickInfo[] GimmickInfos => _gimmickInfo;
+        // ギミックは位置情報格納用
+        private List<PlacedGimmickInfo>[] _inRoomGimmickPos;
+        
         [SerializeField] private int _maxGimmickPerRoom;
         [SerializeField] private int _minGimmickPerRoom;
         [SerializeField] private Transform _mapParent;
-        [SerializeField] private int _insKeyCount;
-        // ギミックは位置情報格納用
-        private List<PlacedGimmickInfo>[] _inRoomGimmickPos;
-        public void GenerateGimmicks(StageGenerator stageGenerator)
+        private const int InsKeyCount = 4;
+
+        private int[,] _roomInfo;
+        private float _groundY;
+        
+        public void InitialGenerateGimmicks(StageGenerator stageGenerator)
         {
+            InitializedRandomGimmickList();
+            
             var roomCount = stageGenerator.RoomCount;
-            var groundY = stageGenerator.GroundPosY;
-            var roomInfo = stageGenerator.RoomInfo;
+            _groundY = stageGenerator.GroundPosY;
+            _roomInfo = stageGenerator.RoomInfo;
             
             _inRoomGimmickPos = new List<PlacedGimmickInfo>[roomCount];
             
             // ExitObeliskを生成
-            var exitObeliskRoom = CalcMostBigRoom(roomCount, roomInfo);
-            GenerateExitObelisk(exitObeliskRoom, groundY, roomInfo);
+            var exitObeliskRoom = CalcMostBigRoom(roomCount, _roomInfo);
+            InsGimmick(exitObeliskRoom, _gimmickInfo[(int)GimmickKind.ExitObelisk]);
 
             // ObeliskKeyOutを生成
-            GenerateObeliskKeys(stageGenerator, groundY, roomInfo);
+            GenerateObeliskKeys(roomCount);
         }
 
-        private void GenerateExitObelisk(int roomIndex, float groundY, int[,] roomInfo)
+        public void RandomGenerateGimmicks(int roomNum)
         {
-            var placedGimmickInfo = new List<PlacedGimmickInfo>();
-            InsGimmick(groundY, roomInfo, roomIndex, _gimmickInfo[(int)GimmickKind.ExitObelisk], placedGimmickInfo);
+            // 生成数を決定
+            var insCount = Random.Range(_minGimmickPerRoom, _maxGimmickPerRoom + 1);
+
+            for (var i = 0; i < insCount; i++)
+            {
+                // 生成タイプを決定
+                var insType = Random.Range(0, Enum.GetValues(typeof(MetaAIHandler.PlayerType)).Length);
+                // 生成タイプの中から選定
+                var insNum = Random.Range(0, _insSeparateTypeGimmicks[insType].Count);
+                InsGimmick(roomNum, _insSeparateTypeGimmicks[insType][insNum]);
+            }
         }
 
-        private void GenerateObeliskKeys(StageGenerator stageGenerator, float groundY, int[,] roomInfo)
+        private void InitializedRandomGimmickList()
         {
-            var obeliskKeyRooms = Enumerable.Range(0, stageGenerator.RoomCount)
-                                         .OrderBy(_ => UnityEngine.Random.Range(0, stageGenerator.RoomCount))
-                                         .Take(_insKeyCount)
+            // ランダム配置ギミックの初期化
+            _insSeparateTypeGimmicks = new List<GimmickInfo>[Enum.GetValues(typeof(MetaAIHandler.PlayerType)).Length];
+            foreach (var gimmick in _gimmickInfo)
+            {
+                if (!gimmick._isRoomGenerate) continue;
+                _insSeparateTypeGimmicks[(int)gimmick._priorityType].Add(gimmick);
+            }
+        }
+
+        private void GenerateObeliskKeys(int roomCount)
+        {
+            var obeliskKeyRooms = Enumerable.Range(0, roomCount)
+                                         .OrderBy(_ => UnityEngine.Random.Range(0, roomCount))
+                                         .Take(InsKeyCount)
                                          .ToArray();
 
             foreach (var roomIndex in obeliskKeyRooms)
             {
-                var placedGimmickInfo = new List<PlacedGimmickInfo>();
-                InsGimmick(groundY, roomInfo, roomIndex, _gimmickInfo[(int)GimmickKind.ObeliskKeyOut], placedGimmickInfo);
+                InsGimmick(roomIndex, _gimmickInfo[(int)GimmickKind.ObeliskKeyOut]);
             }
         }
 
-        private void InsGimmick(float groundY, int[,] roomInfo, int roomNum, GimmickInfo gimmickInfo, List<PlacedGimmickInfo> placedGimmickList)
+        private void InsGimmick(int roomNum, GimmickInfo gimmickInfo)
         {
             // 配置可能な範囲を計算
             var insObj = gimmickInfo._prefab;
@@ -90,13 +107,13 @@ namespace Gimmick
             var halfScaleZ = insObj.transform.localScale.z / 2.0f;
             var paddingX = (int)Math.Ceiling(halfScaleX) + PaddingThreshold;
             var paddingZ = (int)Math.Ceiling(halfScaleZ) + PaddingThreshold;
-            var rangeMinX = roomInfo[roomNum, (int)StageGenerator.RoomStatus.TopLeftX] + paddingX;
-            var rangeMaxX = roomInfo[roomNum, (int)StageGenerator.RoomStatus.TopRightX] - paddingX;
-            var rangeMinZ = roomInfo[roomNum, (int)StageGenerator.RoomStatus.BottomLeftZ] + paddingZ;
-            var rangeMaxZ = roomInfo[roomNum, (int)StageGenerator.RoomStatus.TopLeftZ] - paddingZ;
+            var rangeMinX = _roomInfo[roomNum, (int)StageGenerator.RoomStatus.TopLeftX] + paddingX;
+            var rangeMaxX = _roomInfo[roomNum, (int)StageGenerator.RoomStatus.TopRightX] - paddingX;
+            var rangeMinZ = _roomInfo[roomNum, (int)StageGenerator.RoomStatus.BottomLeftZ] + paddingZ;
+            var rangeMaxZ = _roomInfo[roomNum, (int)StageGenerator.RoomStatus.TopLeftZ] - paddingZ;
 
             var validPositions = new List<Vector3>();
-            var insPosY = groundY + insObj.transform.localScale.y / 2.0f;
+            var insPosY = _groundY + insObj.transform.localScale.y / 2.0f;
 
             // 配置可能な座標を列挙
             for (var x = rangeMinX; x < rangeMaxX; x++)
@@ -113,7 +130,7 @@ namespace Gimmick
             {
                 var minPos = CalcDiffPos(pos, -halfScaleX, -halfScaleZ);
                 var maxPos = CalcDiffPos(pos, halfScaleX, halfScaleZ);
-                return !placedGimmickList.Any(placed =>
+                return !_inRoomGimmickPos[roomNum].Any(placed =>
                     minPos.x - PaddingThreshold < placed.RightTopPos.x &&
                     maxPos.x + PaddingThreshold > placed.LeftBottomPos.x &&
                     minPos.z - PaddingThreshold < placed.RightTopPos.z &&
@@ -123,9 +140,9 @@ namespace Gimmick
             if (!carefulValidPos.Any()) return;
 
             var careInsPos = carefulValidPos[UnityEngine.Random.Range(0, carefulValidPos.Count)];
-            placedGimmickList.Add(new PlacedGimmickInfo
+            _inRoomGimmickPos[roomNum].Add(new PlacedGimmickInfo
             {
-                GimmickID = placedGimmickList.Count,
+                GimmickID = _inRoomGimmickPos[roomNum].Count,
                 LeftBottomPos = CalcDiffPos(careInsPos, -halfScaleX, -halfScaleZ),
                 RightTopPos = CalcDiffPos(careInsPos, halfScaleX, halfScaleZ)
             });
@@ -148,11 +165,9 @@ namespace Gimmick
             {
                 var size = roomInfo[i, (int)StageGenerator.RoomStatus.Rw] *
                            roomInfo[i, (int)StageGenerator.RoomStatus.Rh];
-                if (currentSize < size)
-                {
-                    mostBigRoom = i;
-                    currentSize = size;
-                }
+                if (currentSize >= size) continue;
+                mostBigRoom = i;
+                currentSize = size;
             }
             return mostBigRoom;
         }

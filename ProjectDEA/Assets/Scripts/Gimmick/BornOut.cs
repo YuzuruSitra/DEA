@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Gimmick
 {
-    public class BornOut : MonoBehaviour, IInteractable
+    public class BornOut : MonoBehaviour, IInteractable, IGimmickID
     {
         private const ItemKind OutItem = ItemKind.Born;
         private InventoryHandler _inventoryHandler;
@@ -27,6 +27,7 @@ namespace Gimmick
         private MetaAIHandler _metaAIHandler;
         [SerializeField] private MetaAIHandler.AddScores[] _kickedScores;
         [SerializeField] private MetaAIHandler.AddScores[] _pickedScores;
+        public int InRoomID { get; set; }
         
         private void Start()
         {
