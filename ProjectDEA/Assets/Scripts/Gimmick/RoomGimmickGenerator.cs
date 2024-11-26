@@ -33,8 +33,9 @@ namespace Gimmick
 
         private struct PlacedGimmickInfo
         {
-            public Vector3 InsMinPos;
-            public Vector3 InsMaxPos;
+            public int GimmickID;
+            public Vector3 LeftBottomPos;
+            public Vector3 RightTopPos;
         }
 
         [SerializeField] private GimmickInfo[] _gimmickInfo;
@@ -43,29 +44,15 @@ namespace Gimmick
         [SerializeField] private int _minGimmickPerRoom;
         [SerializeField] private Transform _mapParent;
         [SerializeField] private int _insKeyCount;
-        private int[] _gimmickInsCount;
-        
-        private Dictionary<int, List<(Vector3 minPos, Vector3 maxPos)>> _inRoomGimmickPos = new();
-
+        // ギミックは位置情報格納用
+        private List<PlacedGimmickInfo>[] _inRoomGimmickPos;
         public void GenerateGimmicks(StageGenerator stageGenerator)
         {
             var roomCount = stageGenerator.RoomCount;
             var groundY = stageGenerator.GroundPosY;
             var roomInfo = stageGenerator.RoomInfo;
             
-            // roomCount分の初期化
-            for (var i = 0; i < roomCount; i++)
-            {
-                _inRoomGimmickPos[i] = new List<(Vector3, Vector3)>();
-            }
-            
-            // foreach (var room in _inRoomGimmickPos)
-            // {
-            //     Debug.Log($"Room {room.Key} has {room.Value[0].maxPos} elements.");
-            // }
-            
-            // ギミックの初期化
-            _gimmickInsCount = new int[_gimmickInfo.Length];
+            _inRoomGimmickPos = new List<PlacedGimmickInfo>[roomCount];
             
             // ExitObeliskを生成
             var exitObeliskRoom = CalcMostBigRoom(roomCount, roomInfo);
@@ -73,9 +60,6 @@ namespace Gimmick
 
             // ObeliskKeyOutを生成
             GenerateObeliskKeys(stageGenerator, groundY, roomInfo);
-
-            // 特定条件に応じたギミックを生成
-            GenerateRoomSpecificGimmicks(stageGenerator, groundY, roomInfo, exitObeliskRoom);
         }
 
         private void GenerateExitObelisk(int roomIndex, float groundY, int[,] roomInfo)
@@ -95,44 +79,6 @@ namespace Gimmick
             {
                 var placedGimmickInfo = new List<PlacedGimmickInfo>();
                 InsGimmick(groundY, roomInfo, roomIndex, _gimmickInfo[(int)GimmickKind.ObeliskKeyOut], placedGimmickInfo);
-            }
-        }
-
-        private void GenerateRoomSpecificGimmicks(StageGenerator stageGenerator, float groundY, int[,] roomInfo, int exitObeliskRoom)
-        {
-            var roomCount = stageGenerator.RoomCount;
-            var roomGimmickCount = new int[roomCount];
-
-            // 各部屋のギミック生成数を事前に決定
-            for (var i = 0; i < roomCount; i++)
-            {
-                roomGimmickCount[i] = UnityEngine.Random.Range(_minGimmickPerRoom, _maxGimmickPerRoom + 1);
-                if (i == exitObeliskRoom) roomGimmickCount[i]--;
-            }
-
-            // 各部屋でギミックを生成
-            for (var i = 0; i < roomCount; i++)
-            {
-                var placedGimmickInfo = new List<PlacedGimmickInfo>();
-                for (var j = 0; j < roomGimmickCount[i]; j++)
-                {
-                    // 配置可能なギミックを取得
-                    var validGimmicks = _gimmickInfo
-                        .Where(g => g._isRoomGenerate && 
-                                    (g._maxCount == LimitValue || g._maxCount > _gimmickInsCount[(int)g._kind]))
-                        .ToList();
-
-                    if (!validGimmicks.Any()) break;
-
-                    // ランダムにギミックを選択
-                    var gimmickInfo = validGimmicks[UnityEngine.Random.Range(0, validGimmicks.Count)];
-
-                    // ギミックを生成
-                    InsGimmick(groundY, roomInfo, i, gimmickInfo, placedGimmickInfo);
-
-                    // 生成カウントを更新
-                    _gimmickInsCount[(int)gimmickInfo._kind]++;
-                }
             }
         }
 
@@ -168,10 +114,10 @@ namespace Gimmick
                 var minPos = CalcDiffPos(pos, -halfScaleX, -halfScaleZ);
                 var maxPos = CalcDiffPos(pos, halfScaleX, halfScaleZ);
                 return !placedGimmickList.Any(placed =>
-                    minPos.x - PaddingThreshold < placed.InsMaxPos.x &&
-                    maxPos.x + PaddingThreshold > placed.InsMinPos.x &&
-                    minPos.z - PaddingThreshold < placed.InsMaxPos.z &&
-                    maxPos.z + PaddingThreshold > placed.InsMinPos.z);
+                    minPos.x - PaddingThreshold < placed.RightTopPos.x &&
+                    maxPos.x + PaddingThreshold > placed.LeftBottomPos.x &&
+                    minPos.z - PaddingThreshold < placed.RightTopPos.z &&
+                    maxPos.z + PaddingThreshold > placed.LeftBottomPos.z);
             }).ToList();
 
             if (!carefulValidPos.Any()) return;
@@ -179,8 +125,9 @@ namespace Gimmick
             var careInsPos = carefulValidPos[UnityEngine.Random.Range(0, carefulValidPos.Count)];
             placedGimmickList.Add(new PlacedGimmickInfo
             {
-                InsMinPos = CalcDiffPos(careInsPos, -halfScaleX, -halfScaleZ),
-                InsMaxPos = CalcDiffPos(careInsPos, halfScaleX, halfScaleZ)
+                GimmickID = placedGimmickList.Count,
+                LeftBottomPos = CalcDiffPos(careInsPos, -halfScaleX, -halfScaleZ),
+                RightTopPos = CalcDiffPos(careInsPos, halfScaleX, halfScaleZ)
             });
 
             Instantiate(insObj, careInsPos, insObj.transform.rotation, _mapParent);
