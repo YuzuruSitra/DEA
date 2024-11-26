@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Manager.MetaAI
 {
@@ -24,7 +25,8 @@ namespace Manager.MetaAI
         private PlayerTypeClassifier _playerTypeClassifier;
         [Header("一度に送るログ数")]
         [SerializeField] private int _logPerSend = 10;
-        [SerializeField] private bool _isDebug;
+        [SerializeField] private bool _isUse;
+        [SerializeField] private bool _isDebugInput;
         private readonly Dictionary<PlayerType, int> _points = new()
         {
             { PlayerType.Killer, 0 },
@@ -39,6 +41,7 @@ namespace Manager.MetaAI
         
         private void Start()
         {
+            if (!_isUse) return;
             _playerTypeClassifier = new PlayerTypeClassifier(_logPerSend);
             _playerTypeClassifier.ResponsePlayerType += ReceivePlayerType;
         }
@@ -58,13 +61,15 @@ namespace Manager.MetaAI
 
         private void OnDestroy()
         {
+            if (!_isUse) return;
             _playerTypeClassifier.ResponsePlayerType -= ReceivePlayerType;
         }
 
         private void Update()
         {
             // デバッグ用
-            if (!_isDebug) return;
+            if (!_isUse) return;
+            if (!_isDebugInput) return;
             var killer = 6;
             var achiever = 6;
             var explorer = 6;
@@ -78,11 +83,13 @@ namespace Manager.MetaAI
 
         private void OnApplicationQuit()
         {
+            if (!_isUse) return;
             _playerTypeClassifier.OnDisconnected();
         }
         
         public void SendLogsForMetaAI(AddScores[] scores)
         {
+            if (!_isUse) return;
             // ポイントを初期化
             _points[PlayerType.Killer] = 0;
             _points[PlayerType.Achiever] = 0;

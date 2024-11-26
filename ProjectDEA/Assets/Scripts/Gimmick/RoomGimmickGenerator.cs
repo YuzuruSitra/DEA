@@ -39,46 +39,71 @@ namespace Gimmick
         [SerializeField] private Transform _mapParent;
         private const int InsKeyCount = 4;
 
+        private int _roomCount;
         private int[,] _roomInfo;
         private float _groundY;
+
+        private bool _onInitialized;
         
         public void InitialGenerateGimmicks(StageGenerator stageGenerator)
         {
             InitializedRandomGimmickList();
             
-            var roomCount = stageGenerator.RoomCount;
+            _roomCount = stageGenerator.RoomCount;
             _groundY = stageGenerator.GroundPosY;
             _roomInfo = stageGenerator.RoomInfo;
             
-            _inRoomGimmickPos = new List<PlacedGimmickInfo>[roomCount];
+            _inRoomGimmickPos = new List<PlacedGimmickInfo>[_roomCount];
+            for (var i = 0; i < _roomCount; i++)
+            {
+                _inRoomGimmickPos[i] = new List<PlacedGimmickInfo>();
+            }
             
             // ExitObeliskを生成
-            var exitObeliskRoom = CalcMostBigRoom(roomCount, _roomInfo);
+            var exitObeliskRoom = CalcMostBigRoom(_roomCount, _roomInfo);
             InsGimmick(exitObeliskRoom, _gimmickInfo[(int)GimmickKind.ExitObelisk]);
 
             // ObeliskKeyOutを生成
-            GenerateObeliskKeys(roomCount);
+            GenerateObeliskKeys(_roomCount);
+            
+            _onInitialized = true;
         }
 
-        public void RandomGenerateGimmicks(int roomNum)
+        public void RandomGenerateGimmicks(int playerRoomNum)
         {
-            // 生成数を決定
-            var insCount = Random.Range(_minGimmickPerRoom, _maxGimmickPerRoom + 1);
-
-            for (var i = 0; i < insCount; i++)
+            if (!_onInitialized) return;
+            
+            for (var i = 0; i < _roomCount; i++)
             {
-                // 生成タイプを決定
-                var insType = Random.Range(0, Enum.GetValues(typeof(MetaAIHandler.PlayerType)).Length);
-                // 生成タイプの中から選定
-                var insNum = Random.Range(0, _insSeparateTypeGimmicks[insType].Count);
-                InsGimmick(roomNum, _insSeparateTypeGimmicks[insType][insNum]);
+                // プレイヤーと違う部屋で生成数が規定以下なら生成する
+                if (i == playerRoomNum) continue;
+                if (_inRoomGimmickPos[i].Count >= _minGimmickPerRoom) continue;
+                
+                // 生成数を決定
+                var insCount = Random.Range(1, _maxGimmickPerRoom - _inRoomGimmickPos[i].Count + 1);
+
+                for (var n = 0; n < insCount; n++)
+                {
+                    // 生成タイプを決定
+                    var insType = Random.Range(0, Enum.GetValues(typeof(MetaAIHandler.PlayerType)).Length);
+                    // 生成タイプの中から選定
+                    var insNum = Random.Range(0, _insSeparateTypeGimmicks[insType].Count);
+                    InsGimmick(n, _insSeparateTypeGimmicks[insType][insNum]);
+                }
             }
         }
 
         private void InitializedRandomGimmickList()
         {
             // ランダム配置ギミックの初期化
-            _insSeparateTypeGimmicks = new List<GimmickInfo>[Enum.GetValues(typeof(MetaAIHandler.PlayerType)).Length];
+            var typeCount = Enum.GetValues(typeof(MetaAIHandler.PlayerType)).Length;
+            _insSeparateTypeGimmicks = new List<GimmickInfo>[typeCount];
+            // 各インデックスに List<GimmickInfo> を初期化
+            for (var i = 0; i < typeCount; i++)
+            {
+                _insSeparateTypeGimmicks[i] = new List<GimmickInfo>();
+            }
+            
             foreach (var gimmick in _gimmickInfo)
             {
                 if (!gimmick._isRoomGenerate) continue;
@@ -86,10 +111,15 @@ namespace Gimmick
             }
         }
 
+        private void RemoveRandomGimmickList(int roomNum, int gimmickNum)
+        {
+            _inRoomGimmickPos[roomNum].RemoveAt(gimmickNum);
+        }
+
         private void GenerateObeliskKeys(int roomCount)
         {
             var obeliskKeyRooms = Enumerable.Range(0, roomCount)
-                                         .OrderBy(_ => UnityEngine.Random.Range(0, roomCount))
+                                         .OrderBy(_ => Random.Range(0, roomCount))
                                          .Take(InsKeyCount)
                                          .ToArray();
 
@@ -139,7 +169,7 @@ namespace Gimmick
 
             if (!carefulValidPos.Any()) return;
 
-            var careInsPos = carefulValidPos[UnityEngine.Random.Range(0, carefulValidPos.Count)];
+            var careInsPos = carefulValidPos[Random.Range(0, carefulValidPos.Count)];
             _inRoomGimmickPos[roomNum].Add(new PlacedGimmickInfo
             {
                 GimmickID = _inRoomGimmickPos[roomNum].Count,
