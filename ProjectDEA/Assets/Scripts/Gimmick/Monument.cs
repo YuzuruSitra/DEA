@@ -17,7 +17,8 @@ namespace Gimmick
         private const string AddLogMessage = "崩れた壁の中から墓石が現れた。";
         private MetaAIHandler _metaAIHandler;
         [SerializeField] private MetaAIHandler.AddScores[] _findScores;
-        public int InRoomID { get; set; }
+        public GimmickID GimmickIdInfo { get; set; }
+        public event Action<IGimmickID> Returned;
         
         private void Start()
         {

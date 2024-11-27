@@ -11,7 +11,8 @@ namespace Gimmick
         private InventoryHandler _inventoryHandler;
         public event Action Destroyed;
         public bool IsInteractable { get; private set; }
-        public int InRoomID { get; set; }
+        public GimmickID GimmickIdInfo { get; set; }
+        public event Action<IGimmickID> Returned;
         
         private void Start()
         {
@@ -24,6 +25,7 @@ namespace Gimmick
             _inventoryHandler.AddItem(OutItem);
             Destroy(gameObject);
             Destroyed?.Invoke();
+            Returned?.Invoke(this);
         }
     }
 }

@@ -111,9 +111,12 @@ namespace Gimmick
             }
         }
 
-        private void RemoveRandomGimmickList(int roomNum, int gimmickNum)
+        private void RemoveRandomGimmickList(IGimmickID iGimmickID)
         {
-            _inRoomGimmickPos[roomNum].RemoveAt(gimmickNum);
+            var id = iGimmickID.GimmickIdInfo;
+            _inRoomGimmickPos[id.RoomID].RemoveAt(id.InRoomGimmickID);
+            iGimmickID.Returned -= RemoveRandomGimmickList;
+            Debug.Log($"Returned : {iGimmickID.GimmickIdInfo}");
         }
 
         private void GenerateObeliskKeys(int roomCount)
@@ -172,12 +175,16 @@ namespace Gimmick
             var careInsPos = carefulValidPos[Random.Range(0, carefulValidPos.Count)];
             _inRoomGimmickPos[roomNum].Add(new PlacedGimmickInfo
             {
-                GimmickID = _inRoomGimmickPos[roomNum].Count,
                 LeftBottomPos = CalcDiffPos(careInsPos, -halfScaleX, -halfScaleZ),
                 RightTopPos = CalcDiffPos(careInsPos, halfScaleX, halfScaleZ)
             });
-
-            Instantiate(insObj, careInsPos, insObj.transform.rotation, _mapParent);
+            
+            var insGimmick = Instantiate(insObj, careInsPos, insObj.transform.rotation, _mapParent).GetComponent<IGimmickID>();
+            if (insGimmick == null) return;
+            var info = insGimmick.GimmickIdInfo;
+            info.RoomID = roomNum;
+            info.InRoomGimmickID = _inRoomGimmickPos[roomNum].Count;
+            insGimmick.Returned += RemoveRandomGimmickList;
         }
 
         private static Vector3 CalcDiffPos(Vector3 pos, float valueX, float valueZ)

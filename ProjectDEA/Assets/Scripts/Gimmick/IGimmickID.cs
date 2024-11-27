@@ -1,8 +1,17 @@
+using System;
+
 namespace Gimmick
 {
     public interface IGimmickID
     {
-        int InRoomID { get; set; }
+        GimmickID GimmickIdInfo { get; set; }
+        event Action<IGimmickID> Returned;
+    }
+
+    public struct GimmickID
+    {
+        public int RoomID;
+        public int InRoomGimmickID;
     }
     
     public enum GimmickKind

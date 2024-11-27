@@ -32,7 +32,8 @@ namespace Gimmick
         
         private SoundHandler _soundHandler;
         [SerializeField] private AudioClip _setKeyAudio;
-        public int InRoomID { get; set; }
+        public GimmickID GimmickIdInfo { get; set; }
+        public event Action<IGimmickID> Returned;
         
         private void Start()
         {

@@ -27,7 +27,8 @@ namespace Gimmick
         private MetaAIHandler _metaAIHandler;
         [SerializeField] private MetaAIHandler.AddScores[] _kickedScores;
         [SerializeField] private MetaAIHandler.AddScores[] _pickedScores;
-        public int InRoomID { get; set; }
+        public GimmickID GimmickIdInfo { get; set; }
+        public event Action<IGimmickID> Returned;
         
         private void Start()
         {
@@ -49,6 +50,7 @@ namespace Gimmick
             _metaAIHandler.SendLogsForMetaAI(_pickedScores);
             Destroy(gameObject);
             Destroyed?.Invoke();
+            Returned?.Invoke(this);
         }
         
         public void FlyAwayBorn(Vector3 playerPos)
