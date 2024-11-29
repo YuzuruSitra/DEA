@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Manager.MetaAI
 {
@@ -9,10 +8,12 @@ namespace Manager.MetaAI
     {
         public enum PlayerType
         {
+            None,
             Killer,
             Achiever,
             Explorer
         }
+        public readonly int PlayerTypeCount = Enum.GetValues(typeof(PlayerType)).Length - 1;
         public PlayerType CurrentPlayerType { get; private set; }
         
         [Serializable]

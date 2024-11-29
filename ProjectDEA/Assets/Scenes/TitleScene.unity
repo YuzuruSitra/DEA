@@ -5525,7 +5525,15 @@ PrefabInstance:
       value: MetaAI
       objectReference: {fileID: 0}
     - target: {fileID: 8136416528590717673, guid: fac444b754ea73448896adeeacc1bcc2, type: 3}
+      propertyPath: _isUse
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8136416528590717673, guid: fac444b754ea73448896adeeacc1bcc2, type: 3}
       propertyPath: _isDebug
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8136416528590717673, guid: fac444b754ea73448896adeeacc1bcc2, type: 3}
+      propertyPath: _isDebugInput
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

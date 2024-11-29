@@ -203,5 +203,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _findScores:
-  - _type: 2
+  - _type: 3
     _point: 7

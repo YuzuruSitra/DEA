@@ -37,6 +37,7 @@ namespace Item
             _gimmickGenerator = GameObject.FindWithTag("GimmickGenerator").GetComponent<RoomGimmickGenerator>();
             _analysisDataHandler = GameObject.FindWithTag("AnalysisDataHandler").GetComponent<AnalysisDataHandler>();
             _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
+            _metaAIHandler = GameObject.FindWithTag("MetaAI").GetComponent<MetaAIHandler>();
             UseEffect();
         }
         

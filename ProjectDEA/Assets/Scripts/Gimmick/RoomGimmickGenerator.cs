@@ -44,11 +44,14 @@ namespace Gimmick
 
         private bool _onInitialized;
         private NavMeshHandler _navMeshHandler;
+        private MetaAIHandler _metaAIHandler;
+        [Header("特定のタイプの抽選確立")]
+        [SerializeField] private int _typeProbability;
         
         
         public void InitialGenerateGimmicks(StageGenerator stageGenerator, NavMeshHandler navMeshHandler)
         {
-            InitializedRandomGimmickList();
+            InitializedRandomGimmick();
             _stageGenerator = stageGenerator;
             _roomCount = stageGenerator.RoomCount;
             _groundY = stageGenerator.GroundPosY;
@@ -88,7 +91,8 @@ namespace Gimmick
                 for (var n = 0; n < insCount; n++)
                 {
                     // 生成タイプを決定
-                    var insType = Random.Range(0, Enum.GetValues(typeof(MetaAIHandler.PlayerType)).Length);
+                    var insType = DecideGimmickType(_metaAIHandler.CurrentPlayerType);
+                    Debug.Log(insType);
                     // 生成タイプの中から選定
                     var insNum = Random.Range(0, _insSeparateTypeGimmicks[insType].Count);
                     InsGimmick(i, _insSeparateTypeGimmicks[insType][insNum]);
@@ -96,10 +100,31 @@ namespace Gimmick
             }
         }
 
-        private void InitializedRandomGimmickList()
+        private int DecideGimmickType(MetaAIHandler.PlayerType playerType)
         {
+            // 確率でPlayerTypeのギミックを生成
+            var rnd = Random.Range(0, 101);
+            if (rnd <= _typeProbability && playerType != MetaAIHandler.PlayerType.None) 
+            {
+                return (int)playerType - 1;
+            }
+
+            // PlayerType以外のギミックタイプをランダムに選択
+            var playerTypeIndex = (int)playerType - 1; // 配列インデックス用に調整
+            var otherType = Random.Range(0, _metaAIHandler.PlayerTypeCount - 1);
+            // PlayerType以外を選ぶためのシフト
+            if (otherType >= playerTypeIndex) 
+            {
+                otherType++;
+            }
+            return otherType;
+        }
+
+        private void InitializedRandomGimmick()
+        {
+            _metaAIHandler = GameObject.FindWithTag("MetaAI").GetComponent<MetaAIHandler>();
             // ランダム配置ギミックの初期化
-            var typeCount = Enum.GetValues(typeof(MetaAIHandler.PlayerType)).Length;
+            var typeCount = _metaAIHandler.PlayerTypeCount;
             _insSeparateTypeGimmicks = new List<GimmickInfo>[typeCount];
             // 各インデックスに List<GimmickInfo> を初期化
             for (var i = 0; i < typeCount; i++)
@@ -110,7 +135,7 @@ namespace Gimmick
             foreach (var gimmick in _gimmickInfo)
             {
                 if (!gimmick._isRoomGenerate) continue;
-                _insSeparateTypeGimmicks[(int)gimmick._priorityType].Add(gimmick);
+                _insSeparateTypeGimmicks[(int)gimmick._priorityType - 1].Add(gimmick);
             }
         }
 

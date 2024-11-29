@@ -38,7 +38,7 @@ namespace Manager.MetaAI
         public void CollectActionLog(int killer, int achiever, int explorer)
         {
             var log = $"Killer: {killer}, Achiever: {achiever}, Explorer: {explorer}";
-            UnityEngine.Debug.Log(log);
+            //UnityEngine.Debug.Log(log);
 
             _actionLogs.Add(log);
 
