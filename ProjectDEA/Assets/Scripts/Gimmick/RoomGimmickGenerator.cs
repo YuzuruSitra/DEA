@@ -75,20 +75,21 @@ namespace Gimmick
             
             for (var i = 0; i < _roomCount; i++)
             {
-                // プレイヤーと違う部屋で生成数が規定以下なら生成する
+                // プレイヤーと同じ部屋はスキップ
                 if (i == playerRoomNum) continue;
+                // 既存数が _minGimmickPerRoom を満たしている場合はスキップ
                 if (_inRoomGimmickPos[i].Count >= _minGimmickPerRoom) continue;
-                
-                // 生成数を決定
-                var insCount = Random.Range(1, _maxGimmickPerRoom - _inRoomGimmickPos[i].Count + 1);
-
+                // 生成可能な最大数を計算
+                var maxAllowed = _maxGimmickPerRoom - _inRoomGimmickPos[i].Count;
+                // 生成数をランダムに決定（1以上、maxAllowed以下）
+                var insCount = Random.Range(1, maxAllowed + 1);
                 for (var n = 0; n < insCount; n++)
                 {
                     // 生成タイプを決定
                     var insType = Random.Range(0, Enum.GetValues(typeof(MetaAIHandler.PlayerType)).Length);
                     // 生成タイプの中から選定
                     var insNum = Random.Range(0, _insSeparateTypeGimmicks[insType].Count);
-                    InsGimmick(n, _insSeparateTypeGimmicks[insType][insNum]);
+                    InsGimmick(i, _insSeparateTypeGimmicks[insType][insNum]);
                 }
             }
         }
@@ -114,9 +115,15 @@ namespace Gimmick
         private void RemoveRandomGimmickList(IGimmickID iGimmickID)
         {
             var id = iGimmickID.GimmickIdInfo;
-            _inRoomGimmickPos[id.RoomID].RemoveAt(id.InRoomGimmickID);
+            var targetList = _inRoomGimmickPos[id.RoomID];
+            for (var i = 0; i < targetList.Count; i++)
+            {
+                var gimmick = targetList[i];
+                if (gimmick.GimmickID != id.InRoomGimmickID) continue;
+                _inRoomGimmickPos[id.RoomID].RemoveAt(i);
+                break;
+            }
             iGimmickID.Returned -= RemoveRandomGimmickList;
-            Debug.Log($"Returned : {iGimmickID.GimmickIdInfo}");
         }
 
         private void GenerateObeliskKeys(int roomCount)
@@ -138,8 +145,8 @@ namespace Gimmick
             var insObj = gimmickInfo._prefab;
             var halfScaleX = insObj.transform.localScale.x / 2.0f;
             var halfScaleZ = insObj.transform.localScale.z / 2.0f;
-            var paddingX = (int)Math.Ceiling(halfScaleX) + PaddingThreshold;
-            var paddingZ = (int)Math.Ceiling(halfScaleZ) + PaddingThreshold;
+            var paddingX = Mathf.CeilToInt(halfScaleX) + PaddingThreshold;
+            var paddingZ = Mathf.CeilToInt(halfScaleZ) + PaddingThreshold;
             var rangeMinX = _roomInfo[roomNum, (int)StageGenerator.RoomStatus.TopLeftX] + paddingX;
             var rangeMaxX = _roomInfo[roomNum, (int)StageGenerator.RoomStatus.TopRightX] - paddingX;
             var rangeMinZ = _roomInfo[roomNum, (int)StageGenerator.RoomStatus.BottomLeftZ] + paddingZ;
@@ -148,21 +155,23 @@ namespace Gimmick
             var validPositions = new List<Vector3>();
             var insPosY = _groundY + insObj.transform.localScale.y / 2.0f;
 
-            // 配置可能な座標を列挙
-            for (var x = rangeMinX; x < rangeMaxX; x++)
+            // 配置可能な座標を列挙（効率化：グリッドステップでスキップ）
+            var gridStep = Mathf.CeilToInt(halfScaleX);
+            for (var x = rangeMinX; x < rangeMaxX; x += gridStep)
             {
-                for (var z = rangeMinZ; z <= rangeMaxZ; z++)
+                for (var z = rangeMinZ; z <= rangeMaxZ; z += gridStep)
                 {
                     var insPos = new Vector3(x, insPosY, z);
                     validPositions.Add(insPos);
                 }
             }
 
-            // 重複を避けた配置
+            // 重複を避けた配置（効率化）
             var carefulValidPos = validPositions.Where(pos =>
             {
                 var minPos = CalcDiffPos(pos, -halfScaleX, -halfScaleZ);
                 var maxPos = CalcDiffPos(pos, halfScaleX, halfScaleZ);
+
                 return !_inRoomGimmickPos[roomNum].Any(placed =>
                     minPos.x - PaddingThreshold < placed.RightTopPos.x &&
                     maxPos.x + PaddingThreshold > placed.LeftBottomPos.x &&
@@ -170,11 +179,17 @@ namespace Gimmick
                     maxPos.z + PaddingThreshold > placed.LeftBottomPos.z);
             }).ToList();
 
-            if (!carefulValidPos.Any()) return;
+            if (!carefulValidPos.Any())
+            {
+                Debug.LogWarning($"No valid position found for room {roomNum}");
+                return;
+            }
 
             var careInsPos = carefulValidPos[Random.Range(0, carefulValidPos.Count)];
+            var inRoomGimmickID = _inRoomGimmickPos[roomNum].Count;
             _inRoomGimmickPos[roomNum].Add(new PlacedGimmickInfo
             {
+                GimmickID = inRoomGimmickID,
                 LeftBottomPos = CalcDiffPos(careInsPos, -halfScaleX, -halfScaleZ),
                 RightTopPos = CalcDiffPos(careInsPos, halfScaleX, halfScaleZ)
             });
@@ -183,7 +198,8 @@ namespace Gimmick
             if (insGimmick == null) return;
             var info = insGimmick.GimmickIdInfo;
             info.RoomID = roomNum;
-            info.InRoomGimmickID = _inRoomGimmickPos[roomNum].Count;
+            info.InRoomGimmickID = inRoomGimmickID;
+            insGimmick.GimmickIdInfo = info; 
             insGimmick.Returned += RemoveRandomGimmickList;
         }
 

@@ -18,7 +18,7 @@ namespace Gimmick
         private void Update()
         {
             var playerRoom = _roomChecker.CheckStayRoomNum(_player.position);
-            if (_currentPlayerRoom == playerRoom) return;
+            if (_currentPlayerRoom == playerRoom || playerRoom == InRoomChecker.ErrorRoomNum) return;
             _currentPlayerRoom = playerRoom;
             _roomGimmickGenerator.RandomGenerateGimmicks(playerRoom);
         }
