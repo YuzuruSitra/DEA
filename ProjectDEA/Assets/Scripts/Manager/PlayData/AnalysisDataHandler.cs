@@ -22,8 +22,7 @@ namespace Manager.PlayData
         
         private int _roomMovementCount;
         private const string MovementCountKey = "MovementCountKey";
-        private InRoomChecker _inRoomChecker;
-        private Transform _playerTransform;
+        private PlayerRoomTracker _playerRoomTracker;
         private int _playerCurrentRoom;
         
         private Dictionary<GimmickKind, int> _gimmicksCount;
@@ -75,9 +74,9 @@ namespace Manager.PlayData
         {
             if (_isCountUp) _clearTime += Time.deltaTime;
 
-            if (_inRoomChecker != null && _playerTransform != null)
+            if (_playerRoomTracker != null)
             {
-                var roomNum = _inRoomChecker.CheckStayRoomNum(_playerTransform.transform.position);
+                var roomNum = _playerRoomTracker.CurrentPlayerRoom;
                 if (roomNum == InRoomChecker.ErrorRoomNum) return;
                 if (_playerCurrentRoom == roomNum) return;
                 _roomMovementCount++;
@@ -97,14 +96,12 @@ namespace Manager.PlayData
                     break;
                 case "DungeonIn":
                     _isCountUp = true;
-                    _inRoomChecker = new InRoomChecker();
-                    _playerTransform = GameObject.FindWithTag("Player").transform;
+                    _playerRoomTracker = GameObject.FindWithTag("PlayerRoomTracker").GetComponent<PlayerRoomTracker>();
                     break;
                 case "ResultScene":
                     _isCountUp = false;
                     SavePlayLog();
-                    _inRoomChecker = null;
-                    _playerTransform = null;
+                    _playerRoomTracker = null;
                     break;
             }
         }

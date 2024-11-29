@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using Item;
 using Manager;
+using Manager.Map;
 using Manager.MetaAI;
 using Random = UnityEngine.Random;
 
@@ -25,14 +26,22 @@ namespace Gimmick
         [SerializeField] private MetaAIHandler.AddScores[] _pickedScores;
         public GimmickID GimmickIdInfo { get; set; }
         public event Action<IGimmickID> Returned;
+        private PlayerRoomTracker _playerRoomTracker;
         
         private void Start()
         {
             var number = Random.Range(0, _containItem.Length);
             _outItem = _containItem[number];
             _inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
+            _playerRoomTracker = GameObject.FindWithTag("PlayerRoomTracker").GetComponent<PlayerRoomTracker>();
+            _playerRoomTracker.OnPlayerRoomChange += OnTrashTreasure;
             IsInteractable = true;
             _metaAIHandler = GameObject.FindWithTag("MetaAI").GetComponent<MetaAIHandler>();
+        }
+
+        private void OnDestroy()
+        {
+            _playerRoomTracker.OnPlayerRoomChange -= OnTrashTreasure;
         }
 
         public void Interact()
@@ -60,6 +69,13 @@ namespace Gimmick
                 yield return null;
             }
             _boxTop.transform.localRotation = endRotation;
+        }
+
+        private void OnTrashTreasure()
+        {
+            if (!_isOpen) return;
+            Destroy(gameObject);
+            Returned?.Invoke(this);
         }
     }
 }

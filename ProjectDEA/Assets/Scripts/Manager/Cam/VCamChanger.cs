@@ -9,7 +9,7 @@ namespace Manager.Cam
 {
     public class VCamChanger : MonoBehaviour
     {
-        private InRoomChecker _roomChecker;
+        private PlayerRoomTracker _playerRoomTracker;
         private VignetteHandler _vignetteHandler;
 
         public enum CamKind
@@ -27,7 +27,6 @@ namespace Manager.Cam
         }
 
         [SerializeField] private VCamInfo[] _vCams;
-        [SerializeField] private Transform _player;
         [SerializeField] private float _vignetteDuration;
         
         private const int LowPriority = 5;
@@ -39,13 +38,13 @@ namespace Manager.Cam
 
         private void Start()
         {
-            _roomChecker = new InRoomChecker();
+            _playerRoomTracker = GameObject.FindWithTag("PlayerRoomTracker").GetComponent<PlayerRoomTracker>();
             _vignetteHandler = new VignetteHandler();
         }
 
         private void Update()
         {
-            var playerRoom = _roomChecker.CheckStayRoomNum(_player.position);
+            var playerRoom = _playerRoomTracker.CurrentPlayerRoom;
             SetCameraPriority(playerRoom != InRoomChecker.ErrorRoomNum);
         }
 

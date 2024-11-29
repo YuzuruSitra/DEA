@@ -6,20 +6,22 @@ namespace Gimmick
     public class RoomGimmickHandler : MonoBehaviour
     {
         [SerializeField] private RoomGimmickGenerator _roomGimmickGenerator;
-        [SerializeField] private Transform _player;
-        private InRoomChecker _roomChecker;
-        private int _currentPlayerRoom = -1;
+        private PlayerRoomTracker _playerRoomTracker;
         
         private void Start()
         {
-            _roomChecker = new InRoomChecker();
+            _playerRoomTracker = GameObject.FindWithTag("PlayerRoomTracker").GetComponent<PlayerRoomTracker>();
+            _playerRoomTracker.OnPlayerRoomChange += OnGenerateGimmick;
         }
-        
-        private void Update()
+
+        private void OnDestroy()
         {
-            var playerRoom = _roomChecker.CheckStayRoomNum(_player.position);
-            if (_currentPlayerRoom == playerRoom || playerRoom == InRoomChecker.ErrorRoomNum) return;
-            _currentPlayerRoom = playerRoom;
+            _playerRoomTracker.OnPlayerRoomChange -= OnGenerateGimmick;
+        }
+
+        private void OnGenerateGimmick()
+        {
+            var playerRoom = _playerRoomTracker.CurrentPlayerRoom;
             _roomGimmickGenerator.RandomGenerateGimmicks(playerRoom);
         }
     }
