@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8728822740203815917
+--- !u!1 &2415190071968378979
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8728822740203815919}
-  - component: {fileID: 8728822740203815916}
+  - component: {fileID: 551811124803093548}
+  - component: {fileID: 6786359223515772108}
   m_Layer: 0
-  m_Name: StageGenerator
-  m_TagString: StageGenerator
+  m_Name: NavMeshHandler
+  m_TagString: NavMeshBaker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8728822740203815919
+--- !u!4 &551811124803093548
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8728822740203815917}
+  m_GameObject: {fileID: 2415190071968378979}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,25 +32,15 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8728822740203815916
+--- !u!114 &6786359223515772108
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8728822740203815917}
+  m_GameObject: {fileID: 2415190071968378979}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6960620dd3d5455ea0945061c87da97, type: 3}
+  m_Script: {fileID: 11500000, guid: bf13f3c111dcb8f42877c13d38740d4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _defaultPosition: {x: -50.5, y: 0, z: -50.5}
-  _mapSize: 50
-  _roomNum: 7
-  _roomMin: 4
-  _heightCount: 3
-  _navMeshParentPrefab: {fileID: 6271728902389138359, guid: 286cb271a07730649bdb2c44d0fec027, type: 3}
-  _mapObjects:
-  - {fileID: 1464445895424974910, guid: 9b843fbef5ee14bf39f372dcdf809a25, type: 3}
-  - {fileID: 5593317787771108294, guid: 687abd9203bbb4ab9b9b8e91627ba9fd, type: 3}
-  - {fileID: 1464445895424974910, guid: 9b843fbef5ee14bf39f372dcdf809a25, type: 3}

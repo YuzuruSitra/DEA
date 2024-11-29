@@ -22,7 +22,10 @@ namespace Manager.Map
 
         private int _line; // 分割線
         public int[,] RoomInfo { get; private set; }
-        [SerializeField] private Transform _mapParent;
+        [SerializeField]
+        private GameObject _navMeshParentPrefab;
+        public GameObject[] NavMeshParents { get; private set; }
+        
         private readonly Vector3[] _roadRot = {
             new(0, 0, 0),
             new(0, 90, 0),
@@ -132,7 +135,14 @@ namespace Manager.Map
                 }
                 RoomCount++;
             }
-
+            
+            // 部屋 + Other分の親オブジェクトの初期化
+            NavMeshParents = new GameObject[RoomCount + 1];
+            for (var i = 0; i < NavMeshParents.Length; i++)
+            {
+                NavMeshParents[i] = Instantiate(_navMeshParentPrefab, Vector3.zero, Quaternion.identity, transform);
+            }
+            
             // 分割した部屋の中にランダムな部屋を生成
             for (var i = 0; i < _roomNum; i++)
             {
@@ -316,7 +326,7 @@ namespace Manager.Map
                                     _defaultPosition.x + nowW * _mapObjects[_mapKind[nowW, nowH]].transform.localScale.x,
                                     _defaultPosition.y + paddingY,
                                     _defaultPosition.z + nowH * _mapObjects[_mapKind[nowW, nowH]].transform.localScale.z),
-                                insRot, _mapParent);
+                                insRot, NavMeshParents[^1].transform);
                             paddingY += addValue;
                         }
                     }
@@ -324,13 +334,20 @@ namespace Manager.Map
                     // 部屋を生成
                     if (_mapKind[nowW, nowH] == (int)ObjectType.Ground)
                     {
-                        Instantiate(
-                            _mapObjects[_mapKind[nowW, nowH]],
-                            new Vector3(
-                                _defaultPosition.x + nowW * _mapObjects[_mapKind[nowW, nowH]].transform.localScale.x,
-                                _defaultPosition.y,
-                                _defaultPosition.z + nowH * _mapObjects[_mapKind[nowW, nowH]].transform.localScale.z),
-                            Quaternion.identity, _mapParent);
+                        // 所属している部屋番号を取得
+                        var roomIndex = GetRoomIndexForPosition(nowW, nowH);
+    
+                        if (roomIndex != -1)
+                        {
+                            Instantiate(
+                                _mapObjects[_mapKind[nowW, nowH]],
+                                new Vector3(
+                                    _defaultPosition.x + nowW * _mapObjects[_mapKind[nowW, nowH]].transform.localScale.x,
+                                    _defaultPosition.y,
+                                    _defaultPosition.z + nowH * _mapObjects[_mapKind[nowW, nowH]].transform.localScale.z),
+                                Quaternion.identity,
+                                NavMeshParents[roomIndex].transform);
+                        }
                     }
 
                     // 通路の生成
@@ -344,7 +361,7 @@ namespace Manager.Map
                                 _defaultPosition.x + nowW * _mapObjects[_mapKind[nowW, nowH]].transform.localScale.x,
                                 _defaultPosition.y,
                                 _defaultPosition.z + nowH * _mapObjects[_mapKind[nowW, nowH]].transform.localScale.z),
-                            insRot, _mapParent);
+                            insRot, NavMeshParents[^1].transform);
                     }
 
                 }
@@ -388,6 +405,21 @@ namespace Manager.Map
             }
             _line = UnityEngine.Random.Range(_roomMin + (OffsetWall * 2), y - (OffsetWall * 2 + _roomMin));// 横割�?
             return false;
+        }
+        
+        private int GetRoomIndexForPosition(int nowW, int nowH)
+        {
+            for (var i = 0; i < _roomNum; i++)
+            {
+                if (nowW >= RoomInfo[i, (int)RoomStatus.Rx] &&
+                    nowW < RoomInfo[i, (int)RoomStatus.Rx] + RoomInfo[i, (int)RoomStatus.Rw] &&
+                    nowH >= RoomInfo[i, (int)RoomStatus.Rz] &&
+                    nowH < RoomInfo[i, (int)RoomStatus.Rz] + RoomInfo[i, (int)RoomStatus.Rh])
+                {
+                    return i;
+                }
+            }
+            return -1;
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Gimmick
     public class RoomGimmickGenerator : MonoBehaviour
     {
         private const int PaddingThreshold = 1;
-
+        private StageGenerator _stageGenerator;
         [Serializable]
         public struct GimmickInfo
         {
@@ -36,7 +36,6 @@ namespace Gimmick
         
         [SerializeField] private int _maxGimmickPerRoom;
         [SerializeField] private int _minGimmickPerRoom;
-        [SerializeField] private Transform _mapParent;
         private const int InsKeyCount = 4;
 
         private int _roomCount;
@@ -44,14 +43,17 @@ namespace Gimmick
         private float _groundY;
 
         private bool _onInitialized;
+        private NavMeshHandler _navMeshHandler;
         
-        public void InitialGenerateGimmicks(StageGenerator stageGenerator)
+        
+        public void InitialGenerateGimmicks(StageGenerator stageGenerator, NavMeshHandler navMeshHandler)
         {
             InitializedRandomGimmickList();
-            
+            _stageGenerator = stageGenerator;
             _roomCount = stageGenerator.RoomCount;
             _groundY = stageGenerator.GroundPosY;
             _roomInfo = stageGenerator.RoomInfo;
+            _navMeshHandler = navMeshHandler;
             
             _inRoomGimmickPos = new List<PlacedGimmickInfo>[_roomCount];
             for (var i = 0; i < _roomCount; i++)
@@ -193,8 +195,10 @@ namespace Gimmick
                 LeftBottomPos = CalcDiffPos(careInsPos, -halfScaleX, -halfScaleZ),
                 RightTopPos = CalcDiffPos(careInsPos, halfScaleX, halfScaleZ)
             });
-            
-            var insGimmick = Instantiate(insObj, careInsPos, insObj.transform.rotation, _mapParent).GetComponent<IGimmickID>();
+
+            var parent = _stageGenerator.NavMeshParents[roomNum].transform;
+            var insGimmick = Instantiate(insObj, careInsPos, insObj.transform.rotation, parent).GetComponent<IGimmickID>();
+            _navMeshHandler.BakeTargetNavMesh(roomNum);
             if (insGimmick == null) return;
             var info = insGimmick.GimmickIdInfo;
             info.RoomID = roomNum;

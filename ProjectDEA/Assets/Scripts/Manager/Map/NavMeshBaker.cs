@@ -7,10 +7,13 @@ namespace Manager.Map
     {
         private NavMeshSurface _navMeshSurface;
 
+        private void Awake()
+        {
+            _navMeshSurface = GetComponent<NavMeshSurface>();
+        }
+
         public void BakeNavMesh()
         {
-            if (_navMeshSurface == null)
-                _navMeshSurface = GetComponent<NavMeshSurface>();
             _navMeshSurface.BuildNavMesh();
         }
     }

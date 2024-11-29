@@ -62,10 +62,10 @@ namespace Manager
         {
             var stageGenerator = GameObject.FindWithTag("StageGenerator").GetComponent<StageGenerator>();
             stageGenerator.MapGenerate();
+            var navMeshHandler = GameObject.FindWithTag("NavMeshBaker").GetComponent<NavMeshHandler>();
+            navMeshHandler.SetNavMeshParents(stageGenerator.NavMeshParents);
             var gimmickGenerator = GameObject.FindWithTag("GimmickGenerator").GetComponent<RoomGimmickGenerator>();
-            gimmickGenerator.InitialGenerateGimmicks(stageGenerator);
-            var navMeshBaker = GameObject.FindWithTag("NavMeshBaker").GetComponent<NavMeshBaker>();
-            navMeshBaker.BakeNavMesh();
+            gimmickGenerator.InitialGenerateGimmicks(stageGenerator, navMeshHandler);
             var playerSetPos = Vector3.zero;
             playerSetPos.x = stageGenerator.RoomInfo[0, (int) StageGenerator.RoomStatus.CenterX];
             playerSetPos.y = 1.88f;
