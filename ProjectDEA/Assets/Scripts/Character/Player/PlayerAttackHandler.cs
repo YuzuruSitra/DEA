@@ -1,4 +1,3 @@
-using System;
 using Manager.Audio;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -44,6 +43,7 @@ namespace Character.Player
         
         private void OnAttack(InputAction.CallbackContext context)
         {
+            if (!_isCanAttack) return;
             if (0 < _currentTime) return;
             _playerAnimationCnt.AttackActive();
             _soundHandler.PlaySe(_attackSeClip);
