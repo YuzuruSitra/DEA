@@ -17,7 +17,7 @@ namespace UI
             // InputActionsを初期化し、InventryViewScrollアクションのイベントリスナーを登録
             _inputActions = new InputActions();
             _inputActions.Player.InventryViewScroll.performed += StartScrolling;
-            _inputActions.Player.InventryViewScroll.canceled += StopScrolling; // キーを離したときに停止
+            _inputActions.Player.InventryViewScroll.canceled += StopScrolling;
             _inputActions.Enable();
         }
 

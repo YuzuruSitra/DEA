@@ -397,6 +397,54 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""InputSeparate"",
+            ""id"": ""b34f6de4-19b4-40c9-84d1-0b291fb395aa"",
+            ""actions"": [
+                {
+                    ""name"": ""InputKeyBoard"",
+                    ""type"": ""Button"",
+                    ""id"": ""070173f7-aeb0-46c4-bc28-9c01d756c646"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""InputGamePad"",
+                    ""type"": ""Button"",
+                    ""id"": ""1064e04c-30c3-4846-b9e4-1f6156ffc036"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""89267926-5d4f-4c3b-ab48-c9570b2e41bf"",
+                    ""path"": ""<Keyboard>/anyKey"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InputKeyBoard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1da098ef-f895-4591-8d5e-d7adf80da714"",
+                    ""path"": ""<Gamepad>/*"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InputGamePad"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -412,6 +460,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Player_InventryShift = m_Player.FindAction("InventryShift", throwIfNotFound: true);
         m_Player_ChangeInventryPanel = m_Player.FindAction("ChangeInventryPanel", throwIfNotFound: true);
         m_Player_InventryViewScroll = m_Player.FindAction("InventryViewScroll", throwIfNotFound: true);
+        // InputSeparate
+        m_InputSeparate = asset.FindActionMap("InputSeparate", throwIfNotFound: true);
+        m_InputSeparate_InputKeyBoard = m_InputSeparate.FindAction("InputKeyBoard", throwIfNotFound: true);
+        m_InputSeparate_InputGamePad = m_InputSeparate.FindAction("InputGamePad", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -579,6 +631,60 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // InputSeparate
+    private readonly InputActionMap m_InputSeparate;
+    private List<IInputSeparateActions> m_InputSeparateActionsCallbackInterfaces = new List<IInputSeparateActions>();
+    private readonly InputAction m_InputSeparate_InputKeyBoard;
+    private readonly InputAction m_InputSeparate_InputGamePad;
+    public struct InputSeparateActions
+    {
+        private @InputActions m_Wrapper;
+        public InputSeparateActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @InputKeyBoard => m_Wrapper.m_InputSeparate_InputKeyBoard;
+        public InputAction @InputGamePad => m_Wrapper.m_InputSeparate_InputGamePad;
+        public InputActionMap Get() { return m_Wrapper.m_InputSeparate; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(InputSeparateActions set) { return set.Get(); }
+        public void AddCallbacks(IInputSeparateActions instance)
+        {
+            if (instance == null || m_Wrapper.m_InputSeparateActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_InputSeparateActionsCallbackInterfaces.Add(instance);
+            @InputKeyBoard.started += instance.OnInputKeyBoard;
+            @InputKeyBoard.performed += instance.OnInputKeyBoard;
+            @InputKeyBoard.canceled += instance.OnInputKeyBoard;
+            @InputGamePad.started += instance.OnInputGamePad;
+            @InputGamePad.performed += instance.OnInputGamePad;
+            @InputGamePad.canceled += instance.OnInputGamePad;
+        }
+
+        private void UnregisterCallbacks(IInputSeparateActions instance)
+        {
+            @InputKeyBoard.started -= instance.OnInputKeyBoard;
+            @InputKeyBoard.performed -= instance.OnInputKeyBoard;
+            @InputKeyBoard.canceled -= instance.OnInputKeyBoard;
+            @InputGamePad.started -= instance.OnInputGamePad;
+            @InputGamePad.performed -= instance.OnInputGamePad;
+            @InputGamePad.canceled -= instance.OnInputGamePad;
+        }
+
+        public void RemoveCallbacks(IInputSeparateActions instance)
+        {
+            if (m_Wrapper.m_InputSeparateActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IInputSeparateActions instance)
+        {
+            foreach (var item in m_Wrapper.m_InputSeparateActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_InputSeparateActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public InputSeparateActions @InputSeparate => new InputSeparateActions(this);
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -590,5 +696,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         void OnInventryShift(InputAction.CallbackContext context);
         void OnChangeInventryPanel(InputAction.CallbackContext context);
         void OnInventryViewScroll(InputAction.CallbackContext context);
+    }
+    public interface IInputSeparateActions
+    {
+        void OnInputKeyBoard(InputAction.CallbackContext context);
+        void OnInputGamePad(InputAction.CallbackContext context);
     }
 }

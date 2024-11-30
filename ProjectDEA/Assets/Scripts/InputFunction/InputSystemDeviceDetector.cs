@@ -8,40 +8,24 @@ namespace InputFunction
     {
         public enum InputDeviceType
         {
-            Keyboard,   // キーボード・マウス
-            Xbox,       // Xboxコントローラー
-            DualShock4, // DualShock4(PS4)
-            DualSense,  // DualSense(PS5)
-            Switch,     // SwitchのProコントローラー
+            Keyboard,
+            GamePad
         }
-        // 直近に操作された入力デバイスタイプ
-        public InputDeviceType CurrentDeviceType { get; private set; } = InputDeviceType.Keyboard;
-
-        // 各デバイスのすべてのキーを１つにバインドしたInputAction（キー種別検知用）
-        private InputAction _keyboardAnyKey = new InputAction(type: InputActionType.PassThrough, binding: "<Keyboard>/AnyKey", interactions: "Press");
-        private InputAction _mouseAnyKey = new InputAction(type: InputActionType.PassThrough, binding: "<Mouse>/*", interactions: "Press");
-        private InputAction _detectDualSenseAnyKey = new InputAction(type: InputActionType.PassThrough, binding: "<DualSenseGamepadHID>/*", interactions: "Press");
-        private InputAction _switchProControllerAnyKey = new InputAction(type: InputActionType.PassThrough, binding: "<SwitchProControllerHID>/*", interactions: "Press");
-        public event Action<InputDeviceType> OnInputDeviceTypeChanged;
+        public event Action<InputDeviceType> OnChangeDevice;
+        private InputActions _inputActions;
         
         private void Start()
         {
             CheckSingleton();
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
-            InputSystem.onDeviceChange -= OnDeviceChange;
+            _inputActions.InputSeparate.InputKeyBoard.performed -= ChangeKeyBoard;
+            _inputActions.InputSeparate.InputGamePad.performed -= ChangeGamePad;
+            _inputActions.Disable();
         }
 
-        private void OnDeviceChange(InputDevice device, InputDeviceChange change)
-        {
-            if (change == InputDeviceChange.Added || change == InputDeviceChange.Removed)
-            {
-                Debug.Log($"デバイス変更: {device.displayName} 状態: {change}");
-            }
-        }
-        
         private void CheckSingleton()
         {
             var target = GameObject.FindGameObjectWithTag(gameObject.tag);
@@ -53,7 +37,22 @@ namespace InputFunction
                 return;
             }
             DontDestroyOnLoad(gameObject);
-            InputSystem.onDeviceChange += OnDeviceChange;
+            // リスナー登録
+            _inputActions = new InputActions();
+            _inputActions.InputSeparate.InputKeyBoard.performed += ChangeKeyBoard;
+            _inputActions.InputSeparate.InputGamePad.performed += ChangeGamePad;
+            _inputActions.Enable();
         }
+
+        private void ChangeKeyBoard(InputAction.CallbackContext context)
+        {
+            OnChangeDevice?.Invoke(InputDeviceType.Keyboard);
+        }
+        
+        private void ChangeGamePad(InputAction.CallbackContext context)
+        {
+            OnChangeDevice?.Invoke(InputDeviceType.GamePad);
+        }
+        
     }
 }

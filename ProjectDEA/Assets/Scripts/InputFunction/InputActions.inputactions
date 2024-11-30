@@ -375,6 +375,54 @@
                     "isPartOfComposite": true
                 }
             ]
+        },
+        {
+            "name": "InputSeparate",
+            "id": "b34f6de4-19b4-40c9-84d1-0b291fb395aa",
+            "actions": [
+                {
+                    "name": "InputKeyBoard",
+                    "type": "Button",
+                    "id": "070173f7-aeb0-46c4-bc28-9c01d756c646",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "InputGamePad",
+                    "type": "Button",
+                    "id": "1064e04c-30c3-4846-b9e4-1f6156ffc036",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "89267926-5d4f-4c3b-ab48-c9570b2e41bf",
+                    "path": "<Keyboard>/anyKey",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "InputKeyBoard",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1da098ef-f895-4591-8d5e-d7adf80da714",
+                    "path": "<Gamepad>/*",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "InputGamePad",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
