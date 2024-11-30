@@ -11,6 +11,8 @@ namespace InputFunction
             Keyboard,
             GamePad
         }
+
+        private InputDeviceType _currentType;
         public event Action<InputDeviceType> OnChangeDevice;
         private InputActions _inputActions;
         
@@ -46,12 +48,16 @@ namespace InputFunction
 
         private void ChangeKeyBoard(InputAction.CallbackContext context)
         {
-            OnChangeDevice?.Invoke(InputDeviceType.Keyboard);
+            if (_currentType == InputDeviceType.Keyboard) return;
+            _currentType = InputDeviceType.Keyboard;
+            OnChangeDevice?.Invoke(_currentType);
         }
         
         private void ChangeGamePad(InputAction.CallbackContext context)
         {
-            OnChangeDevice?.Invoke(InputDeviceType.GamePad);
+            if (_currentType == InputDeviceType.GamePad) return;
+            _currentType = InputDeviceType.GamePad;
+            OnChangeDevice?.Invoke(_currentType);
         }
         
     }

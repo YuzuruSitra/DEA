@@ -1,4 +1,5 @@
 using Gimmick;
+using InputFunction;
 using UnityEngine;
 
 namespace Character.Player
@@ -9,6 +10,9 @@ namespace Character.Player
         private IInteractable _currentInteractable;
         [SerializeField] private GameObject _indicationUI;
         private InputActions _inputActions;
+        [SerializeField] private GameObject[] _keyboardUIs;
+        [SerializeField] private GameObject[] _gamePadUIs;
+        private InputSystemDeviceDetector _deviceDetector;
 
         private void Start()
         {
@@ -16,6 +20,9 @@ namespace Character.Player
             _inputActions = new InputActions();
             _inputActions.Player.Interact.performed += OnInteractPerformed;
             _inputActions.Enable();
+            
+            _deviceDetector = GameObject.FindWithTag("InputSystemDeviceDetector").GetComponent<InputSystemDeviceDetector>();
+            _deviceDetector.OnChangeDevice += ChangeUI;
         }
 
         private void OnDestroy()
@@ -23,6 +30,7 @@ namespace Character.Player
             // Interactアクションのイベントリスナーを解除
             _inputActions.Player.Interact.performed -= OnInteractPerformed;
             _inputActions.Disable();
+            _deviceDetector.OnChangeDevice -= ChangeUI;
         }
 
         private void Update()
@@ -70,5 +78,33 @@ namespace Character.Player
         {
             _isInteractable = active;
         }
+
+        private void ChangeUI(InputSystemDeviceDetector.InputDeviceType type)
+        {
+            switch (type)
+            {
+                case InputSystemDeviceDetector.InputDeviceType.Keyboard:
+                    foreach (var t in _gamePadUIs)
+                    {
+                        t.SetActive(false);
+                    }
+                    foreach (var t in _keyboardUIs)
+                    {
+                        t.SetActive(true);
+                    }
+                    break;
+                case InputSystemDeviceDetector.InputDeviceType.GamePad:
+                    foreach (var t in _keyboardUIs)
+                    {
+                        t.SetActive(false);
+                    }
+                    foreach (var t in _gamePadUIs)
+                    {
+                        t.SetActive(true);
+                    }
+                    break;
+            }
+        }
+
     }
 }
