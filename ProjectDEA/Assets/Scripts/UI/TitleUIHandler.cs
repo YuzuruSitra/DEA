@@ -1,4 +1,6 @@
+using System;
 using Manager.Audio;
+using Manager.Language;
 using Manager.PlayData;
 using TMPro;
 using UnityEngine;
@@ -13,21 +15,30 @@ namespace UI
         [SerializeField] private Button _devBt;
         [SerializeField] private GameObject _devPad;
         [SerializeField] private Button _increaseIdBt;
-        [SerializeField] private Button _reduceIDBt;
         [SerializeField] private TMP_InputField _inputField;
         [SerializeField] private TextMeshProUGUI _idText;
         [SerializeField] private AnalysisDataHandler _analysisData;
+        
+        [SerializeField] private Button _settingBt;
+        [SerializeField] private GameObject _languagePad;
+        [SerializeField] private Button _languageIncreaseBt;
+        [SerializeField] private TextMeshProUGUI _languageText;
+        private LanguageHandler _languageHandler;
+        
         private SoundHandler _soundHandler;
         [SerializeField] private AudioClip _pushAudio;
         
         private void Start()
         {
             _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
+            _languageHandler = GameObject.FindWithTag("LanguageHandler").GetComponent<LanguageHandler>();
             _startBt.onClick.AddListener(NextScene);
             _devBt.onClick.AddListener(ChangeDevPad);
             _increaseIdBt.onClick.AddListener(IncreasePlayerID);
-            _reduceIDBt.onClick.AddListener(ReducePlayerID);
             _inputField.onEndEdit.AddListener(SetPlayerID);
+            
+            _settingBt.onClick.AddListener(ChangeSettings);
+            _languageIncreaseBt.onClick.AddListener(NextLanguage);
             ChangeIdText();
         }
 
@@ -44,17 +55,16 @@ namespace UI
             _soundHandler.PlaySe(_pushAudio);
         }
 
-        private void IncreasePlayerID()
+        private void ChangeSettings()
         {
-            _analysisData.PlayerID++;
-            ChangeIdText();
+            var newState = !_languagePad.activeSelf;
+            _languagePad.SetActive(newState);
             _soundHandler.PlaySe(_pushAudio);
         }
 
-        private void ReducePlayerID()
+        private void IncreasePlayerID()
         {
-            if (_analysisData.PlayerID == 0) return;
-            _analysisData.PlayerID--;
+            _analysisData.PlayerID++;
             ChangeIdText();
             _soundHandler.PlaySe(_pushAudio);
         }
@@ -71,6 +81,16 @@ namespace UI
             _idText.text = "プレイヤーID: " + _analysisData.PlayerID;
             if (!changeTextField) return;
             _inputField.text = "" + _analysisData.PlayerID;
+        }
+
+        private void NextLanguage()
+        {
+            var languageCount = Enum.GetValues(typeof(LanguageHandler.Language)).Length;
+            var nextNum = (int)_languageHandler.CurrentLanguage + 1;
+            if (nextNum >= languageCount) nextNum = 0;
+            _languageHandler.SetLanguage((LanguageHandler.Language)nextNum);
+            _languageText.text = _languageHandler.CurrentLanguage.ToString();
+            _soundHandler.PlaySe(_pushAudio);
         }
         
     }
