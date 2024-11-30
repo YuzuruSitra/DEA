@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace UI
@@ -7,18 +8,59 @@ namespace UI
     {
         [SerializeField] private ScrollRect _scrollRect; // ScrollRectの参照
         [SerializeField] private float _scrollSpeed = 0.1f; // スクロールの速さ
+        private InputActions _inputActions;
+        private bool _isScrollingRight; // 右方向のスクロール状態
+        private bool _isScrollingLeft;  // 左方向のスクロール状態
+
+        private void Start()
+        {
+            // InputActionsを初期化し、InventryViewScrollアクションのイベントリスナーを登録
+            _inputActions = new InputActions();
+            _inputActions.Player.InventryViewScroll.performed += StartScrolling;
+            _inputActions.Player.InventryViewScroll.canceled += StopScrolling; // キーを離したときに停止
+            _inputActions.Enable();
+        }
+
+        private void OnDestroy()
+        {
+            // InventryViewScrollアクションのイベントリスナーを解除
+            _inputActions.Player.InventryViewScroll.performed -= StartScrolling;
+            _inputActions.Player.InventryViewScroll.canceled -= StopScrolling;
+            _inputActions.Disable();
+        }
 
         private void Update()
         {
-            // キーボードの左右矢印キーで横スクロールを制御
-            if (Input.GetKey(KeyCode.A))
-            {
-                ScrollLeft();
-            }
-            else if (Input.GetKey(KeyCode.D))
+            if (_isScrollingRight)
             {
                 ScrollRight();
             }
+            else if (_isScrollingLeft)
+            {
+                ScrollLeft();
+            }
+        }
+
+        private void StartScrolling(InputAction.CallbackContext context)
+        {
+            // 入力値を取得（-1:左, 1:右）
+            var scrollDirection = context.ReadValue<float>();
+
+            if (scrollDirection > 0)
+            {
+                _isScrollingRight = true;
+            }
+            else if (scrollDirection < 0)
+            {
+                _isScrollingLeft = true;
+            }
+        }
+
+        private void StopScrolling(InputAction.CallbackContext context)
+        {
+            // スクロールの停止
+            _isScrollingRight = false;
+            _isScrollingLeft = false;
         }
 
         private void ScrollRight()

@@ -2,6 +2,7 @@ using Item;
 using Manager;
 using UI;
 using UnityEngine;
+using UnityEngine.InputSystem; // InputSystemを使用
 
 namespace Character.Player
 {
@@ -22,17 +23,27 @@ namespace Character.Player
         private Quaternion _predictedRotation;
         [SerializeField] private UseItemEffects _useItemEffects;
         private LogTextHandler _logTextHandler;
-        
+        private InputActions _inputActions;
+
         private void Start()
         {
             _inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
             _logTextHandler = GameObject.FindWithTag("LogTextHandler").GetComponent<LogTextHandler>();
             _inventoryHandler.OnItemNumChanged += ResetState;
+
+            // InputActions をインスタンス化
+            _inputActions = new InputActions();
+            _inputActions.Player.UseItem.performed += OnUseItem;
+            _inputActions.Player.PutCancel.performed += OnPutCancel;
+            _inputActions.Enable();
         }
 
         private void OnDestroy()
         {
             _inventoryHandler.OnItemNumChanged -= ResetState;
+            _inputActions.Player.UseItem.performed -= OnUseItem;
+            _inputActions.Player.PutCancel.performed -= OnPutCancel;
+            _inputActions.Disable();
         }
 
         private void Update()
@@ -45,34 +56,39 @@ namespace Character.Player
         {
             if (_inventoryHandler.CurrentItemNum == InventoryHandler.ErrorValue) return;
             var target = _inventoryHandler.TargetItem;
+            if (!target._isPut) return;
+            if (_insState == InsState.Predict) MovePrediction();
+        }
+
+        private void OnUseItem(InputAction.CallbackContext context)
+        {
+            if (_inventoryHandler.CurrentItemNum == InventoryHandler.ErrorValue) return;
+
+            var target = _inventoryHandler.TargetItem;
             if (target._isPut)
             {
-                if (Input.GetKeyDown(KeyCode.Space))
+                switch (_insState)
                 {
-                    switch (_insState)
-                    {
-                        case InsState.None:
-                            _inventoryHandler.ChangePredictActive(target._currentPrefab, true);
-                            _insState = InsState.Predict;
-                            break;
-                        case InsState.Predict:
-                            PlaceItem();
-                            ResetState();
-                            SendLogText(target._effectedLogText);
-                            break;
-                    }
+                    case InsState.None:
+                        _inventoryHandler.ChangePredictActive(target._currentPrefab, true);
+                        _insState = InsState.Predict;
+                        break;
+                    case InsState.Predict:
+                        PlaceItem();
+                        ResetState();
+                        SendLogText(target._effectedLogText);
+                        break;
                 }
-
-                if (_insState == InsState.Predict) MovePrediction();
-
-                // Chancel.
-                if (Input.GetMouseButtonDown(1)) ResetState();
             }
 
-            if (target._isUse && Input.GetKeyDown(KeyCode.Space)) DoneUseItem();
+            if (target._isUse) DoneUseItem();
         }
-        
-        // PutItem
+
+        private void OnPutCancel(InputAction.CallbackContext context)
+        {
+            ResetState();
+        }
+
         private void MovePrediction()
         {
             if (_inventoryHandler.CurrentItemNum == InventoryHandler.ErrorValue) return;
@@ -118,8 +134,7 @@ namespace Character.Player
             _insState = InsState.None;
             _inventoryHandler.ChangePredictActive(_inventoryHandler.TargetItem._currentPrefab, false);
         }
-        
-        // UseItem
+
         private void DoneUseItem()
         {
             var target = _inventoryHandler.TargetItem;
@@ -142,7 +157,7 @@ namespace Character.Player
             if (message == "") return;
             _logTextHandler.AddLog(message);
         }
-        
+
         public void SetCanUseItemState(bool active)
         {
             _isCanUseItem = active;

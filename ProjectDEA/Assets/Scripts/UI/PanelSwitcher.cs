@@ -13,20 +13,26 @@ namespace UI
         private bool _isManipulate = true;
         private SoundHandler _soundHandler;
         [SerializeField] private AudioClip _pushAudio;
+        private InputActions _inputActions;
         
         private void Start()
         {
             _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
+            // Interactアクションのイベントリスナーを登録
+            _inputActions = new InputActions();
+            _inputActions.Player.ChangeInventryPanel.performed += ChangeInventoryPanel;
+            _inputActions.Enable();
         }
 
-        private void Update()
+        private void OnDestroy()
+        {
+            _inputActions.Player.ChangeInventryPanel.performed -= ChangeInventoryPanel;
+            _inputActions.Disable();
+        }
+
+        private void ChangeInventoryPanel(UnityEngine.InputSystem.InputAction.CallbackContext context)
         {
             if (!_isManipulate) return;
-            if (Input.GetKeyDown(KeyCode.Tab)) ChangeInventoryPanel();
-        }
-
-        private void ChangeInventoryPanel()
-        {
             var active = _inventoryPanel.activeSelf;
             _inventoryPanel.SetActive(!active);
             _playerClasHub.SetPlayerFreedom(active);

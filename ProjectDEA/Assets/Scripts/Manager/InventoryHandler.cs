@@ -43,16 +43,23 @@ namespace Manager
         private SoundHandler _soundHandler;
         [SerializeField] private AudioClip _pushAudio;
         [SerializeField] private AudioClip _getItemAudio;
+        private InputActions _inputActions;
         
         private void Awake()
         {
             CheckSingleton();
             SceneManager.sceneLoaded += OnSceneLoaded;
+            // Interactアクションのイベントリスナーを登録
+            _inputActions = new InputActions();
+            _inputActions.Player.InventryShift.performed += IncreaseItemNum;
+            _inputActions.Enable();
         }
         
         private void OnDestroy()
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
+            _inputActions.Player.InventryShift.performed -= IncreaseItemNum;
+            _inputActions.Disable();
         }
         
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -94,12 +101,7 @@ namespace Manager
             _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
         }
 
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.F)) IncreaseItemNum();
-        }
-
-        private void IncreaseItemNum()
+        private void IncreaseItemNum(UnityEngine.InputSystem.InputAction.CallbackContext context)
         {
             var startIndex = Math.Max(CurrentItemNum, 0);
 
