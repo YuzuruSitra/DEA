@@ -3,6 +3,7 @@ using Character.Player;
 using Cinemachine;
 using Gimmick;
 using Manager.Audio;
+using Manager.Language;
 using UI;
 using UnityEngine;
 
@@ -25,7 +26,7 @@ namespace Manager
         private bool _isTutorial;
         private SoundHandler _soundHandler;
         [SerializeField] private AudioClip _pushAudio;
-        
+
         private void Start()
         {
             _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
@@ -35,8 +36,18 @@ namespace Manager
         private void Update()
         {
             if (!_isTutorial) return;
-            var shouldShowUI = _inputCurrentTime >= _inputPaddingTime;
 
+            HandleTutorialUI();
+
+            if (!Input.anyKeyDown) return;
+            _currentWaitState++;
+            _inputCurrentTime = 0;
+            _soundHandler.PlaySe(_pushAudio);
+        }
+
+        private void HandleTutorialUI()
+        {
+            var shouldShowUI = _inputCurrentTime >= _inputPaddingTime;
             if (shouldShowUI != _isIndicationActive)
             {
                 _tutorialIndicationUI.SetActive(shouldShowUI);
@@ -46,13 +57,7 @@ namespace Manager
             if (_inputCurrentTime < _inputPaddingTime)
             {
                 _inputCurrentTime += Time.deltaTime;
-                return;
             }
-
-            if (!Input.anyKeyDown) return;
-            _currentWaitState++;
-            _inputCurrentTime = 0;
-            _soundHandler.PlaySe(_pushAudio);
         }
 
         private IEnumerator TutorialCoroutine()
@@ -60,41 +65,63 @@ namespace Manager
             _isTutorial = true;
             _panelSwitcher.ChangeIsManipulate(false);
             _playerClasHub.SetPlayerFreedom(false);
-            var message1 = "ようやく" + _dungeonLayerHandler.CurrentLayer + "Fまで降りられた。";
-            _logTextHandler.AddLog(message1, false);
+
+            AddLocalizedLog(
+                "ようやく" + _dungeonLayerHandler.CurrentLayer + "Fまで降りられた。",
+                "I've finally made it down to the " + _dungeonLayerHandler.CurrentLayer + "nd floor."
+            );
             yield return WaitForPlayerInput(1);
-            
-            var message2 = "このダンジョンは息苦しくて持続的にダメージを受けている気がする。";
-            _logTextHandler.AddLog(message2, false);
+
+            AddLocalizedLog(
+                "このダンジョンは息苦しくて持続的にダメージを受けている気がする。",
+                "This dungeon feels suffocating, like I'm taking continuous damage just by being here."
+            );
             yield return WaitForPlayerInput(2);
-            
-            var message3 = "オベリスクの転移による疲労回復がなかったら今頃...";
-            _logTextHandler.AddLog(message3, false);
+
+            AddLocalizedLog(
+                "オベリスクの転移による疲労回復がなかったら今頃...",
+                "If it weren't for the recovery from the obelisk's teleportation,\nI don't know where I'd be by now..."
+            );
             yield return WaitForPlayerInput(3);
 
-            var message4 = "これまで通り転移ギミックを利用した脱出を試みよう。";
-            _logTextHandler.AddLog(message4, false);
+            AddLocalizedLog(
+                "これまで通り転移ギミックを利用した脱出を試みよう。",
+                "I'll try to escape using the teleportation gimmick, just like before."
+            );
             yield return WaitForPlayerInput(4);
 
             ChangeVCam(1);
-            var message5 = "ちょうどオベリスクがある。\nたしか起動には欠片が" + ExitObelisk.NeededKeyCount + "つ必要だったはずだ。";
-            _logTextHandler.AddLog(message5, false);
+            AddLocalizedLog(
+                "ちょうどオベリスクがある。\nたしか起動には欠片が" + ExitObelisk.NeededKeyCount + "つ必要だったはずだ。",
+                "There's an obelisk right here.\nIf I remember correctly, activating it requires " + ExitObelisk.NeededKeyCount + " obelisk fragments."
+            );
             yield return WaitForPlayerInput(5);
 
             ChangeVCam(0);
             yield return WaitForPlayerInput(6);
-            
-            _tutorialIndicationUI.SetActive(false);
-            
-            _panelSwitcher.ChangeIsManipulate(true);
-            _playerClasHub.SetPlayerFreedom(true);
-            _logTextHandler.AllOnDisableTMPro();
-            _isTutorial = false;
+
+            EndTutorial();
         }
-        
+
+        private void AddLocalizedLog(string japaneseMessage, string englishMessage)
+        {
+            var language = _logTextHandler.LanguageHandler.CurrentLanguage;
+            var message = language switch
+            {
+                LanguageHandler.Language.Japanese => japaneseMessage,
+                LanguageHandler.Language.English => englishMessage,
+                _ => string.Empty
+            };
+
+            if (!string.IsNullOrEmpty(message))
+            {
+                _logTextHandler.AddLog(message, false);
+            }
+        }
+
         private IEnumerator WaitForPlayerInput(int target)
         {
-            while (_currentWaitState < target)　yield return null;
+            while (_currentWaitState < target) yield return null;
         }
 
         private void ChangeVCam(int target)
@@ -104,6 +131,15 @@ namespace Manager
                 var cam = _vCams[i];
                 cam.Priority = target == i ? HighPriority : LowPriority;
             }
+        }
+
+        private void EndTutorial()
+        {
+            _tutorialIndicationUI.SetActive(false);
+            _panelSwitcher.ChangeIsManipulate(true);
+            _playerClasHub.SetPlayerFreedom(true);
+            _logTextHandler.AllOnDisableTMPro();
+            _isTutorial = false;
         }
     }
 }

@@ -1,3 +1,4 @@
+using Manager.Language;
 using UnityEngine;
 
 namespace UI
@@ -6,8 +7,13 @@ namespace UI
     {
         [SerializeField] private LogTextDisable[] _logTextDisable;
         private const string ErrorMessage = "";
-        
-        
+        public LanguageHandler LanguageHandler { get; private set; }
+
+        private void Start()
+        {
+            LanguageHandler = GameObject.FindWithTag("LanguageHandler").GetComponent<LanguageHandler>();
+        }
+
         public void AddLog(string message, bool isDisable = true)
         {
             var previousMessage = message;

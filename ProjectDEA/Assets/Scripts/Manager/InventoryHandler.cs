@@ -37,8 +37,16 @@ namespace Manager
         public Action<ItemPrefabSet[]> OnItemLineupChanged;
         public ItemPrefabSet TargetItem => _itemSets[CurrentItemNum];
         private LogTextHandler _logTextHandler;
-        private const string LogTemplate = "を手に入れた。";
-        private const string LogObeliskTemplate = "破片は集まった。オベリスクへ向かおう。";
+        private readonly string[] _logTemplate =
+        {
+            "を手に入れた。",
+            " has been obtained."
+        };
+        private readonly string[] _logObeliskTemplate =
+        {
+            "破片は集まった。オベリスクへ向かおう。",
+            "The fragments have been gathered.\nLet's head to the obelisk."
+        };
         private AnalysisDataHandler _analysisDataHandler;
         private SoundHandler _soundHandler;
         [SerializeField] private AudioClip _pushAudio;
@@ -148,7 +156,8 @@ namespace Manager
             {
                 if (_itemSets[i]._kind != item) continue;
                 _itemSets[i]._count++;
-                var message = _itemSets[i]._name + LogTemplate;
+                var language = _logTextHandler.LanguageHandler.CurrentLanguage;
+                var message = _itemSets[i]._name + _logTemplate[(int)language];
                 _logTextHandler.AddLog(message);
                 _soundHandler.PlaySe(_getItemAudio);
                 switch (item)
@@ -171,10 +180,9 @@ namespace Manager
 
         private void CheckObeliskCount()
         {
-            if (_itemSets[(int)ItemKind.Key]._count == ExitObelisk.NeededKeyCount)
-            {
-                _logTextHandler.AddLog(LogObeliskTemplate);
-            }
+            if (_itemSets[(int)ItemKind.Key]._count != ExitObelisk.NeededKeyCount) return;
+            var language = _logTextHandler.LanguageHandler.CurrentLanguage;
+            _logTextHandler.AddLog(_logObeliskTemplate[(int)language]);
         }
 
         public GameObject UseItem()

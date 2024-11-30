@@ -5,6 +5,7 @@ using Character.Player;
 using Item;
 using Manager;
 using Manager.Audio;
+using Manager.Language;
 using Manager.MetaAI;
 using Manager.PlayData;
 using UI;
@@ -46,7 +47,11 @@ namespace Character.NPC.EnemyDragon
         private InventoryHandler _inventoryHandler;
         [SerializeField] private ItemKind[] _outItem;
         private LogTextHandler _logTextHandler;
-        private const string SendLogMessage = "なんとかドラゴンを撃退した。";
+        private readonly string[] _sendLogMessage = 
+        {
+            "なんとかドラゴンを撃退した。",
+            "I somehow managed to defeat the dragon."
+        };
         private AnalysisDataHandler _analysisDataHandler;
         private SoundHandler _soundHandler;
         [SerializeField] private AudioClip _hitAudio;
@@ -138,7 +143,8 @@ namespace Character.NPC.EnemyDragon
             {
                 IsDeath = true;
                 _agent.isStopped = true;
-                _logTextHandler.AddLog(SendLogMessage);
+                var language = (int)_logTextHandler.LanguageHandler.CurrentLanguage;
+                _logTextHandler.AddLog(_sendLogMessage[language]);
                 var item = _outItem[Random.Range(0, _outItem.Length)];
                 _inventoryHandler.AddItem(item);
                 StartCoroutine(DeathDisable());

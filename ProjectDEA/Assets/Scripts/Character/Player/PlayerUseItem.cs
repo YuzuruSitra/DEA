@@ -2,7 +2,7 @@ using Item;
 using Manager;
 using UI;
 using UnityEngine;
-using UnityEngine.InputSystem; // InputSystemを使用
+using UnityEngine.InputSystem;
 
 namespace Character.Player
 {
@@ -76,7 +76,7 @@ namespace Character.Player
                     case InsState.Predict:
                         PlaceItem();
                         ResetState();
-                        SendLogText(target._effectedLogText);
+                        //SendLogText(target._effectedLogText);
                         break;
                 }
             }
@@ -143,11 +143,11 @@ namespace Character.Player
             {
                 case ItemKind.PowerPotion:
                     _useItemEffects.PlayerPowerUpper();
-                    SendLogText(target._effectedLogText);
+                    //SendLogText(target._effectedLogText);
                     break;
                 case ItemKind.PowerApple:
                     _useItemEffects.PlayerSpeedUpper();
-                    SendLogText(target._effectedLogText);
+                    //SendLogText(target._effectedLogText);
                     break;
             }
         }

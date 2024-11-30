@@ -1,5 +1,6 @@
 using System.Collections;
 using Manager.Audio;
+using Manager.Language;
 using Manager.PlayData;
 using UI;
 using UnityEngine;
@@ -69,7 +70,16 @@ namespace Manager
                 default:
                 {
                     var logTextHandler = GameObject.FindWithTag("LogTextHandler").GetComponent<LogTextHandler>();
-                    logTextHandler.AddLog("また一つ降りられた。\n残るは" + CurrentLayer +"Fだ。");
+                    var language = logTextHandler.LanguageHandler.CurrentLanguage;
+                    switch (language)
+                    {
+                        case LanguageHandler.Language.Japanese:
+                            logTextHandler.AddLog("また一つ降りられた。\n残るは" + CurrentLayer +"Fだ。");
+                            break;
+                        case LanguageHandler.Language.English:
+                            logTextHandler.AddLog("I managed to descend another floor.\nOnly the " + CurrentLayer + "nd floor remains.");
+                            break;
+                    }
                     break;
                 }
             }
