@@ -9,7 +9,7 @@ namespace UI
         private const string ErrorMessage = "";
         public LanguageHandler LanguageHandler { get; private set; }
 
-        private void Start()
+        private void Awake()
         {
             LanguageHandler = GameObject.FindWithTag("LanguageHandler").GetComponent<LanguageHandler>();
         }

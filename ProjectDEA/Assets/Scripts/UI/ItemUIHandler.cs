@@ -1,5 +1,6 @@
 using Item;
 using Manager;
+using Manager.Language;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -40,6 +41,7 @@ namespace UI
 
         private void SetInventoryFrame(InventoryHandler.ItemPrefabSet[] itemSet)
         {
+            var languageHandler = GameObject.FindWithTag("LanguageHandler").GetComponent<LanguageHandler>();
             _itemFrames = new GameObject[itemSet.Length];
             for (var i = 0; i < itemSet.Length; i++)
             {
@@ -47,11 +49,11 @@ namespace UI
                 _itemFrames[i] = imageObj;
                 var cd1 = imageObj.transform.GetChild(0).gameObject;
                 var nameText = cd1.GetComponent<TextMeshProUGUI>();
-                nameText.text = itemSet[i]._name;
+                nameText.text = itemSet[i]._name[(int)languageHandler.CurrentLanguage];
                 
                 var cd2 = imageObj.transform.GetChild(1).gameObject;
                 var descriptionText = cd2.GetComponent<TextMeshProUGUI>();
-                descriptionText.text = itemSet[i]._description;
+                descriptionText.text = itemSet[i]._description[(int)languageHandler.CurrentLanguage];
 
                 var cd3 = imageObj.transform.GetChild(2).gameObject;
                 var countText = cd3.GetComponent<TextMeshProUGUI>();

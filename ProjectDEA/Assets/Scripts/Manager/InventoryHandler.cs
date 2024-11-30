@@ -15,8 +15,8 @@ namespace Manager
         public struct ItemPrefabSet
         {
             public ItemKind _kind;
-            public string _name;
-            public string _description;
+            public string[] _name;
+            public string[] _description;
             public GameObject _prefab;
             public GameObject _currentPrefab;
             public GameObject _predict;
@@ -24,7 +24,7 @@ namespace Manager
             public int _count;
             public bool _isPut;
             public bool _isUse;
-            public string _effectedLogText;
+            public string[] _effectedLogText;
         }
         [SerializeField] private ItemPrefabSet[] _itemSets;
         public ItemPrefabSet[] ItemSets => _itemSets;

@@ -76,7 +76,8 @@ namespace Character.Player
                     case InsState.Predict:
                         PlaceItem();
                         ResetState();
-                        //SendLogText(target._effectedLogText);
+                        var language = _logTextHandler.LanguageHandler.CurrentLanguage;
+                        SendLogText(target._effectedLogText[(int)language]);
                         break;
                 }
             }
@@ -139,15 +140,16 @@ namespace Character.Player
         {
             var target = _inventoryHandler.TargetItem;
             _inventoryHandler.UseItem();
+            var language = _logTextHandler.LanguageHandler.CurrentLanguage;
             switch (target._kind)
             {
                 case ItemKind.PowerPotion:
                     _useItemEffects.PlayerPowerUpper();
-                    //SendLogText(target._effectedLogText);
+                    SendLogText(target._effectedLogText[(int)language]);
                     break;
                 case ItemKind.PowerApple:
                     _useItemEffects.PlayerSpeedUpper();
-                    //SendLogText(target._effectedLogText);
+                    SendLogText(target._effectedLogText[(int)language]);
                     break;
             }
         }
