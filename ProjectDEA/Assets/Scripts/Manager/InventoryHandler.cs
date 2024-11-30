@@ -152,12 +152,12 @@ namespace Manager
         // アイテムをインベントリに追加する
         public void AddItem(ItemKind item)
         {
+            var language = _logTextHandler.LanguageHandler.CurrentLanguage;
             for (var i = 0; i < _itemSets.Length; i++)
             {
                 if (_itemSets[i]._kind != item) continue;
                 _itemSets[i]._count++;
-                var language = _logTextHandler.LanguageHandler.CurrentLanguage;
-                var message = _itemSets[i]._name + _logTemplate[(int)language];
+                var message = _itemSets[i]._name[(int)language] + _logTemplate[(int)language];
                 _logTextHandler.AddLog(message);
                 _soundHandler.PlaySe(_getItemAudio);
                 switch (item)
