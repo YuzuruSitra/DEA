@@ -20,10 +20,22 @@ namespace Character.Player
         
         private SoundHandler _soundHandler;
         [SerializeField] private AudioClip _attackHitSeClip;
+        private bool _oneChange;
+        
         private void Start()
         {
             _playerTrn = _playerAttackHandler.gameObject.transform;
             _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
+        }
+
+        private void Update()
+        {
+            // 攻撃を終了したら当たり判定をリセット
+            if (!_oneHit) return;
+            _oneChange = _playerAttackHandler.IsAttacking;
+            if (_oneChange) return;
+            _oneHit = false;
+            _oneChange = true;
         }
 
         private void OnTriggerEnter(Collider other)
