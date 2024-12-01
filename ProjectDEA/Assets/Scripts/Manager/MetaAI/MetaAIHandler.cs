@@ -8,10 +8,10 @@ namespace Manager.MetaAI
     {
         public enum PlayerType
         {
-            None,
             Killer,
             Achiever,
-            Explorer
+            Explorer,
+            None
         }
         public readonly int PlayerTypeCount = Enum.GetValues(typeof(PlayerType)).Length - 1;
         public PlayerType CurrentPlayerType { get; private set; }
@@ -42,6 +42,7 @@ namespace Manager.MetaAI
         
         private void Start()
         {
+            CurrentPlayerType = PlayerType.None;
             if (!_isUse) return;
             _playerTypeClassifier = new PlayerTypeClassifier(_logPerSend);
             _playerTypeClassifier.ResponsePlayerType += ReceivePlayerType;

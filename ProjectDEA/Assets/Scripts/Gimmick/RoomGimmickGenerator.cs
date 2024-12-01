@@ -102,21 +102,21 @@ namespace Gimmick
 
         private int DecideGimmickType(MetaAIHandler.PlayerType playerType)
         {
-            // 確率でPlayerTypeのギミックを生成
-            var rnd = Random.Range(0, 101);
-            if (rnd <= _typeProbability && playerType != MetaAIHandler.PlayerType.None) 
+            // PlayerTypeが指定され、かつ指定確率以内ならそのタイプを返す
+            if (playerType != MetaAIHandler.PlayerType.None && Random.Range(0, 101) <= _typeProbability)
             {
-                return (int)playerType - 1;
+                return (int)playerType;
             }
 
             // PlayerType以外のギミックタイプをランダムに選択
-            var playerTypeIndex = (int)playerType - 1; // 配列インデックス用に調整
-            var otherType = Random.Range(0, _metaAIHandler.PlayerTypeCount - 1);
-            // PlayerType以外を選ぶためのシフト
-            if (otherType >= playerTypeIndex) 
+            var playerTypeIndex = (int)playerType;
+            var otherType = Random.Range(0, _metaAIHandler.PlayerTypeCount);
+            // PlayerTypeと重ならないように調整
+            if (otherType == playerTypeIndex)
             {
-                otherType++;
+                otherType = (otherType + 1) % _metaAIHandler.PlayerTypeCount;
             }
+
             return otherType;
         }
 
@@ -135,7 +135,7 @@ namespace Gimmick
             foreach (var gimmick in _gimmickInfo)
             {
                 if (!gimmick._isRoomGenerate) continue;
-                _insSeparateTypeGimmicks[(int)gimmick._priorityType - 1].Add(gimmick);
+                _insSeparateTypeGimmicks[(int)gimmick._priorityType].Add(gimmick);
             }
         }
 

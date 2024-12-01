@@ -33763,7 +33763,7 @@ PrefabInstance:
       objectReference: {fileID: 2134949165}
     - target: {fileID: 1131796367478928988, guid: 3602f84a56c560e4f924f0b49c36fb80, type: 3}
       propertyPath: _inputPaddingTime
-      value: 1.5
+      value: 1.25
       objectReference: {fileID: 0}
     - target: {fileID: 1131796367478928988, guid: 3602f84a56c560e4f924f0b49c36fb80, type: 3}
       propertyPath: _dungeonLayerHandler

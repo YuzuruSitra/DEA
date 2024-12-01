@@ -160,9 +160,9 @@ MonoBehaviour:
   _openDuration: 0.25
   _targetRot: {x: -50, y: 0, z: 0}
   _pickedScores:
-  - _type: 2
+  - _type: 1
     _point: 2
-  - _type: 3
+  - _type: 2
     _point: 5
 --- !u!208 &2252462365434346670
 NavMeshObstacle:

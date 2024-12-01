@@ -257,8 +257,8 @@ MonoBehaviour:
   _rndRotRange: 20
   _hitEnemyDamage: 50
   _kickedScores:
-  - _type: 3
+  - _type: 2
     _point: 6
   _pickedScores:
-  - _type: 2
+  - _type: 1
     _point: 10
