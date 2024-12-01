@@ -9,7 +9,7 @@ namespace UI
         [SerializeField] private GameObject[] _gamePadUIs;
         private InputSystemDeviceDetector _deviceDetector;
         
-        private void Start()
+        private void Awake()
         {
             _deviceDetector = GameObject.FindWithTag("InputSystemDeviceDetector").GetComponent<InputSystemDeviceDetector>();
             _deviceDetector.OnChangeDevice += ChangeUI;

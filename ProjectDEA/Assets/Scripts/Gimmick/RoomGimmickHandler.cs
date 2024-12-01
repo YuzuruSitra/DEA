@@ -12,6 +12,7 @@ namespace Gimmick
         {
             _playerRoomTracker = GameObject.FindWithTag("PlayerRoomTracker").GetComponent<PlayerRoomTracker>();
             _playerRoomTracker.OnPlayerRoomChange += OnGenerateGimmick;
+            OnGenerateGimmick();
         }
 
         private void OnDestroy()
