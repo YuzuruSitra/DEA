@@ -509,7 +509,7 @@ CharacterController:
   serializedVersion: 3
   m_Height: 1
   m_Radius: 0.5
-  m_SlopeLimit: 10
+  m_SlopeLimit: 0.1
   m_StepOffset: 0.1
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
@@ -562,7 +562,8 @@ MonoBehaviour:
   _runSpeed: 4
   _playerAnimationCnt: {fileID: 4351832874976852339}
   _playerHpHandler: {fileID: 1623497148600613073}
-  _gravity: -1.5
+  _gravity: -1.76
+  _decelerationRate: 5.5
   _speedTransitionTime: 0.35
 --- !u!114 &51901469298106324
 MonoBehaviour:
@@ -678,7 +679,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!1 &2768515342166404711
 GameObject:
   m_ObjectHideFlags: 0

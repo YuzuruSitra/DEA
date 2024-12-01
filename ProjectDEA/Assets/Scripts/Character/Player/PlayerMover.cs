@@ -18,8 +18,8 @@ namespace Character.Player
         [SerializeField] private PlayerHpHandler _playerHpHandler;
 
         private Vector3 _moveDirection = Vector3.zero;
-        private Vector3 _direction = Vector3.zero;
-        private bool _inWater;
+        private Vector3 _inputDirection = Vector3.zero;
+        private Vector3 _rotationDirection = Vector3.zero;
         private bool _isPushed;
 
         // 重力の値
@@ -28,18 +28,20 @@ namespace Character.Player
         // 現在の移動速度
         private float _currentSpeed;
 
+        // 速度の減速スピード
+        [SerializeField] private float _decelerationRate = 5f;
+
         // 速度の変化にかかる時間
         [SerializeField] private float _speedTransitionTime;
 
         private InputActions _inputActions;
-        private Vector2 _inputMove;
+        private Vector2 _inputMove = Vector2.zero; // 再利用可能なベクトル
         private bool _isRunning;
-        
+
         private void Start()
         {
             _controller = GetComponent<CharacterController>();
             _controller.enabled = true;
-            // InputActions をインスタンス化
             _inputActions = new InputActions();
 
             // MoveとRunのアクションを購読
@@ -49,10 +51,9 @@ namespace Character.Player
             _inputActions.Player.Run.canceled += OnRunCanceled;
             _inputActions.Enable();
         }
-        
+
         private void OnDestroy()
         {
-            // リスナーを解除
             _inputActions.Player.Move.performed -= OnMovePerformed;
             _inputActions.Player.Move.canceled -= OnMoveCanceled;
             _inputActions.Player.Run.performed -= OnRunPerformed;
@@ -60,7 +61,6 @@ namespace Character.Player
             _inputActions.Disable();
         }
 
-        // リスナー用のコールバック
         private void OnMovePerformed(InputAction.CallbackContext context)
         {
             _inputMove = context.ReadValue<Vector2>();
@@ -83,49 +83,62 @@ namespace Character.Player
 
         private void Update()
         {
-            if (!_isWalkable) return;
-            if (_isPushed) return;
-            if (_playerAnimationCnt.IsAttacking) return;
+            if (!_isWalkable || _isPushed || _playerAnimationCnt.IsAttacking) return;
 
+            UpdateInputDirection();
+            UpdateMoveDirection();
             DoMoving();
+        }
+
+        private void UpdateInputDirection()
+        {
+            // 入力方向を計算して再利用可能なベクトルに代入
+            _inputDirection.x = _inputMove.x;
+            _inputDirection.z = _inputMove.y;
+
+            if (_inputDirection.magnitude > 1f)
+                _inputDirection.Normalize();
+        }
+
+        private void UpdateMoveDirection()
+        {
+            // 入力がない場合は速度を徐々に減少
+            if (_inputDirection == Vector3.zero)
+            {
+                _currentSpeed = Mathf.Lerp(_currentSpeed, 0f, Time.deltaTime * _decelerationRate);
+                _moveDirection.x = Mathf.Lerp(_moveDirection.x, 0f, Time.deltaTime * _decelerationRate);
+                _moveDirection.z = Mathf.Lerp(_moveDirection.z, 0f, Time.deltaTime * _decelerationRate);
+            }
+            else
+            {
+                var targetSpeed = _isRunning ? _runSpeed : _walkSpeed;
+                _currentSpeed = Mathf.Lerp(_currentSpeed, targetSpeed, Time.deltaTime / _speedTransitionTime);
+
+                _moveDirection.x = _inputDirection.x * _currentSpeed;
+                _moveDirection.z = _inputDirection.z * _currentSpeed;
+
+                // 回転処理用に方向ベクトルを計算して再利用
+                _rotationDirection.x = _moveDirection.x;
+                _rotationDirection.z = _moveDirection.z;
+                _rotationDirection.y = 0;
+
+                if (_rotationDirection != Vector3.zero)
+                    transform.rotation = Quaternion.LookRotation(_rotationDirection);
+            }
         }
 
         private void DoMoving()
         {
-            var isDie = _playerHpHandler.IsDie;
-            var horizontal = isDie ? 0 : _inputMove.x;
-            var vertical = isDie ? 0 : _inputMove.y;
-
-            _moveDirection.x = horizontal;
-            _moveDirection.z = vertical;
-
-            // 走るか歩くかの目標速度を設定
-            var targetSpeed = _isRunning ? _runSpeed : _walkSpeed;
-
-            // Falling
-            if (!_controller.isGrounded && !_inWater)
-            {
-                _moveDirection.y += _gravity * Time.deltaTime;
-            }
+            // 重力適用
+            if (_controller.isGrounded)
+                _moveDirection.y = 0f;
             else
-            {
-                if (horizontal == 0 && vertical == 0) targetSpeed = 0;
-            }
+                _moveDirection.y += _gravity * Time.deltaTime;
 
-            // 現在の速度を補間
-            _currentSpeed = Mathf.Lerp(_currentSpeed, targetSpeed, Time.deltaTime / _speedTransitionTime);
+            // CharacterControllerで移動
+            _controller.Move(_moveDirection * Time.deltaTime);
 
-            // 回転処理
-            if (horizontal != 0 || vertical != 0)
-            {
-                _direction.x = horizontal;
-                _direction.z = vertical;
-                _direction.y = 0;
-                transform.rotation = Quaternion.LookRotation(_direction);
-            }
-
-            // 移動処理
-            _controller.Move(_moveDirection * (_currentSpeed * Time.deltaTime));
+            // アニメーション用の速度比率
             var speedRatio = _currentSpeed / _runSpeed;
             _playerAnimationCnt.SetSpeed(speedRatio);
         }
@@ -137,15 +150,16 @@ namespace Character.Player
             while (elapsedTime < time)
             {
                 elapsedTime += Time.deltaTime;
-                if (halfT < elapsedTime) _controller.Move(transform.forward * (speed * Time.deltaTime));
+                if (halfT < elapsedTime)
+                    _controller.Move(transform.forward * (speed * Time.deltaTime));
                 yield return null;
             }
         }
 
         public IEnumerator PushMoveUp(float duration, float initialUpwardForce)
         {
-            var isDie = _playerHpHandler.IsDie;
-            if (isDie) yield break;
+            if (_playerHpHandler.IsDie) yield break;
+
             _isPushed = true;
             _playerAnimationCnt.SetIsDamaged(true);
             var elapsedTime = 0f;
@@ -153,16 +167,12 @@ namespace Character.Player
             while (elapsedTime < duration)
             {
                 elapsedTime += Time.deltaTime;
-
                 var upwardForce = initialUpwardForce * (1 - (elapsedTime / duration));
-
-                var upwardVelocity = Vector3.zero;
-                upwardVelocity.y = upwardForce;
-
+                var upwardVelocity = Vector3.up * upwardForce;
                 _controller.Move(upwardVelocity * Time.deltaTime);
-
                 yield return null;
             }
+
             _playerAnimationCnt.SetIsDamaged(false);
             _isPushed = false;
         }
