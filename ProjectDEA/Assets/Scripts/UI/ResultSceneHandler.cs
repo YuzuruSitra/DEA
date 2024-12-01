@@ -1,5 +1,6 @@
 using Item;
 using Manager;
+using Manager.MetaAI;
 using TMPro;
 using UnityEngine;
 
@@ -12,6 +13,8 @@ namespace UI
         [SerializeField] private TextMeshProUGUI _bornCountText;
         [SerializeField] private GameObject _clearObj;
         [SerializeField] private GameObject _failedObj;
+        [SerializeField] private TextMeshProUGUI _playerType;
+        
         private void Start()
         {
             var dungeonLayerHandler = GameObject.FindWithTag("DungeonLayerHandler").GetComponent<DungeonLayerHandler>();
@@ -20,6 +23,8 @@ namespace UI
             target.SetActive(true);
             var inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
             _bornCountText.text = "" + inventoryHandler.ItemSets[(int)ItemKind.Born]._count;
+            var metaAIHandler = GameObject.FindWithTag("MetaAI").GetComponent<MetaAIHandler>();
+            _playerType.text = metaAIHandler.CurrentPlayerType.ToString();
         }
     }
 }

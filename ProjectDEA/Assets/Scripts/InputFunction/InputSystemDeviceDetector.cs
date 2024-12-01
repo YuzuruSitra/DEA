@@ -16,7 +16,8 @@ namespace InputFunction
         private InputDeviceType _currentType;
         public event Action<InputDeviceType> OnChangeDevice;
         private InputActions _inputActions;
-
+        private bool _addListen;
+        
         private void Start()
         {
             CheckSingleton();
@@ -24,6 +25,7 @@ namespace InputFunction
 
         private void OnDestroy()
         {
+            if (!_addListen) return;
             _inputActions.InputSeparate.InputKeyBoard.performed -= ChangeKeyBoard;
             _inputActions.InputSeparate.InputGamePad.performed -= ChangeGamePad;
             _inputActions.Disable();
@@ -47,9 +49,10 @@ namespace InputFunction
             _inputActions.InputSeparate.InputKeyBoard.performed += ChangeKeyBoard;
             _inputActions.InputSeparate.InputGamePad.performed += ChangeGamePad;
             _inputActions.Enable();
-
+            
             // シーンロードイベント登録
             SceneManager.sceneLoaded += OnSceneLoaded;
+            _addListen = true;
         }
 
         private void ChangeKeyBoard(InputAction.CallbackContext context)
