@@ -92,7 +92,6 @@ namespace Gimmick
                 {
                     // 生成タイプを決定
                     var insType = DecideGimmickType(_metaAIHandler.CurrentPlayerType);
-                    Debug.Log(insType);
                     // 生成タイプの中から選定
                     var insNum = Random.Range(0, _insSeparateTypeGimmicks[insType].Count);
                     InsGimmick(i, _insSeparateTypeGimmicks[insType][insNum]);
@@ -208,7 +207,7 @@ namespace Gimmick
 
             if (!carefulValidPos.Any())
             {
-                Debug.LogWarning($"No valid position found for room {roomNum}");
+                // Debug.LogWarning($"No valid position found for room {roomNum}");
                 return;
             }
 

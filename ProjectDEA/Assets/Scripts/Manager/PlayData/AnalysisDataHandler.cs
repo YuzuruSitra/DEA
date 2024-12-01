@@ -1,7 +1,5 @@
-using System;
-using System.Collections.Generic;
-using Gimmick;
 using Manager.Map;
+using Manager.MetaAI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,27 +11,24 @@ namespace Manager.PlayData
         public int PlayerID { get; set; }
         private bool _isAddListener;
         
+        // クリア判定
         public bool IsClear { get; set; }
         private const string ClearKey = "ClearKey";
-        
+        // クリア時間
         private float _clearTime;
         private const string ClearTimeKey = "ClearTimeKey";
         private bool _isCountUp;
-        
+        // 移動回数
         private int _roomMovementCount;
         private const string MovementCountKey = "MovementCountKey";
         private PlayerRoomTracker _playerRoomTracker;
-        private int _playerCurrentRoom;
-        
-        private Dictionary<GimmickKind, int> _gimmicksCount;
-        private const string GimmicksCountKey = "CountKey";
-        
-        public int EnemyKillCount { get; set; }
-        private const string EnemyKillCountKey = "EnemyKillCountKey";
-        public int PickedBonesCount { get; set; }
-        private const string PickedBonesCountKey = "PickedBonesCountKey";
-        public int DestroyObjCount { get; set; }
-        private const string DestroyObjCountKey = "DestroyObjCountKey";
+        private bool _isAddedRoomTracker;
+        // アクション回数
+        [SerializeField] private MetaAIHandler _metaAIHandler;
+        private const string ActionCountKey = "ActionCountKey";
+        private int _actionCount;
+        // プレイヤータイプの保存
+        private const string PlayerTypeKey = "PlayerTypeKey";
         
         private void Start()
         {
@@ -52,40 +47,36 @@ namespace Manager.PlayData
             }
             DontDestroyOnLoad(gameObject);
             _dataWriter = new PlayDataWriter();
-            // _gimmicksCountを初期化
-            _gimmicksCount = new Dictionary<GimmickKind, int>();
-
-            // GimmickKindの全要素を取得し、辞書に初期値0で格納
-            foreach (GimmickKind kind in Enum.GetValues(typeof(GimmickKind)))
-            {
-                _gimmicksCount[kind] = 0;
-            }
             SceneManager.sceneLoaded += SceneLoaded;
             _isAddListener = true;
+            _metaAIHandler.OnAddEvent += AddActionCount;
         }
         
         private void OnDestroy()
         {
             if(!_isAddListener) return;
             SceneManager.sceneLoaded -= SceneLoaded;
+            _metaAIHandler.OnAddEvent -= AddActionCount;
         }
 
         private void Update()
         {
             if (_isCountUp) _clearTime += Time.deltaTime;
+        }
 
-            if (_playerRoomTracker != null)
-            {
-                var roomNum = _playerRoomTracker.CurrentPlayerRoom;
-                if (roomNum == InRoomChecker.ErrorRoomNum) return;
-                if (_playerCurrentRoom == roomNum) return;
-                _roomMovementCount++;
-                _playerCurrentRoom = roomNum;
-            }
+        private void AddRoomChangeCount()
+        {
+            _roomMovementCount++;
         }
         
-        private void SceneLoaded (Scene nextScene, LoadSceneMode mode)
+        private void SceneLoaded(Scene nextScene, LoadSceneMode mode)
         {
+            // リスナー解除
+            if (_isAddedRoomTracker)
+            {
+                _playerRoomTracker.OnPlayerRoomChange -= AddRoomChangeCount;
+                _isAddedRoomTracker = false;
+            }
             switch (nextScene.name)
             {
                 case "TitleScene":
@@ -97,6 +88,8 @@ namespace Manager.PlayData
                 case "DungeonIn":
                     _isCountUp = true;
                     _playerRoomTracker = GameObject.FindWithTag("PlayerRoomTracker").GetComponent<PlayerRoomTracker>();
+                    _playerRoomTracker.OnPlayerRoomChange += AddRoomChangeCount;
+                    _isAddedRoomTracker = true;
                     break;
                 case "ResultScene":
                     _isCountUp = false;
@@ -106,20 +99,18 @@ namespace Manager.PlayData
             }
         }
 
+        private void AddActionCount()
+        {
+            _actionCount++;
+        }
+
         private void ResetCount()
         {
             IsClear = false;
             _clearTime = 0;
             _isCountUp = false;
             _roomMovementCount = 0;
-
-            foreach (GimmickKind kind in Enum.GetValues(typeof(GimmickKind)))
-            {
-                _gimmicksCount[kind] = 0;
-            }
-            EnemyKillCount = 0;
-            PickedBonesCount = 0;
-            DestroyObjCount = 0;
+            _actionCount = 0;
         }
 
         private void SavePlayLog()
@@ -128,19 +119,8 @@ namespace Manager.PlayData
             var cropTime = Mathf.Round(_clearTime * 10) / 10f;
             _dataWriter.SaveClearTime(ClearTimeKey, cropTime);
             _dataWriter.SaveMovementCount(MovementCountKey, _roomMovementCount);
-            _dataWriter.SaveGimmicksCount(GimmicksCountKey, _gimmicksCount);
-            _dataWriter.SaveEnemyKillCount(EnemyKillCountKey, EnemyKillCount);
-            _dataWriter.SavePickedBonesCount(PickedBonesCountKey, PickedBonesCount);
-            _dataWriter.SaveDestroyObjCount(DestroyObjCountKey, DestroyObjCount);
-        }
-
-        public void ChangeGimmicksCount(GimmickKind insKind)
-        {
-            foreach (GimmickKind kind in Enum.GetValues(typeof(GimmickKind)))
-            {
-                if (insKind != kind) continue;
-                _gimmicksCount[kind]++;
-            }
+            _dataWriter.SaveActionCount(ActionCountKey, _actionCount);
+            _dataWriter.SavePlayerType(PlayerTypeKey, _metaAIHandler.CurrentPlayerType.ToString());
         }
     }
 }

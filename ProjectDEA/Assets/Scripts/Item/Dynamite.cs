@@ -26,7 +26,6 @@ namespace Item
         private bool _isDragonGive;
         private bool _isPutMonument;
         private RoomGimmickGenerator _gimmickGenerator;
-        private AnalysisDataHandler _analysisDataHandler;
         private SoundHandler _soundHandler;
         [SerializeField] private AudioClip _bombAudio;
         private MetaAIHandler _metaAIHandler;
@@ -35,7 +34,6 @@ namespace Item
         private void Start()
         {
             _gimmickGenerator = GameObject.FindWithTag("GimmickGenerator").GetComponent<RoomGimmickGenerator>();
-            _analysisDataHandler = GameObject.FindWithTag("AnalysisDataHandler").GetComponent<AnalysisDataHandler>();
             _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
             _metaAIHandler = GameObject.FindWithTag("MetaAI").GetComponent<MetaAIHandler>();
             UseEffect();
@@ -105,8 +103,6 @@ namespace Item
                             InsMonument(obj.transform.position);
                         }
                     }
-
-                    _analysisDataHandler.DestroyObjCount ++;
                     Destroy(obj);
                 }
             }

@@ -47,7 +47,6 @@ namespace Manager
             "破片は集まった。オベリスクへ向かおう。",
             "The fragments have been gathered.\nLet's head to the obelisk."
         };
-        private AnalysisDataHandler _analysisDataHandler;
         private SoundHandler _soundHandler;
         [SerializeField] private AudioClip _pushAudio;
         [SerializeField] private AudioClip _getItemAudio;
@@ -105,7 +104,6 @@ namespace Manager
             }
             DontDestroyOnLoad(gameObject);
             
-            _analysisDataHandler = GameObject.FindWithTag("AnalysisDataHandler").GetComponent<AnalysisDataHandler>();
             _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
         }
 
@@ -160,17 +158,11 @@ namespace Manager
                 var message = _itemSets[i]._name[(int)language] + _logTemplate[(int)language];
                 _logTextHandler.AddLog(message);
                 _soundHandler.PlaySe(_getItemAudio);
-                switch (item)
+                if (item == ItemKind.Key)
                 {
-                    case ItemKind.Key:
-                        OnKeyCountChanged?.Invoke(_itemSets[i]._count);
-                        CheckObeliskCount();
-                        break;
-                    case ItemKind.Born:
-                        _analysisDataHandler.PickedBonesCount++;
-                        break;
+                    OnKeyCountChanged?.Invoke(_itemSets[i]._count);
+                    CheckObeliskCount();
                 }
-
                 if (CurrentItemNum == i) ChangeItemCount();
                 if (_itemSets[i]._count == 1) OnItemLineupChanged(_itemSets);
                 if (CurrentItemNum == ErrorValue) ChangeItemNum(i);

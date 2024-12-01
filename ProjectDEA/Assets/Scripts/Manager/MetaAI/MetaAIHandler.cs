@@ -34,6 +34,7 @@ namespace Manager.MetaAI
             { PlayerType.Achiever, 0 },
             { PlayerType.Explorer, 0 }
         };
+        public event Action OnAddEvent;
         
         private void Awake()
         {
@@ -92,6 +93,7 @@ namespace Manager.MetaAI
         public void SendLogsForMetaAI(AddScores[] scores)
         {
             if (!_isUse) return;
+            OnAddEvent?.Invoke();
             // ポイントを初期化
             _points[PlayerType.Killer] = 0;
             _points[PlayerType.Achiever] = 0;

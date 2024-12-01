@@ -5,7 +5,6 @@ using Character.Player;
 using Item;
 using Manager;
 using Manager.Audio;
-using Manager.Language;
 using Manager.MetaAI;
 using Manager.PlayData;
 using UI;
@@ -52,7 +51,6 @@ namespace Character.NPC.EnemyDragon
             "なんとかドラゴンを撃退した。",
             "I somehow managed to defeat the dragon."
         };
-        private AnalysisDataHandler _analysisDataHandler;
         private SoundHandler _soundHandler;
         [SerializeField] private AudioClip _hitAudio;
         [SerializeField] private AudioClip _screamAudio;
@@ -67,7 +65,6 @@ namespace Character.NPC.EnemyDragon
             _deathWaitForSeconds = new WaitForSeconds(_deathWait);
             _inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
             _logTextHandler = GameObject.FindWithTag("LogTextHandler").GetComponent<LogTextHandler>();
-            _analysisDataHandler = GameObject.FindWithTag("AnalysisDataHandler").GetComponent<AnalysisDataHandler>();
             _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
             _metaAIHandler = GameObject.FindWithTag("MetaAI").GetComponent<MetaAIHandler>();
             _screamWait = new WaitForSeconds(0.2f);
@@ -148,7 +145,6 @@ namespace Character.NPC.EnemyDragon
                 var item = _outItem[Random.Range(0, _outItem.Length)];
                 _inventoryHandler.AddItem(item);
                 StartCoroutine(DeathDisable());
-                _analysisDataHandler.EnemyKillCount ++;
                 return;
             }
             if (targetPos == default) return;

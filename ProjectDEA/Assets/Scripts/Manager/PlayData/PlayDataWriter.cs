@@ -58,37 +58,18 @@ namespace Manager.PlayData
             _writer.Write(key, movementCount);
             _writer.Commit();
         }
-        // ギミックの生成数の保存
-        public void SaveGimmicksCount(string key, Dictionary<GimmickKind, int> gimmicksCount)
+        // アクションの回数保存
+        public void SaveActionCount(string key, float movementCount)
         {
-            foreach (var gimmick in gimmicksCount)
-            {
-                // gimmick.Key.ToString() + keyをキーとして保存
-                var combinedKey = gimmick.Key + "_" + key;
-                _writer.Write(combinedKey, gimmick.Value);
-                UnityEngine.Debug.Log(combinedKey + " " + gimmick.Value);
-            }
+            UnityEngine.Debug.Log(key + " " + movementCount);
+            _writer.Write(key, movementCount);
             _writer.Commit();
         }
-        // 敵撃破回数の保存
-        public void SaveEnemyKillCount(string key, int killCount)
+        // プレイヤータイプの保存
+        public void SavePlayerType(string key, string type)
         {
-            UnityEngine.Debug.Log(key + " " + killCount);
-            _writer.Write(key, killCount);
-            _writer.Commit();
-        }
-        // 敵撃破回数の保存
-        public void SavePickedBonesCount(string key, int bonesCount)
-        {
-            UnityEngine.Debug.Log(key + " " + bonesCount);
-            _writer.Write(key, bonesCount);
-            _writer.Commit();
-        }
-        // 破壊したオブジェクト数の保存
-        public void SaveDestroyObjCount(string key, int destroyCount)
-        {
-            UnityEngine.Debug.Log(key + " " + destroyCount);
-            _writer.Write(key, destroyCount);
+            UnityEngine.Debug.Log(key + " " + type);
+            _writer.Write(key, type);
             _writer.Commit();
         }
     }
