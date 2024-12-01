@@ -14,6 +14,8 @@ namespace Character.Player
         private static readonly int IsDie = Animator.StringToHash("IsDie");
         [SerializeField] private AnimationClip[] _attackClips;
         private WaitForSeconds[] _attackWait;
+        [SerializeField] private float _attackLaunchTime;
+        private WaitForSeconds _attackLaunchWait;
         private Coroutine _attackRoutine;
         public bool IsAttacking { get; private set; }
         
@@ -23,8 +25,9 @@ namespace Character.Player
             _attackWait = new WaitForSeconds[clipCount];
             for (var i = 0; i < clipCount; i++)
             {
-                _attackWait[i] = new WaitForSeconds(_attackClips[i].length / 2.0f);
+                _attackWait[i] = new WaitForSeconds(_attackClips[i].length / 2.0f - _attackLaunchTime);
             }
+            _attackLaunchWait = new WaitForSeconds(_attackLaunchTime);
         }
 
         public void SetSpeed(float speedRatio)
@@ -54,6 +57,7 @@ namespace Character.Player
 
         private IEnumerator AttackOff(WaitForSeconds wait)
         {
+            yield return _attackLaunchWait;
             IsAttacking = true;
             yield return wait;
             _animator.SetBool(IsAttack, false);

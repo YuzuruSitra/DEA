@@ -617,9 +617,9 @@ MonoBehaviour:
   _addHpValue: 20
   _buffItemAudio: {fileID: 8300000, guid: 6bfd3f7981c065d48bde3780a9fc12f9, type: 3}
   _buffScores:
-  - _type: 3
+  - _type: 0
     _point: 3
-  - _type: 1
+  - _type: 2
     _point: 3
 --- !u!114 &4351832874976852339
 MonoBehaviour:
@@ -637,6 +637,7 @@ MonoBehaviour:
   _attackClips:
   - {fileID: 7400000, guid: 6019f1b4a095b0b4396f5561a51fee89, type: 2}
   - {fileID: 7400000, guid: eccbae3cfc77ad245ade46e143aa3200, type: 2}
+  _attackLaunchTime: 0.15
 --- !u!114 &1739906727943873902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3289,7 +3290,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 100000, guid: b96201848d117da4ca7dc3ade4bd59de, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8746640588580344771}
+      addedObject: {fileID: 1195568842234862800}
     - targetCorrespondingSourceObject: {fileID: 100000, guid: b96201848d117da4ca7dc3ade4bd59de, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6178512573376449581}
@@ -3307,8 +3308,8 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: b96201848d117da4ca7dc3ade4bd59de, type: 3}
   m_PrefabInstance: {fileID: 7811460594838285602}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &8746640588580344771
-MeshCollider:
+--- !u!65 &1195568842234862800
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -3325,10 +3326,9 @@ MeshCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300002, guid: b96201848d117da4ca7dc3ade4bd59de, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1.5, z: 0.075}
+  m_Center: {x: 0.0000001943643, y: -1, z: 0.000000119128586}
 --- !u!54 &6178512573376449581
 Rigidbody:
   m_ObjectHideFlags: 0
