@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Manager.Language
@@ -10,6 +11,7 @@ namespace Manager.Language
             English
         }
         public Language CurrentLanguage { get; private set; }
+        public event Action<Language> OnLanguageChanged;
         
         private void Start()
         {
@@ -18,8 +20,9 @@ namespace Manager.Language
 
         public void SetLanguage(Language language)
         {
+            if (CurrentLanguage == language) return;
             CurrentLanguage = language;
-            UnityEngine.Debug.Log(CurrentLanguage);
+            OnLanguageChanged?.Invoke(CurrentLanguage);
         }
         
         private void CheckSingleton()

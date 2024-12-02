@@ -11745,6 +11745,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3475325575029433700, guid: 3bec643fdc744b241b2a811dc42f09fe, type: 3}
+      propertyPath: _answerTexts.Array.size
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 3475325575029433700, guid: 3bec643fdc744b241b2a811dc42f09fe, type: 3}
+      propertyPath: _answerSliders.Array.size
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 3827373188500092615, guid: 3bec643fdc744b241b2a811dc42f09fe, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0.5
@@ -11783,6 +11791,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4449842418359554329, guid: 3bec643fdc744b241b2a811dc42f09fe, type: 3}
       propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4820088579212511298, guid: 3bec643fdc744b241b2a811dc42f09fe, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5230696334922027452, guid: 3bec643fdc744b241b2a811dc42f09fe, type: 3}
@@ -11860,6 +11872,10 @@ PrefabInstance:
     - target: {fileID: 7291833628705629078, guid: 3bec643fdc744b241b2a811dc42f09fe, type: 3}
       propertyPath: m_AnchorMin.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7355047214905504061, guid: 3bec643fdc744b241b2a811dc42f09fe, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7398882137056576560, guid: 3bec643fdc744b241b2a811dc42f09fe, type: 3}
       propertyPath: m_AnchorMax.x
