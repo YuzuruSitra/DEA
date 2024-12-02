@@ -67,7 +67,6 @@ namespace Manager.MetaAI
             DontDestroyOnLoad(gameObject);
             
             CurrentPlayerType = PlayerType.None;
-            if (!IsUse) return;
             _playerTypeClassifier = new PlayerTypeClassifier(_logPerSend);
             _playerTypeClassifier.ResponsePlayerType += ReceivePlayerType;
             _addedListener = true;

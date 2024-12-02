@@ -849,6 +849,7 @@ MonoBehaviour:
   _question1: {fileID: 2553324843983748079}
   _question2: {fileID: 8549550776569332625}
   _question3: {fileID: 3558105140751760669}
+  _submitText: {fileID: 6684546287257974356}
 --- !u!1 &2028172404166223132
 GameObject:
   m_ObjectHideFlags: 0

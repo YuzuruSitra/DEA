@@ -24,6 +24,7 @@ namespace UI
         [SerializeField] private TextMeshProUGUI _question1;
         [SerializeField] private TextMeshProUGUI _question2;
         [SerializeField] private TextMeshProUGUI _question3;
+        [SerializeField] private TextMeshProUGUI _submitText;
         private LanguageHandler _languageHandler;
         
         private readonly string[] _jpQuestionSet =
@@ -83,6 +84,11 @@ namespace UI
             "はい",
             "Yes"
         };
+        private readonly string[] _submitLanguage =
+        {
+            "提出",
+            "Submit"
+        };
         
         
         private void Start()
@@ -112,7 +118,6 @@ namespace UI
 
         private void ChangeLanguage(LanguageHandler.Language language)
         {
-            Debug.Log("Language changed to: " + language);
             var texts = language == LanguageHandler.Language.Japanese ? _jpQuestionSet : _enQuestionSet;
             for (var i = 0; i < _answerTexts.Length; i++)
             {
@@ -123,6 +128,7 @@ namespace UI
             _question1.text = _question1Language[(int)language];
             _question2.text = _question2Language[(int)language];
             _question3.text = _question3Language[(int)language];
+            _submitText.text = _submitLanguage[(int)language];
         }
         
     }
