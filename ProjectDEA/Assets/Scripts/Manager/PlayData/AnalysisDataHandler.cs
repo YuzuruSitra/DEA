@@ -2,40 +2,52 @@ using Manager.Map;
 using Manager.MetaAI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Manager.PlayData
 {
     public class AnalysisDataHandler : MonoBehaviour
     {
         private PlayDataWriter _dataWriter;
-        public int PlayerID { get; set; }
         private bool _isAddListener;
-        
-        // クリア判定
+
+        private int _playerID;
+        public int PlayerID
+        {
+            get => _playerID;
+            set
+            {
+                if (_playerID == value) return; // 同じ値の場合は処理しない
+                _playerID = value;
+                if (_dataWriter != null) // _dataWriterが初期化されている場合のみ実行
+                {
+                    _dataWriter.SetPlayerSlot(_playerID);
+                }
+            }
+        }
+
+        // 他のプロパティとメンバ変数
         public bool IsClear { get; set; }
         private const string ClearKey = "ClearKey";
-        // クリア時間
         private float _clearTime;
         private const string ClearTimeKey = "ClearTimeKey";
         private bool _isCountUp;
-        // 移動回数
         private int _roomMovementCount;
         private const string MovementCountKey = "MovementCountKey";
         private PlayerRoomTracker _playerRoomTracker;
         private bool _isAddedRoomTracker;
-        // メタAIの使用可否、アクション回数
         [SerializeField] private MetaAIHandler _metaAIHandler;
         private const string SaveIsUseMetaAIKey = "IsUseMetaAIKey";
         private const string ActionCountKey = "ActionCountKey";
         private int _actionCount;
-        // プレイヤータイプの保存
         private const string PlayerTypeKey = "PlayerTypeKey";
-        
+        private const string AnswerKey = "AnswerKey";
+
         private void Start()
         {
             CheckSingleton();
         }
-        
+
         private void CheckSingleton()
         {
             var target = GameObject.FindGameObjectWithTag(gameObject.tag);
@@ -48,14 +60,15 @@ namespace Manager.PlayData
             }
             DontDestroyOnLoad(gameObject);
             _dataWriter = new PlayDataWriter();
+            _dataWriter.SetPlayerSlot(_playerID);
             SceneManager.sceneLoaded += SceneLoaded;
             _isAddListener = true;
             _metaAIHandler.OnAddEvent += AddActionCount;
         }
-        
+
         private void OnDestroy()
         {
-            if(!_isAddListener) return;
+            if (!_isAddListener) return;
             SceneManager.sceneLoaded -= SceneLoaded;
             _metaAIHandler.OnAddEvent -= AddActionCount;
         }
@@ -69,10 +82,9 @@ namespace Manager.PlayData
         {
             _roomMovementCount++;
         }
-        
+
         private void SceneLoaded(Scene nextScene, LoadSceneMode mode)
         {
-            // リスナー解除
             if (_isAddedRoomTracker)
             {
                 _playerRoomTracker.OnPlayerRoomChange -= AddRoomChangeCount;
@@ -84,7 +96,6 @@ namespace Manager.PlayData
                     ResetCount();
                     break;
                 case "DungeonStart":
-                    _dataWriter.SetPlayerSlot(PlayerID);
                     break;
                 case "DungeonIn":
                     _isCountUp = true;
@@ -123,6 +134,16 @@ namespace Manager.PlayData
             _dataWriter.SaveMovementCount(MovementCountKey, _roomMovementCount);
             _dataWriter.SaveActionCount(ActionCountKey, _actionCount);
             _dataWriter.SavePlayerType(PlayerTypeKey, _metaAIHandler.CurrentPlayerType.ToString());
+        }
+
+        public void SaveAnswerSet(Slider[] answers)
+        {
+            for (var i = 0; i < answers.Length; i++)
+            {
+                var key = AnswerKey + i;
+                var answer = (int)answers[i].value;
+                _dataWriter.SaveAnswers(key, answer);
+            }
         }
     }
 }

@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using CI.QuickSave;
-using Gimmick;
 using UnityEngine;
 
 namespace Manager.PlayData
@@ -76,6 +74,13 @@ namespace Manager.PlayData
         {
             UnityEngine.Debug.Log(key + " " + type);
             _writer.Write(key, type);
+            _writer.Commit();
+        }
+        // プレイヤータイプの保存
+        public void SaveAnswers(string key, int answer)
+        {
+            UnityEngine.Debug.Log(key + " " + answer);
+            _writer.Write(key, answer);
             _writer.Commit();
         }
     }

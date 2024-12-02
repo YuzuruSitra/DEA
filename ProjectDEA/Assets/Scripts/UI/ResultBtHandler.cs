@@ -13,12 +13,17 @@ namespace UI
         [SerializeField] private AudioClip _pushAudio;
         
         private MetaAIHandler _metaAIHandler;
+        [SerializeField] private Button _surveyOpenBt;
+        [SerializeField] private Button _surveyCloseBt;
+        [SerializeField] private GameObject _surveyPanel;
         
         private void Start()
         {
             _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
             _metaAIHandler = GameObject.FindWithTag("MetaAI").GetComponent<MetaAIHandler>();
             _exitBt.onClick.AddListener(ExitGame);
+            _surveyOpenBt.onClick.AddListener(ChangeSurveyPanel);
+            _surveyCloseBt.onClick.AddListener(ChangeSurveyPanel);
         }
 
         private void ExitGame()
@@ -26,6 +31,12 @@ namespace UI
             _soundHandler.PlaySe(_pushAudio);
             _metaAIHandler.ResetMetaAI();
             SceneManager.LoadScene("TitleScene");
+        }
+        
+        private void ChangeSurveyPanel()
+        {
+            _soundHandler.PlaySe(_pushAudio);
+            _surveyPanel.SetActive(!_surveyPanel.activeSelf);
         }
     }
 }

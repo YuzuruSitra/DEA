@@ -33,6 +33,11 @@ namespace UI
         [SerializeField] private Button _metaAIBt;
         [SerializeField] private TextMeshProUGUI _metaAIBtText;
         
+        // SurveyPanel
+        [SerializeField] private GameObject _surveyPanel;
+        [SerializeField] private Button _openSurveyPanelBt;
+        [SerializeField] private Button _closeSurveyPanelBt;
+        
         private void Start()
         {
             _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
@@ -46,6 +51,8 @@ namespace UI
             _settingBt.onClick.AddListener(ChangeSettings);
             _languageIncreaseBt.onClick.AddListener(NextLanguage);
             _metaAIBt.onClick.AddListener(ChangeUseMetaAI);
+            _openSurveyPanelBt.onClick.AddListener(ChangeSurveyPanel);
+            _closeSurveyPanelBt.onClick.AddListener(ChangeSurveyPanel);
             ChangeIdText();
         }
 
@@ -103,8 +110,15 @@ namespace UI
 
         private void ChangeUseMetaAI()
         {
+            _soundHandler.PlaySe(_pushAudio);
             var isUse = _metaAIHandler.ChangeUseBool();
             _metaAIBtText.text = isUse ? "MetaAI: On" : "MetaAI: Off";
+        }
+
+        private void ChangeSurveyPanel()
+        {
+            _soundHandler.PlaySe(_pushAudio);
+            _surveyPanel.SetActive(!_surveyPanel.activeSelf);
         }
         
     }

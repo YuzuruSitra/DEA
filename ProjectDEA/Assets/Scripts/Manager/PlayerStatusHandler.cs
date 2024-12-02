@@ -52,7 +52,6 @@ namespace Manager
         public void SetPlayerAttackDamage(int damage)
         {
             PlayerAttackDamage = damage;
-            UnityEngine.Debug.Log(PlayerAttackDamage);
         }
 
         public void SetPlayerCurrentHp(int hp)
