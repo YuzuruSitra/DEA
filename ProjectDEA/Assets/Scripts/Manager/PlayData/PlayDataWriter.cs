@@ -36,7 +36,13 @@ namespace Manager.PlayData
             
             UnityEngine.Debug.Log($"Player Slot changed to: {_currentSlotKey}");
         }
-
+        // メタAIの使用可否の保存
+        public void SaveIsUseMetaAI(string key, bool isUse)
+        {
+            UnityEngine.Debug.Log(key + " " + isUse);
+            _writer.Write(key, isUse);
+            _writer.Commit();
+        }
         // クリア判定の保存
         public void SaveIsClear(string key, bool isClear)
         {

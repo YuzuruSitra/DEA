@@ -26,7 +26,7 @@ namespace Manager.MetaAI
         private PlayerTypeClassifier _playerTypeClassifier;
         [Header("一度に送るログ数")]
         [SerializeField] private int _logPerSend = 10;
-        private bool _isUse;
+        public bool IsUse { get; private set; }
         [SerializeField] private bool _isDebugInput;
         private readonly Dictionary<PlayerType, int> _points = new()
         {
@@ -44,12 +44,13 @@ namespace Manager.MetaAI
 
         public void LaunchMetaAI()
         {
-            if (!_isUse) return;
+            if (!IsUse) return;
             _playerTypeClassifier.ConnectToPythonServer();
         }
         
         public void ResetMetaAI()
         {
+            if (!IsUse) return;
             _playerTypeClassifier.SendResetToPython();
         }
 
@@ -66,7 +67,7 @@ namespace Manager.MetaAI
             DontDestroyOnLoad(gameObject);
             
             CurrentPlayerType = PlayerType.None;
-            if (!_isUse) return;
+            if (!IsUse) return;
             _playerTypeClassifier = new PlayerTypeClassifier(_logPerSend);
             _playerTypeClassifier.ResponsePlayerType += ReceivePlayerType;
             _addedListener = true;
@@ -74,20 +75,20 @@ namespace Manager.MetaAI
 
         private void OnDestroy()
         {
-            if (!_isUse) return;
+            if (!IsUse) return;
             if (!_addedListener) return;
             _playerTypeClassifier.ResponsePlayerType -= ReceivePlayerType;
         }
         
         private void OnApplicationQuit()
         {
-            if (!_isUse) return;
+            if (!IsUse) return;
             _playerTypeClassifier.OnDisconnected();
         }
         
         public void SendLogsForMetaAI(AddScores[] scores)
         {
-            if (!_isUse) return;
+            if (!IsUse) return;
             OnAddEvent?.Invoke();
             // ポイントを初期化
             _points[PlayerType.Killer] = 0;
@@ -120,8 +121,8 @@ namespace Manager.MetaAI
 
         public bool ChangeUseBool()
         {
-            _isUse = !_isUse;
-            return _isUse;
+            IsUse = !IsUse;
+            return IsUse;
         }
         
     }

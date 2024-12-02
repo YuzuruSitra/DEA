@@ -23,8 +23,9 @@ namespace Manager.PlayData
         private const string MovementCountKey = "MovementCountKey";
         private PlayerRoomTracker _playerRoomTracker;
         private bool _isAddedRoomTracker;
-        // アクション回数
+        // メタAIの使用可否、アクション回数
         [SerializeField] private MetaAIHandler _metaAIHandler;
+        private const string SaveIsUseMetaAIKey = "IsUseMetaAIKey";
         private const string ActionCountKey = "ActionCountKey";
         private int _actionCount;
         // プレイヤータイプの保存
@@ -116,6 +117,7 @@ namespace Manager.PlayData
         private void SavePlayLog()
         {
             _dataWriter.SaveIsClear(ClearKey, IsClear);
+            _dataWriter.SaveIsUseMetaAI(SaveIsUseMetaAIKey, _metaAIHandler.IsUse);
             var cropTime = Mathf.Round(_clearTime * 10) / 10f;
             _dataWriter.SaveClearTime(ClearTimeKey, cropTime);
             _dataWriter.SaveMovementCount(MovementCountKey, _roomMovementCount);
