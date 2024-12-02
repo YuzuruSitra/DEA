@@ -1,6 +1,7 @@
 using System;
 using Manager.Audio;
 using Manager.Language;
+using Manager.MetaAI;
 using Manager.PlayData;
 using TMPro;
 using UnityEngine;
@@ -28,10 +29,13 @@ namespace UI
         private SoundHandler _soundHandler;
         [SerializeField] private AudioClip _pushAudio;
         
+        private MetaAIHandler _metaAIHandler;
+        
         private void Start()
         {
             _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
             _languageHandler = GameObject.FindWithTag("LanguageHandler").GetComponent<LanguageHandler>();
+            _metaAIHandler = GameObject.FindWithTag("MetaAI").GetComponent<MetaAIHandler>();
             _startBt.onClick.AddListener(NextScene);
             _devBt.onClick.AddListener(ChangeDevPad);
             _increaseIdBt.onClick.AddListener(IncreasePlayerID);
@@ -44,8 +48,9 @@ namespace UI
 
         private void NextScene()
         {
-            SceneManager.LoadScene("DungeonStart");
             _soundHandler.PlaySe(_pushAudio);
+            _metaAIHandler.LaunchMetaAI();
+            SceneManager.LoadScene("DungeonStart");
         }
 
         private void ChangeDevPad()

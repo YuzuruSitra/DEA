@@ -18,10 +18,9 @@ namespace Manager.MetaAI
         public PlayerTypeClassifier(int logPerSend)
         {
             _logPerSend = logPerSend;
-            ConnectToPythonServer();
         }
 
-        private void ConnectToPythonServer()
+        public void ConnectToPythonServer()
         {
             try
             {
@@ -76,6 +75,14 @@ namespace Manager.MetaAI
             {
                 UnityEngine.Debug.LogError($"Data send/receive error: {e.Message}");
             }
+        }
+
+        public async void SendResetToPython()
+        {
+            // データ送信
+            const string data = "RESET";
+            var dataBytes = Encoding.UTF8.GetBytes(data);
+            await _stream.WriteAsync(dataBytes, 0, dataBytes.Length);
         }
 
         private void SetResponsePlayerType(string response)

@@ -35,20 +35,23 @@ namespace Manager.MetaAI
             { PlayerType.Explorer, 0 }
         };
         public event Action OnAddEvent;
+        private bool _addedListener;
         
         private void Awake()
         {
             CheckSingleton();
         }
-        
-        private void Start()
+
+        public void LaunchMetaAI()
         {
-            CurrentPlayerType = PlayerType.None;
-            if (!_isUse) return;
-            _playerTypeClassifier = new PlayerTypeClassifier(_logPerSend);
-            _playerTypeClassifier.ResponsePlayerType += ReceivePlayerType;
+            _playerTypeClassifier.ConnectToPythonServer();
         }
         
+        public void ResetMetaAI()
+        {
+            _playerTypeClassifier.SendResetToPython();
+        }
+
         private void CheckSingleton()
         {
             var target = GameObject.FindGameObjectWithTag(gameObject.tag);
@@ -60,11 +63,18 @@ namespace Manager.MetaAI
                 return;
             }
             DontDestroyOnLoad(gameObject);
+            
+            CurrentPlayerType = PlayerType.None;
+            if (!_isUse) return;
+            _playerTypeClassifier = new PlayerTypeClassifier(_logPerSend);
+            _playerTypeClassifier.ResponsePlayerType += ReceivePlayerType;
+            _addedListener = true;
         }
 
         private void OnDestroy()
         {
             if (!_isUse) return;
+            if (!_addedListener) return;
             _playerTypeClassifier.ResponsePlayerType -= ReceivePlayerType;
         }
 
