@@ -30,6 +30,8 @@ namespace UI
         [SerializeField] private AudioClip _pushAudio;
         
         private MetaAIHandler _metaAIHandler;
+        [SerializeField] private Button _metaAIBt;
+        [SerializeField] private TextMeshProUGUI _metaAIBtText;
         
         private void Start()
         {
@@ -43,6 +45,7 @@ namespace UI
             
             _settingBt.onClick.AddListener(ChangeSettings);
             _languageIncreaseBt.onClick.AddListener(NextLanguage);
+            _metaAIBt.onClick.AddListener(ChangeUseMetaAI);
             ChangeIdText();
         }
 
@@ -83,7 +86,7 @@ namespace UI
 
         private void ChangeIdText(bool changeTextField = true)
         {
-            _idText.text = "プレイヤーID: " + _analysisData.PlayerID;
+            _idText.text = "Player ID: " + _analysisData.PlayerID;
             if (!changeTextField) return;
             _inputField.text = "" + _analysisData.PlayerID;
         }
@@ -96,6 +99,12 @@ namespace UI
             _languageHandler.SetLanguage((LanguageHandler.Language)nextNum);
             _languageText.text = _languageHandler.CurrentLanguage.ToString();
             _soundHandler.PlaySe(_pushAudio);
+        }
+
+        private void ChangeUseMetaAI()
+        {
+            var isUse = _metaAIHandler.ChangeUseBool();
+            _metaAIBtText.text = isUse ? "MetaAI: On" : "MetaAI: Off";
         }
         
     }

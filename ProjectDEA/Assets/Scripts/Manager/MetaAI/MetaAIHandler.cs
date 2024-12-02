@@ -26,7 +26,7 @@ namespace Manager.MetaAI
         private PlayerTypeClassifier _playerTypeClassifier;
         [Header("一度に送るログ数")]
         [SerializeField] private int _logPerSend = 10;
-        [SerializeField] private bool _isUse;
+        private bool _isUse;
         [SerializeField] private bool _isDebugInput;
         private readonly Dictionary<PlayerType, int> _points = new()
         {
@@ -44,6 +44,7 @@ namespace Manager.MetaAI
 
         public void LaunchMetaAI()
         {
+            if (!_isUse) return;
             _playerTypeClassifier.ConnectToPythonServer();
         }
         
@@ -77,23 +78,7 @@ namespace Manager.MetaAI
             if (!_addedListener) return;
             _playerTypeClassifier.ResponsePlayerType -= ReceivePlayerType;
         }
-
-        private void Update()
-        {
-            // デバッグ用
-            if (!_isUse) return;
-            if (!_isDebugInput) return;
-            var killer = 6;
-            var achiever = 6;
-            var explorer = 6;
-            
-            if (Input.GetKeyDown(KeyCode.A)) killer = 10;
-            if (Input.GetKeyDown(KeyCode.S)) achiever = 10;
-            if (Input.GetKeyDown(KeyCode.D)) explorer = 10;
-            
-            if (Input.anyKeyDown) _playerTypeClassifier.CollectActionLog(killer, achiever, explorer);
-        }
-
+        
         private void OnApplicationQuit()
         {
             if (!_isUse) return;
@@ -131,6 +116,12 @@ namespace Manager.MetaAI
         private void ReceivePlayerType(PlayerType newType)
         {
             CurrentPlayerType = newType;
+        }
+
+        public bool ChangeUseBool()
+        {
+            _isUse = !_isUse;
+            return _isUse;
         }
         
     }
