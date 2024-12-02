@@ -1,4 +1,5 @@
 using Character.Player;
+using Manager;
 using Manager.Audio;
 using Manager.MetaAI;
 using UnityEngine;
@@ -14,17 +15,19 @@ namespace Item
         [SerializeField] private AudioClip _buffItemAudio;
         private MetaAIHandler _metaAIHandler;
         [SerializeField] private MetaAIHandler.AddScores[] _buffScores;
+        private PlayerStatusHandler _playerStatusHandler;
         
         private void Start()
         {
             _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
             _metaAIHandler = GameObject.FindWithTag("MetaAI").GetComponent<MetaAIHandler>();
+            _playerStatusHandler = GameObject.FindWithTag("PlayerStatusHandler").GetComponent<PlayerStatusHandler>();
         }
 
         public void PlayerPowerUpper()
         {
             var attackHandler = _playerClasHub.PlayerAttackHandler;
-            attackHandler.ChangeAttackPower(attackHandler.AttackDamage + _powerPotionUpValue);
+            _playerStatusHandler.SetPlayerAttackDamage(_playerStatusHandler.PlayerAttackDamage + _powerPotionUpValue);
             _metaAIHandler.SendLogsForMetaAI(_buffScores);
             _soundHandler.PlaySe(_buffItemAudio);
         }

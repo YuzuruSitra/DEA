@@ -1,4 +1,3 @@
-using System;
 using Manager.Audio;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -14,8 +13,6 @@ namespace Character.Player
         private float _currentTime;
         [SerializeField] private PlayerAnimationCnt _playerAnimationCnt;
         [SerializeField] private PlayerMover _playerMover;
-        [SerializeField] private int _attackDamage;
-        public int AttackDamage => _attackDamage;
         public bool IsAttacking => _playerAnimationCnt.IsAttacking;
         private SoundHandler _soundHandler;
         [SerializeField] private AudioClip _attackSeClip;
@@ -55,11 +52,6 @@ namespace Character.Player
         public void SetCanAttackState(bool active)
         {
             _isCanAttack = active;
-        }
-
-        public void ChangeAttackPower(int newDamage)
-        {
-            _attackDamage = newDamage;
         }
     }
 }

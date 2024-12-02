@@ -77,18 +77,11 @@ namespace Manager
             yield return WaitForPlayerInput(2);
             
             AddLocalizedLog(
-                "オベリスクの転移による疲労回復がなかったら今頃...",
-                "If it weren't for the recovery from the obelisk's teleportation,\nI don't know where I'd be by now..."
+                "これまで通りオベリスクによる転移を利用してダンジョンからの脱出を試みよう。",
+                "Let’s continue using the obelisks to try and escape the dungeon."
             );
             
             yield return WaitForPlayerInput(3);
-            
-            AddLocalizedLog(
-                "これまで通り転移ギミックを利用した脱出を試みよう。",
-                "I'll try to escape using the teleportation gimmick, just like before."
-            );
-            
-            yield return WaitForPlayerInput(4);
 
             ChangeVCam(1);
             
@@ -97,10 +90,10 @@ namespace Manager
                 "There's an obelisk right here.\nIf I remember correctly, activating it requires " + ExitObelisk.NeededKeyCount + " obelisk fragments."
             );
             
-            yield return WaitForPlayerInput(5);
+            yield return WaitForPlayerInput(4);
 
             ChangeVCam(0);
-            yield return WaitForPlayerInput(6);
+            yield return WaitForPlayerInput(5);
             
             _tutorialIndicationUI.SetActive(false);
             

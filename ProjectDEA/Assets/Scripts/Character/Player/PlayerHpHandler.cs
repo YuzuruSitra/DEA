@@ -7,22 +7,15 @@ namespace Character.Player
     public class PlayerHpHandler : MonoBehaviour
     {
         [SerializeField] private PlayerAnimationCnt _playerAnimationCnt;
-        [SerializeField] private int _maxHp;
-        public int MaxHp => _maxHp;
-        public int CurrentHp { get; private set; }
-        public Action<int> OnChangeHp;
         private Action _onDie;
         public bool IsDie { get; private set; }
         private DungeonLayerHandler _dungeonLayerHandler;
-
-        private void Awake()
-        {
-            CurrentHp = _maxHp;
-        }
-
+        private PlayerStatusHandler _playerStatusHandler;
+        
         private void Start()
         {
             _dungeonLayerHandler = GameObject.FindWithTag("DungeonLayerHandler").GetComponent<DungeonLayerHandler>();
+            _playerStatusHandler = GameObject.FindWithTag("PlayerStatusHandler").GetComponent<PlayerStatusHandler>();
             _onDie += _playerAnimationCnt.SetIsDie;
             _onDie += _dungeonLayerHandler.PlayerDeathNext;
         }
@@ -36,14 +29,12 @@ namespace Character.Player
         public void ReceiveDamage(int damage)
         {
             if (IsDie) return;
-            CurrentHp = Math.Max(CurrentHp - damage, 0);
-            CurrentHp = Math.Min(CurrentHp, 100);
-            if (CurrentHp <= 0)
-            {
-                IsDie = true;
-                _onDie?.Invoke();
-            }
-            OnChangeHp?.Invoke(CurrentHp);
+            var newHp = Math.Max(_playerStatusHandler.PlayerCurrentHp - damage, 0);
+            newHp = Math.Min(newHp, _playerStatusHandler.MaxHp);
+            _playerStatusHandler.SetPlayerCurrentHp(newHp);
+            if (newHp > 0) return;
+            IsDie = true;
+            _onDie?.Invoke();
         }
     }
 }

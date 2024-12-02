@@ -1,5 +1,5 @@
 using System.Collections;
-using Character.Player;
+using Manager;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,26 +9,26 @@ namespace UI
     {
         private Slider _slider;
         [SerializeField] private float _waitingTime;
-        private PlayerHpHandler _playerHpHandler;
         private Coroutine _coroutine;
+        private PlayerStatusHandler _playerStatusHandler;
         
         private void Start()
         {
-            var playerHub = GameObject.FindWithTag("Player").GetComponent<PlayerClasHub>();
-            _playerHpHandler = playerHub.PlayerHpHandler;
-            var maxHp = _playerHpHandler.MaxHp;
-            var currentHp = _playerHpHandler.CurrentHp;
+            _playerStatusHandler = GameObject.FindWithTag("PlayerStatusHandler").GetComponent<PlayerStatusHandler>();
+            
+            var maxHp = _playerStatusHandler.MaxHp;
+            var currentHp = _playerStatusHandler.PlayerCurrentHp;
             
             _slider = gameObject.GetComponent<Slider>();
             _slider.maxValue = maxHp;
             _slider.value = currentHp;
             
-            _playerHpHandler.OnChangeHp += BeInjured;
+            _playerStatusHandler.OnChangeHp += BeInjured;
         }
 
         private void OnDestroy()
         {
-            _playerHpHandler.OnChangeHp -= BeInjured;
+            _playerStatusHandler.OnChangeHp -= BeInjured;
         }
         
         private void BeInjured(int newHp)
