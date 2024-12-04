@@ -18,7 +18,7 @@ namespace UI
         [SerializeField] private Button _increaseIdBt;
         [SerializeField] private TMP_InputField _inputField;
         [SerializeField] private TextMeshProUGUI _idText;
-        [SerializeField] private AnalysisDataHandler _analysisData;
+        private AnalysisDataHandler _analysisData;
         
         [SerializeField] private Button _settingBt;
         [SerializeField] private GameObject _languagePad;
@@ -43,6 +43,7 @@ namespace UI
             _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
             _languageHandler = GameObject.FindWithTag("LanguageHandler").GetComponent<LanguageHandler>();
             _metaAIHandler = GameObject.FindWithTag("MetaAI").GetComponent<MetaAIHandler>();
+            _analysisData = GameObject.FindWithTag("AnalysisDataHandler").GetComponent<AnalysisDataHandler>();
             _startBt.onClick.AddListener(NextScene);
             _devBt.onClick.AddListener(ChangeDevPad);
             _increaseIdBt.onClick.AddListener(IncreasePlayerID);
@@ -54,6 +55,11 @@ namespace UI
             _openSurveyPanelBt.onClick.AddListener(ChangeSurveyPanel);
             _closeSurveyPanelBt.onClick.AddListener(ChangeSurveyPanel);
             ChangeIdText();
+            
+            // 応急処理
+            _languageText.text = _languageHandler.CurrentLanguage.ToString();
+            _metaAIBtText.text = _metaAIHandler.IsUse ? "MetaAI: On" : "MetaAI: Off";
+            _idText.text = "Player ID: " + _analysisData.PlayerID;
         }
 
         private void NextScene()

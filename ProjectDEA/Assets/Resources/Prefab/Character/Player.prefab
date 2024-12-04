@@ -545,7 +545,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerAnimationCnt: {fileID: 4351832874976852339}
-  _maxHp: 100
 --- !u!114 &2002799768244149595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -582,7 +581,6 @@ MonoBehaviour:
   _attackSpeed: 2
   _playerAnimationCnt: {fileID: 4351832874976852339}
   _playerMover: {fileID: 2002799768244149595}
-  _attackDamage: 20
   _attackSeClip: {fileID: 8300000, guid: 4bab777c7c2d4bf438988ebf2fe0efe8, type: 3}
 --- !u!114 &2817494418154973700
 MonoBehaviour:
@@ -652,7 +650,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerHpHandler: {fileID: 1623497148600613073}
-  _damageForSeconds: 2
+  _damageForSeconds: 20
 --- !u!54 &5984014845965616732
 Rigidbody:
   m_ObjectHideFlags: 0

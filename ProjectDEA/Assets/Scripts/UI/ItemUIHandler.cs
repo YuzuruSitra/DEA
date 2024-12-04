@@ -1,3 +1,4 @@
+using System;
 using Item;
 using Manager;
 using Manager.Language;
@@ -24,17 +25,19 @@ namespace UI
             SetInventoryFrame(_inventoryHandler.ItemSets);
             _inventoryHandler.OnItemSpriteChanged += ChangeItemImage;
             _inventoryHandler.OnItemCountChanged += ChangeItemCount;
-            _inventoryHandler.OnKeyCountChanged += ChangeKeyCount;
             _inventoryHandler.OnItemLineupChanged += ChangeVisibleFrame;
-            ChangeKeyCount(_inventoryHandler.ItemSets[(int)ItemKind.Key]._count);
             _panelSwitcher.IsOpenInventory += ChangeInventoryCount;
+        }
+
+        private void Update()
+        {
+            _keyText.text = "× " + _inventoryHandler.ItemSets[(int)ItemKind.Key]._count;
         }
 
         private void OnDestroy()
         {
             _inventoryHandler.OnItemSpriteChanged -= ChangeItemImage;
             _inventoryHandler.OnItemCountChanged -= ChangeItemCount;
-            _inventoryHandler.OnKeyCountChanged -= ChangeKeyCount;
             _inventoryHandler.OnItemLineupChanged -= ChangeVisibleFrame;
             _panelSwitcher.IsOpenInventory -= ChangeInventoryCount;
         }
@@ -103,11 +106,6 @@ namespace UI
             {
                 _itemCountText.text = "×" + value;
             }
-        }
-
-        private void ChangeKeyCount(int value)
-        {
-            _keyText.text = "× " + value;
         }
         
     }
