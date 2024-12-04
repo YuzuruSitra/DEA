@@ -48,7 +48,9 @@ namespace Character.Player
         
         public void AttackActive()
         {
-            var attackType = Random.Range(0, 2);
+            //var attackType = Random.Range(0, 2);
+            //応急処理
+            var attackType = 0;
             _animator.SetFloat(AttackType, attackType);
             _animator.SetBool(IsAttack, true);
             if (_attackRoutine != null) StopCoroutine(_attackRoutine);

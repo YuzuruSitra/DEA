@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Character.Player
@@ -14,7 +15,22 @@ namespace Character.Player
         [SerializeField] private PlayerUseItem _playerUseItem;
 
         [SerializeField] private PoisonHandler _poisonHandler;
-        
+
+        private void Start()
+        {
+            _playerHpHandler.OnDie += PlayerDeath;
+        }
+
+        private void OnDestroy()
+        {
+            _playerHpHandler.OnDie -= PlayerDeath;
+        }
+
+        private void PlayerDeath()
+        {
+            SetPlayerFreedom(false);
+        }
+
         public void SetPlayerFreedom(bool isFreedom)
         {
             _playerMover.SetWalkableState(isFreedom);

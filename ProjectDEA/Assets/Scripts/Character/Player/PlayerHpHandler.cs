@@ -7,7 +7,7 @@ namespace Character.Player
     public class PlayerHpHandler : MonoBehaviour
     {
         [SerializeField] private PlayerAnimationCnt _playerAnimationCnt;
-        private Action _onDie;
+        public Action OnDie;
         public bool IsDie { get; private set; }
         private DungeonLayerHandler _dungeonLayerHandler;
         private PlayerStatusHandler _playerStatusHandler;
@@ -16,14 +16,14 @@ namespace Character.Player
         {
             _dungeonLayerHandler = GameObject.FindWithTag("DungeonLayerHandler").GetComponent<DungeonLayerHandler>();
             _playerStatusHandler = GameObject.FindWithTag("PlayerStatusHandler").GetComponent<PlayerStatusHandler>();
-            _onDie += _playerAnimationCnt.SetIsDie;
-            _onDie += _dungeonLayerHandler.PlayerDeathNext;
+            OnDie += _playerAnimationCnt.SetIsDie;
+            OnDie += _dungeonLayerHandler.PlayerDeathNext;
         }
         
         private void OnDestroy()
         {
-            _onDie -= _playerAnimationCnt.SetIsDie;
-            _onDie -= _dungeonLayerHandler.PlayerDeathNext;
+            OnDie -= _playerAnimationCnt.SetIsDie;
+            OnDie -= _dungeonLayerHandler.PlayerDeathNext;
         }
 
         public void ReceiveDamage(int damage)
@@ -34,7 +34,7 @@ namespace Character.Player
             _playerStatusHandler.SetPlayerCurrentHp(newHp);
             if (newHp > 0) return;
             IsDie = true;
-            _onDie?.Invoke();
+            OnDie?.Invoke();
         }
     }
 }

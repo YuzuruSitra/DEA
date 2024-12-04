@@ -18,6 +18,7 @@ namespace Character.Player
         [SerializeField] private PlayerHpHandler _playerHpHandler;
 
         private Vector3 _moveDirection = Vector3.zero;
+        private Vector3 _verticalDirection = Vector3.zero;
         private Vector3 _inputDirection = Vector3.zero;
         private Vector3 _rotationDirection = Vector3.zero;
         private bool _isPushed;
@@ -83,6 +84,7 @@ namespace Character.Player
 
         private void Update()
         {
+            VerticalMoving();
             if (!_isWalkable || _isPushed || _playerAnimationCnt.IsAttacking) return;
 
             UpdateInputDirection();
@@ -127,14 +129,18 @@ namespace Character.Player
             }
         }
 
-        private void DoMoving()
+        private void VerticalMoving()
         {
             // 重力適用
             if (_controller.isGrounded)
-                _moveDirection.y = 0f;
+                _verticalDirection.y = 0f;
             else
-                _moveDirection.y += _gravity * Time.deltaTime;
+                _verticalDirection.y += _gravity * Time.deltaTime;
+            _controller.Move(_verticalDirection * Time.deltaTime);
+        }
 
+        private void DoMoving()
+        {
             // CharacterControllerで移動
             _controller.Move(_moveDirection * Time.deltaTime);
 
