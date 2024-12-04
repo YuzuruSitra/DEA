@@ -14,7 +14,6 @@ namespace UI
         
         private MetaAIHandler _metaAIHandler;
         [SerializeField] private Button _surveyOpenBt;
-        [SerializeField] private Button _surveyCloseBt;
         [SerializeField] private GameObject _surveyPanel;
         
         private void Start()
@@ -22,8 +21,7 @@ namespace UI
             _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
             _metaAIHandler = GameObject.FindWithTag("MetaAI").GetComponent<MetaAIHandler>();
             _exitBt.onClick.AddListener(ExitGame);
-            _surveyOpenBt.onClick.AddListener(ChangeSurveyPanel);
-            _surveyCloseBt.onClick.AddListener(ChangeSurveyPanel);
+            _surveyOpenBt.onClick.AddListener(OpenSurveyPanel);
         }
 
         private void ExitGame()
@@ -33,10 +31,10 @@ namespace UI
             SceneManager.LoadScene("TitleScene");
         }
         
-        private void ChangeSurveyPanel()
+        private void OpenSurveyPanel()
         {
             _soundHandler.PlaySe(_pushAudio);
-            _surveyPanel.SetActive(!_surveyPanel.activeSelf);
+            _surveyPanel.SetActive(true);
         }
     }
 }

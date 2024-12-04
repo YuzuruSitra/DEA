@@ -850,6 +850,8 @@ MonoBehaviour:
   _question2: {fileID: 8549550776569332625}
   _question3: {fileID: 3558105140751760669}
   _submitText: {fileID: 6684546287257974356}
+  _closeSurveyPanelBt: {fileID: 5092617665445579624}
+  _surveyPanel: {fileID: 8875010387831533364}
 --- !u!1 &2028172404166223132
 GameObject:
   m_ObjectHideFlags: 0

@@ -31,9 +31,9 @@ namespace UI
         {
             "1, 他のプレイヤーと競うことは好きですか？",
             "2, ゲーム内での成果や称号を集めるのが好きですか？",
-            "3, ゲーム内の隠されたエリアを見つけるのが楽しいですか？",
-            "4, 自由に探索して何かを発見することが好きですか？",
-            "5, ミッションを達成することにやりがいを感じますか？",
+            "3, ゲームプレイでは隠しエリアをつい探してしまいますか？",
+            "4, よく探索に夢中になりますか？",
+            "5, ミッションが残ってると全てこなしたくなりますか？",
             "6, 強力な敵に挑戦することにやりがいを感じますか？",
             "1, 自分の好きな順番や方法で探索できていると感じましたか？",
             "2, ダンジョンのギミックに対して緊張感や喜びを感じましたか？",
@@ -46,9 +46,9 @@ namespace UI
         {
             "1, Do you enjoy competing with other players?",
             "2, Do you like collecting achievements or titles in the game?",
-            "3, Do you enjoy discovering hidden areas in the game?",
-            "4, Do you like freely exploring and finding new things?",
-            "5, Do you feel a sense of accomplishment from completing missions?",
+            "3, Do you often find yourself searching for hidden areas in the game?",
+            "4, Do you get absorbed in exploration?",
+            "5, Do you feel the need to complete all remaining missions?",
             "6, Do you find it rewarding to challenge powerful enemies?",
             "1, Did you feel that you could explore in your preferred order or way?",
             "2, Did you feel tension or excitement when interacting with dungeon gimmicks?",
@@ -90,6 +90,8 @@ namespace UI
             "Submit"
         };
         
+        [SerializeField] private Button _closeSurveyPanelBt;
+        [SerializeField] private GameObject _surveyPanel;
         
         private void Start()
         {
@@ -101,6 +103,7 @@ namespace UI
             _beforePanelBt.onClick.AddListener(SwitchSurveyPanel);
             _nextPanelBt.onClick.AddListener(SwitchSurveyPanel);
             _submitBt.onClick.AddListener(SubmitQuestions);
+            _closeSurveyPanelBt.onClick.AddListener(CloseSurveyPanel);
         }
 
         private void SwitchSurveyPanel()
@@ -114,6 +117,7 @@ namespace UI
         {
             _soundHandler.PlaySe(_pushAudio);
             _analysisDataHandler.SaveAnswerSet(_answerSliders);
+            _surveyPanel.SetActive(false);
         }
 
         private void ChangeLanguage(LanguageHandler.Language language)
@@ -129,6 +133,12 @@ namespace UI
             _question2.text = _question2Language[(int)language];
             _question3.text = _question3Language[(int)language];
             _submitText.text = _submitLanguage[(int)language];
+        }
+        
+        private void CloseSurveyPanel()
+        {
+            _soundHandler.PlaySe(_pushAudio);
+            _surveyPanel.SetActive(false);
         }
         
     }
