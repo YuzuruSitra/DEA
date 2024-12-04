@@ -13,7 +13,7 @@ namespace InputFunction
             GamePad
         }
 
-        private InputDeviceType _currentType;
+        public InputDeviceType CurrentType { get; private set; }
         public event Action<InputDeviceType> OnChangeDevice;
         private InputActions _inputActions;
         private bool _addListen;
@@ -57,22 +57,22 @@ namespace InputFunction
 
         private void ChangeKeyBoard(InputAction.CallbackContext context)
         {
-            if (_currentType == InputDeviceType.Keyboard) return;
-            _currentType = InputDeviceType.Keyboard;
-            OnChangeDevice?.Invoke(_currentType);
+            if (CurrentType == InputDeviceType.Keyboard) return;
+            CurrentType = InputDeviceType.Keyboard;
+            OnChangeDevice?.Invoke(CurrentType);
         }
 
         private void ChangeGamePad(InputAction.CallbackContext context)
         {
-            if (_currentType == InputDeviceType.GamePad) return;
-            _currentType = InputDeviceType.GamePad;
-            OnChangeDevice?.Invoke(_currentType);
+            if (CurrentType == InputDeviceType.GamePad) return;
+            CurrentType = InputDeviceType.GamePad;
+            OnChangeDevice?.Invoke(CurrentType);
         }
 
         // シーンロード時にデバイス状態を再通知
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            OnChangeDevice?.Invoke(_currentType);
+            OnChangeDevice?.Invoke(CurrentType);
         }
     }
 }

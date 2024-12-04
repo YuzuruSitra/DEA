@@ -27,7 +27,6 @@ namespace Manager.MetaAI
         [Header("一度に送るログ数")]
         [SerializeField] private int _logPerSend = 10;
         public bool IsUse { get; private set; }
-        [SerializeField] private bool _isDebugInput;
         private readonly Dictionary<PlayerType, int> _points = new()
         {
             { PlayerType.Killer, 0 },
@@ -118,9 +117,18 @@ namespace Manager.MetaAI
             CurrentPlayerType = newType;
         }
 
+        private void ResetPlayerType()
+        {
+            CurrentPlayerType = PlayerType.None;
+        }
+
         public bool ChangeUseBool()
         {
             IsUse = !IsUse;
+            if (!IsUse)
+            {
+                ResetPlayerType();
+            }
             return IsUse;
         }
         

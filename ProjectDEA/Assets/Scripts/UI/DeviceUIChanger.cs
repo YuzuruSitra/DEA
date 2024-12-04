@@ -13,6 +13,7 @@ namespace UI
         {
             _deviceDetector = GameObject.FindWithTag("InputSystemDeviceDetector").GetComponent<InputSystemDeviceDetector>();
             _deviceDetector.OnChangeDevice += ChangeUI;
+            ChangeUI(_deviceDetector.CurrentType);
         }
 
         private void OnDestroy()
