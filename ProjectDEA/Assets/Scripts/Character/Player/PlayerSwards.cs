@@ -13,7 +13,7 @@ namespace Character.Player
         private bool _oneHit;
         
         private GameObject _currentDragon;
-        private DragonController _currentDragonController;
+        private NPC.EnemyDragon.DragonController _currentDragonController;
         
         private GameObject _currentBorn;
         private BornOut _currentBornOut;
@@ -54,7 +54,7 @@ namespace Character.Player
                 if (_currentDragon != other.gameObject)
                 {
                     _currentDragon = other.gameObject;
-                    _currentDragonController = _currentDragon.GetComponent<DragonController>();
+                    _currentDragonController = _currentDragon.GetComponent<NPC.EnemyDragon.DragonController>();
                 }
 
                 _currentDragonController.OnGetDamage(_playerStatusHandler.PlayerAttackDamage, _playerTrn.position);

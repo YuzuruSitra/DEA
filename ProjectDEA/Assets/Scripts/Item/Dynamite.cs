@@ -88,7 +88,7 @@ namespace Item
                     {
                         if (_isDragonGive) continue;
                         _isDragonGive = true;
-                        var dragonController = obj.GetComponent<DragonController>();
+                        var dragonController = obj.GetComponent<Character.NPC.EnemyDragon.DragonController>();
                         if (dragonController == null) continue;
                         dragonController.OnGetDamage(_dragonGiveDamage);
                         continue;

@@ -7,14 +7,14 @@ namespace Gimmick
     public class EnemySpawnArea : MonoBehaviour, IGimmickID
     {
         [SerializeField] private GameObject _targetDragon;
-        private DragonController _dragonController;
+        private Character.NPC.EnemyDragon.DragonController _dragonController;
         public GimmickID GimmickIdInfo { get; set; }
         public event Action<IGimmickID> Returned;
         private bool _oneTime;
 
         private void Start()
         {
-            _dragonController = Instantiate(_targetDragon, transform.position, Quaternion.identity).GetComponent<DragonController>();
+            _dragonController = Instantiate(_targetDragon, transform.position, Quaternion.identity).GetComponent<Character.NPC.EnemyDragon.DragonController>();
         }
 
         private void Update()
