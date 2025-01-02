@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Test.NPC
 {
-	[RequireComponent(typeof(AnimatorControl), typeof(MovementControl))]
+	[RequireComponent(typeof(AnimatorControl), typeof(MovementControl), typeof(HealthComponent))]
 	public class NpcController : MonoBehaviour
 	{
 		// 基底クラスで管理されるコンポーネント
@@ -24,7 +24,7 @@ namespace Test.NPC
 			MovementControl = GetComponent<MovementControl>();
 		}
 
-		private void Update()
+		protected virtual void Update()
 		{
 			if (Time.time >= _nextEvaluationTime)
 			{

@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Collections.Generic;
 using Test.NPC.Dragon;
 using UnityEngine;
 
@@ -7,8 +7,11 @@ namespace Test.NPC
     public class AttackAction : IUtilityAction
     {
         public UtilityActionType ActionType => UtilityActionType.Attack;
+
+        // Configuration
         private readonly AnimatorControl _animatorControl;
         private readonly MovementControl _movementControl;
+        private readonly Transform _agent;
         private readonly Vector3 _searchOffSet;
         private readonly float _searchRadius;
         private readonly LayerMask _searchLayer;
@@ -16,11 +19,18 @@ namespace Test.NPC
         private readonly float _attackDelay;
         private readonly float _damage;
         private readonly Vector3 _attackOrigin;
-        
-        private readonly Transform _agent;
+
+        // State
         private Transform _target;
         private DebugDrawCd _debugDrawCd;
-        
+        private bool _isOnCooldown;
+        private float _cooldownTimer;
+        private readonly HashSet<Collider> _hitTargets = new HashSet<Collider>();
+        private float _attackTimer;
+
+        // Constants
+        private const float AttackDuration = 2f;
+
         public AttackAction(Transform agent, AnimatorControl animatorControl, MovementControl movementControl, DragonController.AttackParameters attackParameters)
         {
             _agent = agent;
@@ -28,7 +38,7 @@ namespace Test.NPC
             _movementControl = movementControl;
             _searchOffSet = attackParameters._searchOffSet;
             _searchRadius = attackParameters._searchRadius;
-            _searchLayer = attackParameters._searchLayer;
+            _searchLayer = attackParameters._targetLayer;
             _attackRadius = attackParameters._attackRadius;
             _attackDelay = attackParameters._attackDelay;
             _damage = attackParameters._attackDamage;
@@ -42,6 +52,7 @@ namespace Test.NPC
             var results = new Collider[1];
             var count = Physics.OverlapSphereNonAlloc(center, _searchRadius, results, _searchLayer, QueryTriggerInteraction.Ignore);
             if (count <= 0) return 0f;
+
             Debug.Log(results[0].gameObject.name);
             _target = results[0].transform;
             return 1f;
@@ -49,40 +60,113 @@ namespace Test.NPC
 
         public void Execute(GameObject agent)
         {
+            DrawDebugSpheres(agent);
+
+            // 攻撃のCT待機
+            if (HandleCooldown()) return;
+
+            // 対象の元へ移動
+            if (!IsTargetValid())
+            {
+                SearchForTarget();
+                return;
+            }
+
+            if (!IsTargetInRange())
+            {
+                _movementControl.MoveTo(_target.position);
+                return;
+            }
+
+            _movementControl.Stop();
+
+            // 対象を攻撃
+            if (_attackTimer > 0)
+            {
+                UpdateAttack(agent);
+                return;
+            }
+
+            StartAttack(agent);
+
+            // 逃避
+            // (追加の逃避ロジックが必要であればここに記述します)
+        }
+
+        private void DrawDebugSpheres(GameObject agent)
+        {
             _debugDrawCd.DebugDrawSphere(_agent.position + _searchOffSet, _searchRadius, Color.blue);
             _debugDrawCd.DebugDrawSphere(agent.transform.position + _attackOrigin, _attackRadius, Color.red);
-            if (_target == null) return;
-            // 攻撃のCT待機
-            
-            // 対象の元へ移動
-            
-            // 対象を攻撃
-            
-            // 逃避
-            
-            
-            // アニメーションを再生しつつ、攻撃判定を実行
-            // _animatorControl.SetTrigger("Attack");
-            // agent.StartCoroutine(PerformAttack(agent));
         }
 
-        private IEnumerator PerformAttack(GameObject agent)
+        private bool HandleCooldown()
         {
-            yield return new WaitForSeconds(_attackDelay); // 攻撃が発生するタイミングまで待機
-                
-            // 攻撃範囲内のオブジェクトを取得
-            var hitColliders = Physics.OverlapSphere(agent.transform.position + _attackOrigin, _attackRadius);
+            if (!_isOnCooldown) return false;
 
-            foreach (var hitCollider in hitColliders)
+            _cooldownTimer -= Time.deltaTime;
+            if (_cooldownTimer <= 0)
             {
-                if (hitCollider.gameObject == agent) continue; // 自身を除外
+                _isOnCooldown = false;
+            }
 
-                var targetHealth = hitCollider.GetComponent<HealthComponent>();
+            return true;
+        }
+
+        private bool IsTargetValid()
+        {
+            return _target != null && Vector3.Distance(_agent.position, _target.position) <= _searchRadius;
+        }
+
+        private bool IsTargetInRange()
+        {
+            return Vector3.Distance(_agent.position, _target.position) <= _attackRadius;
+        }
+
+        private void SearchForTarget()
+        {
+            var center = _agent.position + _searchOffSet;
+            var results = new Collider[1];
+            var count = Physics.OverlapSphereNonAlloc(center, _searchRadius, results, _searchLayer, QueryTriggerInteraction.Ignore);
+            if (count <= 0) return;
+            _target = results[0].transform;
+            Debug.Log($"Target acquired: {_target.name}");
+        }
+
+        private void StartAttack(GameObject agent)
+        {
+            _isOnCooldown = true;
+            _cooldownTimer = _attackDelay;
+            _attackTimer = AttackDuration;
+
+            _animatorControl.SetTrigger("Attack");
+            _hitTargets.Clear();
+        }
+
+        private void UpdateAttack(GameObject agent)
+        {
+            _attackTimer -= Time.deltaTime;
+            if (_attackTimer <= 0) return;
+
+            ApplyDamageToTargets(agent);
+        }
+
+        private void ApplyDamageToTargets(GameObject agent)
+        {
+            var results = new Collider[5];
+            var size = Physics.OverlapSphereNonAlloc(agent.transform.position + _attackOrigin, _attackRadius, results, _searchLayer, QueryTriggerInteraction.Ignore);
+
+            for (var i = 0; i < size; i++)
+            {
+                var collider = results[i];
+                if (_hitTargets.Contains(collider)) continue;
+
+                var targetHealth = collider.GetComponent<HealthComponent>();
                 if (targetHealth == null) continue;
+
                 targetHealth.TakeDamage(_damage);
-                Debug.Log($"Hit {hitCollider.name} for {_damage} damage.");
+                Debug.Log($"Hit {collider.name} for {_damage} damage.");
+                _hitTargets.Add(collider);
             }
         }
-
     }
 }

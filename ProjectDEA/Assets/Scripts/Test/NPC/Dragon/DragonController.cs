@@ -11,13 +11,15 @@ namespace Test.NPC.Dragon
 		{
 			public Vector3 _searchOffSet;
 			public float _searchRadius;
-			public LayerMask _searchLayer;
+			public LayerMask _targetLayer;
 			public float _attackRadius;
 			public float _attackDelay;
 			public float _attackDamage;
 			public Vector3 _attackOffSet;
 		}
 		[SerializeField] private AttackParameters _attackParameters;
+
+		[SerializeField] private Transform _target;
 		
 		protected override void Start()
 		{
@@ -28,6 +30,12 @@ namespace Test.NPC.Dragon
 				new AttackAction(transform, AnimatorControl, MovementControl, _attackParameters),
 				new RestAction(transform, AnimatorControl, MovementControl)
 			});
+		}
+
+		protected override void Update()
+		{
+			base.Update();
+			MovementControl.MoveTo(_target.position);
 		}
 	}
 }
