@@ -1,38 +1,47 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Test.NPC
 {
 	public class AnimatorControl : MonoBehaviour
 	{
 		private Animator _animator;
+		private NavMeshAgent _agent;
+
+		public enum AnimationState
+		{
+			Moving,
+			Attack,
+			Rest
+		}
+		private AnimationState _currentState;
+		
+		private readonly int _speedRatio = Animator.StringToHash("SpeedRatio");
+		private readonly Dictionary<AnimationState, int> _stateToHashMap = new()
+		{
+			{ AnimationState.Moving, Animator.StringToHash("IsMoving") },
+			{ AnimationState.Attack, Animator.StringToHash("IsAttack") },
+			{ AnimationState.Rest, Animator.StringToHash("IsRest") }
+		};
 
 		private void Awake()
 		{
 			_animator = GetComponent<Animator>();
+			_agent = GetComponent<NavMeshAgent>();
 		}
 
-		public void SetTrigger(string triggerName)
+		private void Update()
 		{
-			if (_animator != null)
-			{
-				_animator.SetTrigger(triggerName);
-			}
+			if (_currentState != AnimationState.Moving) return;
+			_animator.SetFloat(_speedRatio, _agent.velocity.magnitude);
 		}
 
-		public void PlayAnimation(string animationName)
+		public void SetAnimParameter(AnimationState newState)
 		{
-			if (_animator != null)
-			{
-				_animator.Play(animationName);
-			}
-		}
-
-		public void SetBool(string parameterName, bool value)
-		{
-			if (_animator != null)
-			{
-				_animator.SetBool(parameterName, value);
-			}
+			_animator.SetBool(_stateToHashMap[_currentState], false);
+			_currentState = newState;
+			_animator.SetBool(_stateToHashMap[newState], true);
 		}
 	}
 }

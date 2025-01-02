@@ -11,7 +11,7 @@ namespace Test.NPC
 		protected MovementControl MovementControl { get; private set; }
 
 		// 行動選択に関連する変数
-		protected ActionSelector ActionSelector { get; set; }
+		private protected ActionSelector ActionSelector;
 		private IUtilityAction _currentAction;
 
 		[SerializeField] private float _actionCooldown = 1.0f;
@@ -24,7 +24,7 @@ namespace Test.NPC
 			MovementControl = GetComponent<MovementControl>();
 		}
 
-		protected virtual void Update()
+		private void Update()
 		{
 			if (Time.time >= _nextEvaluationTime)
 			{

@@ -1,3 +1,4 @@
+using AnimationState = Test.NPC.AnimatorControl.AnimationState;
 using System.Collections.Generic;
 using Test.NPC.Dragon;
 using UnityEngine;
@@ -22,7 +23,7 @@ namespace Test.NPC
 
         // State
         private Transform _target;
-        private DebugDrawCd _debugDrawCd;
+        private readonly DebugDrawCd _debugDrawCd;
         private bool _isOnCooldown;
         private float _cooldownTimer;
         private readonly HashSet<Collider> _hitTargets = new HashSet<Collider>();
@@ -75,6 +76,7 @@ namespace Test.NPC
             if (!IsTargetInRange())
             {
                 _movementControl.MoveTo(_target.position);
+                _animatorControl.SetAnimParameter(AnimationState.Moving);
                 return;
             }
 
@@ -138,7 +140,7 @@ namespace Test.NPC
             _cooldownTimer = _attackDelay;
             _attackTimer = AttackDuration;
 
-            _animatorControl.SetTrigger("Attack");
+            _animatorControl.SetAnimParameter(AnimationState.Attack);
             _hitTargets.Clear();
         }
 

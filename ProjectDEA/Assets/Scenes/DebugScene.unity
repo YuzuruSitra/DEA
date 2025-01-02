@@ -159,7 +159,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 3
   m_Acceleration: 1.5
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -231,7 +231,6 @@ MonoBehaviour:
     _attackDelay: 3
     _attackDamage: 20
     _attackOffSet: {x: 0, y: 0, z: 0.5}
-  _target: {fileID: 1182622445}
 --- !u!54 &214867875
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -349,37 +348,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 214867875}
   m_SourcePrefab: {fileID: 100100000, guid: b9dda14126ae64f47aef39f3ea12b114, type: 3}
---- !u!1 &1182622444
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1182622445}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1182622445
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1182622444}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.38, y: 0.074382946, z: -0.035217185}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1573766196
 GameObject:
   m_ObjectHideFlags: 0
@@ -883,4 +851,3 @@ SceneRoots:
   - {fileID: 2746640158683972210}
   - {fileID: 8563928817152926739}
   - {fileID: 609080144}
-  - {fileID: 1182622445}

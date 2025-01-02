@@ -18,8 +18,6 @@ namespace Test.NPC.Dragon
 			public Vector3 _attackOffSet;
 		}
 		[SerializeField] private AttackParameters _attackParameters;
-
-		[SerializeField] private Transform _target;
 		
 		protected override void Start()
 		{
@@ -28,14 +26,9 @@ namespace Test.NPC.Dragon
 			ActionSelector = new ActionSelector(new List<IUtilityAction>
 			{
 				new AttackAction(transform, AnimatorControl, MovementControl, _attackParameters),
-				new RestAction(transform, AnimatorControl, MovementControl)
+				new RestAction(transform, AnimatorControl, MovementControl),
+				new RoamingAction(transform, AnimatorControl, MovementControl)
 			});
-		}
-
-		protected override void Update()
-		{
-			base.Update();
-			MovementControl.MoveTo(_target.position);
 		}
 	}
 }

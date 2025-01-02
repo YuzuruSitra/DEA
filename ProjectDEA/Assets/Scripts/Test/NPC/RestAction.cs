@@ -1,10 +1,12 @@
 using UnityEngine;
+using AnimationState = Test.NPC.AnimatorControl.AnimationState;
 
 namespace Test.NPC
 {
     public class RestAction : IUtilityAction
     {
         public UtilityActionType ActionType => UtilityActionType.Attack;
+        public AnimationState CurrentAnimState => AnimationState.Moving;
         private readonly AnimatorControl _animatorControl;
         private readonly MovementControl _movementControl;
         private readonly Vector3 _searchOffSet;

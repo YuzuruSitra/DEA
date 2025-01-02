@@ -11,10 +11,10 @@ namespace Test.NPC
     
     public enum UtilityActionType
     {
-        Idle,
         Roaming,
         Rest,
-        Attack
+        Attack,
+        Escape
     }
     
 }
