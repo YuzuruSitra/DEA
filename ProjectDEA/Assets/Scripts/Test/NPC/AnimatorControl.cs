@@ -34,7 +34,8 @@ namespace Test.NPC
 		private void Update()
 		{
 			if (_currentState != AnimationState.Moving) return;
-			_animator.SetFloat(_speedRatio, _agent.velocity.magnitude);
+			var speedRatio = _agent.velocity.magnitude / _agent.speed;
+			_animator.SetFloat(_speedRatio, speedRatio);
 		}
 
 		public void SetAnimParameter(AnimationState newState)
