@@ -32,6 +32,11 @@ namespace Test.NPC
         {
             return 0f;
         }
+        
+        public void EnterState()
+        {
+            
+        }
 
         public void Execute(GameObject agent)
         {

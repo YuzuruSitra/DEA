@@ -19,6 +19,16 @@ namespace Test.NPC.Dragon
 		}
 		[SerializeField] private AttackParameters _attackParameters;
 		
+		// Roaming logic
+		[Serializable]
+		public struct RoamingParameters
+		{
+			public float _intervalTimeMax;
+			public float _intervalTimeMin;
+			public float _roamingSearchRange;
+		}
+		[SerializeField] private RoamingParameters _roamingParameters;
+		
 		protected override void Start()
 		{
 			base.Start();
@@ -27,7 +37,7 @@ namespace Test.NPC.Dragon
 			{
 				new AttackAction(transform, AnimatorControl, MovementControl, _attackParameters),
 				new RestAction(transform, AnimatorControl, MovementControl),
-				new RoamingAction(transform, AnimatorControl, MovementControl)
+				new RoamingAction(transform, AnimatorControl, MovementControl, _roamingParameters)
 			});
 		}
 	}

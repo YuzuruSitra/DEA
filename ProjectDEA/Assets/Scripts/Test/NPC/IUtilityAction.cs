@@ -6,6 +6,7 @@ namespace Test.NPC
     {
         UtilityActionType ActionType { get; }
         float CalculateUtility();
+        void EnterState();
         void Execute(GameObject agent);
     }
     

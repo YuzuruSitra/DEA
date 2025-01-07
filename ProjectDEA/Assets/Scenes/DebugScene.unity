@@ -231,6 +231,10 @@ MonoBehaviour:
     _attackDelay: 3
     _attackDamage: 20
     _attackOffSet: {x: 0, y: 0, z: 0.5}
+  _roamingParameters:
+    _intervalTimeMax: 3
+    _intervalTimeMin: 5
+    _roamingSearchRange: 5
 --- !u!54 &214867875
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -258,6 +262,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 122
   m_CollisionDetection: 0
+--- !u!114 &214867876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 214867866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6d30b80758a846d7962d7ebd708fd9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxStamina: 100
+  _maxFullness: 100
 --- !u!1001 &609080144
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -331,13 +349,16 @@ PrefabInstance:
       addedObject: {fileID: 214867872}
     - targetCorrespondingSourceObject: {fileID: 100004, guid: b9dda14126ae64f47aef39f3ea12b114, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 214867871}
-    - targetCorrespondingSourceObject: {fileID: 100004, guid: b9dda14126ae64f47aef39f3ea12b114, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 214867870}
     - targetCorrespondingSourceObject: {fileID: 100004, guid: b9dda14126ae64f47aef39f3ea12b114, type: 3}
       insertIndex: -1
       addedObject: {fileID: 214867869}
+    - targetCorrespondingSourceObject: {fileID: 100004, guid: b9dda14126ae64f47aef39f3ea12b114, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 214867871}
+    - targetCorrespondingSourceObject: {fileID: 100004, guid: b9dda14126ae64f47aef39f3ea12b114, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 214867876}
     - targetCorrespondingSourceObject: {fileID: 100004, guid: b9dda14126ae64f47aef39f3ea12b114, type: 3}
       insertIndex: -1
       addedObject: {fileID: 214867868}

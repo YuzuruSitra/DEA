@@ -26,7 +26,7 @@ namespace Test.NPC
         private readonly DebugDrawCd _debugDrawCd;
         private bool _isOnCooldown;
         private float _cooldownTimer;
-        private readonly HashSet<Collider> _hitTargets = new HashSet<Collider>();
+        private readonly HashSet<Collider> _hitTargets = new();
         private float _attackTimer;
 
         // Constants
@@ -57,6 +57,11 @@ namespace Test.NPC
             Debug.Log(results[0].gameObject.name);
             _target = results[0].transform;
             return 1f;
+        }
+
+        public void EnterState()
+        {
+            
         }
 
         public void Execute(GameObject agent)

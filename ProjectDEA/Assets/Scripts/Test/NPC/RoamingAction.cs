@@ -1,3 +1,4 @@
+using Test.NPC.Dragon;
 using UnityEngine;
 using AnimationState = Test.NPC.AnimatorControl.AnimationState;
 
@@ -13,23 +14,30 @@ namespace Test.NPC
         private readonly Transform _agent;
 
         // Roaming logic
-        private Vector3 _currentDestination;
         private float _roamingTimer;
-        private const float RoamingInterval = 5f; // Time to wait before picking a new destination
-        private const float RoamingRange = 5f; // Maximum roaming range
+        private readonly float _intervalTimeMax;
+        private readonly float _intervalTimeMin;
+        private readonly float _roamingSearchRange;
 
-        public RoamingAction(Transform agent, AnimatorControl animatorControl, MovementControl movementControl)
+        public RoamingAction(Transform agent, AnimatorControl animatorControl, MovementControl movementControl, DragonController.RoamingParameters roamingParameters)
         {
             _agent = agent;
             _animatorControl = animatorControl;
             _movementControl = movementControl;
-            _roamingTimer = RoamingInterval;
-            _currentDestination = _agent.position;
+            _intervalTimeMax = roamingParameters._intervalTimeMax;
+            _intervalTimeMin = roamingParameters._intervalTimeMin;
+            _roamingSearchRange = roamingParameters._roamingSearchRange;
         }
 
         public float CalculateUtility()
         {
             return 1f;
+        }
+        
+        public void EnterState()
+        {
+            SetNewRoamingDestination();
+            SetRoamingTimer();
         }
 
         public void Execute(GameObject agent)
@@ -38,26 +46,31 @@ namespace Test.NPC
             _roamingTimer -= Time.deltaTime;
             if (_roamingTimer > 0) return;
             SetNewRoamingDestination();
-            _movementControl.MoveTo(_currentDestination);
-            _roamingTimer = RoamingInterval;
+            SetRoamingTimer();
             _animatorControl.SetAnimParameter(AnimationState.Moving);
         }
 
         private void SetNewRoamingDestination()
         {
-            // Generate a random destination within the roaming range
             var randomOffset = new Vector3(
-                Random.Range(-RoamingRange, RoamingRange),
+                Random.Range(-_roamingSearchRange, _roamingSearchRange),
                 0f,
-                Random.Range(-RoamingRange, RoamingRange)
+                Random.Range(-_roamingSearchRange, _roamingSearchRange)
             );
-            _currentDestination = _agent.position + randomOffset;
-
-            // Ensure the destination is on the NavMesh
-            if (UnityEngine.AI.NavMesh.SamplePosition(_currentDestination, out UnityEngine.AI.NavMeshHit hit, RoamingRange, UnityEngine.AI.NavMesh.AllAreas))
+            var targetPos = _agent.position + randomOffset;
+            
+            if (UnityEngine.AI.NavMesh.SamplePosition(targetPos, out var hit, _roamingSearchRange, UnityEngine.AI.NavMesh.AllAreas))
             {
-                _currentDestination = hit.position;
+                targetPos = hit.position;
             }
+            
+            _movementControl.MoveTo(targetPos);
         }
+
+        private void SetRoamingTimer()
+        {
+            _roamingTimer = Random.Range(_intervalTimeMin, _intervalTimeMax);
+        }
+        
     }
 }
