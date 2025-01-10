@@ -37,7 +37,7 @@ namespace Test.NPC.Dragon
 			{
 				new AttackAction(transform, AnimatorControl, MovementControl, _attackParameters),
 				new RestAction(transform, AnimatorControl, MovementControl),
-				new RoamingAction(transform, AnimatorControl, MovementControl, _roamingParameters)
+				new RoamingAction(transform, AnimatorControl, MovementControl, NpcStatusComponent, _roamingParameters)
 			});
 		}
 	}

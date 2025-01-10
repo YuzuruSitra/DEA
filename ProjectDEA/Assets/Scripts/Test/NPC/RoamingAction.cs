@@ -11,6 +11,7 @@ namespace Test.NPC
         // Configuration
         private readonly AnimatorControl _animatorControl;
         private readonly MovementControl _movementControl;
+        private readonly NpcStatusComponent _npcStatusComponent;
         private readonly Transform _agent;
 
         // Roaming logic
@@ -18,12 +19,17 @@ namespace Test.NPC
         private readonly float _intervalTimeMax;
         private readonly float _intervalTimeMin;
         private readonly float _roamingSearchRange;
+        private readonly float _fullnessW;
+        private readonly float _staminaW;
+        private readonly float _bias;
 
-        public RoamingAction(Transform agent, AnimatorControl animatorControl, MovementControl movementControl, DragonController.RoamingParameters roamingParameters)
+
+        public RoamingAction(Transform agent, AnimatorControl animatorControl, MovementControl movementControl, NpcStatusComponent npcStatusComponent, DragonController.RoamingParameters roamingParameters)
         {
             _agent = agent;
             _animatorControl = animatorControl;
             _movementControl = movementControl;
+            _npcStatusComponent = npcStatusComponent;
             _intervalTimeMax = roamingParameters._intervalTimeMax;
             _intervalTimeMin = roamingParameters._intervalTimeMin;
             _roamingSearchRange = roamingParameters._roamingSearchRange;
@@ -31,9 +37,9 @@ namespace Test.NPC
 
         public float CalculateUtility()
         {
-            return 1f;
+            return _fullnessW * _npcStatusComponent.CurrentFullness + _staminaW * _npcStatusComponent.CurrentStamina - _bias;
         }
-        
+
         public void EnterState()
         {
             SetNewRoamingDestination();

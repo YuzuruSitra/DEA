@@ -15,8 +15,19 @@ namespace Test.NPC
             CurrentStamina = _maxStamina;
             CurrentFullness = _maxFullness;
         }
+
+        private void ConsumeStamina(float amount)
+        {
+
+        }
+
+        private void RecoverStamina(float amount)
+        {
+
+        }
+
 	
-        public void ChangeStamina(float amount)
+        public void GainStamina(float amount)
         {
             CurrentStamina += amount;
             CurrentStamina = Mathf.Clamp(CurrentStamina, 0, _maxStamina);
