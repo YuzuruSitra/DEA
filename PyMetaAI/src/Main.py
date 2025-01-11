@@ -91,7 +91,8 @@ class PlayerClassifier:
         updated_scores = {}
         for key in scores:
             updated_scores[key] = scores[key] * new_weight + self.currentScores[key] * current_weight
-
+        print("History score:", {key: round(float(value), 1) for key, value in self.currentScores.items()})
+        
         self.currentScores = updated_scores
         return updated_scores
 
@@ -126,12 +127,20 @@ def integrate_predictions(base_type_result, som_result, classifier, base_weight=
     base_type, base_scores = base_type_result
     som_type, som_scores = som_result
 
+    print("RuleBase scores:", {key: round(float(value), 1) for key, value in base_scores.items()})
+    print("SOM scores:", {key: round(float(value), 1) for key, value in som_scores.items()})
+
     combined_scores = {}
     for key in base_scores:
         combined_scores[key] = base_scores[key] * base_weight + som_scores[key] * som_weight
 
     combined_scores = classifier.update_score_with_history(combined_scores)
+    print("Combined scores (RuleBase,History,SOM):", {key: round(float(value), 1) for key, value in combined_scores.items()})
+
     final_type = max(combined_scores, key=combined_scores.get)
+    print("Final Predictive type:", final_type)
+    print("\n")
+
     return final_type, combined_scores
 
 
@@ -198,14 +207,7 @@ def handle_client(conn, addr, classifier):
             som_scores = {label_mapping[idx]: 1.0 if idx == winner[1] else 0.0 for idx in range(3)}
 
             final_prediction, confidence_scores = integrate_predictions(base_type_result, (som_type, som_scores), classifier)
-            confidence_scores = {key: round(value, 2) for key, value in confidence_scores.items()}
-
             conn.sendall(str(final_prediction).encode('utf-8'))
-            confirmation_log = {
-                "type": final_prediction,
-                "confidence_scores": confidence_scores
-            }
-            print(f"Prediction sent: {confirmation_log}")
 
 
 classifier = PlayerClassifier(smoothing_factor=0.3, log_window=10)
