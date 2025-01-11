@@ -29,10 +29,17 @@ namespace Test.NPC.Dragon
 			public float _fullnessW;
 			public float _staminaW;
 			public float _bias;
-			
 		}
 		[SerializeField] private RoamingParameters _roamingParameters;
 		
+		[Serializable]
+		public struct RestParameters
+		{
+			public float _restSearchRange;
+			public float _bias;
+		}
+		[SerializeField] private RestParameters _restParameters;
+
 		protected override void Start()
 		{
 			base.Start();
@@ -40,7 +47,7 @@ namespace Test.NPC.Dragon
 			ActionSelector = new ActionSelector(new List<IUtilityAction>
 			{
 				new AttackAction(transform, AnimatorControl, MovementControl, _attackParameters),
-				new RestAction(transform, AnimatorControl, MovementControl),
+				new RestAction(transform, AnimatorControl, MovementControl, NpcStatusComponent, _restParameters),
 				new RoamingAction(transform, AnimatorControl, MovementControl, NpcStatusComponent, _roamingParameters)
 			});
 		}

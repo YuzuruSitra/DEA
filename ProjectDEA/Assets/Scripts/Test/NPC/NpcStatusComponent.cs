@@ -7,20 +7,20 @@ namespace Test.NPC
         private const int CalcTiming = 1;
         
         [SerializeField] private float _staminaChangeSecond;
-        [SerializeField] private float _maxStamina;
+        public const float MaxStamina = 100f;
         public float CurrentStamina { get; private set; }
         private float _staminaConsumeTimer;
         private float _staminaRecoverTimer;
         
         [SerializeField] private float _fullnessChangeSecond;
-        [SerializeField] private float _maxFullness;
+        public const float MaxFullness = 100f;
         public float CurrentFullness { get; private set; }
         private float _fullnessConsumeTimer;
         
         private void Start()
         {
-            CurrentStamina = _maxStamina;
-            CurrentFullness = _maxFullness;
+            CurrentStamina = MaxStamina;
+            CurrentFullness = MaxFullness;
         }
 
         public void ConsumeStamina()
@@ -28,7 +28,7 @@ namespace Test.NPC
             _staminaConsumeTimer += Time.deltaTime;
             if (!(_staminaConsumeTimer >= CalcTiming)) return;
             CurrentStamina -= _staminaChangeSecond;
-            CurrentStamina = Mathf.Clamp(CurrentStamina, 0, _maxStamina);
+            CurrentStamina = Mathf.Clamp(CurrentStamina, 0, MaxStamina);
             _staminaConsumeTimer = 0f;
         }
 
@@ -37,7 +37,7 @@ namespace Test.NPC
             _staminaRecoverTimer += Time.deltaTime;
             if (!(_staminaRecoverTimer >= CalcTiming)) return;
             CurrentStamina += _staminaChangeSecond;
-            CurrentStamina = Mathf.Clamp(CurrentStamina, 0, _maxStamina);
+            CurrentStamina = Mathf.Clamp(CurrentStamina, 0, MaxStamina);
             _staminaRecoverTimer = 0f;
         }
         
@@ -46,14 +46,14 @@ namespace Test.NPC
             _fullnessConsumeTimer += Time.deltaTime;
             if (!(_fullnessConsumeTimer >= CalcTiming)) return;
             CurrentFullness -= _fullnessChangeSecond;
-            CurrentFullness = Mathf.Clamp(CurrentFullness, 0, _maxFullness);
+            CurrentFullness = Mathf.Clamp(CurrentFullness, 0, MaxFullness);
             _fullnessConsumeTimer = 0f;
         }
         
         public void AddFullness(float amount)
         {
             CurrentFullness += amount;
-            CurrentFullness = Mathf.Clamp(CurrentFullness, 0, _maxFullness);
+            CurrentFullness = Mathf.Clamp(CurrentFullness, 0, MaxFullness);
         }
     }
 }
