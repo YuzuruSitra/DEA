@@ -17,6 +17,10 @@ namespace Test.NPC
         // Rest logic
         private readonly float _restSearchRange;
         private readonly float _bias;
+        private readonly float _targetAddStamina;
+        // in state logic
+        private int _targetStamina;
+        private const int ResetTargetStamina = -1;
         
         public RestAction(Transform agent, AnimatorControl animatorControl, MovementControl movementControl, NpcStatusComponent npcStatusComponent, DragonController.RestParameters restParameters)
         {
@@ -26,15 +30,21 @@ namespace Test.NPC
             _npcStatusComponent = npcStatusComponent;
             _restSearchRange = restParameters._restSearchRange;
             _bias = restParameters._bias;
+            _targetAddStamina = restParameters._targetAddStamina;
         }
 
         public float CalculateUtility()
         {
+            if (_npcStatusComponent.CurrentStamina < _targetStamina)
+            {
+                return 1 - _bias;
+            }
             return Mathf.Max(0, 1 - _npcStatusComponent.CurrentStamina / NpcStatusComponent.MaxStamina - _bias);
         }
 
         public void EnterState()
         {
+            _targetStamina = (int)Mathf.Min(_npcStatusComponent.CurrentStamina + _targetAddStamina, NpcStatusComponent.MaxStamina);
             SetNewRoamingDestination();
             _animatorControl.SetAnimParameter(AnimationState.Moving);
         }
@@ -44,6 +54,11 @@ namespace Test.NPC
             if (!_movementControl.HasReachedDestination()) return;
             _npcStatusComponent.RecoverStamina();
             _animatorControl.SetAnimParameter(AnimationState.Rest);
+        }
+        
+        public void ExitState()
+        {
+            _targetStamina = ResetTargetStamina;
         }
 
         private void SetNewRoamingDestination()

@@ -100,6 +100,11 @@ namespace Test.NPC
             // (追加の逃避ロジックが必要であればここに記述します)
         }
 
+        public void ExitState()
+        {
+            
+        }
+
         private void DrawDebugSpheres(GameObject agent)
         {
             _debugDrawCd.DebugDrawSphere(_agent.position + _searchOffSet, _searchRadius, Color.blue);

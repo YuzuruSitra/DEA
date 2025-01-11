@@ -39,11 +39,14 @@ namespace Test.NPC
 
         public float CalculateUtility()
         {
-            return  _fullnessW * _npcStatusComponent.CurrentFullness + _staminaW * _npcStatusComponent.CurrentStamina - _bias;
+            var utility = _fullnessW * _npcStatusComponent.CurrentFullness / NpcStatusComponent.MaxFullness + _staminaW * _npcStatusComponent.CurrentStamina / NpcStatusComponent.MaxStamina - _bias;
+            utility = Mathf.Max(0, utility);
+            return utility;
         }
 
         public void EnterState()
         {
+            _animatorControl.SetAnimParameter(AnimationState.Moving);
             SetNewRoamingDestination();
             SetRoamingTimer();
         }
@@ -60,7 +63,11 @@ namespace Test.NPC
             if (_roamingTimer > 0) return;
             SetNewRoamingDestination();
             SetRoamingTimer();
-            _animatorControl.SetAnimParameter(AnimationState.Moving);
+        }
+        
+        public void ExitState()
+        {
+            
         }
 
         private void SetNewRoamingDestination()

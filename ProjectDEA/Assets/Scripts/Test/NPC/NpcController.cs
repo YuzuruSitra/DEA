@@ -31,7 +31,13 @@ namespace Test.NPC
 		{
 			if (Time.time >= _nextEvaluationTime)
 			{
-				_currentAction = ActionSelector.SelectBestAction();
+				var newState = ActionSelector.SelectBestAction();
+				if (_currentAction != newState)
+				{
+					_currentAction?.ExitState();
+					_currentAction = newState;
+					_currentAction.EnterState();
+				}
 				_nextEvaluationTime = Time.time + _actionCooldown;
 			}
 			_currentAction?.Execute(gameObject);

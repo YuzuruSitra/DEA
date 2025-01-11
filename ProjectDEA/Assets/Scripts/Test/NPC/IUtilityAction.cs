@@ -8,6 +8,7 @@ namespace Test.NPC
         float CalculateUtility();
         void EnterState();
         void Execute(GameObject agent);
+        void ExitState();
     }
     
     public enum UtilityActionType

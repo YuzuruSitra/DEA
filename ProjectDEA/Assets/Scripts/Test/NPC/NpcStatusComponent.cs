@@ -19,8 +19,8 @@ namespace Test.NPC
         
         private void Start()
         {
-            CurrentStamina = MaxStamina;
-            CurrentFullness = MaxFullness;
+            CurrentStamina = Random.Range(0, MaxStamina);
+            CurrentFullness = Random.Range(0, MaxFullness);
         }
 
         public void ConsumeStamina()

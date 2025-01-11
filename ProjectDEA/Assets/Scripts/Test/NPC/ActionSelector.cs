@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Test.NPC
 {
@@ -20,7 +19,6 @@ namespace Test.NPC
 			foreach (var action in _actions)
 			{
 				var utility = action.CalculateUtility();
-				Debug.Log("State  " + action.ActionType + " utility " + utility);
 				if (!(utility > highestUtility)) continue;
 				highestUtility = utility;
 				bestAction = action;
