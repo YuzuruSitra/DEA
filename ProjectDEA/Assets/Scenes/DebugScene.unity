@@ -235,6 +235,9 @@ MonoBehaviour:
     _intervalTimeMax: 3
     _intervalTimeMin: 5
     _roamingSearchRange: 5
+    _fullnessW: 0.3
+    _staminaW: 0.7
+    _bias: 0.1
 --- !u!54 &214867875
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -274,7 +277,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6d30b80758a846d7962d7ebd708fd9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _staminaChangeSecond: 1
   _maxStamina: 100
+  _fullnessChangeSecond: 1
   _maxFullness: 100
 --- !u!1001 &609080144
 PrefabInstance:

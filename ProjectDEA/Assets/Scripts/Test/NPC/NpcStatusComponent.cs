@@ -23,7 +23,7 @@ namespace Test.NPC
             CurrentFullness = _maxFullness;
         }
 
-        private void ConsumeStamina()
+        public void ConsumeStamina()
         {
             _staminaConsumeTimer += Time.deltaTime;
             if (!(_staminaConsumeTimer >= CalcTiming)) return;
@@ -32,7 +32,7 @@ namespace Test.NPC
             _staminaConsumeTimer = 0f;
         }
 
-        private void RecoverStamina()
+        public void RecoverStamina()
         {
             _staminaRecoverTimer += Time.deltaTime;
             if (!(_staminaRecoverTimer >= CalcTiming)) return;
@@ -41,7 +41,7 @@ namespace Test.NPC
             _staminaRecoverTimer = 0f;
         }
         
-        private void ConsumeFullness()
+        public void ConsumeFullness()
         {
             _fullnessConsumeTimer += Time.deltaTime;
             if (!(_fullnessConsumeTimer >= CalcTiming)) return;

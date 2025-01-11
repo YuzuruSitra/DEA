@@ -22,8 +22,7 @@ namespace Test.NPC
         private readonly float _fullnessW;
         private readonly float _staminaW;
         private readonly float _bias;
-
-
+        
         public RoamingAction(Transform agent, AnimatorControl animatorControl, MovementControl movementControl, NpcStatusComponent npcStatusComponent, DragonController.RoamingParameters roamingParameters)
         {
             _agent = agent;
@@ -33,11 +32,14 @@ namespace Test.NPC
             _intervalTimeMax = roamingParameters._intervalTimeMax;
             _intervalTimeMin = roamingParameters._intervalTimeMin;
             _roamingSearchRange = roamingParameters._roamingSearchRange;
+            _fullnessW = roamingParameters._fullnessW;
+            _staminaW = roamingParameters._staminaW;
+            _bias = roamingParameters._bias;
         }
 
         public float CalculateUtility()
         {
-            return _fullnessW * _npcStatusComponent.CurrentFullness + _staminaW * _npcStatusComponent.CurrentStamina - _bias;
+            return  _fullnessW * _npcStatusComponent.CurrentFullness + _staminaW * _npcStatusComponent.CurrentStamina - _bias;
         }
 
         public void EnterState()
@@ -48,7 +50,12 @@ namespace Test.NPC
 
         public void Execute(GameObject agent)
         {
-            if (!_movementControl.HasReachedDestination()) return;
+            if (!_movementControl.HasReachedDestination())
+            {
+                _npcStatusComponent.ConsumeStamina();
+                _npcStatusComponent.ConsumeFullness();
+                return;
+            }
             _roamingTimer -= Time.deltaTime;
             if (_roamingTimer > 0) return;
             SetNewRoamingDestination();

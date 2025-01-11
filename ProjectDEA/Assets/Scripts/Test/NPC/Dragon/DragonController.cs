@@ -26,6 +26,10 @@ namespace Test.NPC.Dragon
 			public float _intervalTimeMax;
 			public float _intervalTimeMin;
 			public float _roamingSearchRange;
+			public float _fullnessW;
+			public float _staminaW;
+			public float _bias;
+			
 		}
 		[SerializeField] private RoamingParameters _roamingParameters;
 		
