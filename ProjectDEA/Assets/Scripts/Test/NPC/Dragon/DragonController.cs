@@ -9,13 +9,13 @@ namespace Test.NPC.Dragon
 		[Serializable]
 		public struct AttackParameters
 		{
-			public Vector3 _searchOffSet;
+			public float _searchOffSetFactor;
 			public float _searchRadius;
 			public LayerMask _targetLayer;
+			public float _attackOffSetFactor;
 			public float _attackRadius;
 			public float _attackDelay;
 			public float _attackDamage;
-			public Vector3 _attackOffSet;
 		}
 		[SerializeField] private AttackParameters _attackParameters;
 		

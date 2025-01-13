@@ -20,12 +20,13 @@ namespace Test.NPC
 			}
 		}
 
-		public void Stop()
+		public void ChangeMove(bool isMove)
 		{
-			if (_agent != null)
+			if (!isMove)
 			{
-				_agent.isStopped = true;
+				_agent.velocity = Vector3.zero;
 			}
+			_agent.isStopped = !isMove;
 		}
 
 		public bool HasReachedDestination()

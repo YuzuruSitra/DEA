@@ -13,13 +13,13 @@ namespace Test.NPC
         private readonly AnimatorControl _animatorControl;
         private readonly MovementControl _movementControl;
         private readonly Transform _agent;
-        private readonly Vector3 _searchOffSet;
+        private readonly float _searchOffSetFactor;
         private readonly float _searchRadius;
         private readonly LayerMask _searchLayer;
+        private readonly float _attackOffSetFactor;
         private readonly float _attackRadius;
         private readonly float _attackDelay;
         private readonly float _damage;
-        private readonly Vector3 _attackOrigin;
 
         // State
         private Transform _target;
@@ -31,37 +31,39 @@ namespace Test.NPC
 
         // Constants
         private const float AttackDuration = 2f;
+        private const float StopFactor = 0.4f;
 
         public AttackAction(Transform agent, AnimatorControl animatorControl, MovementControl movementControl, DragonController.AttackParameters attackParameters)
         {
             _agent = agent;
             _animatorControl = animatorControl;
             _movementControl = movementControl;
-            _searchOffSet = attackParameters._searchOffSet;
+            _searchOffSetFactor = attackParameters._searchOffSetFactor;
             _searchRadius = attackParameters._searchRadius;
             _searchLayer = attackParameters._targetLayer;
+            _attackOffSetFactor = attackParameters._attackOffSetFactor;
             _attackRadius = attackParameters._attackRadius;
             _attackDelay = attackParameters._attackDelay;
             _damage = attackParameters._attackDamage;
-            _attackOrigin = attackParameters._attackOffSet;
             _debugDrawCd = new DebugDrawCd();
         }
 
         public float CalculateUtility()
         {
-            var center = _agent.position + _searchOffSet;
+            var origin = _agent.position + _agent.forward * _searchOffSetFactor;
             var results = new Collider[1];
-            var count = Physics.OverlapSphereNonAlloc(center, _searchRadius, results, _searchLayer, QueryTriggerInteraction.Ignore);
+            var count = Physics.OverlapSphereNonAlloc(origin, _searchRadius, results, _searchLayer, QueryTriggerInteraction.Ignore);
             if (count <= 0) return 0f;
-
-            Debug.Log(results[0].gameObject.name);
+            
             _target = results[0].transform;
             return 1f;
         }
 
         public void EnterState()
         {
-            
+            _isOnCooldown = false;
+            _cooldownTimer = 0;
+            _attackTimer = 0;
         }
 
         public void Execute(GameObject agent)
@@ -80,12 +82,13 @@ namespace Test.NPC
 
             if (!IsTargetInRange())
             {
+                _movementControl.ChangeMove(true);
                 _movementControl.MoveTo(_target.position);
                 _animatorControl.SetAnimParameter(AnimationState.Moving);
                 return;
             }
 
-            _movementControl.Stop();
+            _movementControl.ChangeMove(false);
 
             // 対象を攻撃
             if (_attackTimer > 0)
@@ -102,13 +105,13 @@ namespace Test.NPC
 
         public void ExitState()
         {
-            
+            _movementControl.ChangeMove(true);
         }
 
         private void DrawDebugSpheres(GameObject agent)
         {
-            _debugDrawCd.DebugDrawSphere(_agent.position + _searchOffSet, _searchRadius, Color.blue);
-            _debugDrawCd.DebugDrawSphere(agent.transform.position + _attackOrigin, _attackRadius, Color.red);
+            _debugDrawCd.DebugDrawSphere(_agent.position + _agent.forward * _searchOffSetFactor, _searchRadius, Color.blue);
+            _debugDrawCd.DebugDrawSphere(_agent.position + _agent.forward * _attackOffSetFactor, _attackRadius, Color.red);
         }
 
         private bool HandleCooldown()
@@ -126,22 +129,27 @@ namespace Test.NPC
 
         private bool IsTargetValid()
         {
-            return _target != null && Vector3.Distance(_agent.position, _target.position) <= _searchRadius;
+            var origin = _agent.position + _agent.forward * _searchOffSetFactor;
+            var results = new Collider[1];
+            var count = Physics.OverlapSphereNonAlloc(origin, _searchRadius, results, _searchLayer, QueryTriggerInteraction.Ignore);
+            return 0 < count;
         }
 
         private bool IsTargetInRange()
         {
-            return Vector3.Distance(_agent.position, _target.position) <= _attackRadius;
+            var origin = _agent.position + _agent.forward * (_attackOffSetFactor * StopFactor);
+            var results = new Collider[1];
+            var count = Physics.OverlapSphereNonAlloc(origin, _attackRadius, results, _searchLayer, QueryTriggerInteraction.Ignore);
+            return 0 < count;
         }
 
         private void SearchForTarget()
         {
-            var center = _agent.position + _searchOffSet;
+            var origin = _agent.position + _agent.forward * _searchOffSetFactor;
             var results = new Collider[1];
-            var count = Physics.OverlapSphereNonAlloc(center, _searchRadius, results, _searchLayer, QueryTriggerInteraction.Ignore);
+            var count = Physics.OverlapSphereNonAlloc(origin, _searchRadius, results, _searchLayer, QueryTriggerInteraction.Ignore);
             if (count <= 0) return;
             _target = results[0].transform;
-            Debug.Log($"Target acquired: {_target.name}");
         }
 
         private void StartAttack(GameObject agent)
@@ -164,8 +172,9 @@ namespace Test.NPC
 
         private void ApplyDamageToTargets(GameObject agent)
         {
+            var origin = agent.transform.position + agent.transform.forward * _attackOffSetFactor;
             var results = new Collider[5];
-            var size = Physics.OverlapSphereNonAlloc(agent.transform.position + _attackOrigin, _attackRadius, results, _searchLayer, QueryTriggerInteraction.Ignore);
+            var size = Physics.OverlapSphereNonAlloc(origin, _attackRadius, results, _searchLayer, QueryTriggerInteraction.Ignore);
 
             for (var i = 0; i < size; i++)
             {
