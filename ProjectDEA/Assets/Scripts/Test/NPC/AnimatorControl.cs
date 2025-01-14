@@ -40,6 +40,13 @@ namespace Test.NPC
 
 		public void SetAnimParameter(AnimationState newState)
 		{
+			if (newState == _currentState)
+			{
+				if (newState != AnimationState.Attack) return;
+				var clipInfo = _animator.GetCurrentAnimatorClipInfo(0)[0];
+				_animator.Play(clipInfo.clip.name, 0, 0f);
+				return;
+			}
 			_animator.SetBool(_stateToHashMap[_currentState], false);
 			_currentState = newState;
 			_animator.SetBool(_stateToHashMap[newState], true);

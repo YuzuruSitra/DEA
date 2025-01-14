@@ -9,10 +9,10 @@ namespace Test.NPC
     {
         public UtilityActionType ActionType => UtilityActionType.Attack;
 
-        // Configuration
         private readonly AnimatorControl _animatorControl;
         private readonly MovementControl _movementControl;
         private readonly Transform _agent;
+
         private readonly float _searchOffSetFactor;
         private readonly float _searchRadius;
         private readonly LayerMask _searchLayer;
@@ -21,17 +21,17 @@ namespace Test.NPC
         private readonly float _attackDelay;
         private readonly float _damage;
 
-        // State
         private Transform _target;
         private readonly DebugDrawCd _debugDrawCd;
+        private readonly HashSet<Collider> _hitTargets = new();
         private bool _isOnCooldown;
         private float _cooldownTimer;
-        private readonly HashSet<Collider> _hitTargets = new();
         private float _attackTimer;
 
-        // Constants
         private const float AttackDuration = 2f;
         private const float StopFactor = 0.4f;
+        private readonly Collider[] _searchResults = new Collider[1];
+        private readonly Collider[] _attackResults = new Collider[1];
 
         public AttackAction(Transform agent, AnimatorControl animatorControl, MovementControl movementControl, DragonController.AttackParameters attackParameters)
         {
@@ -50,13 +50,8 @@ namespace Test.NPC
 
         public float CalculateUtility()
         {
-            var origin = _agent.position + _agent.forward * _searchOffSetFactor;
-            var results = new Collider[1];
-            var count = Physics.OverlapSphereNonAlloc(origin, _searchRadius, results, _searchLayer, QueryTriggerInteraction.Ignore);
-            if (count <= 0) return 0f;
-            
-            _target = results[0].transform;
-            return 1f;
+            _target = FindTarget(_agent.position + _agent.forward * _searchOffSetFactor, _searchRadius);
+            return _target != null ? 1f : 0f;
         }
 
         public void EnterState()
@@ -68,15 +63,17 @@ namespace Test.NPC
 
         public void Execute(GameObject agent)
         {
-            DrawDebugSpheres(agent);
+            DrawDebugSpheres();
 
-            // 攻撃のCT待機
-            if (HandleCooldown()) return;
-
-            // 対象の元へ移動
-            if (!IsTargetValid())
+            if (HandleCooldown())
             {
-                SearchForTarget();
+                _animatorControl.SetAnimParameter(AnimationState.Moving);
+                return;
+            }
+
+            if (_target == null || !IsTargetValid())
+            {
+                _target = FindTarget(_agent.position + _agent.forward * _searchOffSetFactor, _searchRadius);
                 return;
             }
 
@@ -87,20 +84,9 @@ namespace Test.NPC
                 _animatorControl.SetAnimParameter(AnimationState.Moving);
                 return;
             }
-
             _movementControl.ChangeMove(false);
 
-            // 対象を攻撃
-            if (_attackTimer > 0)
-            {
-                UpdateAttack(agent);
-                return;
-            }
-
-            StartAttack(agent);
-
-            // 逃避
-            // (追加の逃避ロジックが必要であればここに記述します)
+            PerformAttack();
         }
 
         public void ExitState()
@@ -108,7 +94,7 @@ namespace Test.NPC
             _movementControl.ChangeMove(true);
         }
 
-        private void DrawDebugSpheres(GameObject agent)
+        private void DrawDebugSpheres()
         {
             _debugDrawCd.DebugDrawSphere(_agent.position + _agent.forward * _searchOffSetFactor, _searchRadius, Color.blue);
             _debugDrawCd.DebugDrawSphere(_agent.position + _agent.forward * _attackOffSetFactor, _attackRadius, Color.red);
@@ -123,36 +109,36 @@ namespace Test.NPC
             {
                 _isOnCooldown = false;
             }
-
             return true;
+        }
+
+        private Transform FindTarget(Vector3 origin, float radius)
+        {
+            var count = Physics.OverlapSphereNonAlloc(origin, radius, _searchResults, _searchLayer, QueryTriggerInteraction.Ignore);
+            return (count > 0 && _searchResults[0] != null) ? _searchResults[0].transform : null;
         }
 
         private bool IsTargetValid()
         {
-            var origin = _agent.position + _agent.forward * _searchOffSetFactor;
-            var results = new Collider[1];
-            var count = Physics.OverlapSphereNonAlloc(origin, _searchRadius, results, _searchLayer, QueryTriggerInteraction.Ignore);
-            return 0 < count;
+            return FindTarget(_agent.position + _agent.forward * _searchOffSetFactor, _searchRadius) != null;
         }
 
         private bool IsTargetInRange()
         {
-            var origin = _agent.position + _agent.forward * (_attackOffSetFactor * StopFactor);
-            var results = new Collider[1];
-            var count = Physics.OverlapSphereNonAlloc(origin, _attackRadius, results, _searchLayer, QueryTriggerInteraction.Ignore);
-            return 0 < count;
+            return FindTarget(_agent.position + _agent.forward * (_attackOffSetFactor * StopFactor), _attackRadius) != null;
         }
 
-        private void SearchForTarget()
+        private void PerformAttack()
         {
-            var origin = _agent.position + _agent.forward * _searchOffSetFactor;
-            var results = new Collider[1];
-            var count = Physics.OverlapSphereNonAlloc(origin, _searchRadius, results, _searchLayer, QueryTriggerInteraction.Ignore);
-            if (count <= 0) return;
-            _target = results[0].transform;
+            if (_attackTimer > 0)
+            {
+                UpdateAttack();
+                return;
+            }
+            StartAttack();
         }
 
-        private void StartAttack(GameObject agent)
+        private void StartAttack()
         {
             _isOnCooldown = true;
             _cooldownTimer = _attackDelay;
@@ -162,32 +148,24 @@ namespace Test.NPC
             _hitTargets.Clear();
         }
 
-        private void UpdateAttack(GameObject agent)
+        private void UpdateAttack()
         {
             _attackTimer -= Time.deltaTime;
-            if (_attackTimer <= 0) return;
-
-            ApplyDamageToTargets(agent);
+            if (_attackTimer > 0)
+            {
+                ApplyDamageToTargets();
+            }
         }
 
-        private void ApplyDamageToTargets(GameObject agent)
+        private void ApplyDamageToTargets()
         {
-            var origin = agent.transform.position + agent.transform.forward * _attackOffSetFactor;
-            var results = new Collider[5];
-            var size = Physics.OverlapSphereNonAlloc(origin, _attackRadius, results, _searchLayer, QueryTriggerInteraction.Ignore);
-
-            for (var i = 0; i < size; i++)
-            {
-                var collider = results[i];
-                if (_hitTargets.Contains(collider)) continue;
-
-                var targetHealth = collider.GetComponent<HealthComponent>();
-                if (targetHealth == null) continue;
-
-                targetHealth.TakeDamage(_damage);
-                Debug.Log($"Hit {collider.name} for {_damage} damage.");
-                _hitTargets.Add(collider);
-            }
+            var size = Physics.OverlapSphereNonAlloc(_agent.position + _agent.forward * _attackOffSetFactor, _attackRadius, _attackResults, _searchLayer, QueryTriggerInteraction.Ignore);
+            if (size == 0) return;
+            var collider = _attackResults[0];
+            if (_hitTargets.Contains(collider)) return;
+            if (!collider.TryGetComponent(out HealthComponent targetHealth)) return;
+            targetHealth.TakeDamage(_damage);
+            _hitTargets.Add(collider);
         }
     }
 }
