@@ -18,9 +18,11 @@ namespace Test.NPC
         private readonly float _restSearchRange;
         private readonly float _bias;
         private readonly float _targetAddStamina;
+        private readonly float _waitSleepTime;
         // in state logic
         private int _targetStamina;
         private const int ResetTargetStamina = -1;
+        private float _currentWaitTime;
         
         public RestAction(Transform agent, AnimatorControl animatorControl, MovementControl movementControl, NpcStatusComponent npcStatusComponent, DragonController.RestParameters restParameters)
         {
@@ -31,6 +33,7 @@ namespace Test.NPC
             _restSearchRange = restParameters._restSearchRange;
             _bias = restParameters._bias;
             _targetAddStamina = restParameters._targetAddStamina;
+            _waitSleepTime = restParameters._waitSleepTime;
         }
 
         public float CalculateUtility()
@@ -47,11 +50,18 @@ namespace Test.NPC
             _targetStamina = (int)Mathf.Min(_npcStatusComponent.CurrentStamina + _targetAddStamina, NpcStatusComponent.MaxStamina);
             SetNewRoamingDestination();
             _animatorControl.ChangeAnimBool(AnimationBool.Moving);
+            _currentWaitTime = _waitSleepTime;
         }
 
         public void Execute(GameObject agent)
         {
             if (!_movementControl.HasReachedDestination()) return;
+
+            if (_currentWaitTime > 0) 
+            { 
+                _currentWaitTime -= Time.deltaTime;
+                return;
+            }
             _npcStatusComponent.RecoverStamina();
             _animatorControl.ChangeAnimBool(AnimationBool.Rest);
         }

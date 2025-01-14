@@ -38,6 +38,7 @@ namespace Test.NPC.Dragon
 			public float _restSearchRange;
 			public float _bias;
 			public float _targetAddStamina;
+			public float _waitSleepTime;
 		}
 		[SerializeField] private RestParameters _restParameters;
 
