@@ -68,12 +68,14 @@ namespace Test.NPC
 
             if (HandleCooldown()) return;
 
+            // ターゲットを見失った場合は探索
             if (_target == null || !IsTargetValid())
             {
                 _target = FindTarget(_agent.position + _agent.forward * _searchOffSetFactor, _searchRadius);
                 return;
             }
 
+            // ターゲットが射程外の場合は移動
             if (!IsTargetInRange())
             {
                 _movementControl.ChangeMove(true);
@@ -81,8 +83,7 @@ namespace Test.NPC
                 _animatorControl.ChangeAnimBool(AnimationBool.Moving);
                 return;
             }
-            _movementControl.ChangeMove(false);
-
+          
             PerformAttack();
         }
 
@@ -127,9 +128,10 @@ namespace Test.NPC
 
         private void PerformAttack()
         {
+            _movementControl.ChangeMove(false);
             if (_attackTimer > 0)
             {
-                UpdateAttack();
+                _attackTimer -= Time.deltaTime;
                 return;
             }
             StartAttack();
@@ -137,21 +139,12 @@ namespace Test.NPC
 
         private void StartAttack()
         {
+            ApplyDamageToTargets();
+            _animatorControl.OnTriggerAnim(AnimationTrigger.Attack);
+            _hitTargets.Clear();
             _isOnCooldown = true;
             _cooldownTimer = _attackDelay;
             _attackTimer = AttackDuration;
-
-            _animatorControl.OnTriggerAnim(AnimationTrigger.Attack);
-            _hitTargets.Clear();
-        }
-
-        private void UpdateAttack()
-        {
-            _attackTimer -= Time.deltaTime;
-            if (_attackTimer > 0)
-            {
-                ApplyDamageToTargets();
-            }
         }
 
         private void ApplyDamageToTargets()
