@@ -1,6 +1,6 @@
 using Test.NPC.Dragon;
 using UnityEngine;
-using AnimationState = Test.NPC.AnimatorControl.AnimationState;
+using AnimationBool = Test.NPC.AnimatorControl.AnimationBool;
 
 namespace Test.NPC
 {
@@ -46,14 +46,14 @@ namespace Test.NPC
         {
             _targetStamina = (int)Mathf.Min(_npcStatusComponent.CurrentStamina + _targetAddStamina, NpcStatusComponent.MaxStamina);
             SetNewRoamingDestination();
-            _animatorControl.SetAnimParameter(AnimationState.Moving);
+            _animatorControl.ChangeAnimBool(AnimationBool.Moving);
         }
 
         public void Execute(GameObject agent)
         {
             if (!_movementControl.HasReachedDestination()) return;
             _npcStatusComponent.RecoverStamina();
-            _animatorControl.SetAnimParameter(AnimationState.Rest);
+            _animatorControl.ChangeAnimBool(AnimationBool.Rest);
         }
         
         public void ExitState()

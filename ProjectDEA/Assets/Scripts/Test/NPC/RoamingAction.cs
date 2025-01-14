@@ -1,6 +1,6 @@
 using Test.NPC.Dragon;
 using UnityEngine;
-using AnimationState = Test.NPC.AnimatorControl.AnimationState;
+using AnimationBool = Test.NPC.AnimatorControl.AnimationBool;
 
 namespace Test.NPC
 {
@@ -46,7 +46,7 @@ namespace Test.NPC
 
         public void EnterState()
         {
-            _animatorControl.SetAnimParameter(AnimationState.Moving);
+            _animatorControl.ChangeAnimBool(AnimationBool.Moving);
             SetNewRoamingDestination();
             SetRoamingTimer();
         }

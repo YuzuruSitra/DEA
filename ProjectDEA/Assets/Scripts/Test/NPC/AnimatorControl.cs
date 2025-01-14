@@ -9,20 +9,27 @@ namespace Test.NPC
 		private Animator _animator;
 		private NavMeshAgent _agent;
 
-		public enum AnimationState
+		public enum AnimationBool
 		{
 			Moving,
-			Attack,
 			Rest
 		}
-		private AnimationState _currentState;
+		private AnimationBool _currentState;
+
+		public enum AnimationTrigger
+		{
+			Attack
+		}
 		
 		private readonly int _speedRatio = Animator.StringToHash("SpeedRatio");
-		private readonly Dictionary<AnimationState, int> _stateToHashMap = new()
+		private readonly Dictionary<AnimationBool, int> _boolStateToHash = new()
 		{
-			{ AnimationState.Moving, Animator.StringToHash("IsMoving") },
-			{ AnimationState.Attack, Animator.StringToHash("IsAttack") },
-			{ AnimationState.Rest, Animator.StringToHash("IsRest") }
+			{ AnimationBool.Moving, Animator.StringToHash("IsMoving") },
+			{ AnimationBool.Rest, Animator.StringToHash("IsRest") }
+		};
+		private readonly Dictionary<AnimationTrigger, int> _triggerStateToHash = new()
+		{
+			{ AnimationTrigger.Attack, Animator.StringToHash("IsAttack") }
 		};
 
 		private void Awake()
@@ -33,23 +40,23 @@ namespace Test.NPC
 
 		private void Update()
 		{
-			if (_currentState != AnimationState.Moving) return;
+			if (_currentState != AnimationBool.Moving) return;
 			var speedRatio = _agent.velocity.magnitude / _agent.speed;
 			_animator.SetFloat(_speedRatio, speedRatio);
 		}
 
-		public void SetAnimParameter(AnimationState newState)
+		public void ChangeAnimBool(AnimationBool newState)
 		{
-			if (newState == _currentState)
-			{
-				if (newState != AnimationState.Attack) return;
-				var clipInfo = _animator.GetCurrentAnimatorClipInfo(0)[0];
-				_animator.Play(clipInfo.clip.name, 0, 0f);
-				return;
-			}
-			_animator.SetBool(_stateToHashMap[_currentState], false);
+			if (newState == _currentState) return;
+			_animator.SetBool(_boolStateToHash[_currentState], false);
+			_animator.SetBool(_boolStateToHash[newState], true);
 			_currentState = newState;
-			_animator.SetBool(_stateToHashMap[newState], true);
 		}
+
+		public void OnTriggerAnim(AnimationTrigger newState)
+		{
+			_animator.SetTrigger(_triggerStateToHash[newState]);
+		}
+
 	}
 }

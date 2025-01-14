@@ -1,7 +1,8 @@
-using AnimationState = Test.NPC.AnimatorControl.AnimationState;
 using System.Collections.Generic;
 using Test.NPC.Dragon;
 using UnityEngine;
+using static Test.NPC.AnimatorControl;
+
 
 namespace Test.NPC
 {
@@ -65,11 +66,7 @@ namespace Test.NPC
         {
             DrawDebugSpheres();
 
-            if (HandleCooldown())
-            {
-                _animatorControl.SetAnimParameter(AnimationState.Moving);
-                return;
-            }
+            if (HandleCooldown()) return;
 
             if (_target == null || !IsTargetValid())
             {
@@ -81,7 +78,7 @@ namespace Test.NPC
             {
                 _movementControl.ChangeMove(true);
                 _movementControl.MoveTo(_target.position);
-                _animatorControl.SetAnimParameter(AnimationState.Moving);
+                _animatorControl.ChangeAnimBool(AnimationBool.Moving);
                 return;
             }
             _movementControl.ChangeMove(false);
@@ -144,7 +141,7 @@ namespace Test.NPC
             _cooldownTimer = _attackDelay;
             _attackTimer = AttackDuration;
 
-            _animatorControl.SetAnimParameter(AnimationState.Attack);
+            _animatorControl.OnTriggerAnim(AnimationTrigger.Attack);
             _hitTargets.Clear();
         }
 
