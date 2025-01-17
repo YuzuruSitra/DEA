@@ -14,8 +14,9 @@ namespace Test.NPC.Dragon
 			public LayerMask _targetLayer;
 			public float _attackOffSetFactor;
 			public float _attackRadius;
-			public float _attackDelay;
+			public float _attackDuration;
 			public float _attackDamage;
+			public float _stopFactor;
 		}
 		[SerializeField] private AttackParameters _attackParameters;
 		

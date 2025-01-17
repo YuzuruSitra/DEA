@@ -362,8 +362,9 @@ MonoBehaviour:
       m_Bits: 512
     _attackOffSetFactor: 1
     _attackRadius: 0.4
-    _attackDelay: 3
+    _attackDuration: 3
     _attackDamage: 20
+    _stopFactor: 0.6
   _roamingParameters:
     _intervalTimeMax: 3
     _intervalTimeMin: 5

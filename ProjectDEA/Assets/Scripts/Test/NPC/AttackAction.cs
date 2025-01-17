@@ -19,18 +19,19 @@ namespace Test.NPC
         private readonly LayerMask _searchLayer;
         private readonly float _attackOffSetFactor;
         private readonly float _attackRadius;
-        private readonly float _attackDelay;
+        private readonly float _attackDuration;
         private readonly float _damage;
+        private readonly float _stopFactor;
 
         private Transform _target;
         private readonly DebugDrawCd _debugDrawCd;
         private readonly HashSet<Collider> _hitTargets = new();
         private bool _isOnCooldown;
-        private float _cooldownTimer;
+        private float _attackCT;
         private float _attackTimer;
+        private bool _isOnAnim;
 
-        private const float AttackDuration = 2f;
-        private const float StopFactor = 0.4f;
+        private const float DamageCheckTime = 0.5f;
         private readonly Collider[] _searchResults = new Collider[1];
         private readonly Collider[] _attackResults = new Collider[1];
 
@@ -44,8 +45,9 @@ namespace Test.NPC
             _searchLayer = attackParameters._targetLayer;
             _attackOffSetFactor = attackParameters._attackOffSetFactor;
             _attackRadius = attackParameters._attackRadius;
-            _attackDelay = attackParameters._attackDelay;
+            _attackDuration = attackParameters._attackDuration;
             _damage = attackParameters._attackDamage;
+            _stopFactor = attackParameters._stopFactor;
             _debugDrawCd = new DebugDrawCd();
         }
 
@@ -58,8 +60,10 @@ namespace Test.NPC
         public void EnterState()
         {
             _isOnCooldown = false;
-            _cooldownTimer = 0;
-            _attackTimer = 0;
+            _attackCT = 0;
+            _attackTimer = DamageCheckTime;
+            _movementControl.ChangeMove(true);
+            _isOnAnim = false;
         }
 
         public void Execute(GameObject agent)
@@ -84,7 +88,7 @@ namespace Test.NPC
                 return;
             }
           
-            PerformAttack();
+            ExecuteDamageLoop();
         }
 
         public void ExitState()
@@ -102,8 +106,8 @@ namespace Test.NPC
         {
             if (!_isOnCooldown) return false;
 
-            _cooldownTimer -= Time.deltaTime;
-            if (_cooldownTimer <= 0)
+            _attackCT -= Time.deltaTime;
+            if (_attackCT <= 0)
             {
                 _isOnCooldown = false;
             }
@@ -123,28 +127,36 @@ namespace Test.NPC
 
         private bool IsTargetInRange()
         {
-            return FindTarget(_agent.position + _agent.forward * (_attackOffSetFactor * StopFactor), _attackRadius) != null;
+            return FindTarget(_agent.position + _agent.forward * (_attackOffSetFactor * _stopFactor), _attackRadius) != null;
         }
 
-        private void PerformAttack()
+
+        private void ExecuteDamageLoop()
         {
-            _movementControl.ChangeMove(false);
+            if (!_isOnAnim)
+            {
+                _movementControl.ChangeMove(false);
+                _animatorControl.OnTriggerAnim(AnimationTrigger.Attack);
+                _isOnAnim = true;
+            }
+
             if (_attackTimer > 0)
             {
+                ApplyDamageToTargets();
                 _attackTimer -= Time.deltaTime;
                 return;
             }
-            StartAttack();
+            ResetAttack();
         }
 
-        private void StartAttack()
+        private void ResetAttack()
         {
-            ApplyDamageToTargets();
-            _animatorControl.OnTriggerAnim(AnimationTrigger.Attack);
             _hitTargets.Clear();
             _isOnCooldown = true;
-            _cooldownTimer = _attackDelay;
-            _attackTimer = AttackDuration;
+            _attackCT = _attackDuration;
+            _attackTimer = DamageCheckTime;
+            _animatorControl.ChangeAnimBool(AnimationBool.Moving);
+            _isOnAnim = false;
         }
 
         private void ApplyDamageToTargets()

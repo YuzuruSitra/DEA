@@ -11,10 +11,11 @@ namespace Test.NPC
 
 		public enum AnimationBool
 		{
+			None,
 			Moving,
 			Rest
 		}
-		private AnimationBool _currentState;
+		private AnimationBool _currentState = AnimationBool.None;
 
 		public enum AnimationTrigger
 		{
@@ -48,7 +49,7 @@ namespace Test.NPC
 		public void ChangeAnimBool(AnimationBool newState)
 		{
 			if (newState == _currentState) return;
-			_animator.SetBool(_boolStateToHash[_currentState], false);
+			if (_currentState != AnimationBool.None) _animator.SetBool(_boolStateToHash[_currentState], false);
 			_animator.SetBool(_boolStateToHash[newState], true);
 			_currentState = newState;
 		}
