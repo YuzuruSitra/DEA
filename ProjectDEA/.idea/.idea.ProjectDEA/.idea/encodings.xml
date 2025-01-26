@@ -4,5 +4,6 @@
     <file url="file://$PROJECT_DIR$/Assets/Scripts/Gimmick/GimmickGenerator.cs" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Assets/Scripts/Item/Dynamite.cs" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Assets/Scripts/Manager/Map/StageGenerator.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/Test/NPC/AttackAction.cs" charset="ISO-8859-1" />
   </component>
 </project>

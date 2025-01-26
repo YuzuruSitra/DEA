@@ -42,6 +42,16 @@ namespace Test.NPC.Dragon
 			public float _waitSleepTime;
 		}
 		[SerializeField] private RestParameters _restParameters;
+		[Serializable]
+		public struct EscapeParameters
+		{
+			public float _searchOffSetFactor;
+			public float _searchRadius;
+			public LayerMask _targetLayer;
+			public float _escapeRatio;
+			public float _escapeHealth;
+		}
+		[SerializeField] private EscapeParameters _escapeParameters;
 
 		protected override void Start()
 		{

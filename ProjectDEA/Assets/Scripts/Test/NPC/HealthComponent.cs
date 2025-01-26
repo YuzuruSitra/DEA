@@ -4,7 +4,8 @@ namespace Test.NPC
 {
 	public class HealthComponent : MonoBehaviour
 	{
-		public float _maxHealth;
+		[SerializeField] private float _initialHealth;
+		public float MaxHealth { get; private set; }
 		public float CurrentHealth { get; private set; }
 
 		public delegate void HealthChanged(float currentHealth, float maxHealth);
@@ -13,9 +14,10 @@ namespace Test.NPC
 		public delegate void Died();
 		public event Died OnDeath;
 
-		private void Start()
+		private void Awake()
 		{
-			CurrentHealth = _maxHealth;
+			MaxHealth = _initialHealth;
+			CurrentHealth = _initialHealth;
 		}
 	
 		public void TakeDamage(float amount)
@@ -23,9 +25,9 @@ namespace Test.NPC
 			if (amount <= 0) return;
 
 			CurrentHealth -= amount;
-			CurrentHealth = Mathf.Clamp(CurrentHealth, 0, _maxHealth);
+			CurrentHealth = Mathf.Clamp(CurrentHealth, 0, MaxHealth);
 
-			OnHealthChanged?.Invoke(CurrentHealth, _maxHealth);
+			OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
 
 			if (CurrentHealth <= 0)
 			{
@@ -38,9 +40,9 @@ namespace Test.NPC
 			if (amount <= 0) return;
 
 			CurrentHealth += amount;
-			CurrentHealth = Mathf.Clamp(CurrentHealth, 0, _maxHealth);
+			CurrentHealth = Mathf.Clamp(CurrentHealth, 0, MaxHealth);
 
-			OnHealthChanged?.Invoke(CurrentHealth, _maxHealth);
+			OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
 		}
 	
 		private void Die()

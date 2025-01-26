@@ -3,7 +3,6 @@ using Test.NPC.Dragon;
 using UnityEngine;
 using static Test.NPC.AnimatorControl;
 
-
 namespace Test.NPC
 {
     public class AttackAction : IUtilityAction
@@ -27,7 +26,7 @@ namespace Test.NPC
         private readonly DebugDrawCd _debugDrawCd;
         private readonly HashSet<Collider> _hitTargets = new();
         private bool _isOnCooldown;
-        private float _attackCT;
+        private float _attackCt;
         private float _attackTimer;
         private bool _isOnAnim;
 
@@ -60,7 +59,7 @@ namespace Test.NPC
         public void EnterState()
         {
             _isOnCooldown = false;
-            _attackCT = 0;
+            _attackCt = 0;
             _attackTimer = DamageCheckTime;
             _movementControl.ChangeMove(true);
             _isOnAnim = false;
@@ -71,15 +70,13 @@ namespace Test.NPC
             DrawDebugSpheres();
 
             if (HandleCooldown()) return;
-
-            // ターゲットを見失った場合は探索
+            
             if (_target == null || !IsTargetValid())
             {
                 _target = FindTarget(_agent.position + _agent.forward * _searchOffSetFactor, _searchRadius);
                 return;
             }
 
-            // ターゲットが射程外の場合は移動
             if (!IsTargetInRange())
             {
                 _movementControl.ChangeMove(true);
@@ -106,8 +103,8 @@ namespace Test.NPC
         {
             if (!_isOnCooldown) return false;
 
-            _attackCT -= Time.deltaTime;
-            if (_attackCT <= 0)
+            _attackCt -= Time.deltaTime;
+            if (_attackCt <= 0)
             {
                 _isOnCooldown = false;
             }
@@ -153,7 +150,7 @@ namespace Test.NPC
         {
             _hitTargets.Clear();
             _isOnCooldown = true;
-            _attackCT = _attackDuration;
+            _attackCt = _attackDuration;
             _attackTimer = DamageCheckTime;
             _animatorControl.ChangeAnimBool(AnimationBool.Moving);
             _isOnAnim = false;
