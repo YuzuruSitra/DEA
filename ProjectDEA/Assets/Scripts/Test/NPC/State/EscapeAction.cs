@@ -1,7 +1,7 @@
 using Test.NPC.Dragon;
 using UnityEngine;
 
-namespace Test.NPC
+namespace Test.NPC.State
 {
 	public class EscapeAction : IUtilityAction
 	{

@@ -3,7 +3,7 @@ using Test.NPC.Dragon;
 using UnityEngine;
 using static Test.NPC.AnimatorControl;
 
-namespace Test.NPC
+namespace Test.NPC.State
 {
     public class AttackAction : IUtilityAction
     {

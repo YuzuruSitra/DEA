@@ -2,7 +2,7 @@ using Test.NPC.Dragon;
 using UnityEngine;
 using AnimationBool = Test.NPC.AnimatorControl.AnimationBool;
 
-namespace Test.NPC
+namespace Test.NPC.State
 {
     public class RestAction : IUtilityAction
     {

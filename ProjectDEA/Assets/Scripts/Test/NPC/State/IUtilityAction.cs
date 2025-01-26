@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Test.NPC
+namespace Test.NPC.State
 {
     public interface IUtilityAction
     {

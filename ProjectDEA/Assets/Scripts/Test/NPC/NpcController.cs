@@ -1,3 +1,4 @@
+using Test.NPC.State;
 using UnityEngine;
 
 namespace Test.NPC
