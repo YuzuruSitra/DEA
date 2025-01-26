@@ -60,7 +60,7 @@ namespace Test.NPC.Dragon
 			// ActionSelector にドラゴン固有のアクションを追加
 			ActionSelector = new ActionSelector(new List<IUtilityAction>
 			{
-				new AttackAction(transform, AnimatorControl, MovementControl, _attackParameters),
+				//new AttackAction(transform, AnimatorControl, MovementControl, _attackParameters),
 				new RestAction(transform, AnimatorControl, MovementControl, NpcStatusComponent, _restParameters),
 				new RoamingAction(transform, AnimatorControl, MovementControl, NpcStatusComponent, _roamingParameters)
 			});

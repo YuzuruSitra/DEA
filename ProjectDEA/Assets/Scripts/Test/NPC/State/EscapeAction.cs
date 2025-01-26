@@ -3,9 +3,8 @@ using UnityEngine;
 
 namespace Test.NPC.State
 {
-	public class EscapeAction : IUtilityAction
+	public class EscapeAction : IBattleSubState
 	{
-		public UtilityActionType ActionType => UtilityActionType.Escape;
 		private readonly AnimatorControl _animatorControl;
 		private readonly MovementControl _movementControl;
 		private readonly HealthComponent _healthComponent;
@@ -43,7 +42,7 @@ namespace Test.NPC.State
 			return value;
 		}
 
-		public void EnterState()
+		public void EnterState(Transform target)
 		{
 			var targetPos = CalcDestination();
 			_movementControl.MoveTo(targetPos);
@@ -51,7 +50,7 @@ namespace Test.NPC.State
 			_animatorControl.ChangeAnimBool(AnimatorControl.AnimationBool.Moving);
 		}
 
-		public void Execute(GameObject agent)
+		public void Execute()
 		{
 
 		}

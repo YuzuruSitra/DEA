@@ -5,10 +5,8 @@ using static Test.NPC.AnimatorControl;
 
 namespace Test.NPC.State
 {
-    public class AttackAction : IUtilityAction
+    public class AttackAction : IBattleSubState
     {
-        public UtilityActionType ActionType => UtilityActionType.Attack;
-
         private readonly AnimatorControl _animatorControl;
         private readonly MovementControl _movementControl;
         private readonly Transform _agent;
@@ -56,7 +54,7 @@ namespace Test.NPC.State
             return _target != null ? 1f : 0f;
         }
 
-        public void EnterState()
+        public void EnterState(Transform target)
         {
             _isOnCooldown = false;
             _attackCt = 0;
@@ -65,7 +63,7 @@ namespace Test.NPC.State
             _isOnAnim = false;
         }
 
-        public void Execute(GameObject agent)
+        public void Execute()
         {
             DrawDebugSpheres();
 

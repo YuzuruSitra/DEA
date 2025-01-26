@@ -15,8 +15,15 @@ namespace Test.NPC.State
     {
         Roaming,
         Rest,
-        Attack,
-        Escape
+        Battle
+    }
+    
+    public interface IBattleSubState
+    {
+        float CalculateUtility();
+        void EnterState(Transform targetTransform);
+        void Execute();
+        void ExitState();
     }
     
 }
