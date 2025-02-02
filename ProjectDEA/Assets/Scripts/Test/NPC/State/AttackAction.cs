@@ -47,13 +47,12 @@ namespace Test.NPC.State
             _stopFactor = attackParameters._stopFactor;
             _debugDrawCd = new DebugDrawCd();
         }
-
+        
         public float CalculateUtility()
         {
-            _target = FindTarget(_agent.position + _agent.forward * _searchOffSetFactor, _searchRadius);
-            return _target != null ? 1f : 0f;
+            return 0.5f;
         }
-
+        
         public void EnterState(Transform target)
         {
             _isOnCooldown = false;

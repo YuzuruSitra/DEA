@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Test.NPC.Dragon;
 using UnityEngine;
 
 namespace Test.NPC.State
@@ -15,10 +16,13 @@ namespace Test.NPC.State
         private readonly Collider[] _searchResults = new Collider[1];
         private IBattleSubState _currentState;
         
-        public BattleState(Transform agent, List<IBattleSubState> subStates)
+        public BattleState(Transform agent, List<IBattleSubState> subStates, DragonController.BattleStateParameters battleStateParameters)
         {
             _agent = agent;
             _battleStateSelector = new BattleStateSelector(subStates);
+            _searchOffSetFactor = battleStateParameters._searchOffSetFactor;
+            _searchRadius = battleStateParameters._searchRadius;
+            _searchLayer = battleStateParameters._searchLayer;
         }
         
         public float CalculateUtility()

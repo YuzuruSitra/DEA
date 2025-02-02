@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571337, b: 0.3069219, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -354,17 +354,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _actionCooldown: 1
-  _attackParameters:
+  _battleStateParameters:
     _searchOffSetFactor: 0.75
     _searchRadius: 3
-    _targetLayer:
+    _searchLayer:
       serializedVersion: 2
       m_Bits: 512
-    _attackOffSetFactor: 1
-    _attackRadius: 0.4
-    _attackDuration: 3
-    _attackDamage: 20
-    _stopFactor: 0.6
   _roamingParameters:
     _intervalTimeMax: 3
     _intervalTimeMin: 5
@@ -377,14 +372,24 @@ MonoBehaviour:
     _bias: 0.2
     _targetAddStamina: 20
     _waitSleepTime: 0.75
-  _escapeParameters:
-    _searchOffSetFactor: 0
-    _searchRadius: 0
+  _attackParameters:
+    _searchOffSetFactor: 0.75
+    _searchRadius: 3
     _targetLayer:
       serializedVersion: 2
-      m_Bits: 0
-    _escapeRatio: 0
-    _escapeHealth: 0
+      m_Bits: 512
+    _attackOffSetFactor: 1
+    _attackRadius: 0.4
+    _attackDuration: 3
+    _attackDamage: 20
+    _stopFactor: 0.6
+  _escapeParameters:
+    _searchOffSetFactor: 0.75
+    _searchRadius: 3
+    _targetLayer:
+      serializedVersion: 2
+      m_Bits: 512
+    _escapeRatio: 0.3
 --- !u!54 &214867875
 Rigidbody:
   m_ObjectHideFlags: 0
