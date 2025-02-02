@@ -8,36 +8,6 @@ namespace Test.NPC.Dragon
 	public class DragonController : NpcController
 	{
 		[Serializable]
-		public struct BattleStateParameters
-		{
-			public float _searchOffSetFactor;
-			public float _searchRadius;
-			public LayerMask _searchLayer;
-		}
-		[SerializeField] private BattleStateParameters _battleStateParameters;
-		// Roaming logic
-		[Serializable]
-		public struct RoamingParameters
-		{
-			public float _intervalTimeMax;
-			public float _intervalTimeMin;
-			public float _roamingSearchRange;
-			public float _fullnessW;
-			public float _staminaW;
-			public float _bias;
-		}
-		[SerializeField] private RoamingParameters _roamingParameters;
-		
-		[Serializable]
-		public struct RestParameters
-		{
-			public float _restSearchRange;
-			public float _bias;
-			public float _targetAddStamina;
-			public float _waitSleepTime;
-		}
-		[SerializeField] private RestParameters _restParameters;
-		[Serializable]
 		public struct AttackParameters
 		{
 			public float _searchOffSetFactor;
@@ -78,7 +48,6 @@ namespace Test.NPC.Dragon
 
 		private void InitializeSubStates()
 		{
-			// _subStates = List<IBattleSubState>();
 			_subStates.Add(new AttackAction(transform, AnimatorControl, MovementControl, _attackParameters));
 			_subStates.Add(new EscapeAction(transform, AnimatorControl, MovementControl, HealthComponent, _escapeParameters));
 		}

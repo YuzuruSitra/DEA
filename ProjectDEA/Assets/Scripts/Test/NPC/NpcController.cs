@@ -1,3 +1,4 @@
+using System;
 using Test.NPC.State;
 using UnityEngine;
 
@@ -7,6 +8,36 @@ namespace Test.NPC
 	[RequireComponent(typeof(NpcStatusComponent))]
 	public class NpcController : MonoBehaviour
 	{
+		[Serializable]
+		public struct BattleStateParameters
+		{
+			public float _searchOffSetFactor;
+			public float _searchRadius;
+			public LayerMask _searchLayer;
+		}
+		[SerializeField] protected BattleStateParameters _battleStateParameters;
+		// Roaming logic
+		[Serializable]
+		public struct RoamingParameters
+		{
+			public float _intervalTimeMax;
+			public float _intervalTimeMin;
+			public float _roamingSearchRange;
+			public float _fullnessW;
+			public float _staminaW;
+			public float _bias;
+		}
+		[SerializeField] protected RoamingParameters _roamingParameters;
+		
+		[Serializable]
+		public struct RestParameters
+		{
+			public float _restSearchRange;
+			public float _bias;
+			public float _targetAddStamina;
+			public float _waitSleepTime;
+		}
+		[SerializeField] protected RestParameters _restParameters;
 		// 基底クラスで管理されるコンポーネント
 		protected AnimatorControl AnimatorControl { get; private set; }
 		protected MovementControl MovementControl { get; private set; }
