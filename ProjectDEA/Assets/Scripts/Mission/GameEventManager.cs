@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Mission
@@ -5,9 +6,9 @@ namespace Mission
     // こいつはオブジェクトが検索して特定の状況下でイベントを発火するやつ
     public class GameEventManager : MonoBehaviour
     {
-        public event System.Action<int> OnEnemyDefeated;
-        public event System.Action<int> OnGimmickCompleted;
-        public event System.Action<int> OnItemCollected;
+        public event Action<int> OnEnemyDefeated;
+        public event Action<int> OnGimmickCompleted;
+        public event Action<int> OnItemCollected;
 
         private void Start()
         {
@@ -28,6 +29,14 @@ namespace Mission
         }
 
         public void EnemyDefeated(int enemyID) => OnEnemyDefeated?.Invoke(enemyID);
+        /*
+         使用例
+         private void OnDeath()
+        {
+            GameEventManager.Instance.EnemyDefeated(enemyID);
+            Destroy(gameObject);
+        } 
+        */
         public void GimmickCompleted(int gimmickID) => OnGimmickCompleted?.Invoke(gimmickID);
         public void ItemCollected(int itemID) => OnItemCollected?.Invoke(itemID);
     }
