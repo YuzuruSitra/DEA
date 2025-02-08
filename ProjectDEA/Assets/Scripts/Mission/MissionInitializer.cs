@@ -7,6 +7,7 @@ namespace Mission
 {
     public class MissionInitializer
     {
+        private const string MissionKeyHolder = "Assets/Addressables_Resources/MissionKeyHolder.asset";
         private readonly GameEventManager _gameEventManager;
         public List<IMissionCondition> MissionConditions { get; }
         
@@ -19,16 +20,23 @@ namespace Mission
 
         private void InitializeMissionConditions()
         {
-            InstanceKillEnemiesMission();
+            var keyHolder = LoadKeyHolder();
+            InstanceKillEnemiesMission(keyHolder._enemyKillMissionData);
         }
 
-        private async void InstanceKillEnemiesMission()
+        private MissionKeyHolder LoadKeyHolder()
         {
-            const string key = "Assets/Addressables_Resources/KillEnemiesData.asset";
-            var handle = Addressables.LoadAssetAsync<EnemyKillMissionData>(key);
-            var data = await handle.Task;
-            var killEnemiesMission = new EnemyKillMissionCondition(_gameEventManager, data);
-            AddMissionList(killEnemiesMission);
+            var handle = Addressables.LoadAssetAsync<MissionKeyHolder>(MissionKeyHolder);
+            return handle.WaitForCompletion();
+        }
+
+        private void InstanceKillEnemiesMission(EnemyKillMissionData[] dates)
+        {
+            foreach (var t in dates)
+            {
+                var killEnemiesMission = new EnemyKillMissionCondition(_gameEventManager, t);
+                AddMissionList(killEnemiesMission);
+            }
         }
 
         private void AddMissionList(IMissionCondition missionCondition)
