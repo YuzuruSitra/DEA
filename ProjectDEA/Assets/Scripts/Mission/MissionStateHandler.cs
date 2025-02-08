@@ -5,18 +5,25 @@ namespace Mission
 {
     public class MissionStateHandler
     {
-        private readonly MissionSelector _missionSelector = new();
+        private readonly MissionSelector _missionSelector;
         private IMissionCondition _currentMission;
 
+        public MissionStateHandler(GameEventManager gameEventManager)
+        {
+            var missionInitializer = new MissionInitializer(gameEventManager);
+            _missionSelector = new MissionSelector(missionInitializer);
+        }
+        
         // ミッションを特定の条件で開始させる。
-        public void StartMission(IMissionCondition mission)
+        public void StartMission()
         {
             if (_currentMission != null)
             {
                 _currentMission.StopTracking();
             }
-
+            
             _currentMission = _missionSelector.SelectMission();
+            Debug.Log("Mission selected: " + _currentMission.MissionName);
             _currentMission.OnMissionCompleted += CompleteMission;
             _currentMission.StartTracking();
         }

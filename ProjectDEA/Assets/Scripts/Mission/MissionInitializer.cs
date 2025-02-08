@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Mission.Condition;
 using UnityEngine.AddressableAssets;
 using Mission.CreateScriptableObject;
-using UnityEngine;
 
 namespace Mission
 {
@@ -11,10 +10,10 @@ namespace Mission
         private readonly GameEventManager _gameEventManager;
         public List<IMissionCondition> MissionConditions { get; }
         
-        public MissionInitializer()
+        public MissionInitializer(GameEventManager gameEventManager)
         {
             MissionConditions = new List<IMissionCondition>();
-            _gameEventManager = GameObject.FindWithTag("GameEventManager").GetComponent<GameEventManager>();
+            _gameEventManager = gameEventManager;
             InitializeMissionConditions();
         }
 

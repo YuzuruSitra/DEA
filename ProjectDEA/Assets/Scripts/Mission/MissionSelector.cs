@@ -6,9 +6,14 @@ namespace Mission
 {
     public class MissionSelector
     {
-        private readonly MissionInitializer _missionSelector = new();
-        private List<IMissionCondition> MissionList => _missionSelector.MissionConditions;
+        private readonly MissionInitializer _missionInitializer;
+        private List<IMissionCondition> MissionList => _missionInitializer.MissionConditions;
 
+        public MissionSelector(MissionInitializer missionInitializer)
+        {
+            _missionInitializer = missionInitializer;
+        }
+        
         public IMissionCondition SelectMission()
         {
             if (MissionList.Count == 0)
