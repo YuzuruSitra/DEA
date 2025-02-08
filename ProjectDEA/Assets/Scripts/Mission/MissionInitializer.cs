@@ -30,9 +30,9 @@ namespace Mission
             return handle.WaitForCompletion();
         }
 
-        private void InstanceKillEnemiesMission(EnemyKillMissionData[] dates)
+        private void InstanceKillEnemiesMission(EnemyKillMissionData dates)
         {
-            foreach (var t in dates)
+            foreach (var t in dates._killMissionData)
             {
                 var killEnemiesMission = new EnemyKillMissionCondition(_gameEventManager, t);
                 AddMissionList(killEnemiesMission);

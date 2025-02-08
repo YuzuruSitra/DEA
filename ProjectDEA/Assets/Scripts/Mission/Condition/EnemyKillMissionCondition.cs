@@ -14,7 +14,7 @@ namespace Mission.Condition
         private readonly int _targetKillCount;
         private int _currentKillCount;
 
-        public EnemyKillMissionCondition(GameEventManager gameEventManager, EnemyKillMissionData enemyKillMissionData)
+        public EnemyKillMissionCondition(GameEventManager gameEventManager, EnemyKillMissionData.KillMissionStruct enemyKillMissionData)
         {
             MissionName = enemyKillMissionData._missionName;
             MissionType = enemyKillMissionData._missionType;
