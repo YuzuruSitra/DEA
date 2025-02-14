@@ -1,13 +1,15 @@
 using System;
 using Mission.Condition;
+using Test.NPC;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Mission.CreateScriptableObject
 {
     [CreateAssetMenu(fileName = "NewEnemyKillMission", menuName = "Mission/EnemyKillMission")]
     public class EnemyKillMissionData : ScriptableObject
     {
+        public NpcController[] _enemyPrefab;
+            
         [Serializable]
         public struct KillMissionStruct
         {

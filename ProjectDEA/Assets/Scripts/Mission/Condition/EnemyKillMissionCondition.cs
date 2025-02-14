@@ -1,4 +1,5 @@
 using Mission.CreateScriptableObject;
+using Test.NPC;
 using UnityEngine;
 
 namespace Mission.Condition
@@ -13,9 +14,11 @@ namespace Mission.Condition
         private readonly int _targetEnemyID;
         private readonly int _targetKillCount;
         private int _currentKillCount;
+        private readonly NpcController[] _enemyPrefab;
 
-        public EnemyKillMissionCondition(GameEventManager gameEventManager, EnemyKillMissionData.KillMissionStruct enemyKillMissionData)
+        public EnemyKillMissionCondition(GameEventManager gameEventManager, NpcController[] enemyPrefab, EnemyKillMissionData.KillMissionStruct enemyKillMissionData)
         {
+            _enemyPrefab = enemyPrefab;
             MissionName = enemyKillMissionData._missionName;
             MissionType = enemyKillMissionData._missionType;
             _gameEventManager = gameEventManager;
@@ -27,6 +30,7 @@ namespace Mission.Condition
         public void StartTracking()
         {
             _gameEventManager.OnEnemyDefeated += OnEnemyDefeated;
+            GenerateEnemy();
         }
 
         public void StopTracking()
@@ -46,6 +50,13 @@ namespace Mission.Condition
                 OnMissionCompleted?.Invoke();
             }
         }
+
+        private void GenerateEnemy()
+        {
+            // enemyKillMissionData.
+            // _enemyPrefab[_targetEnemyID]
+        }
+        
     }
 }
 

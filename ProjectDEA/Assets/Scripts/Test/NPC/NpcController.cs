@@ -6,8 +6,9 @@ namespace Test.NPC
 {
 	[RequireComponent(typeof(AnimatorControl), typeof(MovementControl), typeof(HealthComponent))]
 	[RequireComponent(typeof(NpcStatusComponent))]
-	public class NpcController : MonoBehaviour
+	public class NpcController : MonoBehaviour, INPC
 	{
+		public int enemyID{ get; set; }
 		[Serializable]
 		public struct BattleStateParameters
 		{
