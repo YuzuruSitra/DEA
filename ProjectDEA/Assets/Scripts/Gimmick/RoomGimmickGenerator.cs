@@ -66,7 +66,7 @@ namespace Gimmick
             
             // ExitObeliskを生成
             var exitObeliskRoom = CalcMostBigRoom(_roomCount, _roomInfo);
-            InsGimmick(exitObeliskRoom, _gimmickInfo[(int)GimmickKind.ExitObelisk]);
+            InsGimmick(exitObeliskRoom, _gimmickInfo[(int)GimmickKind.ExitObelisk]._prefab);
 
             // ObeliskKeyOutを生成
             GenerateObeliskKeys(_roomCount);
@@ -94,7 +94,7 @@ namespace Gimmick
                     var insType = DecideGimmickType(_metaAIHandler.CurrentPlayerType);
                     // 生成タイプの中から選定
                     var insNum = Random.Range(0, _insSeparateTypeGimmicks[insType].Count);
-                    InsGimmick(i, _insSeparateTypeGimmicks[insType][insNum]);
+                    InsGimmick(i, _insSeparateTypeGimmicks[insType][insNum]._prefab);
                 }
             }
         }
@@ -161,14 +161,13 @@ namespace Gimmick
 
             foreach (var roomIndex in obeliskKeyRooms)
             {
-                InsGimmick(roomIndex, _gimmickInfo[(int)GimmickKind.ObeliskKeyOut]);
+                InsGimmick(roomIndex, _gimmickInfo[(int)GimmickKind.ObeliskKeyOut]._prefab);
             }
         }
 
-        private void InsGimmick(int roomNum, GimmickInfo gimmickInfo)
+        private void InsGimmick(int roomNum, GameObject insObj)
         {
             // 配置可能な範囲を計算
-            var insObj = gimmickInfo._prefab;
             var halfScaleX = insObj.transform.localScale.x / 2.0f;
             var halfScaleZ = insObj.transform.localScale.z / 2.0f;
             var paddingX = Mathf.CeilToInt(halfScaleX) + PaddingThreshold;
