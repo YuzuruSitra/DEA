@@ -35,7 +35,8 @@ namespace Manager
                 case "DungeonStart":
                     HandleDungeonStartScene();
                     break;
-                case "DungeonIn":
+                case "DungeonIn": 
+                case "DebugScene":
                     HandleDungeonInScene();
                     break;
                 case "ResultScene":

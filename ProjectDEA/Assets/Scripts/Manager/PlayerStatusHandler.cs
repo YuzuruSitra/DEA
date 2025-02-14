@@ -6,6 +6,7 @@ namespace Manager
 {
     public class PlayerStatusHandler : MonoBehaviour
     {
+        [SerializeField] private bool _isDebug;
         [SerializeField] private int _initialDamage;
         public int PlayerAttackDamage { get; private set; }
         [SerializeField] private int _initialHp;
@@ -44,7 +45,7 @@ namespace Manager
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             // Reset status if the loaded scene is TitleScene
-            if (scene.name != "DungeonStart") return;
+            if (scene.name != "DungeonStart" && !_isDebug) return;
             SetPlayerAttackDamage(_initialDamage);
             SetPlayerCurrentHp(_initialHp);
         }
