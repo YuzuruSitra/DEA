@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Gimmick;
 using Mission.Condition;
 using UnityEngine.AddressableAssets;
 using Mission.CreateScriptableObject;
@@ -9,12 +10,14 @@ namespace Mission
     {
         private const string MissionKeyHolder = "Assets/Addressables_Resources/MissionKeyHolder.asset";
         private readonly GameEventManager _gameEventManager;
+        private readonly RoomGimmickGenerator _roomGimmickGenerator;
         public List<IMissionCondition> MissionConditions { get; }
         
-        public MissionInitializer(GameEventManager gameEventManager)
+        public MissionInitializer(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator)
         {
             MissionConditions = new List<IMissionCondition>();
             _gameEventManager = gameEventManager;
+            _roomGimmickGenerator = roomGimmickGenerator;
             InitializeMissionConditions();
         }
 
@@ -39,7 +42,7 @@ namespace Mission
             }
             foreach (var t in dates._killMissionData)
             {
-                var killEnemiesMission = new EnemyKillMissionCondition(_gameEventManager, enemyPrefab, t);
+                var killEnemiesMission = new EnemyKillMissionCondition(_gameEventManager, _roomGimmickGenerator, enemyPrefab, t);
                 AddMissionList(killEnemiesMission);
             }
         }

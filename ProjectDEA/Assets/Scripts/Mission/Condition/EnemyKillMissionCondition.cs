@@ -1,3 +1,4 @@
+using Gimmick;
 using Mission.CreateScriptableObject;
 using Test.NPC;
 using UnityEngine;
@@ -11,19 +12,23 @@ namespace Mission.Condition
         public string MissionName { get; }
         public MissionType MissionType { get; }
         private readonly GameEventManager _gameEventManager;
+        private readonly RoomGimmickGenerator _roomGimmickGenerator;
         private readonly int _targetEnemyID;
         private readonly int _targetKillCount;
         private int _currentKillCount;
+        private EnemyKillMissionData.GenerateType _generateType;
         private readonly NpcController[] _enemyPrefab;
 
-        public EnemyKillMissionCondition(GameEventManager gameEventManager, NpcController[] enemyPrefab, EnemyKillMissionData.KillMissionStruct enemyKillMissionData)
+        public EnemyKillMissionCondition(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, NpcController[] enemyPrefab, EnemyKillMissionData.KillMissionStruct enemyKillMissionData)
         {
+            _gameEventManager = gameEventManager;
+            _roomGimmickGenerator = roomGimmickGenerator;
             _enemyPrefab = enemyPrefab;
             MissionName = enemyKillMissionData._missionName;
             MissionType = enemyKillMissionData._missionType;
-            _gameEventManager = gameEventManager;
             _targetEnemyID = enemyKillMissionData._enemyID;
             _currentKillCount = 0;
+            _generateType = enemyKillMissionData._generateType;
             _targetKillCount = enemyKillMissionData._targetKillCount;
         }
 
@@ -55,6 +60,7 @@ namespace Mission.Condition
         {
             // enemyKillMissionData.
             // _enemyPrefab[_targetEnemyID]
+            Debug.Log(_roomGimmickGenerator.ObeliskRoom);
         }
         
     }

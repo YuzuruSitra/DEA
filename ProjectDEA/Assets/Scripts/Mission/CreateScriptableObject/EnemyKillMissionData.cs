@@ -17,8 +17,16 @@ namespace Mission.CreateScriptableObject
             public MissionType _missionType;
             public int _enemyID;
             public int _targetKillCount;
+            public GenerateType _generateType;
         } 
         public KillMissionStruct[] _killMissionData;
+
+        public enum GenerateType
+        {
+            None,
+            RandomRoom,
+            PlayerRoom
+        }
         
     }
 }

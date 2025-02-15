@@ -1,3 +1,4 @@
+using Gimmick;
 using Mission.Condition;
 using UnityEngine;
 
@@ -8,9 +9,9 @@ namespace Mission
         private readonly MissionSelector _missionSelector;
         private IMissionCondition _currentMission;
 
-        public MissionStateHandler(GameEventManager gameEventManager)
+        public MissionStateHandler(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator)
         {
-            var missionInitializer = new MissionInitializer(gameEventManager);
+            var missionInitializer = new MissionInitializer(gameEventManager, roomGimmickGenerator);
             _missionSelector = new MissionSelector(missionInitializer);
         }
         

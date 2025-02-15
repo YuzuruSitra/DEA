@@ -48,6 +48,7 @@ namespace Gimmick
         [Header("特定のタイプの抽選確立")]
         [SerializeField] private int _typeProbability;
         
+        public int ObeliskRoom { get; private set; }
         
         public void InitialGenerateGimmicks(StageGenerator stageGenerator, NavMeshHandler navMeshHandler)
         {
@@ -65,8 +66,8 @@ namespace Gimmick
             }
             
             // ExitObeliskを生成
-            var exitObeliskRoom = CalcMostBigRoom(_roomCount, _roomInfo);
-            InsGimmick(exitObeliskRoom, _gimmickInfo[(int)GimmickKind.ExitObelisk]._prefab);
+            ObeliskRoom = CalcMostBigRoom(_roomCount, _roomInfo);
+            InsGimmick(ObeliskRoom, _gimmickInfo[(int)GimmickKind.ExitObelisk]._prefab);
 
             // ObeliskKeyOutを生成
             GenerateObeliskKeys(_roomCount);
