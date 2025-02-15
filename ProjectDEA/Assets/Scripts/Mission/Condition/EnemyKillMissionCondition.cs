@@ -1,6 +1,7 @@
 using Gimmick;
 using Mission.CreateScriptableObject;
 using Test.NPC;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Mission.Condition
@@ -16,17 +17,17 @@ namespace Mission.Condition
         private readonly int _targetEnemyID;
         private readonly int _targetKillCount;
         private int _currentKillCount;
-        private EnemyKillMissionData.GenerateType _generateType;
-        private readonly NpcController[] _enemyPrefab;
+        private readonly EnemyKillMissionData.GenerateType _generateType;
+        private readonly GameObject[] _enemyPrefab;
 
-        public EnemyKillMissionCondition(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, NpcController[] enemyPrefab, EnemyKillMissionData.KillMissionStruct enemyKillMissionData)
+        public EnemyKillMissionCondition(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, GameObject[] enemyPrefab, EnemyKillMissionData.KillMissionStruct enemyKillMissionData)
         {
             _gameEventManager = gameEventManager;
             _roomGimmickGenerator = roomGimmickGenerator;
             _enemyPrefab = enemyPrefab;
             MissionName = enemyKillMissionData._missionName;
             MissionType = enemyKillMissionData._missionType;
-            _targetEnemyID = enemyKillMissionData._enemyID;
+            _targetEnemyID = enemyKillMissionData._targetEnemyID;
             _currentKillCount = 0;
             _generateType = enemyKillMissionData._generateType;
             _targetKillCount = enemyKillMissionData._targetKillCount;
@@ -58,9 +59,32 @@ namespace Mission.Condition
 
         private void GenerateEnemy()
         {
-            // enemyKillMissionData.
-            // _enemyPrefab[_targetEnemyID]
-            Debug.Log(_roomGimmickGenerator.ObeliskRoom);
+            for (var i = 0; i < _targetKillCount; i++)
+            {
+                var targetEnemy = GetTargetEnemy();
+                var targetRoom = GetTargetRoom();
+                _roomGimmickGenerator.InsGimmick(targetRoom, targetEnemy);
+                Debug.Log("generate : " + targetEnemy.name + " Room : " + targetRoom);
+            }
+        }
+        
+        private GameObject GetTargetEnemy()
+        {
+            return _targetEnemyID switch
+            {
+                EnemyKillMissionData.NonTargetID => _enemyPrefab[Random.Range(0, _enemyPrefab.Length)],
+                _ => _enemyPrefab[_targetEnemyID]
+            };
+        }
+
+        private int GetTargetRoom()
+        {
+            return _generateType switch
+            {
+                EnemyKillMissionData.GenerateType.RandomRoom => _roomGimmickGenerator.GetRandomRoom,
+                EnemyKillMissionData.GenerateType.ObeliskRoom => _roomGimmickGenerator.GetObeliskRoom,
+                _ => 0
+            };
         }
         
     }

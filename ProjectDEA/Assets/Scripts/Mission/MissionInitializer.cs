@@ -35,14 +35,9 @@ namespace Mission
 
         private void InstanceKillEnemiesMission(EnemyKillMissionData dates)
         {
-            var enemyPrefab = dates._enemyPrefab;
-            for (var i = 0; i < enemyPrefab.Length; i++)
-            {
-                enemyPrefab[i].enemyID = i;
-            }
             foreach (var t in dates._killMissionData)
             {
-                var killEnemiesMission = new EnemyKillMissionCondition(_gameEventManager, _roomGimmickGenerator, enemyPrefab, t);
+                var killEnemiesMission = new EnemyKillMissionCondition(_gameEventManager, _roomGimmickGenerator, dates._enemyPrefab, t);
                 AddMissionList(killEnemiesMission);
             }
         }

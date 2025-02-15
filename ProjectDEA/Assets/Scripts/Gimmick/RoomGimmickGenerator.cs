@@ -48,7 +48,8 @@ namespace Gimmick
         [Header("特定のタイプの抽選確立")]
         [SerializeField] private int _typeProbability;
         
-        public int ObeliskRoom { get; private set; }
+        public int GetObeliskRoom { get; private set; }
+        public int GetRandomRoom => Random.Range(0, _roomCount);
         
         public void InitialGenerateGimmicks(StageGenerator stageGenerator, NavMeshHandler navMeshHandler)
         {
@@ -66,8 +67,8 @@ namespace Gimmick
             }
             
             // ExitObeliskを生成
-            ObeliskRoom = CalcMostBigRoom(_roomCount, _roomInfo);
-            InsGimmick(ObeliskRoom, _gimmickInfo[(int)GimmickKind.ExitObelisk]._prefab);
+            GetObeliskRoom = CalcMostBigRoom(_roomCount, _roomInfo);
+            InsGimmick(GetObeliskRoom, _gimmickInfo[(int)GimmickKind.ExitObelisk]._prefab);
 
             // ObeliskKeyOutを生成
             GenerateObeliskKeys(_roomCount);
@@ -166,7 +167,7 @@ namespace Gimmick
             }
         }
 
-        private void InsGimmick(int roomNum, GameObject insObj)
+        public void InsGimmick(int roomNum, GameObject insObj)
         {
             // 配置可能な範囲を計算
             var halfScaleX = insObj.transform.localScale.x / 2.0f;
