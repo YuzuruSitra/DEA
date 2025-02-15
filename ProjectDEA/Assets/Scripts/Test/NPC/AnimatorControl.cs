@@ -20,7 +20,8 @@ namespace Test.NPC
 		public enum AnimationTrigger
 		{
 			Attack,
-			OnDamaged
+			OnDamaged,
+			OnDead
 		}
 		
 		private readonly int _speedRatio = Animator.StringToHash("SpeedRatio");
@@ -32,7 +33,8 @@ namespace Test.NPC
 		private readonly Dictionary<AnimationTrigger, int> _triggerStateToHash = new()
 		{
 			{ AnimationTrigger.Attack, Animator.StringToHash("IsAttack") },
-			{ AnimationTrigger.OnDamaged, Animator.StringToHash("OnDamaged") }
+			{ AnimationTrigger.OnDamaged, Animator.StringToHash("OnDamaged") },
+			{ AnimationTrigger.OnDead, Animator.StringToHash("OnDead") }
 		};
 
 		private void Awake()

@@ -8,9 +8,7 @@ namespace Test.NPC
 		[SerializeField] private float _initialHealth;
 		public float MaxHealth { get; private set; }
 		public float CurrentHealth { get; private set; }
-
-		public delegate void HealthChanged(float currentHealth, float maxHealth);
-		public event HealthChanged OnHealthChanged;
+		public event Action<float> OnHealthChanged;
 		public event Action OnDeath;
 
 		private void Awake()
@@ -26,7 +24,7 @@ namespace Test.NPC
 			CurrentHealth -= amount;
 			CurrentHealth = Mathf.Clamp(CurrentHealth, 0, MaxHealth);
 
-			OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
+			OnHealthChanged?.Invoke(CurrentHealth);
 
 			if (CurrentHealth <= 0)
 			{
@@ -41,7 +39,7 @@ namespace Test.NPC
 			CurrentHealth += amount;
 			CurrentHealth = Mathf.Clamp(CurrentHealth, 0, MaxHealth);
 
-			OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
+			OnHealthChanged?.Invoke(CurrentHealth);
 		}
 	}
 }
