@@ -1,7 +1,5 @@
 using Gimmick;
 using Mission.CreateScriptableObject;
-using Test.NPC;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Mission.Condition
@@ -86,7 +84,6 @@ namespace Mission.Condition
                 _ => 0
             };
         }
-        
     }
 }
 

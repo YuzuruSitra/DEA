@@ -20,7 +20,7 @@ namespace Mission
         {
             if (_currentMission != null)
             {
-                _currentMission.StopTracking();
+                return;
             }
             
             _currentMission = _missionSelector.SelectMission();
