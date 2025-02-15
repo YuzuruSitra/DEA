@@ -61,8 +61,14 @@ namespace Test.NPC
 			AnimatorControl = GetComponent<AnimatorControl>();
 			MovementControl = GetComponent<MovementControl>();
 			HealthComponent = GetComponent<HealthComponent>();
+			HealthComponent.OnDeath += OnDeath;
 			NpcStatusComponent = GetComponent<NpcStatusComponent>();
 			_gameEventManager = GameObject.FindWithTag("GameEventManager").GetComponent<GameEventManager>();
+		}
+
+		private void OnDestroy()
+		{
+			HealthComponent.OnDeath -= OnDeath;
 		}
 
 		private void Update()
@@ -79,6 +85,12 @@ namespace Test.NPC
 				_nextEvaluationTime = Time.time + _actionCooldown;
 			}
 			_currentAction?.Execute(gameObject);
+		}
+		
+		public void OnGetDamage(int damage)
+		{
+			HealthComponent.TakeDamage(damage);
+			AnimatorControl.OnTriggerAnim(AnimatorControl.AnimationTrigger.OnDamaged);
 		}
 		
 		private void OnDeath()

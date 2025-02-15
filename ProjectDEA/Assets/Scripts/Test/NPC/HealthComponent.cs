@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Test.NPC
@@ -10,9 +11,7 @@ namespace Test.NPC
 
 		public delegate void HealthChanged(float currentHealth, float maxHealth);
 		public event HealthChanged OnHealthChanged;
-
-		public delegate void Died();
-		public event Died OnDeath;
+		public event Action OnDeath;
 
 		private void Awake()
 		{
@@ -31,7 +30,7 @@ namespace Test.NPC
 
 			if (CurrentHealth <= 0)
 			{
-				Die();
+				OnDeath?.Invoke();
 			}
 		}
 	
@@ -43,14 +42,6 @@ namespace Test.NPC
 			CurrentHealth = Mathf.Clamp(CurrentHealth, 0, MaxHealth);
 
 			OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
-		}
-	
-		private void Die()
-		{
-			//Debug.Log($"{gameObject.name} has died.");
-			OnDeath?.Invoke();
-			
-			gameObject.SetActive(false);
 		}
 	}
 }

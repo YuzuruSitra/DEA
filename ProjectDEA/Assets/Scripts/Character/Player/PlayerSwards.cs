@@ -1,7 +1,7 @@
-using Character.NPC.EnemyDragon;
 using Gimmick;
 using Manager;
 using Manager.Audio;
+using Test.NPC;
 using UnityEngine;
 
 namespace Character.Player
@@ -12,8 +12,8 @@ namespace Character.Player
         private Transform _playerTrn;
         private bool _oneHit;
         
-        private GameObject _currentDragon;
-        private NPC.EnemyDragon.DragonController _currentDragonController;
+        private GameObject _currentEnemy;
+        private NpcController _currentNpcController;
         
         private GameObject _currentBorn;
         private BornOut _currentBornOut;
@@ -49,15 +49,15 @@ namespace Character.Player
             }
             if (_oneHit) return;
             
-            if (other.CompareTag("EnemyDragon"))
+            if (other.CompareTag("Enemy"))
             {
-                if (_currentDragon != other.gameObject)
+                if (_currentEnemy != other.gameObject)
                 {
-                    _currentDragon = other.gameObject;
-                    _currentDragonController = _currentDragon.GetComponent<NPC.EnemyDragon.DragonController>();
+                    _currentEnemy = other.gameObject;
+                    _currentNpcController = _currentEnemy.GetComponent<NpcController>();
                 }
-
-                _currentDragonController.OnGetDamage(_playerStatusHandler.PlayerAttackDamage, _playerTrn.position);
+                if (_currentNpcController == null) return;
+                _currentNpcController.OnGetDamage(_playerStatusHandler.PlayerAttackDamage);
                 _soundHandler.PlaySe(_attackHitSeClip);
                 _oneHit = true;
             }
