@@ -21,7 +21,9 @@ namespace Mission
                 Debug.LogWarning("Mission list is empty.");
                 return null;
             }
-            var rnd = Random.Range(0, MissionList.Count);
+
+            var rnd = 0;
+            //var rnd = Random.Range(0, MissionList.Count);
             return MissionList[rnd];
         }
     }
