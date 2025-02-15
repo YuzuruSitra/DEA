@@ -1,4 +1,5 @@
 using System;
+using Mission;
 using Test.NPC.State;
 using UnityEngine;
 
@@ -6,10 +7,12 @@ namespace Test.NPC
 {
 	[RequireComponent(typeof(AnimatorControl), typeof(MovementControl), typeof(HealthComponent))]
 	[RequireComponent(typeof(NpcStatusComponent))]
-	public class NpcController : MonoBehaviour, INpc
+	public class NpcController : MonoBehaviour
 	{
 		[SerializeField] private int _enemyID;
 		public int EnemyID => _enemyID;
+		private GameEventManager _gameEventManager;
+		
 		[Serializable]
 		public struct BattleStateParameters
 		{
@@ -59,6 +62,7 @@ namespace Test.NPC
 			MovementControl = GetComponent<MovementControl>();
 			HealthComponent = GetComponent<HealthComponent>();
 			NpcStatusComponent = GetComponent<NpcStatusComponent>();
+			_gameEventManager = GameObject.FindWithTag("GameEventManager").GetComponent<GameEventManager>();
 		}
 
 		private void Update()
@@ -75,6 +79,12 @@ namespace Test.NPC
 				_nextEvaluationTime = Time.time + _actionCooldown;
 			}
 			_currentAction?.Execute(gameObject);
+		}
+		
+		private void OnDeath()
+		{
+			_gameEventManager.EnemyDefeated(EnemyID);
+			Destroy(gameObject);
 		}
 	}
 }

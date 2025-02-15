@@ -29,14 +29,6 @@ namespace Mission
         }
 
         public void EnemyDefeated(int enemyID) => OnEnemyDefeated?.Invoke(enemyID);
-        /*
-         使用例
-         private void OnDeath()
-        {
-            GameEventManager.Instance.EnemyDefeated(enemyID);
-            Destroy(gameObject);
-        } 
-        */
         public void GimmickCompleted(int gimmickID) => OnGimmickCompleted?.Invoke(gimmickID);
         public void ItemCollected(int itemID) => OnItemCollected?.Invoke(itemID);
     }
