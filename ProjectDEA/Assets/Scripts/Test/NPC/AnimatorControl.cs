@@ -21,6 +21,7 @@ namespace Test.NPC
 		{
 			Attack,
 			OnDamaged,
+			OnScream,
 			OnDead
 		}
 		
@@ -34,6 +35,7 @@ namespace Test.NPC
 		{
 			{ AnimationTrigger.Attack, Animator.StringToHash("IsAttack1") },
 			{ AnimationTrigger.OnDamaged, Animator.StringToHash("OnDamaged") },
+			{ AnimationTrigger.OnScream, Animator.StringToHash("OnScream") },
 			{ AnimationTrigger.OnDead, Animator.StringToHash("OnDead") }
 		};
 

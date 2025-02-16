@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Manager.Audio;
 using Mission;
 using Test.NPC.State;
 using UnityEngine;
@@ -12,7 +13,6 @@ namespace Test.NPC
 	public class NpcController : MonoBehaviour
 	{
 		[SerializeField] private int _enemyID;
-		public int EnemyID => _enemyID;
 		[SerializeField] private float _actionCooldown = 1.0f;
 		[SerializeField] private float _removedTime;
 		private GameEventManager _gameEventManager;
@@ -53,7 +53,7 @@ namespace Test.NPC
 		protected HealthComponent HealthComponent { get; private set; }
 		protected NpcStatusComponent NpcStatusComponent { get; private set; }
 		private EnemyHpGaugeHandler EnemyHpGaugeHandler { get; set; }
-		
+		private protected SoundHandler SoundHandler;
 		// 行動選択に関連する変数
 		private protected ActionSelector ActionSelector;
 		private IUtilityAction _currentAction;
@@ -71,6 +71,7 @@ namespace Test.NPC
 			HealthComponent.OnHealthChanged += EnemyHpGaugeHandler.ChangeGauge;
 			NpcStatusComponent = GetComponent<NpcStatusComponent>();
 			_gameEventManager = GameObject.FindWithTag("GameEventManager").GetComponent<GameEventManager>();
+			SoundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
 		}
 
 		private void OnDestroy()
@@ -105,7 +106,7 @@ namespace Test.NPC
 		
 		private void OnDeath()
 		{
-			_gameEventManager.EnemyDefeated(EnemyID);
+			_gameEventManager.EnemyDefeated(_enemyID);
 			AnimatorControl.OnTriggerAnim(AnimationTrigger.OnDead);
 			StartCoroutine(DelayedDestroy());
 		}

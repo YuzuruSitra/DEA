@@ -18,6 +18,9 @@ namespace Test.NPC.Dragon
 			public float _attackDuration;
 			public float _attackDamage;
 			public float _stopFactor;
+			public float _screamTime;
+			public float _screamWaitTime;
+			public AudioClip _screamAudio;
 		}
 		[SerializeField] private AttackParameters _attackParameters;
 		[Serializable]
@@ -47,7 +50,7 @@ namespace Test.NPC.Dragon
 
 		private void InitializeSubStates()
 		{
-			_subStates.Add(new AttackAction(transform, AnimatorControl, MovementControl, _attackParameters));
+			_subStates.Add(new AttackAction(transform, AnimatorControl, MovementControl, SoundHandler, _attackParameters));
 			_subStates.Add(new EscapeAction(transform, AnimatorControl, MovementControl, HealthComponent, _escapeParameters));
 		}
 		

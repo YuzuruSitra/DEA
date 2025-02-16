@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Test.NPC.Dragon;
 using UnityEngine;
 
 namespace Test.NPC.State
@@ -16,7 +15,7 @@ namespace Test.NPC.State
         private readonly Collider[] _searchResults = new Collider[1];
         private IBattleSubState _currentState;
         
-        public BattleState(Transform agent, List<IBattleSubState> subStates, DragonController.BattleStateParameters battleStateParameters)
+        public BattleState(Transform agent, List<IBattleSubState> subStates, NpcController.BattleStateParameters battleStateParameters)
         {
             _agent = agent;
             _battleStateSelector = new BattleStateSelector(subStates);
@@ -36,7 +35,7 @@ namespace Test.NPC.State
             var newState = _battleStateSelector.SelectBestAction();
             if (_currentState == newState) return;
             _currentState = newState;
-            _currentState.EnterState(_agent);
+            _currentState.EnterState(_target);
         }
 
         public void Execute(GameObject agent)
@@ -46,6 +45,7 @@ namespace Test.NPC.State
 
         public void ExitState()
         {
+            _currentState = null;
             _currentState?.ExitState();
         }
         

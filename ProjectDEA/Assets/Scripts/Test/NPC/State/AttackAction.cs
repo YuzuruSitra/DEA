@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Manager.Audio;
 using Test.NPC.Dragon;
 using UnityEngine;
 using static Test.NPC.AnimatorControl;
@@ -9,6 +10,7 @@ namespace Test.NPC.State
     {
         private readonly AnimatorControl _animatorControl;
         private readonly MovementControl _movementControl;
+        private readonly SoundHandler _soundHandler;
         private readonly Transform _agent;
 
         private readonly float _searchOffSetFactor;
@@ -19,6 +21,9 @@ namespace Test.NPC.State
         private readonly float _attackDuration;
         private readonly float _damage;
         private readonly float _stopFactor;
+        private readonly float _screamTime;
+        private readonly float _screamWaitTime;
+        private readonly AudioClip _screamAudio;
 
         private Transform _target;
         private readonly DebugDrawCd _debugDrawCd;
@@ -31,12 +36,16 @@ namespace Test.NPC.State
         private const float DamageCheckTime = 0.5f;
         private readonly Collider[] _searchResults = new Collider[1];
         private readonly Collider[] _attackResults = new Collider[1];
+        private float _remainScreamTime;
+        private float _remainScreamWaitTime;
+        private bool _isScream;
 
-        public AttackAction(Transform agent, AnimatorControl animatorControl, MovementControl movementControl, DragonController.AttackParameters attackParameters)
+        public AttackAction(Transform agent, AnimatorControl animatorControl, MovementControl movementControl, SoundHandler soundHandler, DragonController.AttackParameters attackParameters)
         {
             _agent = agent;
             _animatorControl = animatorControl;
             _movementControl = movementControl;
+            _soundHandler = soundHandler;
             _searchOffSetFactor = attackParameters._searchOffSetFactor;
             _searchRadius = attackParameters._searchRadius;
             _searchLayer = attackParameters._targetLayer;
@@ -45,6 +54,9 @@ namespace Test.NPC.State
             _attackDuration = attackParameters._attackDuration;
             _damage = attackParameters._attackDamage;
             _stopFactor = attackParameters._stopFactor;
+            _screamTime = attackParameters._screamTime;
+            _screamWaitTime = attackParameters._screamWaitTime;
+            _screamAudio = attackParameters._screamAudio;
             _debugDrawCd = new DebugDrawCd();
         }
         
@@ -59,12 +71,36 @@ namespace Test.NPC.State
             _attackCt = 0;
             _attackTimer = DamageCheckTime;
             _movementControl.ChangeMove(true);
+            _movementControl.MoveTo(target.position);
+            _animatorControl.ChangeAnimBool(AnimationBool.Moving);
             _isOnAnim = false;
+            _remainScreamTime = _screamTime;
+            _remainScreamWaitTime = _screamWaitTime;
+            _isScream = false;
         }
 
         public void Execute()
         {
             DrawDebugSpheres();
+            // 咆哮待機
+            if (_remainScreamWaitTime >= 0)
+            {
+                _remainScreamWaitTime -= Time.deltaTime;
+                return;
+            }
+            // 咆哮
+            if (_remainScreamTime >= 0)
+            {
+                if (!_isScream)
+                {
+                    _animatorControl.OnTriggerAnim(AnimationTrigger.OnScream);
+                    _soundHandler.PlaySe(_screamAudio);
+                    _isScream = true;
+                }
+                _movementControl.ChangeMove(false);
+                _remainScreamTime -= Time.deltaTime;
+                return;
+            }
 
             if (HandleCooldown()) return;
             
@@ -123,7 +159,6 @@ namespace Test.NPC.State
         {
             return FindTarget(_agent.position + _agent.forward * (_attackOffSetFactor * _stopFactor), _attackRadius) != null;
         }
-
 
         private void ExecuteDamageLoop()
         {
