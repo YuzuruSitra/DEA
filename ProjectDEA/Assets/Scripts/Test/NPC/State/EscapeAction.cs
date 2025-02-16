@@ -34,6 +34,7 @@ namespace Test.NPC.State
 		{
 			// 仮
 			var origin = _agent.position + _agent.forward * _searchOffSetFactor;
+			origin.y += BattleState.UpPadding;
 			var count = Physics.OverlapSphereNonAlloc(origin, _searchRadius, _searchResults, _targetLayer,
 				QueryTriggerInteraction.Ignore);
 			if (count <= 0) return 0f;

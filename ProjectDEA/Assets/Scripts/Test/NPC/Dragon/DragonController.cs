@@ -15,12 +15,15 @@ namespace Test.NPC.Dragon
 			public LayerMask _targetLayer;
 			public float _attackOffSetFactor;
 			public float _attackRadius;
+			public float _takeDamageWait;
 			public float _attackDuration;
-			public float _attackDamage;
+			public int _attackDamage;
+			public float _pushPower;
 			public float _stopFactor;
 			public float _screamTime;
 			public float _screamWaitTime;
 			public AudioClip _screamAudio;
+			public AudioClip _hitAudio;
 		}
 		[SerializeField] private AttackParameters _attackParameters;
 		[Serializable]

@@ -22,6 +22,7 @@ namespace Character.Player
         private Vector3 _inputDirection = Vector3.zero;
         private Vector3 _rotationDirection = Vector3.zero;
         private bool _isPushed;
+        private const float PushedDuration = 0.5f;
 
         // 重力の値
         [SerializeField] private float _gravity = -9.81f;
@@ -162,7 +163,12 @@ namespace Character.Player
             }
         }
 
-        public IEnumerator PushMoveUp(float duration, float initialUpwardForce)
+        public void LaunchPushForceMove(Vector3 direction, float initialUForce)
+        {
+            StartCoroutine(PushForceMove(direction, initialUForce));
+        }
+
+        private IEnumerator PushForceMove(Vector3 direction, float initialUForce)
         {
             if (_playerHpHandler.IsDie) yield break;
 
@@ -170,12 +176,12 @@ namespace Character.Player
             _playerAnimationCnt.SetIsDamaged(true);
             var elapsedTime = 0f;
 
-            while (elapsedTime < duration)
+            while (elapsedTime < PushedDuration)
             {
                 elapsedTime += Time.deltaTime;
-                var upwardForce = initialUpwardForce * (1 - (elapsedTime / duration));
-                var upwardVelocity = Vector3.up * upwardForce;
-                _controller.Move(upwardVelocity * Time.deltaTime);
+                var force = initialUForce * (1 - (elapsedTime / PushedDuration));
+                var velocity = direction * force;
+                _controller.Move(velocity * Time.deltaTime);
                 yield return null;
             }
 

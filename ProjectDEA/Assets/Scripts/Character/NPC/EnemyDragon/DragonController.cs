@@ -38,7 +38,6 @@ namespace Character.NPC.EnemyDragon
         [SerializeField] private float _deathWait;
         private WaitForSeconds _deathWaitForSeconds;
         private Coroutine _counterCoroutine;
-        private const float UpperDuration = 0.5f;
         public DragonAnimCtrl.AnimState AnimState => _states[CurrentState].CurrentAnim;
         public Action<int> ReceiveNewHp;
         public Action OnReviving;
@@ -174,7 +173,7 @@ namespace Character.NPC.EnemyDragon
             // プレイヤーのCharacterControllerを取得
             var playerHub = other.collider.GetComponent<PlayerClasHub>();
             if (playerHub == null) return;
-            StartCoroutine(playerHub.PlayerMover.PushMoveUp(UpperDuration, _launchPower));
+            playerHub.PlayerMover.LaunchPushForceMove(Vector3.up, _launchPower);
             playerHub.PlayerHpHandler.ReceiveDamage(_giveDamage);
             _soundHandler.PlaySe(_hitAudio);
         }
