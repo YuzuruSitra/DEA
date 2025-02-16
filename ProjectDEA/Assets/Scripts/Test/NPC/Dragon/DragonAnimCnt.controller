@@ -9,7 +9,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: IsAttack
+    m_ConditionEvent: IsAttack1
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 5218092334247647812}
@@ -59,7 +59,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: IsAttack
+    m_ConditionEvent: IsAttack1
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 5218092334247647812}
@@ -107,7 +107,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Die
+  m_Name: OnDead
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -149,7 +149,7 @@ AnimatorStateMachine:
     m_Position: {x: -110, y: 470, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3674605348338831373}
-    m_Position: {x: 170, y: 620, z: 0}
+    m_Position: {x: 140, y: 540, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -267,7 +267,7 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: IsAttack
+  - m_Name: IsAttack1
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -332,7 +332,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: IsAttack
+    m_ConditionEvent: IsAttack1
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 5218092334247647812}
@@ -474,7 +474,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Get Hit
+  m_Name: OnDamaged
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -504,7 +504,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Basic Attack
+  m_Name: IsAttack1
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:

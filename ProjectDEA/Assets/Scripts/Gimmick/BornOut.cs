@@ -1,5 +1,4 @@
 using System;
-using Character.NPC.EnemyDragon;
 using Item;
 using Manager;
 using Manager.MetaAI;
@@ -74,7 +73,7 @@ namespace Gimmick
         {
             if (!_isMoving) return;
             if (_hitOneTime) return;
-            if (!other.CompareTag("EnemyDragon")) return;
+            if (!other.CompareTag("Enemy")) return;
             if (_currentDragon != other.gameObject)
             {
                 _currentDragon = other.gameObject;

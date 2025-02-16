@@ -32,7 +32,7 @@ namespace Test.NPC
 		};
 		private readonly Dictionary<AnimationTrigger, int> _triggerStateToHash = new()
 		{
-			{ AnimationTrigger.Attack, Animator.StringToHash("IsAttack") },
+			{ AnimationTrigger.Attack, Animator.StringToHash("IsAttack1") },
 			{ AnimationTrigger.OnDamaged, Animator.StringToHash("OnDamaged") },
 			{ AnimationTrigger.OnDead, Animator.StringToHash("OnDead") }
 		};
@@ -60,7 +60,17 @@ namespace Test.NPC
 
 		public void OnTriggerAnim(AnimationTrigger newState)
 		{
-			_animator.SetTrigger(_triggerStateToHash[newState]);
+			var stateHash = _triggerStateToHash[newState];
+			var currentState = _animator.GetCurrentAnimatorStateInfo(0);
+			// すでに同じアニメーションが再生中なら最初から再生
+			if (currentState.shortNameHash == stateHash)
+			{
+				_animator.Play(stateHash, 0, 0.0f);
+			}
+			else
+			{
+				_animator.SetTrigger(stateHash);
+			}
 		}
 
 	}
