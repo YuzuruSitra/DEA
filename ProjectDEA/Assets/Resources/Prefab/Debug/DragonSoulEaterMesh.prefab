@@ -1055,7 +1055,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyID: 0
-  _actionCooldown: 2
+  _actionCooldown: 1
   _removedTime: 5
   _battleStateParameters:
     _searchOffSetFactor: 0.75
@@ -1086,7 +1086,6 @@ MonoBehaviour:
     _attackDuration: 3
     _attackDamage: 20
     _stopFactor: 0.6
-    _checkFrontLength: 3
   _escapeParameters:
     _searchOffSetFactor: 0.75
     _searchRadius: 3
