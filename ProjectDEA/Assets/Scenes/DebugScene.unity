@@ -335,11 +335,11 @@ PrefabInstance:
       objectReference: {fileID: 348625788}
     - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _maxGimmickPerRoom
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _minGimmickPerRoom
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4182065308262680302, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _player
@@ -2493,7 +2493,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  m_CustomBlends: {fileID: 0}
+  m_CustomBlends: {fileID: 11400000, guid: a94485a28eb92914a8118d2e7092a8b1, type: 2}
   m_CameraCutEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -2567,8 +2567,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2035400703}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.67559016, y: 0, z: 0, w: 0.7372774}
-  m_LocalPosition: {x: 2, y: 6.3149467, z: -0.3715587}
+  m_LocalRotation: {x: 0.46174863, y: 0, z: 0, w: 0.8870109}
+  m_LocalPosition: {x: 2, y: 4.9417176, z: -2.7674112}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

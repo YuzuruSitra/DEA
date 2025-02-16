@@ -24,6 +24,7 @@ namespace Mission
         
         public void DoMission()
         {
+            if (_missionStateHandler.DoingMission) return;
             _missionStateHandler.StartMission();
         }
     }

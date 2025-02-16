@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using Cinemachine;
-using Item;
 using Manager;
 using Manager.Audio;
+using Mission;
 using UnityEngine;
 
 namespace Gimmick
@@ -11,10 +11,11 @@ namespace Gimmick
     public class ExitObelisk : MonoBehaviour, IInteractable, IGimmickID
     {
         private DungeonLayerHandler _dungeonLayerHandler;
-        private InventoryHandler _inventoryHandler;
+        private MissionStateHandler _missionStateHandler;
 
         public const int NeededKeyCount = 4;
         private int _setKeyCount;
+        [SerializeField] private int _oneMissionGetKeyCount;
         [SerializeField] private CinemachineVirtualCameraBase _vCam;
         [SerializeField] private ParticleSystem _exitParticle;
         [SerializeField] private float _exitParticleDuration;
@@ -25,28 +26,34 @@ namespace Gimmick
         [SerializeField] private ParticleSystem[] _obeliskSideParticles;
         [SerializeField] private float _sideEffectWaitTime;
         private WaitForSeconds _sideEffectWaitForSeconds;
-        private const int Priority = 15;
+        private const int HighPriority = 15;
+        private const int LowPriority = 0;
         public event Action Destroyed;
-        public bool IsInteractable { get; private set; }
+        public bool IsInteractable => !_missionStateHandler.DoingMission;
         private bool _isCompleted;
         
         private SoundHandler _soundHandler;
         [SerializeField] private AudioClip _setKeyAudio;
         public GimmickID GimmickIdInfo { get; set; }
         public event Action<IGimmickID> Returned;
+        [SerializeField] private float _rewardCamWaitTime;
+        private WaitForSeconds _rewardCamWaitForSeconds;
         
         private void Start()
         {
             _dungeonLayerHandler = GameObject.FindWithTag("DungeonLayerHandler").GetComponent<DungeonLayerHandler>();
-            _inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
             _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
             _sideEffectWaitForSeconds = new WaitForSeconds(_sideEffectWaitTime);
-            _inventoryHandler.OnItemNumChanged += CheckItemInteractable;
+            _rewardCamWaitForSeconds = new WaitForSeconds(_rewardCamWaitTime);
+            var gameEventManager = GameObject.FindWithTag("GameEventManager").GetComponent<GameEventManager>();
+            var roomGimmickGenerator = GameObject.FindWithTag("GimmickGenerator").GetComponent<RoomGimmickGenerator>();
+            _missionStateHandler = new MissionStateHandler(gameEventManager, roomGimmickGenerator);
+            _missionStateHandler.OnMissionFinished += OnMissionCompleted;
         }
 
         private void OnDestroy()
-        { 
-            if (!_isCompleted) _inventoryHandler.OnItemNumChanged -= CheckItemInteractable;
+        {
+            _missionStateHandler.OnMissionFinished -= OnMissionCompleted;
         }
 
         public void Interact()
@@ -55,29 +62,40 @@ namespace Gimmick
             if (_setKeyCount >= NeededKeyCount)
             {
                 _isCompleted = true;
-                IsInteractable = false;
-                _inventoryHandler.OnItemNumChanged -= CheckItemInteractable;
-                _vCam.Priority = Priority;
+                _vCam.Priority = HighPriority;
                 StartCoroutine(ExitLayer());
                 return;
             }
 
-            if (_inventoryHandler.CurrentItemNum != (int)ItemKind.Key) return;
-            if (_setKeyCount >= _obeliskSides.Length) return;
-            StartCoroutine(SetKey());
-            _inventoryHandler.UseItem();
-            if (_rateTimeCoroutine != null) StopCoroutine(_rateTimeCoroutine);
-            _rateTimeCoroutine = StartCoroutine(ChangeParticleRateTime(_setKeyCount * ParticleFactor));
+            // ミッション開始
+            if (_missionStateHandler.DoingMission) return;
+            _missionStateHandler.StartMission();
+            // 音とかセリフを追加予定
         }
-        
-        private IEnumerator SetKey()
+
+        private void OnMissionCompleted()
         {
-            var currentKey = _setKeyCount;
-            _setKeyCount++;
-            _obeliskSideParticles[currentKey].Play();
+            if (_setKeyCount >= _obeliskSides.Length) return;
+            // 音とかセリフを追加予定
+            for (var i = 0; i < _oneMissionGetKeyCount; i++)
+            {
+                StartCoroutine(SetKey(_setKeyCount + i));
+            }
+            if (_rateTimeCoroutine != null) StopCoroutine(_rateTimeCoroutine);
+            _rateTimeCoroutine = StartCoroutine(ChangeParticleRateTime((_setKeyCount + _oneMissionGetKeyCount) * ParticleFactor));
+        }
+
+        private IEnumerator SetKey(int keyIndex)
+        {
+            _vCam.Priority = HighPriority;
+            yield return _rewardCamWaitForSeconds;
+            _obeliskSideParticles[keyIndex].Play();
             _soundHandler.PlaySe(_setKeyAudio);
             yield return _sideEffectWaitForSeconds;
-            _obeliskSides[currentKey].SetActive(true);
+            _obeliskSides[keyIndex].SetActive(true);
+            yield return _rewardCamWaitForSeconds;
+            _vCam.Priority = LowPriority;
+            _setKeyCount++;
         }
 
         private IEnumerator ExitLayer()
@@ -107,12 +125,6 @@ namespace Gimmick
             emission.rateOverTime = finalRate;
 
             _rateTimeCoroutine = null;
-        }
-
-        private void CheckItemInteractable()
-        {
-            if (_setKeyCount >= NeededKeyCount) return;
-            IsInteractable = _inventoryHandler.CurrentItemNum == (int)ItemKind.Key;
         }
         
     }

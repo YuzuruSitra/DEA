@@ -1,3 +1,4 @@
+using System;
 using Gimmick;
 using Mission.Condition;
 using UnityEngine;
@@ -8,6 +9,8 @@ namespace Mission
     {
         private readonly MissionSelector _missionSelector;
         private IMissionCondition _currentMission;
+        public bool DoingMission => _currentMission != null;
+        public Action OnMissionFinished;
 
         public MissionStateHandler(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator)
         {
@@ -18,11 +21,6 @@ namespace Mission
         // ミッションを特定の条件で開始させる。
         public void StartMission()
         {
-            if (_currentMission != null)
-            {
-                return;
-            }
-            
             _currentMission = _missionSelector.SelectMission();
             Debug.Log("Mission selected: " + _currentMission.MissionName);
             _currentMission.OnMissionCompleted += CompleteMission;
@@ -31,11 +29,12 @@ namespace Mission
 
         private void CompleteMission()
         {
-            Debug.Log("ミッション達成！");
             if (_currentMission == null) return;
             _currentMission.OnMissionCompleted -= CompleteMission;
             _currentMission.StopTracking();
             _currentMission = null;
+            OnMissionFinished?.Invoke();
+            Debug.Log("ミッション達成！");
         }
     }
 }

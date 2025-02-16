@@ -627,6 +627,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5921de8db235f4b42a5501f85316b013, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _oneMissionGetKeyCount: 2
   _vCam: {fileID: 6911818133899438971}
   _exitParticle: {fileID: 3566834156473401448}
   _exitParticleDuration: 2
@@ -642,6 +643,7 @@ MonoBehaviour:
   - {fileID: 2592622398594043930}
   _sideEffectWaitTime: 0.85
   _setKeyAudio: {fileID: 8300000, guid: d55c70b1db9e71949996ea1c73f087b4, type: 3}
+  _rewardCamWaitTime: 1.5
 --- !u!1 &4563023249573816172
 GameObject:
   m_ObjectHideFlags: 0
