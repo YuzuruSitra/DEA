@@ -13,7 +13,7 @@ namespace Test
             BakeNavMesh();
         }
 
-        public void BakeNavMesh()
+        private void BakeNavMesh()
         {
             _navMeshSurface.BuildNavMesh();
         }

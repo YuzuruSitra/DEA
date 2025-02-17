@@ -1,4 +1,4 @@
-using Character.NPC.Dragon;
+using Character.NPC.Enemy.Dragon;
 using UnityEngine;
 using AnimationBool = Character.NPC.AnimatorControl.AnimationBool;
 

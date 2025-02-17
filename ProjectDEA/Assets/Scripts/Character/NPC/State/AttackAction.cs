@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Character.NPC.Dragon;
+using Character.NPC.Enemy.Dragon;
 using Character.Player;
 using Manager.Audio;
 using Test;

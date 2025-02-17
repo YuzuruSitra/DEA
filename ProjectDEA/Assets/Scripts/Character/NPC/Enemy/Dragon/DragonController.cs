@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Character.NPC.State;
 using UnityEngine;
 
-namespace Character.NPC.Dragon
+namespace Character.NPC.Enemy.Dragon
 {
 	public class DragonController : NpcController
 	{
