@@ -17,7 +17,6 @@ namespace Gimmick
     public enum GimmickKind
     {
         ExitObelisk,
-        ObeliskKeyOut,
         TreasureBox,
         EnemySpawnArea,
         BornOut,

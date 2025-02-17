@@ -341,6 +341,66 @@ PrefabInstance:
       propertyPath: _minGimmickPerRoom
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[1]._kind
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[2]._kind
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[3]._kind
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[4]._kind
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[1]._prefab
+      value: 
+      objectReference: {fileID: 2093334473890586168, guid: 112178d8c0d9d2145b83920f66f58076, type: 3}
+    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[2]._prefab
+      value: 
+      objectReference: {fileID: 4311725633664620944, guid: 173eceee8b17353409c0f46d02fedf49, type: 3}
+    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[3]._prefab
+      value: 
+      objectReference: {fileID: 8537474661332395588, guid: e3ba9312425adf24db405ea02e487903, type: 3}
+    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[4]._prefab
+      value: 
+      objectReference: {fileID: 6572796558083460292, guid: ac1ddc18ed787584c909c0fce8a7ac07, type: 3}
+    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[1]._priorityType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[2]._priorityType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[3]._priorityType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[4]._priorityType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[1]._isRoomGenerate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[4]._isRoomGenerate
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4182065308262680302, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _player
       value: 
@@ -2567,8 +2627,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2035400703}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.46174863, y: 0, z: 0, w: 0.8870109}
-  m_LocalPosition: {x: 2, y: 4.9417176, z: -2.7674112}
+  m_LocalRotation: {x: 0.67559016, y: 0, z: 0, w: 0.7372774}
+  m_LocalPosition: {x: 2, y: 6.3149467, z: -0.3715587}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

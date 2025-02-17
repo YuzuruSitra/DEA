@@ -86,6 +86,7 @@ namespace Character.NPC.State
             _remainScreamTime = _screamTime;
             _remainScreamWaitTime = _screamWaitTime;
             _isScream = false;
+            _remainTakeDamageWait = _takeDamageWait;
         }
 
         public void Execute()
@@ -184,7 +185,6 @@ namespace Character.NPC.State
                 _movementControl.ChangeMove(false);
                 _animatorControl.OnTriggerAnim(AnimationTrigger.Attack);
                 _isAttacking = true;
-                _remainTakeDamageWait = _takeDamageWait;
             }
 
             if (_remainTakeDamageWait >= 0)
@@ -210,6 +210,7 @@ namespace Character.NPC.State
             _attackTimer = DamageCheckTime;
             _animatorControl.ChangeAnimBool(AnimationBool.Moving);
             _isAttacking = false;
+            _remainTakeDamageWait = _takeDamageWait;
         }
 
         private void ApplyDamageToTargets()

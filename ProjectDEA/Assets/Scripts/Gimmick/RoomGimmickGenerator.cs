@@ -36,7 +36,6 @@ namespace Gimmick
         
         [SerializeField] private int _maxGimmickPerRoom;
         [SerializeField] private int _minGimmickPerRoom;
-        private const int InsKeyCount = 4;
 
         private int _roomCount;
         private int[,] _roomInfo;
@@ -69,9 +68,6 @@ namespace Gimmick
             // ExitObeliskを生成
             GetObeliskRoom = CalcMostBigRoom(_roomCount, _roomInfo);
             InsGimmick(GetObeliskRoom, _gimmickInfo[(int)GimmickKind.ExitObelisk]._prefab);
-
-            // ObeliskKeyOutを生成
-            GenerateObeliskKeys(_roomCount);
             
             _onInitialized = true;
         }
@@ -152,19 +148,6 @@ namespace Gimmick
                 break;
             }
             iGimmickID.Returned -= RemoveRandomGimmickList;
-        }
-
-        private void GenerateObeliskKeys(int roomCount)
-        {
-            var obeliskKeyRooms = Enumerable.Range(0, roomCount)
-                                         .OrderBy(_ => Random.Range(0, roomCount))
-                                         .Take(InsKeyCount)
-                                         .ToArray();
-
-            foreach (var roomIndex in obeliskKeyRooms)
-            {
-                InsGimmick(roomIndex, _gimmickInfo[(int)GimmickKind.ObeliskKeyOut]._prefab);
-            }
         }
 
         public void InsGimmick(int roomNum, GameObject insObj)
