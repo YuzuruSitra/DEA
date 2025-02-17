@@ -3,18 +3,17 @@ using UnityEngine;
 
 namespace Character.NPC
 {
-	public class HealthComponent : MonoBehaviour
+	public class HealthComponent
 	{
-		[SerializeField] private float _initialHealth;
-		public float MaxHealth { get; private set; }
+		public float MaxHealth { get; }
 		public float CurrentHealth { get; private set; }
 		public event Action<float> OnHealthChanged;
 		public event Action OnDeath;
 
-		private void Awake()
+		public HealthComponent(float initialHealth)
 		{
-			MaxHealth = _initialHealth;
-			CurrentHealth = _initialHealth;
+			MaxHealth = initialHealth;
+			CurrentHealth = initialHealth;
 		}
 	
 		public void TakeDamage(float amount)

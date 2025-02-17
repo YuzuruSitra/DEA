@@ -988,10 +988,6 @@ GameObject:
   - component: {fileID: 5740653148594004889}
   - component: {fileID: 2121081288463665173}
   - component: {fileID: 4180545262542080950}
-  - component: {fileID: 3210217983400100827}
-  - component: {fileID: 4647738440313071649}
-  - component: {fileID: 6696733776616697662}
-  - component: {fileID: 6229291255627678059}
   - component: {fileID: 2408883854878495484}
   - component: {fileID: 3382884774452220408}
   - component: {fileID: 3523492171352511448}
@@ -1057,6 +1053,9 @@ MonoBehaviour:
   _enemyID: 0
   _actionCooldown: 1
   _removedTime: 5
+  _maxHealth: 150
+  _staminaChangeSecond: 2
+  _fullnessChangeSecond: 2
   _battleStateParameters:
     _searchOffSetFactor: 0.75
     _searchRadius: 3.25
@@ -1099,57 +1098,6 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 0
     _escapeRatio: 0
---- !u!114 &3210217983400100827
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4311725633664620944}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 269c5bba1dd394f4e845bb61de554139, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &4647738440313071649
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4311725633664620944}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bdb3c64ad5e134404bc54009df5312c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6696733776616697662
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4311725633664620944}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27e2e7216d8b143a4a75bef66a9b9236, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _initialHealth: 100
---- !u!114 &6229291255627678059
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4311725633664620944}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6d30b80758a846d7962d7ebd708fd9c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _staminaChangeSecond: 2
-  _fullnessChangeSecond: 2
 --- !u!114 &2408883854878495484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1498,7 +1446,7 @@ RectTransform:
   m_Father: {fileID: 6490731003064812021}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

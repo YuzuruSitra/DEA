@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using Character.NPC.State;
 using UnityEngine;
+using AnimationBool = Character.NPC.EnemyAnimHandler.AnimationBool;
+using AnimationTrigger = Character.NPC.EnemyAnimHandler.AnimationTrigger;
 
 namespace Character.NPC.Enemy.Dragon
 {
@@ -38,6 +40,19 @@ namespace Character.NPC.Enemy.Dragon
 		
 		private readonly List<IBattleSubState> _subStates = new();
 		
+		private readonly Dictionary<AnimationBool, int> _boolStateToHash = new()
+		{
+			{ AnimationBool.Moving, Animator.StringToHash("IsMoving") },
+			{ AnimationBool.Rest, Animator.StringToHash("IsRest") }
+		};
+		private readonly Dictionary<AnimationTrigger, int> _triggerStateToHash = new()
+		{
+			{ AnimationTrigger.Attack1, Animator.StringToHash("IsAttack1") },
+			{ AnimationTrigger.OnDamaged, Animator.StringToHash("OnDamaged") },
+			{ AnimationTrigger.OnScream, Animator.StringToHash("OnScream") },
+			{ AnimationTrigger.OnDead, Animator.StringToHash("OnDead") }
+		};
+		
 		protected override void Start()
 		{
 			base.Start();
@@ -45,16 +60,18 @@ namespace Character.NPC.Enemy.Dragon
 			// ActionSelector にドラゴン固有のアクションを追加
 			ActionSelector = new ActionSelector(new List<IUtilityAction>
 			{
-				new RestAction(transform, AnimatorControl, MovementControl, NpcStatusComponent, _restParameters),
-				new RoamingAction(transform, AnimatorControl, MovementControl, NpcStatusComponent, _roamingParameters),
+				new RestAction(transform, EnemyAnimHandler, MovementControl, NpcStatusComponent, _restParameters),
+				new RoamingAction(transform, EnemyAnimHandler, MovementControl, NpcStatusComponent, _roamingParameters),
 				new BattleState(transform, _subStates, _battleStateParameters)
 			});
+			// アニメーションのハッシュセット登録
+			EnemyAnimHandler.SetHashSet(_boolStateToHash, _triggerStateToHash);
 		}
 
 		private void InitializeSubStates()
 		{
-			_subStates.Add(new DragonAttack1(transform, AnimatorControl, MovementControl, SoundHandler, _paramAttack1));
-			_subStates.Add(new DragonEscape(transform, AnimatorControl, MovementControl, HealthComponent, _paramEscape));
+			_subStates.Add(new DragonAttack1(transform, EnemyAnimHandler, MovementControl, SoundHandler, _paramAttack1));
+			_subStates.Add(new DragonEscape(transform, EnemyAnimHandler, MovementControl, HealthComponent, _paramEscape));
 		}
 		
 	}

@@ -9,7 +9,7 @@ namespace Character.NPC.Enemy.Slime
 {
     public class SlimeAttack1 : IBattleSubState
     {
-        private readonly AnimatorControl _animatorControl;
+        private readonly EnemyAnimHandler _enemyAnimHandler;
         private readonly MovementControl _movementControl;
         private readonly SoundHandler _soundHandler;
         private readonly Transform _agent;
@@ -39,10 +39,10 @@ namespace Character.NPC.Enemy.Slime
         private readonly Collider[] _attackResults = new Collider[1];
         private float _remainTakeDamageWait;
 
-        public SlimeAttack1(Transform agent, AnimatorControl animatorControl, MovementControl movementControl, SoundHandler soundHandler, SlimeController.ParamAttack1 paramAttack1)
+        public SlimeAttack1(Transform agent, EnemyAnimHandler enemyAnimHandler, MovementControl movementControl, SoundHandler soundHandler, SlimeController.ParamAttack1 paramAttack1)
         {
             _agent = agent;
-            _animatorControl = animatorControl;
+            _enemyAnimHandler = enemyAnimHandler;
             _movementControl = movementControl;
             _soundHandler = soundHandler;
             _searchOffSetFactor = paramAttack1._searchOffSetFactor;
@@ -71,7 +71,7 @@ namespace Character.NPC.Enemy.Slime
             _attackTimer = DamageCheckTime;
             _movementControl.ChangeMove(true);
             _movementControl.MoveTo(target.position);
-            _animatorControl.ChangeAnimBool(AnimatorControl.AnimationBool.Moving);
+            _enemyAnimHandler.ChangeAnimBool(EnemyAnimHandler.AnimationBool.Moving);
             _isAttacking = false;
             _remainTakeDamageWait = _takeDamageWait;
         }
@@ -91,7 +91,7 @@ namespace Character.NPC.Enemy.Slime
             {
                 _movementControl.ChangeMove(true);
                 _movementControl.MoveTo(_target.position);
-                _animatorControl.ChangeAnimBool(AnimatorControl.AnimationBool.Moving);
+                _enemyAnimHandler.ChangeAnimBool(EnemyAnimHandler.AnimationBool.Moving);
                 if (_isAttacking)
                 {
                     ResetAttack();
@@ -150,7 +150,7 @@ namespace Character.NPC.Enemy.Slime
             if (!_isAttacking)
             {
                 _movementControl.ChangeMove(false);
-                _animatorControl.OnTriggerAnim(AnimatorControl.AnimationTrigger.Attack);
+                _enemyAnimHandler.OnTriggerAnim(EnemyAnimHandler.AnimationTrigger.Attack1);
                 _isAttacking = true;
             }
 
@@ -175,7 +175,7 @@ namespace Character.NPC.Enemy.Slime
             _isOnCooldown = true;
             _attackCt = _attackDuration;
             _attackTimer = DamageCheckTime;
-            _animatorControl.ChangeAnimBool(AnimatorControl.AnimationBool.Moving);
+            _enemyAnimHandler.ChangeAnimBool(EnemyAnimHandler.AnimationBool.Moving);
             _isAttacking = false;
             _remainTakeDamageWait = _takeDamageWait;
         }

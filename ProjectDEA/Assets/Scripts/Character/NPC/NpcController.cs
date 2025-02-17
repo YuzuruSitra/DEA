@@ -4,19 +4,22 @@ using Character.NPC.State;
 using Manager.Audio;
 using Mission;
 using UnityEngine;
-using AnimationTrigger = Character.NPC.AnimatorControl.AnimationTrigger;
+using UnityEngine.AI;
+using AnimationTrigger = Character.NPC.EnemyAnimHandler.AnimationTrigger;
 
 namespace Character.NPC
 {
-	[RequireComponent(typeof(AnimatorControl), typeof(MovementControl), typeof(HealthComponent))]
-	[RequireComponent(typeof(NpcStatusComponent)), RequireComponent(typeof(EnemyHpGaugeHandler))]
+	[RequireComponent(typeof(EnemyHpGaugeHandler))]
 	public class NpcController : MonoBehaviour
 	{
 		[SerializeField] private int _enemyID;
-		[SerializeField] private float _actionCooldown = 1.0f;
+		[SerializeField] private float _actionCooldown;
 		[SerializeField] private float _removedTime;
+		[SerializeField] private float _maxHealth;
+		[SerializeField] private float _staminaChangeSecond;
+		[SerializeField] private float _fullnessChangeSecond;
 		private GameEventManager _gameEventManager;
-		
+		private NavMeshAgent _agent;
 		[Serializable]
 		public struct BattleStateParameters
 		{
@@ -48,7 +51,7 @@ namespace Character.NPC
 		}
 		[SerializeField] protected RestParameters _restParameters;
 		// 基底クラスで管理されるコンポーネント
-		protected AnimatorControl AnimatorControl { get; private set; }
+		protected EnemyAnimHandler EnemyAnimHandler { get; private set; }
 		protected MovementControl MovementControl { get; private set; }
 		protected HealthComponent HealthComponent { get; private set; }
 		protected NpcStatusComponent NpcStatusComponent { get; private set; }
@@ -61,15 +64,17 @@ namespace Character.NPC
 
 		protected virtual void Start()
 		{
-			AnimatorControl = GetComponent<AnimatorControl>();
-			MovementControl = GetComponent<MovementControl>();
-			HealthComponent = GetComponent<HealthComponent>();
+			var animator = GetComponent<Animator>();
+			_agent = GetComponent<NavMeshAgent>();
+			EnemyAnimHandler = new EnemyAnimHandler(animator);
+			MovementControl = new MovementControl(_agent);
+			HealthComponent = new HealthComponent(_maxHealth);
+			NpcStatusComponent = new NpcStatusComponent(_staminaChangeSecond, _fullnessChangeSecond);
 			EnemyHpGaugeHandler = GetComponent<EnemyHpGaugeHandler>();
 			
 			HealthComponent.OnDeath += OnDeath;
 			EnemyHpGaugeHandler.InitialSet(HealthComponent.MaxHealth, HealthComponent.CurrentHealth);
 			HealthComponent.OnHealthChanged += EnemyHpGaugeHandler.ChangeGauge;
-			NpcStatusComponent = GetComponent<NpcStatusComponent>();
 			_gameEventManager = GameObject.FindWithTag("GameEventManager").GetComponent<GameEventManager>();
 			SoundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
 		}
@@ -83,6 +88,8 @@ namespace Character.NPC
 		private void Update()
 		{
 			if (HealthComponent.CurrentHealth <= 0) return;
+			
+			EnemyAnimHandler.CalcSpeedRatio(_agent.velocity.magnitude, _agent.speed);
 			
 			if (Time.time >= _nextEvaluationTime)
 			{
@@ -101,13 +108,14 @@ namespace Character.NPC
 		public void OnGetDamage(int damage)
 		{
 			HealthComponent.TakeDamage(damage);
-			AnimatorControl.OnTriggerAnim(AnimationTrigger.OnDamaged);
+			EnemyAnimHandler.OnTriggerAnim(AnimationTrigger.OnDamaged);
 		}
 		
 		private void OnDeath()
 		{
 			_gameEventManager.EnemyDefeated(_enemyID);
-			AnimatorControl.OnTriggerAnim(AnimationTrigger.OnDead);
+			MovementControl.ChangeMove(false);
+			EnemyAnimHandler.OnTriggerAnim(AnimationTrigger.OnDead);
 			StartCoroutine(DelayedDestroy());
 		}
 		

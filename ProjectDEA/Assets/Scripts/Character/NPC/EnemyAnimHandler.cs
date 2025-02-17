@@ -1,13 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace Character.NPC
 {
-	public class AnimatorControl : MonoBehaviour
+	public class EnemyAnimHandler
 	{
-		private Animator _animator;
-		private NavMeshAgent _agent;
+		private readonly Animator _animator;
 
 		public enum AnimationBool
 		{
@@ -19,36 +17,31 @@ namespace Character.NPC
 
 		public enum AnimationTrigger
 		{
-			Attack,
+			Attack1,
 			OnDamaged,
 			OnScream,
 			OnDead
 		}
 		
 		private readonly int _speedRatio = Animator.StringToHash("SpeedRatio");
-		private readonly Dictionary<AnimationBool, int> _boolStateToHash = new()
-		{
-			{ AnimationBool.Moving, Animator.StringToHash("IsMoving") },
-			{ AnimationBool.Rest, Animator.StringToHash("IsRest") }
-		};
-		private readonly Dictionary<AnimationTrigger, int> _triggerStateToHash = new()
-		{
-			{ AnimationTrigger.Attack, Animator.StringToHash("IsAttack1") },
-			{ AnimationTrigger.OnDamaged, Animator.StringToHash("OnDamaged") },
-			{ AnimationTrigger.OnScream, Animator.StringToHash("OnScream") },
-			{ AnimationTrigger.OnDead, Animator.StringToHash("OnDead") }
-		};
+		private Dictionary<AnimationBool, int> _boolStateToHash;
+		private Dictionary<AnimationTrigger, int> _triggerStateToHash;
 
-		private void Awake()
+		public EnemyAnimHandler(Animator animator)
 		{
-			_animator = GetComponent<Animator>();
-			_agent = GetComponent<NavMeshAgent>();
+			_animator = animator;
 		}
 
-		private void Update()
+		public void SetHashSet(Dictionary<AnimationBool, int> boolStateToHash, Dictionary<AnimationTrigger, int> triggerStateToHash)
+		{
+			_boolStateToHash = boolStateToHash;
+			_triggerStateToHash = triggerStateToHash;
+		}
+
+		public void CalcSpeedRatio(float velocity, float speed)
 		{
 			if (_currentState != AnimationBool.Moving) return;
-			var speedRatio = _agent.velocity.magnitude / _agent.speed;
+			var speedRatio = velocity / speed;
 			_animator.SetFloat(_speedRatio, speedRatio);
 		}
 

@@ -2,23 +2,24 @@ using UnityEngine;
 
 namespace Character.NPC
 {
-    public class NpcStatusComponent : MonoBehaviour
+    public class NpcStatusComponent
     {
         private const int CalcTiming = 1;
         
-        [SerializeField] private float _staminaChangeSecond;
+        private readonly float _staminaChangeSecond;
+        private readonly float _fullnessChangeSecond;
         public const float MaxStamina = 100f;
         public float CurrentStamina { get; private set; }
         private float _staminaConsumeTimer;
         private float _staminaRecoverTimer;
-        
-        [SerializeField] private float _fullnessChangeSecond;
         public const float MaxFullness = 100f;
         public float CurrentFullness { get; private set; }
         private float _fullnessConsumeTimer;
-        
-        private void Start()
+
+        public NpcStatusComponent(float staminaChangeSecond, float fullnessChangeSecond)
         {
+            _staminaChangeSecond = staminaChangeSecond;
+            _fullnessChangeSecond = fullnessChangeSecond;
             CurrentStamina = Random.Range(0, MaxStamina);
             CurrentFullness = Random.Range(0, MaxFullness);
         }

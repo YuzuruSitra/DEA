@@ -4,13 +4,13 @@ using Character.Player;
 using Manager.Audio;
 using Test;
 using UnityEngine;
-using static Character.NPC.AnimatorControl;
+using static Character.NPC.EnemyAnimHandler;
 
 namespace Character.NPC.Enemy.Dragon
 {
     public class DragonAttack1 : IBattleSubState
     {
-        private readonly AnimatorControl _animatorControl;
+        private readonly EnemyAnimHandler _enemyAnimHandler;
         private readonly MovementControl _movementControl;
         private readonly SoundHandler _soundHandler;
         private readonly Transform _agent;
@@ -46,10 +46,10 @@ namespace Character.NPC.Enemy.Dragon
         private float _remainScreamWaitTime;
         private bool _isScream;
 
-        public DragonAttack1(Transform agent, AnimatorControl animatorControl, MovementControl movementControl, SoundHandler soundHandler, DragonController.ParamAttack1 paramAttack1)
+        public DragonAttack1(Transform agent, EnemyAnimHandler enemyAnimHandler, MovementControl movementControl, SoundHandler soundHandler, DragonController.ParamAttack1 paramAttack1)
         {
             _agent = agent;
-            _animatorControl = animatorControl;
+            _enemyAnimHandler = enemyAnimHandler;
             _movementControl = movementControl;
             _soundHandler = soundHandler;
             _searchOffSetFactor = paramAttack1._searchOffSetFactor;
@@ -81,7 +81,7 @@ namespace Character.NPC.Enemy.Dragon
             _attackTimer = DamageCheckTime;
             _movementControl.ChangeMove(true);
             _movementControl.MoveTo(target.position);
-            _animatorControl.ChangeAnimBool(AnimationBool.Moving);
+            _enemyAnimHandler.ChangeAnimBool(AnimationBool.Moving);
             _isAttacking = false;
             _remainScreamTime = _screamTime;
             _remainScreamWaitTime = _screamWaitTime;
@@ -103,7 +103,7 @@ namespace Character.NPC.Enemy.Dragon
             {
                 if (!_isScream)
                 {
-                    _animatorControl.OnTriggerAnim(AnimationTrigger.OnScream);
+                    _enemyAnimHandler.OnTriggerAnim(AnimationTrigger.OnScream);
                     _soundHandler.PlaySe(_screamAudio);
                     _isScream = true;
                 }
@@ -124,7 +124,7 @@ namespace Character.NPC.Enemy.Dragon
             {
                 _movementControl.ChangeMove(true);
                 _movementControl.MoveTo(_target.position);
-                _animatorControl.ChangeAnimBool(AnimationBool.Moving);
+                _enemyAnimHandler.ChangeAnimBool(AnimationBool.Moving);
                 if (_isAttacking)
                 {
                     ResetAttack();
@@ -183,7 +183,7 @@ namespace Character.NPC.Enemy.Dragon
             if (!_isAttacking)
             {
                 _movementControl.ChangeMove(false);
-                _animatorControl.OnTriggerAnim(AnimationTrigger.Attack);
+                _enemyAnimHandler.OnTriggerAnim(AnimationTrigger.Attack1);
                 _isAttacking = true;
             }
 
@@ -208,7 +208,7 @@ namespace Character.NPC.Enemy.Dragon
             _isOnCooldown = true;
             _attackCt = _attackDuration;
             _attackTimer = DamageCheckTime;
-            _animatorControl.ChangeAnimBool(AnimationBool.Moving);
+            _enemyAnimHandler.ChangeAnimBool(AnimationBool.Moving);
             _isAttacking = false;
             _remainTakeDamageWait = _takeDamageWait;
         }

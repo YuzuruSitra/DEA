@@ -1,5 +1,5 @@
 using UnityEngine;
-using AnimationBool = Character.NPC.AnimatorControl.AnimationBool;
+using AnimationBool = Character.NPC.EnemyAnimHandler.AnimationBool;
 
 namespace Character.NPC.State
 {
@@ -8,7 +8,7 @@ namespace Character.NPC.State
         public UtilityActionType ActionType => UtilityActionType.Roaming;
 
         // Configuration
-        private readonly AnimatorControl _animatorControl;
+        private readonly EnemyAnimHandler _enemyAnimHandler;
         private readonly MovementControl _movementControl;
         private readonly NpcStatusComponent _npcStatusComponent;
         private readonly Transform _agent;
@@ -22,10 +22,10 @@ namespace Character.NPC.State
         private readonly float _staminaW;
         private readonly float _bias;
         
-        public RoamingAction(Transform agent, AnimatorControl animatorControl, MovementControl movementControl, NpcStatusComponent npcStatusComponent, NpcController.RoamingParameters roamingParameters)
+        public RoamingAction(Transform agent, EnemyAnimHandler enemyAnimHandler, MovementControl movementControl, NpcStatusComponent npcStatusComponent, NpcController.RoamingParameters roamingParameters)
         {
             _agent = agent;
-            _animatorControl = animatorControl;
+            _enemyAnimHandler = enemyAnimHandler;
             _movementControl = movementControl;
             _npcStatusComponent = npcStatusComponent;
             _intervalTimeMax = roamingParameters._intervalTimeMax;
@@ -45,7 +45,7 @@ namespace Character.NPC.State
 
         public void EnterState()
         {
-            _animatorControl.ChangeAnimBool(AnimationBool.Moving);
+            _enemyAnimHandler.ChangeAnimBool(AnimationBool.Moving);
             SetNewRoamingDestination();
             SetRoamingTimer();
         }

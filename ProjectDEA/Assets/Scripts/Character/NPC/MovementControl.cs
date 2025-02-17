@@ -3,13 +3,13 @@ using UnityEngine.AI;
 
 namespace Character.NPC
 {
-	public class MovementControl : MonoBehaviour
+	public class MovementControl
 	{
-		private NavMeshAgent _agent;
+		private readonly NavMeshAgent _agent;
 
-		private void Awake()
+		public MovementControl(NavMeshAgent agent)
 		{
-			_agent = GetComponent<NavMeshAgent>();
+			_agent = agent;
 		}
 
 		public void MoveTo(Vector3 destination)

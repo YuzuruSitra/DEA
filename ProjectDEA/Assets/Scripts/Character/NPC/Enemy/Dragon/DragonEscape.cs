@@ -5,7 +5,7 @@ namespace Character.NPC.Enemy.Dragon
 {
 	public class DragonEscape : IBattleSubState
 	{
-		private readonly AnimatorControl _animatorControl;
+		private readonly EnemyAnimHandler _enemyAnimHandler;
 		private readonly MovementControl _movementControl;
 		private readonly HealthComponent _healthComponent;
 		private readonly Transform _agent;
@@ -18,10 +18,10 @@ namespace Character.NPC.Enemy.Dragon
 		
 		private readonly Collider[] _searchResults = new Collider[1];
 
-		public DragonEscape(Transform agent, AnimatorControl animatorControl, MovementControl movementControl, HealthComponent healthComponent, DragonController.ParamEscape paramEscape)
+		public DragonEscape(Transform agent, EnemyAnimHandler enemyAnimHandler, MovementControl movementControl, HealthComponent healthComponent, DragonController.ParamEscape paramEscape)
 		{
 			_agent = agent;
-			_animatorControl  = animatorControl;
+			_enemyAnimHandler  = enemyAnimHandler;
 			_movementControl = movementControl;
 			_healthComponent  = healthComponent;
 			_searchOffSetFactor = paramEscape._searchOffSetFactor;
@@ -48,7 +48,7 @@ namespace Character.NPC.Enemy.Dragon
 			var targetPos = CalcDestination();
 			_movementControl.MoveTo(targetPos);
 			_movementControl.ChangeMove(true);
-			_animatorControl.ChangeAnimBool(AnimatorControl.AnimationBool.Moving);
+			_enemyAnimHandler.ChangeAnimBool(EnemyAnimHandler.AnimationBool.Moving);
 		}
 
 		public void Execute()

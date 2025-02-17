@@ -1,6 +1,6 @@
 using Character.NPC.Enemy.Dragon;
 using UnityEngine;
-using AnimationBool = Character.NPC.AnimatorControl.AnimationBool;
+using AnimationBool = Character.NPC.EnemyAnimHandler.AnimationBool;
 
 namespace Character.NPC.State
 {
@@ -9,7 +9,7 @@ namespace Character.NPC.State
         public UtilityActionType ActionType => UtilityActionType.Rest;
 
         // Configuration
-        private readonly AnimatorControl _animatorControl;
+        private readonly EnemyAnimHandler _enemyAnimHandler;
         private readonly MovementControl _movementControl;
         private readonly NpcStatusComponent _npcStatusComponent;
         private readonly Transform _agent;
@@ -24,10 +24,10 @@ namespace Character.NPC.State
         private const int ResetTargetStamina = -1;
         private float _currentWaitTime;
         
-        public RestAction(Transform agent, AnimatorControl animatorControl, MovementControl movementControl, NpcStatusComponent npcStatusComponent, DragonController.RestParameters restParameters)
+        public RestAction(Transform agent, EnemyAnimHandler enemyAnimHandler, MovementControl movementControl, NpcStatusComponent npcStatusComponent, DragonController.RestParameters restParameters)
         {
             _agent = agent;
-            _animatorControl = animatorControl;
+            _enemyAnimHandler = enemyAnimHandler;
             _movementControl = movementControl;
             _npcStatusComponent = npcStatusComponent;
             _restSearchRange = restParameters._restSearchRange;
@@ -49,7 +49,7 @@ namespace Character.NPC.State
         {
             _targetStamina = (int)Mathf.Min(_npcStatusComponent.CurrentStamina + _targetAddStamina, NpcStatusComponent.MaxStamina);
             SetNewRoamingDestination();
-            _animatorControl.ChangeAnimBool(AnimationBool.Moving);
+            _enemyAnimHandler.ChangeAnimBool(AnimationBool.Moving);
             _currentWaitTime = _waitSleepTime;
         }
 
@@ -63,7 +63,7 @@ namespace Character.NPC.State
                 return;
             }
             _npcStatusComponent.RecoverStamina();
-            _animatorControl.ChangeAnimBool(AnimationBool.Rest);
+            _enemyAnimHandler.ChangeAnimBool(AnimationBool.Rest);
         }
         
         public void ExitState()
