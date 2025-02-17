@@ -1,14 +1,14 @@
 using System.Collections.Generic;
-using Character.NPC.Enemy.Dragon;
+using Character.NPC.State;
 using Character.Player;
 using Manager.Audio;
 using Test;
 using UnityEngine;
 using static Character.NPC.AnimatorControl;
 
-namespace Character.NPC.State
+namespace Character.NPC.Enemy.Dragon
 {
-    public class AttackAction : IBattleSubState
+    public class DragonAttack1 : IBattleSubState
     {
         private readonly AnimatorControl _animatorControl;
         private readonly MovementControl _movementControl;
@@ -46,26 +46,26 @@ namespace Character.NPC.State
         private float _remainScreamWaitTime;
         private bool _isScream;
 
-        public AttackAction(Transform agent, AnimatorControl animatorControl, MovementControl movementControl, SoundHandler soundHandler, DragonController.AttackParameters attackParameters)
+        public DragonAttack1(Transform agent, AnimatorControl animatorControl, MovementControl movementControl, SoundHandler soundHandler, DragonController.ParamAttack1 paramAttack1)
         {
             _agent = agent;
             _animatorControl = animatorControl;
             _movementControl = movementControl;
             _soundHandler = soundHandler;
-            _searchOffSetFactor = attackParameters._searchOffSetFactor;
-            _searchRadius = attackParameters._searchRadius;
-            _searchLayer = attackParameters._targetLayer;
-            _attackOffSetFactor = attackParameters._attackOffSetFactor;
-            _attackRadius = attackParameters._attackRadius;
-            _takeDamageWait = attackParameters._takeDamageWait;
-            _attackDuration = attackParameters._attackDuration;
-            _attackDamage = attackParameters._attackDamage;
-            _pushPower = attackParameters._pushPower;
-            _stopFactor = attackParameters._stopFactor;
-            _screamTime = attackParameters._screamTime;
-            _screamWaitTime = attackParameters._screamWaitTime;
-            _screamAudio = attackParameters._screamAudio;
-            _hitAudio = attackParameters._hitAudio;
+            _searchOffSetFactor = paramAttack1._searchOffSetFactor;
+            _searchRadius = paramAttack1._searchRadius;
+            _searchLayer = paramAttack1._targetLayer;
+            _attackOffSetFactor = paramAttack1._attackOffSetFactor;
+            _attackRadius = paramAttack1._attackRadius;
+            _takeDamageWait = paramAttack1._takeDamageWait;
+            _attackDuration = paramAttack1._attackDuration;
+            _attackDamage = paramAttack1._attackDamage;
+            _pushPower = paramAttack1._pushPower;
+            _stopFactor = paramAttack1._stopFactor;
+            _screamTime = paramAttack1._screamTime;
+            _screamWaitTime = paramAttack1._screamWaitTime;
+            _screamAudio = paramAttack1._screamAudio;
+            _hitAudio = paramAttack1._hitAudio;
             _debugDrawCd = new DebugDrawCd();
         }
         

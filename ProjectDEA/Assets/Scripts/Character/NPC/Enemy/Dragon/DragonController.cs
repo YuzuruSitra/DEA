@@ -8,7 +8,7 @@ namespace Character.NPC.Enemy.Dragon
 	public class DragonController : NpcController
 	{
 		[Serializable]
-		public struct AttackParameters
+		public struct ParamAttack1
 		{
 			public float _searchOffSetFactor;
 			public float _searchRadius;
@@ -25,16 +25,16 @@ namespace Character.NPC.Enemy.Dragon
 			public AudioClip _screamAudio;
 			public AudioClip _hitAudio;
 		}
-		[SerializeField] private AttackParameters _attackParameters;
+		[SerializeField] private ParamAttack1 _paramAttack1;
 		[Serializable]
-		public struct EscapeParameters
+		public struct ParamEscape
 		{
 			public float _searchOffSetFactor;
 			public float _searchRadius;
 			public LayerMask _targetLayer;
 			public float _escapeRatio;
 		}
-		[SerializeField] private EscapeParameters _escapeParameters;
+		[SerializeField] private ParamEscape _paramEscape;
 		
 		private readonly List<IBattleSubState> _subStates = new();
 		
@@ -53,8 +53,8 @@ namespace Character.NPC.Enemy.Dragon
 
 		private void InitializeSubStates()
 		{
-			_subStates.Add(new AttackAction(transform, AnimatorControl, MovementControl, SoundHandler, _attackParameters));
-			_subStates.Add(new EscapeAction(transform, AnimatorControl, MovementControl, HealthComponent, _escapeParameters));
+			_subStates.Add(new DragonAttack1(transform, AnimatorControl, MovementControl, SoundHandler, _paramAttack1));
+			_subStates.Add(new DragonEscape(transform, AnimatorControl, MovementControl, HealthComponent, _paramEscape));
 		}
 		
 	}

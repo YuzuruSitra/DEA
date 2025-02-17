@@ -1,4 +1,3 @@
-using Character.NPC.Enemy.Dragon;
 using UnityEngine;
 using AnimationBool = Character.NPC.AnimatorControl.AnimationBool;
 
@@ -23,7 +22,7 @@ namespace Character.NPC.State
         private readonly float _staminaW;
         private readonly float _bias;
         
-        public RoamingAction(Transform agent, AnimatorControl animatorControl, MovementControl movementControl, NpcStatusComponent npcStatusComponent, DragonController.RoamingParameters roamingParameters)
+        public RoamingAction(Transform agent, AnimatorControl animatorControl, MovementControl movementControl, NpcStatusComponent npcStatusComponent, NpcController.RoamingParameters roamingParameters)
         {
             _agent = agent;
             _animatorControl = animatorControl;

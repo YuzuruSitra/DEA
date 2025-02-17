@@ -1064,8 +1064,8 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 512
   _roamingParameters:
-    _intervalTimeMax: 3
-    _intervalTimeMin: 5
+    _intervalTimeMax: 5
+    _intervalTimeMin: 3
     _roamingSearchRange: 5
     _fullnessW: 0.3
     _staminaW: 0.7
@@ -1075,30 +1075,30 @@ MonoBehaviour:
     _bias: 0.2
     _targetAddStamina: 20
     _waitSleepTime: 0.75
-  _attackParameters:
-    _searchOffSetFactor: 0.75
-    _searchRadius: 3.25
+  _paramAttack1:
+    _searchOffSetFactor: 0
+    _searchRadius: 0
     _targetLayer:
       serializedVersion: 2
-      m_Bits: 512
-    _attackOffSetFactor: 1
-    _attackRadius: 0.4
-    _takeDamageWait: 0.45
-    _attackDuration: 3
-    _attackDamage: 15
-    _pushPower: 6
-    _stopFactor: 0.6
-    _screamTime: 1
-    _screamWaitTime: 0.75
-    _screamAudio: {fileID: 8300000, guid: 4ccabec098230994fb13581c1686f55e, type: 3}
-    _hitAudio: {fileID: 8300000, guid: c0af28155565ea942b9f61e2c42a98ab, type: 3}
-  _escapeParameters:
-    _searchOffSetFactor: 0.75
-    _searchRadius: 3.25
+      m_Bits: 0
+    _attackOffSetFactor: 0
+    _attackRadius: 0
+    _takeDamageWait: 0
+    _attackDuration: 0
+    _attackDamage: 0
+    _pushPower: 0
+    _stopFactor: 0
+    _screamTime: 0
+    _screamWaitTime: 0
+    _screamAudio: {fileID: 0}
+    _hitAudio: {fileID: 0}
+  _paramEscape:
+    _searchOffSetFactor: 0
+    _searchRadius: 0
     _targetLayer:
       serializedVersion: 2
-      m_Bits: 512
-    _escapeRatio: 0.3
+      m_Bits: 0
+    _escapeRatio: 0
 --- !u!114 &3210217983400100827
 MonoBehaviour:
   m_ObjectHideFlags: 0

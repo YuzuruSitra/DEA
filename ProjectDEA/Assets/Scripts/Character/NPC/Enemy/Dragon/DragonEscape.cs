@@ -1,9 +1,9 @@
-using Character.NPC.Enemy.Dragon;
+using Character.NPC.State;
 using UnityEngine;
 
-namespace Character.NPC.State
+namespace Character.NPC.Enemy.Dragon
 {
-	public class EscapeAction : IBattleSubState
+	public class DragonEscape : IBattleSubState
 	{
 		private readonly AnimatorControl _animatorControl;
 		private readonly MovementControl _movementControl;
@@ -18,16 +18,16 @@ namespace Character.NPC.State
 		
 		private readonly Collider[] _searchResults = new Collider[1];
 
-		public EscapeAction(Transform agent, AnimatorControl animatorControl, MovementControl movementControl, HealthComponent healthComponent, DragonController.EscapeParameters escapeParameters)
+		public DragonEscape(Transform agent, AnimatorControl animatorControl, MovementControl movementControl, HealthComponent healthComponent, DragonController.ParamEscape paramEscape)
 		{
 			_agent = agent;
 			_animatorControl  = animatorControl;
 			_movementControl = movementControl;
 			_healthComponent  = healthComponent;
-			_searchOffSetFactor = escapeParameters._searchOffSetFactor;
-			_searchRadius = escapeParameters._searchRadius;
-			_targetLayer = escapeParameters._targetLayer;
-			_escapeHealth = _healthComponent.MaxHealth * escapeParameters._escapeRatio;
+			_searchOffSetFactor = paramEscape._searchOffSetFactor;
+			_searchRadius = paramEscape._searchRadius;
+			_targetLayer = paramEscape._targetLayer;
+			_escapeHealth = _healthComponent.MaxHealth * paramEscape._escapeRatio;
 		}
 
 		public float CalculateUtility()
