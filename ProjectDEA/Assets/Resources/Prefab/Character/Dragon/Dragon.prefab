@@ -993,7 +993,7 @@ GameObject:
   - component: {fileID: 3523492171352511448}
   - component: {fileID: 1677565600557082759}
   m_Layer: 0
-  m_Name: DragonSoulEaterMesh
+  m_Name: Dragon
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
