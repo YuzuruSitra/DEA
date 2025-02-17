@@ -343,22 +343,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _gimmickInfo.Array.size
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _gimmickInfo.Array.data[1]._kind
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _gimmickInfo.Array.data[2]._kind
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _gimmickInfo.Array.data[3]._kind
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _gimmickInfo.Array.data[4]._kind
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[5]._kind
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
@@ -378,6 +382,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6572796558083460292, guid: ac1ddc18ed787584c909c0fce8a7ac07, type: 3}
     - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[5]._prefab
+      value: 
+      objectReference: {fileID: 5094931019023586401, guid: 546ce9277738c9041b2f807e76795154, type: 3}
+    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _gimmickInfo.Array.data[1]._priorityType
       value: 2
       objectReference: {fileID: 0}
@@ -391,15 +399,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _gimmickInfo.Array.data[4]._priorityType
-      value: 2
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[5]._priorityType
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _gimmickInfo.Array.data[1]._isRoomGenerate
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[3]._isRoomGenerate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _gimmickInfo.Array.data[4]._isRoomGenerate
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: _gimmickInfo.Array.data[5]._isRoomGenerate
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4182065308262680302, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _player
@@ -452,6 +472,10 @@ PrefabInstance:
     - target: {fileID: 8934308311292872761, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: m_Name
       value: GimmickGenerator
+      objectReference: {fileID: 0}
+    - target: {fileID: 8934308311292872761, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

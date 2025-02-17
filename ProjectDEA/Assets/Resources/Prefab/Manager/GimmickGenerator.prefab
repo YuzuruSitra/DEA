@@ -64,25 +64,21 @@ MonoBehaviour:
     _isRoomGenerate: 0
     _priorityType: 3
   - _kind: 1
-    _prefab: {fileID: 2869468326224258088, guid: 0776075db77427c4281eab03e7a961b4, type: 3}
-    _isRoomGenerate: 0
-    _priorityType: 3
-  - _kind: 2
     _prefab: {fileID: 2093334473890586168, guid: 112178d8c0d9d2145b83920f66f58076, type: 3}
     _isRoomGenerate: 1
     _priorityType: 2
   - _kind: 3
-    _prefab: {fileID: 3132479909828540323, guid: 4f05c0d14baee264fa056814974ce73c, type: 3}
-    _isRoomGenerate: 1
-    _priorityType: 0
-  - _kind: 4
     _prefab: {fileID: 8537474661332395588, guid: e3ba9312425adf24db405ea02e487903, type: 3}
     _isRoomGenerate: 1
     _priorityType: 1
-  - _kind: 5
+  - _kind: 4
     _prefab: {fileID: 6572796558083460292, guid: ac1ddc18ed787584c909c0fce8a7ac07, type: 3}
     _isRoomGenerate: 0
     _priorityType: 2
+  - _kind: 5
+    _prefab: {fileID: 5094931019023586401, guid: 546ce9277738c9041b2f807e76795154, type: 3}
+    _isRoomGenerate: 1
+    _priorityType: 3
   _maxGimmickPerRoom: 4
   _minGimmickPerRoom: 2
   _typeProbability: 55

@@ -20,6 +20,7 @@ namespace Gimmick
         TreasureBox,
         EnemySpawnArea,
         BornOut,
-        Monument
+        Monument,
+        DamageArea
     }
 }

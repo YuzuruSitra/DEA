@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace Character.Player
@@ -13,8 +12,6 @@ namespace Character.Player
         [SerializeField] private PlayerAttackHandler _playerAttackHandler;
         public PlayerAttackHandler PlayerAttackHandler => _playerAttackHandler;
         [SerializeField] private PlayerUseItem _playerUseItem;
-
-        [SerializeField] private PoisonHandler _poisonHandler;
 
         private void Start()
         {
@@ -34,10 +31,10 @@ namespace Character.Player
         public void SetPlayerFreedom(bool isFreedom)
         {
             _playerMover.SetWalkableState(isFreedom);
+            _playerHpHandler.ChangeIsAddDamage(isFreedom);
             _playerInteraction.SetInteractableState(isFreedom);
             _playerAttackHandler.SetCanAttackState(isFreedom);
             _playerUseItem.SetCanUseItemState(isFreedom);
-            _poisonHandler.ChangeIsAddDamage(isFreedom);
         }
     }
 }

@@ -461,7 +461,6 @@ GameObject:
   - component: {fileID: 2817494418154973700}
   - component: {fileID: 3852264020249794046}
   - component: {fileID: 4351832874976852339}
-  - component: {fileID: 1739906727943873902}
   - component: {fileID: 5984014845965616732}
   m_Layer: 9
   m_Name: Player
@@ -531,7 +530,7 @@ MonoBehaviour:
   _playerInteraction: {fileID: 84256381744762583}
   _playerAttackHandler: {fileID: 51901469298106324}
   _playerUseItem: {fileID: 2817494418154973700}
-  _poisonHandler: {fileID: 1739906727943873902}
+  _poisonHandler: {fileID: 0}
 --- !u!114 &1623497148600613073
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -637,20 +636,6 @@ MonoBehaviour:
   - {fileID: 7400000, guid: 6019f1b4a095b0b4396f5561a51fee89, type: 2}
   - {fileID: 7400000, guid: eccbae3cfc77ad245ade46e143aa3200, type: 2}
   _attackLaunchTime: 0.15
---- !u!114 &1739906727943873902
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2690993595501631969}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 401f7a541dd676343a9476e98ae53cdd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playerHpHandler: {fileID: 1623497148600613073}
-  _damageForSeconds: 20
 --- !u!54 &5984014845965616732
 Rigidbody:
   m_ObjectHideFlags: 0

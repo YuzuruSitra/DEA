@@ -11,6 +11,7 @@ namespace Character.Player
         public bool IsDie { get; private set; }
         private DungeonLayerHandler _dungeonLayerHandler;
         private PlayerStatusHandler _playerStatusHandler;
+        private bool _isAddDamage = true;
         
         private void Start()
         {
@@ -29,6 +30,7 @@ namespace Character.Player
         public void ReceiveDamage(int damage)
         {
             if (IsDie) return;
+            if (!_isAddDamage) return;
             var newHp = Math.Max(_playerStatusHandler.PlayerCurrentHp - damage, 0);
             newHp = Math.Min(newHp, _playerStatusHandler.MaxHp);
             _playerStatusHandler.SetPlayerCurrentHp(newHp);
@@ -36,5 +38,11 @@ namespace Character.Player
             IsDie = true;
             OnDie?.Invoke();
         }
+        
+        public void ChangeIsAddDamage(bool state)
+        {
+            _isAddDamage = state;
+        }
+        
     }
 }
