@@ -1075,29 +1075,29 @@ MonoBehaviour:
     _targetAddStamina: 20
     _waitSleepTime: 0.75
   _paramAttack1:
-    _searchOffSetFactor: 0
-    _searchRadius: 0
+    _searchOffSetFactor: 0.75
+    _searchRadius: 3.25
     _targetLayer:
       serializedVersion: 2
-      m_Bits: 0
-    _attackOffSetFactor: 0
-    _attackRadius: 0
-    _takeDamageWait: 0
-    _attackDuration: 0
-    _attackDamage: 0
-    _pushPower: 0
-    _stopFactor: 0
-    _screamTime: 0
-    _screamWaitTime: 0
-    _screamAudio: {fileID: 0}
-    _hitAudio: {fileID: 0}
+      m_Bits: 512
+    _attackOffSetFactor: 1
+    _attackRadius: 0.4
+    _takeDamageWait: 0.45
+    _attackDuration: 3
+    _attackDamage: 15
+    _pushPower: 6
+    _stopFactor: 0.6
+    _screamTime: 1
+    _screamWaitTime: 0.75
+    _screamAudio: {fileID: 8300000, guid: 4ccabec098230994fb13581c1686f55e, type: 3}
+    _hitAudio: {fileID: 8300000, guid: c0af28155565ea942b9f61e2c42a98ab, type: 3}
   _paramEscape:
-    _searchOffSetFactor: 0
-    _searchRadius: 0
+    _searchOffSetFactor: 0.75
+    _searchRadius: 3.25
     _targetLayer:
       serializedVersion: 2
-      m_Bits: 0
-    _escapeRatio: 0
+      m_Bits: 512
+    _escapeRatio: 0.3
 --- !u!114 &2408883854878495484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1133,7 +1133,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 1
-  m_BaseOffset: 0
+  m_BaseOffset: -0.1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!65 &3523492171352511448
