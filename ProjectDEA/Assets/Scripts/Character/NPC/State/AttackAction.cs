@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using Character.NPC.Dragon;
 using Character.Player;
 using Manager.Audio;
-using Test.NPC.Dragon;
+using Test;
 using UnityEngine;
-using static Test.NPC.AnimatorControl;
+using static Character.NPC.AnimatorControl;
 
-namespace Test.NPC.State
+namespace Character.NPC.State
 {
     public class AttackAction : IBattleSubState
     {
@@ -127,7 +128,6 @@ namespace Test.NPC.State
                 {
                     ResetAttack();
                 }
-                Debug.Log("a");
                 return;
             }
           
@@ -197,7 +197,6 @@ namespace Test.NPC.State
             {
                 ApplyDamageToTargets();
                 _attackTimer -= Time.deltaTime;
-                Debug.Log("b");
                 return;
             }
             ResetAttack();

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Test.NPC
+namespace Character.NPC
 {
 	public class AnimatorControl : MonoBehaviour
 	{

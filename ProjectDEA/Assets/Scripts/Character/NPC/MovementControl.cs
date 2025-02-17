@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Test.NPC
+namespace Character.NPC
 {
 	public class MovementControl : MonoBehaviour
 	{

@@ -1,7 +1,7 @@
+using Character.NPC;
 using Gimmick;
 using Manager;
 using Manager.Audio;
-using Test.NPC;
 using UnityEngine;
 
 namespace Character.Player

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Test.NPC.State;
+using Character.NPC.State;
 
-namespace Test.NPC
+namespace Character.NPC
 {
 	public class ActionSelector
 	{

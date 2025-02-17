@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Test.NPC.State
+namespace Character.NPC.State
 {
     public class BattleState : IUtilityAction
     {

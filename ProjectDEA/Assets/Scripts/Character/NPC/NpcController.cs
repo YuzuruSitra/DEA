@@ -1,12 +1,12 @@
 using System;
 using System.Collections;
+using Character.NPC.State;
 using Manager.Audio;
 using Mission;
-using Test.NPC.State;
 using UnityEngine;
-using AnimationTrigger = Test.NPC.AnimatorControl.AnimationTrigger;
+using AnimationTrigger = Character.NPC.AnimatorControl.AnimationTrigger;
 
-namespace Test.NPC
+namespace Character.NPC
 {
 	[RequireComponent(typeof(AnimatorControl), typeof(MovementControl), typeof(HealthComponent))]
 	[RequireComponent(typeof(NpcStatusComponent)), RequireComponent(typeof(EnemyHpGaugeHandler))]

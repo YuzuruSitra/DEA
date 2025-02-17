@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Test.NPC.State;
+using Character.NPC.State;
 using UnityEngine;
 
-namespace Test.NPC.Dragon
+namespace Character.NPC.Dragon
 {
 	public class DragonController : NpcController
 	{

@@ -1,8 +1,6 @@
 using System;
 using Mission.Condition;
-using Test.NPC;
 using UnityEngine;
-using UnityEngine.InputSystem.UI;
 
 namespace Mission.CreateScriptableObject
 {

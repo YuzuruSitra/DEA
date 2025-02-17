@@ -1,10 +1,9 @@
 using System.Collections;
-using Character.NPC.EnemyDragon;
+using Character.NPC;
 using Character.Player;
 using Gimmick;
 using Manager.Audio;
 using Manager.MetaAI;
-using Manager.PlayData;
 using UnityEngine;
 
 namespace Item
@@ -38,8 +37,8 @@ namespace Item
             _metaAIHandler = GameObject.FindWithTag("MetaAI").GetComponent<MetaAIHandler>();
             UseEffect();
         }
-        
-        public void UseEffect()
+
+        private void UseEffect()
         {
             _animWaitTime = _attackClip.length - _animPaddingTime;
             _detonationTime -= _animWaitTime;
@@ -84,13 +83,13 @@ namespace Item
                         continue;
                     }
                     
-                    if (obj.CompareTag("EnemyDragon"))
+                    if (obj.CompareTag("Enemy"))
                     {
                         if (_isDragonGive) continue;
                         _isDragonGive = true;
-                        var dragonController = obj.GetComponent<Character.NPC.EnemyDragon.DragonController>();
-                        if (dragonController == null) continue;
-                        dragonController.OnGetDamage(_dragonGiveDamage);
+                        var enemyController = obj.GetComponent<NpcController>();
+                        if (enemyController == null) continue;
+                        enemyController.OnGetDamage(_dragonGiveDamage);
                         continue;
                     }
 

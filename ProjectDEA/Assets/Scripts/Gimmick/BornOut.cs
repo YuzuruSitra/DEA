@@ -1,4 +1,5 @@
 using System;
+using Character.NPC;
 using Item;
 using Manager;
 using Manager.MetaAI;
@@ -17,8 +18,8 @@ namespace Gimmick
         [SerializeField] private float _flyForce;
         [SerializeField] private float _rndRotRange;
 
-        private GameObject _currentDragon;
-        private Character.NPC.EnemyDragon.DragonController _currentDragonController;
+        private GameObject _currentEnemy;
+        private NpcController _currentNpcController;
         [SerializeField] private int _hitEnemyDamage;
         private bool _isMoving;
         private bool _hitOneTime;
@@ -74,13 +75,13 @@ namespace Gimmick
             if (!_isMoving) return;
             if (_hitOneTime) return;
             if (!other.CompareTag("Enemy")) return;
-            if (_currentDragon != other.gameObject)
+            if (_currentEnemy != other.gameObject)
             {
-                _currentDragon = other.gameObject;
-                _currentDragonController = _currentDragon.GetComponent<Character.NPC.EnemyDragon.DragonController>();
+                _currentEnemy = other.gameObject;
+                _currentNpcController = _currentEnemy.GetComponent<NpcController>();
             }
 
-            _currentDragonController.OnGetDamage(_hitEnemyDamage);
+            _currentNpcController.OnGetDamage(_hitEnemyDamage);
             _hitOneTime = true;
         }
     }

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Test.NPC.State
+namespace Character.NPC.State
 {
     public class BattleStateSelector
     {

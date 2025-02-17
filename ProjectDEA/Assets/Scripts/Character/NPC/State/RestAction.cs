@@ -1,8 +1,8 @@
-using Test.NPC.Dragon;
+using Character.NPC.Dragon;
 using UnityEngine;
-using AnimationBool = Test.NPC.AnimatorControl.AnimationBool;
+using AnimationBool = Character.NPC.AnimatorControl.AnimationBool;
 
-namespace Test.NPC.State
+namespace Character.NPC.State
 {
     public class RestAction : IUtilityAction
     {

@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Test.NPC
+namespace Character.NPC
 {
     public class EnemyHpGaugeHandler : MonoBehaviour
     {

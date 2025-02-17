@@ -1,7 +1,7 @@
-using Test.NPC.Dragon;
+using Character.NPC.Dragon;
 using UnityEngine;
 
-namespace Test.NPC.State
+namespace Character.NPC.State
 {
 	public class EscapeAction : IBattleSubState
 	{

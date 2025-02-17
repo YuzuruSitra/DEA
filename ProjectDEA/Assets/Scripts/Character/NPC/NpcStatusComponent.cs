@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Test.NPC
+namespace Character.NPC
 {
     public class NpcStatusComponent : MonoBehaviour
     {

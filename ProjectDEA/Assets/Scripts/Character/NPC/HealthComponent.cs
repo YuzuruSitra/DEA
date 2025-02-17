@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Test.NPC
+namespace Character.NPC
 {
 	public class HealthComponent : MonoBehaviour
 	{
