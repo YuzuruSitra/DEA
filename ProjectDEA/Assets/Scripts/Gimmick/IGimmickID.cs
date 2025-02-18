@@ -22,7 +22,7 @@ namespace Gimmick
         Monument,
         DamageArea,
         VenomMush,
-        RunBard,
+        MoveGhost,
         EnemyDragon,
         EnemySlime,
         EnemyGolem

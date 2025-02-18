@@ -84,7 +84,7 @@ MonoBehaviour:
     _isRoomGenerate: 1
     _priorityType: 1
   - _kind: 6
-    _prefab: {fileID: 2833803423614531440, guid: 9a79e11a2525792498fb99ce402f2f53, type: 3}
+    _prefab: {fileID: 7104041007435441275, guid: e07ae3a4b421b0a4198b8da438012f1e, type: 3}
     _isRoomGenerate: 1
     _priorityType: 2
   _maxGimmickPerRoom: 4
