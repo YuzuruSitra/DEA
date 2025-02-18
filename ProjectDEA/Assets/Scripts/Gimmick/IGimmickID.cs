@@ -18,9 +18,10 @@ namespace Gimmick
     {
         ExitObelisk,
         TreasureBox,
-        EnemySpawnArea,
+        Enemy,
         BornOut,
         Monument,
-        DamageArea
+        DamageArea,
+        VenomMush
     }
 }

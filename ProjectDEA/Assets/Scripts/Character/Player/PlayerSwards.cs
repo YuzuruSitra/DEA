@@ -62,6 +62,12 @@ namespace Character.Player
                 _oneHit = true;
             }
 
+            if (other.CompareTag("VenomMush"))
+            {
+                var venomMush = other.gameObject.GetComponent<VenomMush>();
+                venomMush.OnDestroy();
+            }
+
             if (other.CompareTag("BornOut"))
             {
                 if (_currentBorn != other.gameObject)
