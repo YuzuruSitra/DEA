@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using Random = System.Random;
 
 namespace Manager.Map
 {
