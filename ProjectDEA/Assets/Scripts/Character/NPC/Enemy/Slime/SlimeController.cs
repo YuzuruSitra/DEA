@@ -23,6 +23,7 @@ namespace Character.NPC.Enemy.Slime
         	public float _pushPower;
         	public float _stopFactor;
         	public AudioClip _hitAudio;
+	        public float _searchUpPadding;
         }
         [SerializeField] private ParamAttack1 _attackParameters;
         [Serializable]
@@ -32,6 +33,7 @@ namespace Character.NPC.Enemy.Slime
         	public float _searchRadius;
         	public LayerMask _targetLayer;
         	public float _escapeRatio;
+	        public float _searchUpPadding;
         }
         [SerializeField] private ParamEscape _escapeParameters;
         

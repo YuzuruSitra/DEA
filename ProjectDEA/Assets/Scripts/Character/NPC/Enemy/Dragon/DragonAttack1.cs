@@ -27,6 +27,7 @@ namespace Character.NPC.Enemy.Dragon
         private readonly float _stopFactor;
         private readonly float _screamTime;
         private readonly float _screamWaitTime;
+        private readonly float _searchUpPadding;
         private readonly AudioClip _screamAudio;
         private readonly AudioClip _hitAudio;
 
@@ -65,6 +66,7 @@ namespace Character.NPC.Enemy.Dragon
             _screamTime = paramAttack1._screamTime;
             _screamWaitTime = paramAttack1._screamWaitTime;
             _screamAudio = paramAttack1._screamAudio;
+            _searchUpPadding = paramAttack1._searchUpPadding;
             _hitAudio = paramAttack1._hitAudio;
             _debugDrawCd = new DebugDrawCd();
         }
@@ -144,7 +146,7 @@ namespace Character.NPC.Enemy.Dragon
         private void DrawDebugSpheres()
         {
             var agentPos = _agent.position;
-            agentPos.y += BattleState.UpPadding;
+            agentPos.y += _searchUpPadding;
             _debugDrawCd.DebugDrawSphere(agentPos + _agent.forward * _searchOffSetFactor, _searchRadius, Color.blue);
             _debugDrawCd.DebugDrawSphere(agentPos + _agent.forward * _attackOffSetFactor, _attackRadius, Color.red);
         }
@@ -163,7 +165,7 @@ namespace Character.NPC.Enemy.Dragon
 
         private Transform FindTarget(Vector3 origin, float radius)
         {
-            origin.y += BattleState.UpPadding;
+            origin.y += _searchUpPadding;
             var count = Physics.OverlapSphereNonAlloc(origin, radius, _searchResults, _searchLayer, QueryTriggerInteraction.Ignore);
             return (count > 0 && _searchResults[0] != null) ? _searchResults[0].transform : null;
         }
@@ -216,7 +218,7 @@ namespace Character.NPC.Enemy.Dragon
         private void ApplyDamageToTargets()
         {
             var origin = _agent.position;
-            origin.y += BattleState.UpPadding;
+            origin.y += _searchUpPadding;
             var size = Physics.OverlapSphereNonAlloc(origin + _agent.forward * _attackOffSetFactor, _attackRadius, _attackResults, _searchLayer, QueryTriggerInteraction.Ignore);
             if (size == 0) return;
             var collider = _attackResults[0];

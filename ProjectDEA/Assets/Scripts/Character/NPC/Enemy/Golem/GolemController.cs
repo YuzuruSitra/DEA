@@ -20,6 +20,7 @@ namespace Character.NPC.Enemy.Golem
 			public int _attackDamage;
 			public float _pushPower;
 			public float _stopFactor;
+			public float _searchUpPadding;
 			public AudioClip _hitAudio;
 		}
 		[SerializeField] private ParamAttack1 _paramAttack1;

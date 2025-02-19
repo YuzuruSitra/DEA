@@ -24,6 +24,7 @@ namespace Character.NPC.Enemy.Dragon
 			public float _stopFactor;
 			public float _screamTime;
 			public float _screamWaitTime;
+			public float _searchUpPadding;
 			public AudioClip _screamAudio;
 			public AudioClip _hitAudio;
 		}
@@ -35,6 +36,7 @@ namespace Character.NPC.Enemy.Dragon
 			public float _searchRadius;
 			public LayerMask _targetLayer;
 			public float _escapeRatio;
+			public float _searchUpPadding;
 		}
 		[SerializeField] private ParamEscape _paramEscape;
 		

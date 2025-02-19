@@ -14,7 +14,7 @@ namespace Character.NPC.State
         private readonly LayerMask _searchLayer;
         private readonly Collider[] _searchResults = new Collider[1];
         private IBattleSubState _currentState;
-        public const float UpPadding = 0.5f;
+        private readonly float _searchUpPadding;
         
         public BattleState(Transform agent, List<IBattleSubState> subStates, NpcController.BattleStateParameters battleStateParameters)
         {
@@ -23,6 +23,7 @@ namespace Character.NPC.State
             _searchOffSetFactor = battleStateParameters._searchOffSetFactor;
             _searchRadius = battleStateParameters._searchRadius;
             _searchLayer = battleStateParameters._searchLayer;
+            _searchUpPadding = battleStateParameters._searchUpPadding;
         }
         
         public float CalculateUtility()
@@ -52,7 +53,7 @@ namespace Character.NPC.State
         
         private Transform FindTarget(Vector3 origin, float radius)
         {
-            origin.y += UpPadding;
+            origin.y += _searchUpPadding;
             var count = Physics.OverlapSphereNonAlloc(origin, radius, _searchResults, _searchLayer, QueryTriggerInteraction.Ignore);
             return (count > 0 && _searchResults[0] != null) ? _searchResults[0].transform : null;
         }

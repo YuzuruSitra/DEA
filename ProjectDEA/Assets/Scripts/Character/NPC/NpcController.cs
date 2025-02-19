@@ -26,6 +26,7 @@ namespace Character.NPC
 			public float _searchOffSetFactor;
 			public float _searchRadius;
 			public LayerMask _searchLayer;
+			public float _searchUpPadding;
 		}
 		[SerializeField] protected BattleStateParameters _battleStateParameters;
 		// Roaming logic

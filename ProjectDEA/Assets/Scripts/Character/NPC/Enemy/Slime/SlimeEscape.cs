@@ -15,6 +15,7 @@ namespace Character.NPC.Enemy.Slime
 		private readonly LayerMask _targetLayer;
 		private readonly float _escapeHealth;
 		private readonly float _escapeSearchRange;
+		private readonly float _searchUpPadding;
 		
 		private readonly Collider[] _searchResults = new Collider[1];
 
@@ -28,13 +29,14 @@ namespace Character.NPC.Enemy.Slime
 			_searchRadius = paramEscape._searchRadius;
 			_targetLayer = paramEscape._targetLayer;
 			_escapeHealth = _healthComponent.MaxHealth * paramEscape._escapeRatio;
+			_searchUpPadding = paramEscape._searchUpPadding;
 		}
 
 		public float CalculateUtility()
 		{
 			// 仮
 			var origin = _agent.position + _agent.forward * _searchOffSetFactor;
-			origin.y += BattleState.UpPadding;
+			origin.y += _searchUpPadding;
 			var count = Physics.OverlapSphereNonAlloc(origin, _searchRadius, _searchResults, _targetLayer,
 				QueryTriggerInteraction.Ignore);
 			if (count <= 0) return 0f;
