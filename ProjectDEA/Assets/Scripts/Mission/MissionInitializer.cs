@@ -25,6 +25,7 @@ namespace Mission
         {
             var keyHolder = LoadKeyHolder();
             InstanceKillEnemiesMission(keyHolder._enemyKillMissionData);
+            InstanceGimmickMission(keyHolder._gimmickMissionData);
         }
 
         private MissionKeyHolder LoadKeyHolder()
@@ -38,6 +39,15 @@ namespace Mission
             foreach (var t in dates._killMissionData)
             {
                 var killEnemiesMission = new EnemyKillMissionCondition(_gameEventManager, _roomGimmickGenerator, dates._enemyPrefab, t);
+                AddMissionList(killEnemiesMission);
+            }
+        }
+        
+        private void InstanceGimmickMission(GimmickMissionData dates)
+        {
+            foreach (var t in dates._gimmickMissionData)
+            {
+                var killEnemiesMission = new GimmickMissionCondition(_gameEventManager, _roomGimmickGenerator, dates._gimmickPrefab, t);
                 AddMissionList(killEnemiesMission);
             }
         }

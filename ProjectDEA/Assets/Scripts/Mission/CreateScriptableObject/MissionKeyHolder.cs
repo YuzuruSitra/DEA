@@ -6,5 +6,6 @@ namespace Mission.CreateScriptableObject
     public class MissionKeyHolder : ScriptableObject
     {
         public EnemyKillMissionData _enemyKillMissionData;
+        public GimmickMissionData _gimmickMissionData;
     }
 }

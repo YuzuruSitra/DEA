@@ -22,7 +22,7 @@ namespace Mission
                 return null;
             }
 
-            var rnd = 0;
+            var rnd = 3;
             //var rnd = Random.Range(0, MissionList.Count);
             return MissionList[rnd];
         }
