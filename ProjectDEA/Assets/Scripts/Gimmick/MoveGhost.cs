@@ -2,6 +2,7 @@ using System;
 using Manager.Map;
 using Mission;
 using UnityEngine;
+using Random = System.Random;
 
 namespace Gimmick
 {
@@ -77,9 +78,11 @@ namespace Gimmick
         {
             _currentChangeCount++;
             var currentRoom = _roomChecker.CheckStayRoomNum(transform.position);
-            var rnd = UnityEngine.Random.Range(0, 2);
-            var nextRoom = currentRoom + (rnd == 0 ? -1 : 1);
-            nextRoom = Mathf.Clamp(nextRoom, 0, _stageGenerator.RoomCount - 1);
+            int nextRoom;
+            do
+            {
+                nextRoom = UnityEngine.Random.Range(0, _stageGenerator.RoomCount);
+            }while(currentRoom == nextRoom);
 
             _targetPos.x = _stageGenerator.RoomInfo[nextRoom, (int)StageGenerator.RoomStatus.CenterX];
             _targetPos.y = transform.position.y;

@@ -342,14 +342,6 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
-      propertyPath: _gimmickInfo.Array.data[5]._kind
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
-      propertyPath: _gimmickInfo.Array.data[6]._kind
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _gimmickInfo.Array.data[7]._kind
       value: 7
       objectReference: {fileID: 0}
@@ -361,26 +353,6 @@ PrefabInstance:
       propertyPath: _gimmickInfo.Array.data[9]._kind
       value: 9
       objectReference: {fileID: 0}
-    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
-      propertyPath: _gimmickInfo.Array.data[2]._prefab
-      value: 
-      objectReference: {fileID: 8537474661332395588, guid: e3ba9312425adf24db405ea02e487903, type: 3}
-    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
-      propertyPath: _gimmickInfo.Array.data[3]._prefab
-      value: 
-      objectReference: {fileID: 6572796558083460292, guid: ac1ddc18ed787584c909c0fce8a7ac07, type: 3}
-    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
-      propertyPath: _gimmickInfo.Array.data[4]._prefab
-      value: 
-      objectReference: {fileID: 5094931019023586401, guid: 546ce9277738c9041b2f807e76795154, type: 3}
-    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
-      propertyPath: _gimmickInfo.Array.data[5]._prefab
-      value: 
-      objectReference: {fileID: 5771640325910784780, guid: 2fc903fa76b298b4ea8d5689e49b06f8, type: 3}
-    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
-      propertyPath: _gimmickInfo.Array.data[6]._prefab
-      value: 
-      objectReference: {fileID: 7104041007435441275, guid: e07ae3a4b421b0a4198b8da438012f1e, type: 3}
     - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _gimmickInfo.Array.data[7]._prefab
       value: 
@@ -394,28 +366,8 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7314629414527039975, guid: 58bc8ddf65a1cf149babb94d1bf3f27c, type: 3}
     - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
-      propertyPath: _gimmickInfo.Array.data[2]._priorityType
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
-      propertyPath: _gimmickInfo.Array.data[3]._priorityType
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _gimmickInfo.Array.data[4]._priorityType
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
-      propertyPath: _gimmickInfo.Array.data[5]._priorityType
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
-      propertyPath: _gimmickInfo.Array.data[6]._priorityType
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
-      propertyPath: _gimmickInfo.Array.data[7]._priorityType
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _gimmickInfo.Array.data[1]._isRoomGenerate
@@ -435,7 +387,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _gimmickInfo.Array.data[6]._isRoomGenerate
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _gimmickInfo.Array.data[7]._isRoomGenerate
@@ -443,11 +395,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _gimmickInfo.Array.data[8]._isRoomGenerate
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -4353023965016422915, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _gimmickInfo.Array.data[9]._isRoomGenerate
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4182065308262680302, guid: 8847b51209ff747f69a75e7099844a01, type: 3}
       propertyPath: _roomGimmickGenerator

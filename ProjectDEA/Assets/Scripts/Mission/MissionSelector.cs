@@ -16,14 +16,14 @@ namespace Mission
         
         public IMissionCondition SelectMission()
         {
+            // 後々メタAIの影響を考慮する。
             if (MissionList.Count == 0)
             {
                 Debug.LogWarning("Mission list is empty.");
                 return null;
             }
-
-            var rnd = 3;
-            //var rnd = Random.Range(0, MissionList.Count);
+            
+            var rnd = Random.Range(0, MissionList.Count);
             return MissionList[rnd];
         }
     }
