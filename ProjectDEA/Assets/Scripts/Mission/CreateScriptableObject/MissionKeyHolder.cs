@@ -7,5 +7,6 @@ namespace Mission.CreateScriptableObject
     {
         public EnemyKillMissionData _enemyKillMissionData;
         public GimmickMissionData _gimmickMissionData;
+        public UseItemMissionData _useItemMissionData;
     }
 }
