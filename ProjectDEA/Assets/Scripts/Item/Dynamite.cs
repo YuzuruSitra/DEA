@@ -80,6 +80,7 @@ namespace Item
                         _isPlayerGive = true;
                         var playerHub = obj.GetComponent<PlayerClasHub>();
                         if (playerHub == null) continue;
+                        if (!playerHub.PlayerHpHandler.IsAddDamage) return;
                         playerHub.PlayerHpHandler.ReceiveDamage(_playerGiveDamage);
                         continue;
                     }

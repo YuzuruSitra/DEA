@@ -148,7 +148,7 @@ namespace Character.Player
                     SendLogText(target._effectedLogText[(int)language]);
                     break;
                 case ItemKind.PowerApple:
-                    _useItemEffects.PlayerSpeedUpper();
+                    _useItemEffects.PlayerRecovery();
                     SendLogText(target._effectedLogText[(int)language]);
                     break;
             }

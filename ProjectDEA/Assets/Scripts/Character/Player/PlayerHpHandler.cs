@@ -11,8 +11,8 @@ namespace Character.Player
         public bool IsDie { get; private set; }
         private DungeonLayerHandler _dungeonLayerHandler;
         private PlayerStatusHandler _playerStatusHandler;
-        private bool _isAddDamage = true;
-        
+        public bool IsAddDamage { get; private set; } = true;
+
         private void Start()
         {
             _dungeonLayerHandler = GameObject.FindWithTag("DungeonLayerHandler").GetComponent<DungeonLayerHandler>();
@@ -30,7 +30,6 @@ namespace Character.Player
         public void ReceiveDamage(int damage)
         {
             if (IsDie) return;
-            if (!_isAddDamage) return;
             var newHp = Math.Max(_playerStatusHandler.PlayerCurrentHp - damage, 0);
             newHp = Math.Min(newHp, _playerStatusHandler.MaxHp);
             _playerStatusHandler.SetPlayerCurrentHp(newHp);
@@ -41,7 +40,7 @@ namespace Character.Player
         
         public void ChangeIsAddDamage(bool state)
         {
-            _isAddDamage = state;
+            IsAddDamage = state;
         }
         
     }

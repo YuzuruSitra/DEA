@@ -26,13 +26,12 @@ namespace Item
 
         public void PlayerPowerUpper()
         {
-            var attackHandler = _playerClasHub.PlayerAttackHandler;
             _playerStatusHandler.SetPlayerAttackDamage(_playerStatusHandler.PlayerAttackDamage + _powerPotionUpValue);
             _metaAIHandler.SendLogsForMetaAI(_buffScores);
             _soundHandler.PlaySe(_buffItemAudio);
         }
 
-        public void PlayerSpeedUpper()
+        public void PlayerRecovery()
         {
             var playerHpHandler = _playerClasHub.PlayerHpHandler;
             playerHpHandler.ReceiveDamage(-_addHpValue);

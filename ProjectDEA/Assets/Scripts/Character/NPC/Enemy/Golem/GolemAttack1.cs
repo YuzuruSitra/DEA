@@ -191,6 +191,7 @@ namespace Character.NPC.Enemy.Golem
             var collider = _attackResults[0];
             if (_hitTargets.Contains(collider)) return;
             if (!collider.TryGetComponent(out PlayerClasHub playerClasHub)) return;
+            if (!playerClasHub.PlayerHpHandler.IsAddDamage) return;
             playerClasHub.PlayerMover.LaunchPushForceMove(_agent.forward.normalized, _pushPower);
             playerClasHub.PlayerHpHandler.ReceiveDamage(_attackDamage);
             _soundHandler.PlaySe(_hitAudio);

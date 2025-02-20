@@ -92,7 +92,6 @@ namespace Gimmick
                     var insType = DecideGimmickType(_metaAIHandler.CurrentPlayerType);
                     // 生成タイプの中から選定
                     var insNum = Random.Range(0, _insSeparateTypeGimmicks[insType].Count);
-                    Debug.Log("type :" + insType + " num :" + insNum);
                     InsGimmick(i, _insSeparateTypeGimmicks[insType][insNum]._prefab);
                 }
             }

@@ -28,6 +28,7 @@ namespace Gimmick
             }
             _currentTime -= Time.deltaTime;
             if (_currentTime > 0) return;
+            if (!_playerHpHandler.IsAddDamage) return;
             _playerHpHandler.ReceiveDamage(_damageForSeconds);
             _currentTime = OneSecond;   
         }
