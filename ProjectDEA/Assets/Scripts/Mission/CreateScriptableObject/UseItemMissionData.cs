@@ -18,6 +18,8 @@ namespace Mission.CreateScriptableObject
             public int _targetCompleteCount;
             public GameObject[] _addEnemyPrefab;
             public int _addEnemyCount;
+            public string[] _missionLaunchLog;
+            public string[] _missionFinishLog;
         } 
         public UseItemMissionStruct[] _useItemMissionData;
     }

@@ -22,9 +22,12 @@ namespace Mission.Condition
         private readonly GameObject[] _addEnemyPrefab;
         private readonly int _addEnemyCount;
         private readonly List<GameObject> _addEnemyList = new ();
+        public string[] MissionLaunchLog { get; }
+        public string[] MissionFinishLog { get; }
         
         public int CurrentCount { get; private set; }
         public int MaxCount { get; }
+        public GameObject StandOutTarget { get; private set; }
         
         public UseItemMissionCondition(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, InventoryHandler inventoryHandler, ItemKind[] itemKinds, UseItemMissionData.UseItemMissionStruct useItemMissionData)
         {
@@ -35,14 +38,16 @@ namespace Mission.Condition
             MissionName = useItemMissionData._missionName;
             MissionType = useItemMissionData._missionType;
             _missionItemID = useItemMissionData._missionItemID;
-            CurrentCount = 0;
             MaxCount = useItemMissionData._targetCompleteCount;
             _addEnemyPrefab = useItemMissionData._addEnemyPrefab;
             _addEnemyCount = useItemMissionData._addEnemyCount;
+            MissionLaunchLog = useItemMissionData._missionLaunchLog;
+            MissionFinishLog = useItemMissionData._missionFinishLog;
         }
 
         public void StartTracking()
         {
+            CurrentCount = 0;
             _gameEventManager.OnItemUsed += OnGimmickCompleted;
             AddItemForPlayer();
             GenerateAddEnemy();

@@ -19,8 +19,12 @@ namespace Mission.Condition
         private readonly GameObject[] _addGimmickPrefab;
         private readonly int _addGimmickCount;
         private readonly List<GameObject> _addGimmickList = new ();
+        public string[] MissionLaunchLog { get; }
+        public string[] MissionFinishLog { get; }
+        
         public int CurrentCount { get; private set; }
         public int MaxCount { get; }
+        public GameObject StandOutTarget { get; private set; }
         
         public GimmickMissionCondition(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, GameObject[] gimmickPrefab, GimmickMissionData.GimmickMissionStruct gimmickMissionStruct)
         {
@@ -30,15 +34,18 @@ namespace Mission.Condition
             MissionName = gimmickMissionStruct._missionName;
             MissionType = gimmickMissionStruct._missionType;
             _targetGimmickID = gimmickMissionStruct._targetGimmickID;
-            CurrentCount = 0;
             _generateType = gimmickMissionStruct._generateType;
             MaxCount = gimmickMissionStruct._targetCompleteCount;
             _addGimmickPrefab = gimmickMissionStruct._addGimmickPrefab;
             _addGimmickCount = gimmickMissionStruct._addGimmickCount;
+            MissionLaunchLog = gimmickMissionStruct._missionLaunchLog;
+            MissionFinishLog = gimmickMissionStruct._missionFinishLog;
         }
 
         public void StartTracking()
         {
+            CurrentCount = 0;
+            StandOutTarget = null;
             _gameEventManager.OnGimmickCompleted += OnGimmickCompleted;
             GenerateGimmick();
             GenerateAddGimmick();
@@ -69,7 +76,8 @@ namespace Mission.Condition
             {
                 var target = GetTargetGimmick();
                 var targetRoom = GetTargetRoom();
-                _roomGimmickGenerator.InsGimmick(targetRoom, target);
+                var insGimmick = _roomGimmickGenerator.InsGimmick(targetRoom, target);
+                if (StandOutTarget == null) StandOutTarget = insGimmick;
                 Debug.Log("generate : " + target.name + " Room : " + targetRoom);
             }
         }

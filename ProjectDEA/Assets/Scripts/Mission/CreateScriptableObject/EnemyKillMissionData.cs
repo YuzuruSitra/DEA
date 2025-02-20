@@ -16,6 +16,8 @@ namespace Mission.CreateScriptableObject
             public int _targetEnemyID;
             public int _targetKillCount;
             public GenerateType _generateType;
+            public string[] _missionLaunchLog;
+            public string[] _missionFinishLog;
         } 
         public KillMissionStruct[] _killMissionData;
         public const int NonTargetID = -1;

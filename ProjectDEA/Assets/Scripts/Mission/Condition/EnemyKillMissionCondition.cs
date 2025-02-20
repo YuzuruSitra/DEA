@@ -15,9 +15,12 @@ namespace Mission.Condition
         private readonly int _targetEnemyID;
         private readonly EnemyKillMissionData.GenerateType _generateType;
         private readonly GameObject[] _enemyPrefab;
+        public string[] MissionLaunchLog { get; }
+        public string[] MissionFinishLog { get; }
 
         public int CurrentCount { get; private set; }
         public int MaxCount { get; }
+        public GameObject StandOutTarget { get; private set; }
 
         public EnemyKillMissionCondition(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, GameObject[] enemyPrefab, EnemyKillMissionData.KillMissionStruct enemyKillMissionData)
         {
@@ -27,14 +30,17 @@ namespace Mission.Condition
             MissionName = enemyKillMissionData._missionName;
             MissionType = enemyKillMissionData._missionType;
             _targetEnemyID = enemyKillMissionData._targetEnemyID;
-            CurrentCount = 0;
             _generateType = enemyKillMissionData._generateType;
             MaxCount = enemyKillMissionData._targetKillCount;
+            MissionLaunchLog = enemyKillMissionData._missionLaunchLog;
+            MissionFinishLog = enemyKillMissionData._missionFinishLog;
         }
 
         public void StartTracking()
         {
             _gameEventManager.OnEnemyDefeated += OnEnemyDefeated;
+            CurrentCount = 0;
+            StandOutTarget = null;
             GenerateEnemy();
         }
 
@@ -48,7 +54,6 @@ namespace Mission.Condition
             if (enemyID != _targetEnemyID) return;
 
             CurrentCount++;
-            Debug.Log($"敵討伐ミッション進捗: {CurrentCount}/{MaxCount}");
 
             if (CurrentCount >= MaxCount)
             {
@@ -62,8 +67,8 @@ namespace Mission.Condition
             {
                 var targetEnemy = GetTargetEnemy();
                 var targetRoom = GetTargetRoom();
-                _roomGimmickGenerator.InsGimmick(targetRoom, targetEnemy);
-                Debug.Log("generate : " + targetEnemy.name + " Room : " + targetRoom);
+                var insEnemy = _roomGimmickGenerator.InsGimmick(targetRoom, targetEnemy);
+                if (StandOutTarget == null) StandOutTarget = insEnemy;
             }
         }
         

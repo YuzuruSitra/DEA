@@ -1,6 +1,7 @@
 using System;
 using Mission.Condition;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Mission.CreateScriptableObject
 {
@@ -18,6 +19,8 @@ namespace Mission.CreateScriptableObject
             public GenerateType _generateType;
             public GameObject[] _addGimmickPrefab;
             public int _addGimmickCount;
+            public string[] _missionLaunchLog;
+            public string[] _missionFinishLog;
         } public GimmickMissionStruct[] _gimmickMissionData;
         public const int NonTargetID = -1;
         
