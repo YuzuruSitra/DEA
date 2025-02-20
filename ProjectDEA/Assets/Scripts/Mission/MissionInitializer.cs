@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Gimmick;
 using Manager;
@@ -13,11 +14,15 @@ namespace Mission
         private readonly GameEventManager _gameEventManager;
         private readonly RoomGimmickGenerator _roomGimmickGenerator;
         private readonly InventoryHandler _inventoryHandler;
-        public List<IMissionCondition> MissionConditions { get; }
+        public List<IMissionCondition> KillerMissions { get; }
+        public List<IMissionCondition> AchieverMissions { get; }
+        public List<IMissionCondition> ExplorerMissions { get; }
         
         public MissionInitializer(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, InventoryHandler inventoryHandler)
         {
-            MissionConditions = new List<IMissionCondition>();
+            KillerMissions = new List<IMissionCondition>();
+            AchieverMissions = new List<IMissionCondition>();
+            ExplorerMissions = new List<IMissionCondition>();
             _gameEventManager = gameEventManager;
             _roomGimmickGenerator = roomGimmickGenerator;
             _inventoryHandler = inventoryHandler;
@@ -67,7 +72,22 @@ namespace Mission
 
         private void AddMissionList(IMissionCondition missionCondition)
         {
-            MissionConditions.Add(missionCondition);
+            switch (missionCondition.MissionType)
+            {
+                case MissionType.Killer:
+                    KillerMissions.Add(missionCondition);
+                    break;
+                case MissionType.Achiever:
+                    AchieverMissions.Add(missionCondition);
+                    break;
+                case MissionType.Explorer:
+                    ExplorerMissions.Add(missionCondition);
+                    break;
+                case MissionType.None:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
         
         

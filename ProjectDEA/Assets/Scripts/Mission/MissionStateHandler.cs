@@ -1,6 +1,7 @@
 using System;
 using Gimmick;
 using Manager;
+using Manager.MetaAI;
 using Mission.Condition;
 using UnityEngine;
 
@@ -14,10 +15,10 @@ namespace Mission
         public bool DoingMission => _currentMission != null;
         public Action OnMissionFinished;
 
-        public MissionStateHandler(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, InventoryHandler inventoryHandler)
+        public MissionStateHandler(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, InventoryHandler inventoryHandler, MetaAIHandler metaAIHandler)
         {
             var missionInitializer = new MissionInitializer(gameEventManager, roomGimmickGenerator, inventoryHandler);
-            _missionSelector = new MissionSelector(missionInitializer);
+            _missionSelector = new MissionSelector(missionInitializer, metaAIHandler);
             OnMissionFinished += inventoryHandler.RemoveMissionItem;
             _inventoryHandler = inventoryHandler;
         }

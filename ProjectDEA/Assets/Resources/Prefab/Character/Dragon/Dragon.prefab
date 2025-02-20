@@ -1075,6 +1075,10 @@ MonoBehaviour:
     _bias: 0.2
     _targetAddStamina: 20
     _waitSleepTime: 0.75
+  _dropItems: 03000000
+  _enemyScores:
+  - _type: 0
+    _point: 5
   _paramAttack1:
     _searchOffSetFactor: 0.75
     _searchRadius: 3.25

@@ -1,31 +1,46 @@
+using System;
 using System.Collections.Generic;
+using Manager.MetaAI;
 using Mission.Condition;
-using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Mission
 {
     public class MissionSelector
     {
         private readonly MissionInitializer _missionInitializer;
-        private List<IMissionCondition> MissionList => _missionInitializer.MissionConditions;
-
-        public MissionSelector(MissionInitializer missionInitializer)
+        private readonly MetaAIHandler _metaAIHandler;
+        
+        public MissionSelector(MissionInitializer missionInitializer, MetaAIHandler metaAIHandler)
         {
             _missionInitializer = missionInitializer;
+            _metaAIHandler = metaAIHandler;
         }
         
         public IMissionCondition SelectMission()
         {
-            // 後々メタAIの影響を考慮する。
-            if (MissionList.Count == 0)
+            var type = _metaAIHandler.CurrentPlayerType;
+    
+            if (type == MetaAIHandler.PlayerType.None)
             {
-                Debug.LogWarning("Mission list is empty.");
-                return null;
+                var typeCount = Enum.GetValues(typeof(MetaAIHandler.PlayerType)).Length - 1;
+                type = (MetaAIHandler.PlayerType)Random.Range(0, typeCount);
             }
-            
-            //var rnd = Random.Range(4, MissionList.Count);
-            
-            return MissionList[6];
+
+            // プレイヤータイプとミッションリストのマッピング
+            var missionDict = new Dictionary<MetaAIHandler.PlayerType, List<IMissionCondition>>
+            {
+                { MetaAIHandler.PlayerType.Killer, _missionInitializer.KillerMissions },
+                { MetaAIHandler.PlayerType.Achiever, _missionInitializer.AchieverMissions },
+                { MetaAIHandler.PlayerType.Explorer, _missionInitializer.ExplorerMissions }
+            };
+
+            // 選択したタイプのミッションリストが存在するかチェック
+            if (missionDict.TryGetValue(type, out var missions) && missions.Count > 0)
+            {
+                return missions[Random.Range(0, missions.Count)];
+            }
+            return null;
         }
     }
 }

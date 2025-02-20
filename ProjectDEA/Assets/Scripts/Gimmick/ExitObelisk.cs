@@ -3,6 +3,7 @@ using System.Collections;
 using Cinemachine;
 using Manager;
 using Manager.Audio;
+using Manager.MetaAI;
 using Mission;
 using UnityEngine;
 
@@ -48,7 +49,8 @@ namespace Gimmick
             var gameEventManager = GameObject.FindWithTag("GameEventManager").GetComponent<GameEventManager>();
             var roomGimmickGenerator = GameObject.FindWithTag("GimmickGenerator").GetComponent<RoomGimmickGenerator>();
             var inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
-            MissionStateHandler = new MissionStateHandler(gameEventManager, roomGimmickGenerator, inventoryHandler);
+            var metaAIHandler = GameObject.FindWithTag("MetaAI").GetComponent<MetaAIHandler>();
+            MissionStateHandler = new MissionStateHandler(gameEventManager, roomGimmickGenerator, inventoryHandler, metaAIHandler);
             MissionStateHandler.OnMissionFinished += OnMissionCompleted;
         }
 

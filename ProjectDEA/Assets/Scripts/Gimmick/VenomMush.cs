@@ -1,6 +1,7 @@
 using System;
 using Character.Player;
 using Manager.Audio;
+using Manager.MetaAI;
 using Mission;
 using UnityEngine;
 
@@ -18,15 +19,19 @@ namespace Gimmick
         private float _currentTime = OneSecond;
         [SerializeField] private AudioClip _breakedSe;
         private GameEventManager _gameEventManager;
+        private MetaAIHandler _metaAIHandler;
+        [SerializeField] private MetaAIHandler.AddScores[] _metaAiScores;
         
         private void Start()
         {
             _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
             _gameEventManager = GameObject.FindWithTag("GameEventManager").GetComponent<GameEventManager>();
+            _metaAIHandler = GameObject.FindWithTag("MetaAI").GetComponent<MetaAIHandler>();
         }
         
         public void OnDestroy()
         {
+            _metaAIHandler.SendLogsForMetaAI(_metaAiScores);
             _gameEventManager.GimmickCompleted(_gimmickID);
             _soundHandler.PlaySe(_breakedSe);
             Returned?.Invoke(this);

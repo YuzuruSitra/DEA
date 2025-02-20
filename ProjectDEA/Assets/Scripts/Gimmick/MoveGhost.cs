@@ -1,5 +1,6 @@
 using System;
 using Manager.Map;
+using Manager.MetaAI;
 using Mission;
 using UnityEngine;
 
@@ -22,11 +23,14 @@ namespace Gimmick
         private Vector3 _targetPos;
         [SerializeField] private float _speed;
         private Quaternion _initialQuaternion;
+        private MetaAIHandler _metaAIHandler;
+        [SerializeField] private MetaAIHandler.AddScores[] _metaAiScores;
         
         private void Start()
         {
             _stageGenerator = GameObject.FindWithTag("StageGenerator").GetComponent<StageGenerator>();
             _gameEventManager = GameObject.FindWithTag("GameEventManager").GetComponent<GameEventManager>();
+            _metaAIHandler = GameObject.FindWithTag("MetaAI").GetComponent<MetaAIHandler>();
             _roomChecker = new InRoomChecker();
             _initialQuaternion = transform.rotation;
         }
@@ -61,8 +65,9 @@ namespace Gimmick
                 CompletedRunning();
                 return;    
             }
-
+            
             ChangeRoom();
+            _metaAIHandler.SendLogsForMetaAI(_metaAiScores);
         }
 
         private void CompletedRunning()

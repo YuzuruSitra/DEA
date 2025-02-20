@@ -18,8 +18,6 @@ namespace Character.NPC
 	
 		public void TakeDamage(float amount)
 		{
-			if (amount <= 0) return;
-
 			CurrentHealth -= amount;
 			CurrentHealth = Mathf.Clamp(CurrentHealth, 0, MaxHealth);
 

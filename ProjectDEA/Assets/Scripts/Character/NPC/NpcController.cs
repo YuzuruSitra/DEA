@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
 using Character.NPC.State;
+using Item;
+using Manager;
 using Manager.Audio;
+using Manager.MetaAI;
 using Mission;
 using UnityEngine;
 using UnityEngine.AI;
@@ -51,6 +54,13 @@ namespace Character.NPC
 			public float _waitSleepTime;
 		}
 		[SerializeField] protected RestParameters _restParameters;
+		
+		// 付与するアイテムとメタAIのスコア設定
+		[SerializeField] private ItemKind[] _dropItems;
+		[SerializeField] private MetaAIHandler.AddScores[] _enemyScores;
+		private InventoryHandler _inventoryHandler;
+		private MetaAIHandler _metaAIHandler;
+		
 		// 基底クラスで管理されるコンポーネント
 		protected EnemyAnimHandler EnemyAnimHandler { get; private set; }
 		protected MovementControl MovementControl { get; private set; }
@@ -72,6 +82,9 @@ namespace Character.NPC
 			HealthComponent = new HealthComponent(_maxHealth);
 			NpcStatusComponent = new NpcStatusComponent(_staminaChangeSecond, _fullnessChangeSecond);
 			EnemyHpGaugeHandler = GetComponent<EnemyHpGaugeHandler>();
+			
+			_inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
+			_metaAIHandler = GameObject.FindWithTag("MetaAI").GetComponent<MetaAIHandler>();
 			
 			HealthComponent.OnDeath += OnDeath;
 			EnemyHpGaugeHandler.InitialSet(HealthComponent.MaxHealth, HealthComponent.CurrentHealth);
@@ -108,6 +121,8 @@ namespace Character.NPC
 		
 		public void OnGetDamage(int damage)
 		{
+			if (HealthComponent.CurrentHealth <= 0) return;
+			_metaAIHandler.SendLogsForMetaAI(_enemyScores);
 			HealthComponent.TakeDamage(damage);
 			EnemyAnimHandler.OnTriggerAnim(AnimationTrigger.OnDamaged);
 		}
@@ -117,6 +132,8 @@ namespace Character.NPC
 			_gameEventManager.EnemyDefeated(_enemyID);
 			MovementControl.ChangeMove(false);
 			EnemyAnimHandler.OnTriggerAnim(AnimationTrigger.OnDead);
+			var rnd = UnityEngine.Random.Range(0, _dropItems.Length);
+			_inventoryHandler.AddItem(_dropItems[rnd]);
 			StartCoroutine(DelayedDestroy());
 		}
 		

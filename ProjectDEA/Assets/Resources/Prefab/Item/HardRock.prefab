@@ -105,7 +105,7 @@ MonoBehaviour:
   _hitEnemyDamage: 50
   _kickedScores:
   - _type: 2
-    _point: 10
+    _point: 15
 --- !u!65 &1662012825209413584
 BoxCollider:
   m_ObjectHideFlags: 0
