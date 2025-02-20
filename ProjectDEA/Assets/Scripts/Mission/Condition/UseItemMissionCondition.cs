@@ -42,7 +42,7 @@ namespace Mission.Condition
 
         public void StartTracking()
         {
-            _gameEventManager.OnGimmickCompleted += OnGimmickCompleted;
+            _gameEventManager.OnItemUsed += OnGimmickCompleted;
             AddItemForPlayer();
             GenerateAddEnemy();
         }
@@ -50,7 +50,7 @@ namespace Mission.Condition
         public void StopTracking()
         {
             _roomGimmickGenerator.OnDestroyList(_addEnemyList);
-            _gameEventManager.OnGimmickCompleted -= OnGimmickCompleted;
+            _gameEventManager.OnItemUsed -= OnGimmickCompleted;
         }
 
         private void OnGimmickCompleted(int itemMissionID)
@@ -58,7 +58,7 @@ namespace Mission.Condition
             if (itemMissionID != _missionItemID) return;
 
             _currentCompleteCount++;
-            Debug.Log($"ギミックミッション進捗: {_currentCompleteCount}/{_targetCount}");
+            Debug.Log($"アイテムミッション進捗: {_currentCompleteCount}/{_targetCount}");
 
             if (_currentCompleteCount >= _targetCount)
             {
