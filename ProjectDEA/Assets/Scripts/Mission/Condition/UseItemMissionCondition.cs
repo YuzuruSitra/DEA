@@ -1,4 +1,5 @@
 using Gimmick;
+using Item;
 using Mission.CreateScriptableObject;
 using UnityEngine;
 
@@ -12,29 +13,32 @@ namespace Mission.Condition
         public MissionType MissionType { get; }
         private readonly GameEventManager _gameEventManager;
         private readonly RoomGimmickGenerator _roomGimmickGenerator;
-        private readonly int _targetGimmickID;
+        private readonly int _targetItemID;
         private readonly int _targetCount;
         private int _currentCompleteCount;
         private readonly GimmickMissionData.GenerateType _generateType;
-        private readonly GameObject[] _enemyPrefab;
+        private readonly ItemKind[] _itemKinds;
+        private readonly GameObject[] _addEnemyPrefab;
+        private readonly int _addEnemyCount;
         
-        public UseItemMissionCondition(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, GameObject[] enemyPrefab, GimmickMissionData.GimmickMissionStruct gimmickMissionStruct)
+        public UseItemMissionCondition(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, ItemKind[] itemKinds, UseItemMissionData.UseItemMissionStruct useItemMissionData)
         {
             _gameEventManager = gameEventManager;
             _roomGimmickGenerator = roomGimmickGenerator;
-            _enemyPrefab = enemyPrefab;
-            MissionName = gimmickMissionStruct._missionName;
-            MissionType = gimmickMissionStruct._missionType;
-            _targetGimmickID = gimmickMissionStruct._targetGimmickID;
+            _itemKinds = itemKinds;
+            MissionName = useItemMissionData._missionName;
+            MissionType = useItemMissionData._missionType;
+            _targetItemID = useItemMissionData._targetItemID;
             _currentCompleteCount = 0;
-            _generateType = gimmickMissionStruct._generateType;
-            _targetCount = gimmickMissionStruct._targetCompleteCount;
+            _targetCount = useItemMissionData._targetCompleteCount;
+            _addEnemyPrefab = useItemMissionData._addEnemyPrefab;
+            _addEnemyCount = useItemMissionData._addEnemyCount;
         }
 
         public void StartTracking()
         {
             _gameEventManager.OnGimmickCompleted += OnGimmickCompleted;
-            GenerateEnemy();
+            AddItemForPlayer();
         }
 
         public void StopTracking()
@@ -42,9 +46,9 @@ namespace Mission.Condition
             _gameEventManager.OnGimmickCompleted -= OnGimmickCompleted;
         }
 
-        private void OnGimmickCompleted(int gimmickID)
+        private void OnGimmickCompleted(int useItemID)
         {
-            if (gimmickID != _targetGimmickID) return;
+            if (useItemID != _targetItemID) return;
 
             _currentCompleteCount++;
             Debug.Log($"ギミックミッション進捗: {_currentCompleteCount}/{_targetCount}");
@@ -55,35 +59,16 @@ namespace Mission.Condition
             }
         }
         
-        private void GenerateEnemy()
+        private void AddItemForPlayer()
         {
-            for (var i = 0; i < _targetCount; i++)
-            {
-                var targetEnemy = GetTargetEnemy();
-                var targetRoom = GetTargetRoom();
-                _roomGimmickGenerator.InsGimmick(targetRoom, targetEnemy);
-                Debug.Log("generate : " + targetEnemy.name + " Room : " + targetRoom);
-            }
-        }
-        
-        private GameObject GetTargetEnemy()
-        {
-            return _targetGimmickID switch
-            {
-                EnemyKillMissionData.NonTargetID => _enemyPrefab[Random.Range(0, _enemyPrefab.Length)],
-                _ => _enemyPrefab[_targetGimmickID]
-            };
+            // プレイヤーにアイテムを付与
         }
 
-        private int GetTargetRoom()
+        private void GenerateAddEnemy()
         {
-            return _generateType switch
-            {
-                GimmickMissionData.GenerateType.RandomRoom => _roomGimmickGenerator.GetRandomRoom,
-                GimmickMissionData.GenerateType.ObeliskRoom => _roomGimmickGenerator.GetObeliskRoom,
-                _ => 0
-            };
+            // 敵の生成
         }
+
     }
 }
 
