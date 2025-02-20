@@ -41,6 +41,7 @@ namespace Gimmick
 
         private void OnDestroy()
         {
+            Returned?.Invoke(this);
             _playerRoomTracker.OnPlayerRoomChange -= OnTrashTreasure;
         }
 
@@ -75,7 +76,6 @@ namespace Gimmick
         {
             if (!_isOpen) return;
             Destroy(gameObject);
-            Returned?.Invoke(this);
         }
     }
 }

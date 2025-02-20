@@ -1,19 +1,16 @@
 using System;
 using Character.NPC;
-using Item;
-using Manager;
 using Manager.MetaAI;
+using Mission;
 using UnityEngine;
 
 namespace Gimmick
 {
     public class BornOut : MonoBehaviour, IInteractable, IGimmickID
     {
-        private const ItemKind OutItem = ItemKind.Born;
-        private InventoryHandler _inventoryHandler;
         public event Action Destroyed;
         public bool IsInteractable { get; private set; }
-
+        [SerializeField] private int _gimmickID;
         [SerializeField] private Rigidbody _rb;
         [SerializeField] private float _flyForce;
         [SerializeField] private float _rndRotRange;
@@ -29,12 +26,13 @@ namespace Gimmick
         [SerializeField] private MetaAIHandler.AddScores[] _pickedScores;
         public GimmickID GimmickIdInfo { get; set; }
         public event Action<IGimmickID> Returned;
+        private GameEventManager _gameEventManager;
         
         private void Start()
         {
-            _inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
             IsInteractable = false;
             _metaAIHandler = GameObject.FindWithTag("MetaAI").GetComponent<MetaAIHandler>();
+            _gameEventManager = GameObject.FindWithTag("GameEventManager").GetComponent<GameEventManager>();
         }
         
         private void Update()
@@ -46,7 +44,7 @@ namespace Gimmick
         public void Interact()
         {
             if (!IsInteractable) return;
-            _inventoryHandler.AddItem(OutItem);
+            _gameEventManager.GimmickCompleted(_gimmickID);
             _metaAIHandler.SendLogsForMetaAI(_pickedScores);
             Destroy(gameObject);
             Destroyed?.Invoke();

@@ -13,7 +13,12 @@ namespace Gimmick
         [SerializeField] private int _damageForSeconds;
         private const float OneSecond = 1.0f;
         private float _currentTime = OneSecond;
-        
+
+        private void OnDestroy()
+        {
+            Returned?.Invoke(this);
+        }
+
         private void OnTriggerStay(Collider other)
         {
             if (!other.gameObject.CompareTag("Player")) return;

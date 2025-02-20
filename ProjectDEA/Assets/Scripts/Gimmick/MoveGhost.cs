@@ -2,7 +2,6 @@ using System;
 using Manager.Map;
 using Mission;
 using UnityEngine;
-using Random = System.Random;
 
 namespace Gimmick
 {
