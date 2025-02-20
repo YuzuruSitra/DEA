@@ -10,6 +10,7 @@ namespace Mission
     {
         private readonly MissionSelector _missionSelector;
         private IMissionCondition _currentMission;
+        private readonly InventoryHandler _inventoryHandler;
         public bool DoingMission => _currentMission != null;
         public Action OnMissionFinished;
 
@@ -17,6 +18,14 @@ namespace Mission
         {
             var missionInitializer = new MissionInitializer(gameEventManager, roomGimmickGenerator, inventoryHandler);
             _missionSelector = new MissionSelector(missionInitializer);
+            OnMissionFinished += inventoryHandler.RemoveMissionItem;
+            _inventoryHandler = inventoryHandler;
+        }
+        
+        public void Dispose()
+        {
+            // イベントの購読を解除
+            OnMissionFinished -= _inventoryHandler.RemoveMissionItem;
         }
         
         // ミッションを特定の条件で開始させる。

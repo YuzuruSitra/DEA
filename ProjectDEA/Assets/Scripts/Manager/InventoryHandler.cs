@@ -16,7 +16,7 @@ namespace Manager
             public string[] _name;
             public string[] _description;
             public GameObject _prefab;
-            public GameObject _currentPrefab;
+            public GameObject _currentPredict;
             public GameObject _predict;
             public Sprite _sprite;
             public int _count;
@@ -25,6 +25,7 @@ namespace Manager
             public string[] _effectedLogText;
         }
         [SerializeField] private ItemPrefabSet[] _itemSets;
+        [SerializeField] private ItemKind[] _onlyMissionItems;
         public ItemPrefabSet[] ItemSets => _itemSets;
         public const int ErrorValue = -1;
         public int CurrentItemNum { get; private set; }
@@ -83,7 +84,7 @@ namespace Manager
             for (var i = 0; i < _itemSets.Length; i++)
             {
                 if (_itemSets[i]._predict == null) continue;
-                _itemSets[i]._currentPrefab = Instantiate(_itemSets[i]._predict);
+                _itemSets[i]._currentPredict = Instantiate(_itemSets[i]._predict);
             }
             
             CurrentItemNum = ErrorValue;
@@ -125,7 +126,7 @@ namespace Manager
         {
             if (CurrentItemNum != ErrorValue)
             {
-                ChangePredictActive(_itemSets[CurrentItemNum]._currentPrefab, false);
+                ChangePredictActive(_itemSets[CurrentItemNum]._currentPredict, false);
             }
             CurrentItemNum = value;
             var sprite = CurrentItemNum != ErrorValue ? _itemSets[value]._sprite : null;
@@ -162,15 +163,19 @@ namespace Manager
             }
         }
 
-        public void RemoveItem(ItemKind item)
+        public void RemoveMissionItem()
         {
             var language = _logTextHandler.LanguageHandler.CurrentLanguage;
             for (var i = 0; i < _itemSets.Length; i++)
             {
-                if (_itemSets[i]._kind != item) continue;
-                _itemSets[i]._count--;
-                var message = _itemSets[i]._name[(int)language] + _lostLogTemplate[(int)language];
-                _logTextHandler.AddLog(message);
+                foreach (var t in _onlyMissionItems)
+                {
+                    if (_itemSets[i]._kind != t) continue;
+                    if (_itemSets[i]._count <= 0) continue;
+                    _itemSets[i]._count = 0;
+                    var message = _itemSets[i]._name[(int)language] + _lostLogTemplate[(int)language];
+                    _logTextHandler.AddLog(message);
+                }
             }
         }
 

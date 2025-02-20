@@ -524,7 +524,7 @@ GameObject:
   - component: {fileID: 7854861488445274641}
   m_Layer: 8
   m_Name: obelisk_main
-  m_TagString: Untagged
+  m_TagString: ExitObelisk
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

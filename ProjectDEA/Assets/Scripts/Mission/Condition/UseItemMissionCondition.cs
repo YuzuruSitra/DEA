@@ -49,7 +49,6 @@ namespace Mission.Condition
 
         public void StopTracking()
         {
-            _inventoryHandler.RemoveItem(_itemKinds[_missionItemID]);
             _roomGimmickGenerator.OnDestroyList(_addEnemyList);
             _gameEventManager.OnGimmickCompleted -= OnGimmickCompleted;
         }

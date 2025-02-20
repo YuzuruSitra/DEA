@@ -70,7 +70,7 @@ namespace Character.Player
                 switch (_insState)
                 {
                     case InsState.None:
-                        _inventoryHandler.ChangePredictActive(target._currentPrefab, true);
+                        _inventoryHandler.ChangePredictActive(target._currentPredict, true);
                         _insState = InsState.Predict;
                         break;
                     case InsState.Predict:
@@ -95,7 +95,7 @@ namespace Character.Player
             if (_inventoryHandler.CurrentItemNum == InventoryHandler.ErrorValue) return;
             _predictedPosition = CalculateSpawnPosition();
             _predictedRotation = transform.rotation * Quaternion.Euler(0, 180, 0);
-            var currentPrefab = _inventoryHandler.TargetItem._currentPrefab;
+            var currentPrefab = _inventoryHandler.TargetItem._currentPredict;
             if (currentPrefab == null) return;
             currentPrefab.transform.position = _predictedPosition;
             currentPrefab.transform.rotation = _predictedRotation;
@@ -133,7 +133,7 @@ namespace Character.Player
         {
             if (_inventoryHandler.CurrentItemNum == InventoryHandler.ErrorValue) return;
             _insState = InsState.None;
-            _inventoryHandler.ChangePredictActive(_inventoryHandler.TargetItem._currentPrefab, false);
+            _inventoryHandler.ChangePredictActive(_inventoryHandler.TargetItem._currentPredict, false);
         }
 
         private void DoneUseItem()

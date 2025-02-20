@@ -11,7 +11,7 @@ namespace Gimmick
     public class ExitObelisk : MonoBehaviour, IInteractable, IGimmickID
     {
         private DungeonLayerHandler _dungeonLayerHandler;
-        private MissionStateHandler _missionStateHandler;
+        public MissionStateHandler MissionStateHandler { get; private set; }
 
         public const int NeededKeyCount = 4;
         private int _setKeyCount;
@@ -29,7 +29,7 @@ namespace Gimmick
         private const int HighPriority = 15;
         private const int LowPriority = 0;
         public event Action Destroyed;
-        public bool IsInteractable => !_missionStateHandler.DoingMission;
+        public bool IsInteractable => !MissionStateHandler.DoingMission;
         private bool _isCompleted;
         
         private SoundHandler _soundHandler;
@@ -48,13 +48,14 @@ namespace Gimmick
             var gameEventManager = GameObject.FindWithTag("GameEventManager").GetComponent<GameEventManager>();
             var roomGimmickGenerator = GameObject.FindWithTag("GimmickGenerator").GetComponent<RoomGimmickGenerator>();
             var inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
-            _missionStateHandler = new MissionStateHandler(gameEventManager, roomGimmickGenerator, inventoryHandler);
-            _missionStateHandler.OnMissionFinished += OnMissionCompleted;
+            MissionStateHandler = new MissionStateHandler(gameEventManager, roomGimmickGenerator, inventoryHandler);
+            MissionStateHandler.OnMissionFinished += OnMissionCompleted;
         }
 
         private void OnDestroy()
         {
-            _missionStateHandler.OnMissionFinished -= OnMissionCompleted;
+            MissionStateHandler.OnMissionFinished -= OnMissionCompleted;
+            MissionStateHandler.Dispose();
         }
 
         public void Interact()
@@ -69,8 +70,8 @@ namespace Gimmick
             }
 
             // ミッション開始
-            if (_missionStateHandler.DoingMission) return;
-            _missionStateHandler.StartMission();
+            if (MissionStateHandler.DoingMission) return;
+            MissionStateHandler.StartMission();
             // 音とかセリフを追加予定
         }
 

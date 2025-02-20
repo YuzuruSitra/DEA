@@ -23,24 +23,39 @@ namespace Item
         private MetaAIHandler _metaAIHandler;
         private GameEventManager _gameEventManager;
         private InventoryHandler _inventoryHandler;
+        private MissionStateHandler _missionStateHandler;
         private bool _isMoving;
         private bool _hitOneTime;
         private const float MovementThreshold = 0.1f;
         private GameObject _currentEnemy;
         private NpcController _currentNpcController;
         
+        
         private void Start()
         {
             _metaAIHandler = GameObject.FindWithTag("MetaAI").GetComponent<MetaAIHandler>();
             _gameEventManager = GameObject.FindWithTag("GameEventManager").GetComponent<GameEventManager>();
             _inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
+            _missionStateHandler = GameObject.FindWithTag("ExitObelisk").GetComponent<ExitObelisk>().MissionStateHandler;
+            _missionStateHandler.OnMissionFinished += OnMissinFinished;
             IsInteractable = true;
+        }
+
+        private void OnDestroy()
+        {
+            _missionStateHandler.OnMissionFinished -= OnMissinFinished;
         }
         
         private void Update()
         {
             _isMoving = _rb.velocity.magnitude > MovementThreshold;
             if (!_isMoving) _hitOneTime = false;
+        }
+
+        private void OnMissinFinished()
+        {
+            Destroy(gameObject);
+            Destroyed?.Invoke();
         }
         
         public void Interact()
