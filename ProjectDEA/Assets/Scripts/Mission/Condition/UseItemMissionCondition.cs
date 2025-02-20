@@ -17,13 +17,14 @@ namespace Mission.Condition
         private readonly RoomGimmickGenerator _roomGimmickGenerator;
         private readonly InventoryHandler _inventoryHandler;
         private readonly int _missionItemID;
-        private readonly int _targetCount;
-        private int _currentCompleteCount;
         private readonly GimmickMissionData.GenerateType _generateType;
         private readonly ItemKind[] _itemKinds;
         private readonly GameObject[] _addEnemyPrefab;
         private readonly int _addEnemyCount;
         private readonly List<GameObject> _addEnemyList = new ();
+        
+        public int CurrentCount { get; private set; }
+        public int MaxCount { get; }
         
         public UseItemMissionCondition(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, InventoryHandler inventoryHandler, ItemKind[] itemKinds, UseItemMissionData.UseItemMissionStruct useItemMissionData)
         {
@@ -34,8 +35,8 @@ namespace Mission.Condition
             MissionName = useItemMissionData._missionName;
             MissionType = useItemMissionData._missionType;
             _missionItemID = useItemMissionData._missionItemID;
-            _currentCompleteCount = 0;
-            _targetCount = useItemMissionData._targetCompleteCount;
+            CurrentCount = 0;
+            MaxCount = useItemMissionData._targetCompleteCount;
             _addEnemyPrefab = useItemMissionData._addEnemyPrefab;
             _addEnemyCount = useItemMissionData._addEnemyCount;
         }
@@ -57,10 +58,10 @@ namespace Mission.Condition
         {
             if (itemMissionID != _missionItemID) return;
 
-            _currentCompleteCount++;
-            Debug.Log($"アイテムミッション進捗: {_currentCompleteCount}/{_targetCount}");
+            CurrentCount++;
+            Debug.Log($"アイテムミッション進捗: {CurrentCount}/{MaxCount}");
 
-            if (_currentCompleteCount >= _targetCount)
+            if (CurrentCount >= MaxCount)
             {
                 OnMissionCompleted?.Invoke();
             }

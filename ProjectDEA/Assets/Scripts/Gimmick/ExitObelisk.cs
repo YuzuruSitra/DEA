@@ -40,7 +40,7 @@ namespace Gimmick
         [SerializeField] private float _rewardCamWaitTime;
         private WaitForSeconds _rewardCamWaitForSeconds;
         
-        private void Start()
+        private void Awake()
         {
             _dungeonLayerHandler = GameObject.FindWithTag("DungeonLayerHandler").GetComponent<DungeonLayerHandler>();
             _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();

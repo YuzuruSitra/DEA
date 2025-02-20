@@ -7,6 +7,8 @@ namespace Mission.Condition
         event System.Action OnMissionCompleted;
         void StartTracking();
         void StopTracking();
+        public int CurrentCount { get; }
+        public int MaxCount { get; }
     }
 
     public enum MissionType

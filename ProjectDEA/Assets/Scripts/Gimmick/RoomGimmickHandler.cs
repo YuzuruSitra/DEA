@@ -10,6 +10,7 @@ namespace Gimmick
         
         private void Start()
         {
+            _playerRoomTracker = GameObject.FindWithTag("PlayerRoomTracker").GetComponent<PlayerRoomTracker>();
             OnGenerateGimmick();
         }
 

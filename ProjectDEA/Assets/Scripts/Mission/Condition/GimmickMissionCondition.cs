@@ -14,13 +14,13 @@ namespace Mission.Condition
         private readonly GameEventManager _gameEventManager;
         private readonly RoomGimmickGenerator _roomGimmickGenerator;
         private readonly int _targetGimmickID;
-        private readonly int _targetCount;
-        private int _currentCompleteCount;
         private readonly GimmickMissionData.GenerateType _generateType;
         private readonly GameObject[] _gimmickPrefab;
         private readonly GameObject[] _addGimmickPrefab;
         private readonly int _addGimmickCount;
         private readonly List<GameObject> _addGimmickList = new ();
+        public int CurrentCount { get; private set; }
+        public int MaxCount { get; }
         
         public GimmickMissionCondition(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, GameObject[] gimmickPrefab, GimmickMissionData.GimmickMissionStruct gimmickMissionStruct)
         {
@@ -30,9 +30,9 @@ namespace Mission.Condition
             MissionName = gimmickMissionStruct._missionName;
             MissionType = gimmickMissionStruct._missionType;
             _targetGimmickID = gimmickMissionStruct._targetGimmickID;
-            _currentCompleteCount = 0;
+            CurrentCount = 0;
             _generateType = gimmickMissionStruct._generateType;
-            _targetCount = gimmickMissionStruct._targetCompleteCount;
+            MaxCount = gimmickMissionStruct._targetCompleteCount;
             _addGimmickPrefab = gimmickMissionStruct._addGimmickPrefab;
             _addGimmickCount = gimmickMissionStruct._addGimmickCount;
         }
@@ -54,10 +54,10 @@ namespace Mission.Condition
         {
             if (gimmickID != _targetGimmickID) return;
 
-            _currentCompleteCount++;
-            Debug.Log($"ギミックミッション進捗: {_currentCompleteCount}/{_targetCount}");
+            CurrentCount++;
+            Debug.Log($"ギミックミッション進捗: {CurrentCount}/{MaxCount}");
 
-            if (_currentCompleteCount >= _targetCount)
+            if (CurrentCount >= MaxCount)
             {
                 OnMissionCompleted?.Invoke();
             }
@@ -65,7 +65,7 @@ namespace Mission.Condition
         
         private void GenerateGimmick()
         {
-            for (var i = 0; i < _targetCount; i++)
+            for (var i = 0; i < MaxCount; i++)
             {
                 var target = GetTargetGimmick();
                 var targetRoom = GetTargetRoom();

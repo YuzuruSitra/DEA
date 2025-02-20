@@ -10,9 +10,11 @@ namespace Mission
     public class MissionStateHandler
     {
         private readonly MissionSelector _missionSelector;
-        private IMissionCondition _currentMission;
+        public IMissionCondition CurrentMission { get; private set; }
+
         private readonly InventoryHandler _inventoryHandler;
-        public bool DoingMission => _currentMission != null;
+        public bool DoingMission => CurrentMission != null;
+        public Action OnMissionStarted;
         public Action OnMissionFinished;
 
         public MissionStateHandler(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, InventoryHandler inventoryHandler, MetaAIHandler metaAIHandler)
@@ -32,18 +34,19 @@ namespace Mission
         // ミッションを特定の条件で開始させる。
         public void StartMission()
         {
-            _currentMission = _missionSelector.SelectMission();
-            Debug.Log("Mission selected: " + _currentMission.MissionName);
-            _currentMission.OnMissionCompleted += CompleteMission;
-            _currentMission.StartTracking();
+            CurrentMission = _missionSelector.SelectMission();
+            Debug.Log("Mission selected: " + CurrentMission.MissionName);
+            CurrentMission.OnMissionCompleted += CompleteMission;
+            CurrentMission.StartTracking();
+            OnMissionStarted?.Invoke();
         }
 
         private void CompleteMission()
         {
-            if (_currentMission == null) return;
-            _currentMission.OnMissionCompleted -= CompleteMission;
-            _currentMission.StopTracking();
-            _currentMission = null;
+            if (CurrentMission == null) return;
+            CurrentMission.OnMissionCompleted -= CompleteMission;
+            CurrentMission.StopTracking();
+            CurrentMission = null;
             OnMissionFinished?.Invoke();
             Debug.Log("ミッション達成！");
         }

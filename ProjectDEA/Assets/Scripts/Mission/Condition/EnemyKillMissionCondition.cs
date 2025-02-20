@@ -13,10 +13,11 @@ namespace Mission.Condition
         private readonly GameEventManager _gameEventManager;
         private readonly RoomGimmickGenerator _roomGimmickGenerator;
         private readonly int _targetEnemyID;
-        private readonly int _targetKillCount;
-        private int _currentKillCount;
         private readonly EnemyKillMissionData.GenerateType _generateType;
         private readonly GameObject[] _enemyPrefab;
+
+        public int CurrentCount { get; private set; }
+        public int MaxCount { get; }
 
         public EnemyKillMissionCondition(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, GameObject[] enemyPrefab, EnemyKillMissionData.KillMissionStruct enemyKillMissionData)
         {
@@ -26,9 +27,9 @@ namespace Mission.Condition
             MissionName = enemyKillMissionData._missionName;
             MissionType = enemyKillMissionData._missionType;
             _targetEnemyID = enemyKillMissionData._targetEnemyID;
-            _currentKillCount = 0;
+            CurrentCount = 0;
             _generateType = enemyKillMissionData._generateType;
-            _targetKillCount = enemyKillMissionData._targetKillCount;
+            MaxCount = enemyKillMissionData._targetKillCount;
         }
 
         public void StartTracking()
@@ -46,10 +47,10 @@ namespace Mission.Condition
         {
             if (enemyID != _targetEnemyID) return;
 
-            _currentKillCount++;
-            Debug.Log($"敵討伐ミッション進捗: {_currentKillCount}/{_targetKillCount}");
+            CurrentCount++;
+            Debug.Log($"敵討伐ミッション進捗: {CurrentCount}/{MaxCount}");
 
-            if (_currentKillCount >= _targetKillCount)
+            if (CurrentCount >= MaxCount)
             {
                 OnMissionCompleted?.Invoke();
             }
@@ -57,7 +58,7 @@ namespace Mission.Condition
 
         private void GenerateEnemy()
         {
-            for (var i = 0; i < _targetKillCount; i++)
+            for (var i = 0; i < MaxCount; i++)
             {
                 var targetEnemy = GetTargetEnemy();
                 var targetRoom = GetTargetRoom();
