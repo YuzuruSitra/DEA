@@ -8,7 +8,7 @@ namespace Mission
     {
         public event Action<int> OnEnemyDefeated;
         public event Action<int> OnGimmickCompleted;
-        public event Action<int> OnItemCollected;
+        public event Action<int> OnItemUsed;
 
         private void Start()
         {
@@ -30,7 +30,7 @@ namespace Mission
 
         public void EnemyDefeated(int enemyID) => OnEnemyDefeated?.Invoke(enemyID);
         public void GimmickCompleted(int gimmickID) => OnGimmickCompleted?.Invoke(gimmickID);
-        public void ItemCollected(int itemID) => OnItemCollected?.Invoke(itemID);
+        public void ItemUsed(int itemID) => OnItemUsed?.Invoke(itemID);
     }
 }
 

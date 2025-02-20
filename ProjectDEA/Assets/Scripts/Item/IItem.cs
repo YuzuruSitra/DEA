@@ -9,10 +9,10 @@ namespace Item
 
     public enum ItemKind
     {
-        Key,
         Dynamite,
         Born,
         PowerPotion,
-        PowerApple
+        PowerApple,
+        HardStone
     }
 }

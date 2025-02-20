@@ -47,27 +47,11 @@ MonoBehaviour:
   _itemSets:
   - _kind: 0
     _name:
-    - "\u30AA\u30D9\u30EA\u30B9\u30AF\u306E\u7834\u7247"
-    - Obelisk Fragment
-    _description:
-    - "\u30AA\u30D9\u30EA\u30B9\u30AF\u306E\u7834\u7247\u30024\u3064\u30BB\u30C3\u30C8\u3059\u308B\u3053\u3068\u3067\u30AA\u30D9\u30EA\u30B9\u30AF\u3092\u8D77\u52D5\u3057\u6B21\u306E\u968E\u5C64\u3078\u884C\u3051\u308B\u3002"
-    - 'Description: An obelisk fragment. Set four of these to activate the obelisk
-      and proceed to the next floor.'
-    _prefab: {fileID: 0}
-    _currentPrefab: {fileID: 0}
-    _predict: {fileID: 0}
-    _sprite: {fileID: 21300000, guid: 3dd7070fb10e77b4aa40b69f45b8a91b, type: 3}
-    _count: 0
-    _isPut: 0
-    _isUse: 0
-    _effectedLogText: []
-  - _kind: 1
-    _name:
     - "\u30C0\u30A4\u30CA\u30DE\u30A4\u30C8"
     - Dynamite
     _description:
-    - "\u7834\u58CA\u306E\u9650\u308A\u3092\u5C3D\u304F\u3059\u3002"
-    - A tool of pure destruction.
+    - "\u81EA\u3089\u7206\u767A\u3059\u308B\u4EBA\u5F62\u3002\u7834\u58CA\u306E\u9650\u308A\u3092\u5C3D\u304F\u3059\u3002"
+    - A doll that explodes on its own. Destroys everything.
     _prefab: {fileID: 3244715098771652903, guid: 014aca1e472a6f849b8fe6dd0e01be23, type: 3}
     _currentPrefab: {fileID: 0}
     _predict: {fileID: 4086957854919441518, guid: 98cdcd7faf06e5346b443aef0e30d2d6, type: 3}
@@ -78,7 +62,7 @@ MonoBehaviour:
     _effectedLogText:
     - "\u30C0\u30A4\u30CA\u30DE\u30A4\u30C8\u8A2D\u7F6E\u5B8C\u4E86\u3002\u3053\u3053\u304B\u3089\u96E2\u308C\u308B\u3068\u3057\u3088\u3046\u3002"
     - The dynamite is set. Time to get out of here.
-  - _kind: 2
+  - _kind: 1
     _name:
     - "\u4EA1\u9AB8"
     - Remains
@@ -94,7 +78,7 @@ MonoBehaviour:
     _isPut: 0
     _isUse: 0
     _effectedLogText: []
-  - _kind: 3
+  - _kind: 2
     _name:
     - "\u529B\u306E\u30DD\u30FC\u30B7\u30E7\u30F3"
     - Potion of Strength
@@ -111,7 +95,7 @@ MonoBehaviour:
     _effectedLogText:
     - "\u5C11\u3057\u7B4B\u529B\u304C\u5897\u3057\u305F\u6C17\u304C\u3059\u308B\u3002"
     - I feel like my strength has grown a little.
-  - _kind: 4
+  - _kind: 3
     _name:
     - "\u304A\u4F9B\u3048\u30E2\u30CE\u30EA\u30F3\u30B4"
     - Offering Apple
@@ -128,5 +112,22 @@ MonoBehaviour:
     _effectedLogText:
     - "\u3059\u3053\u3057\u6C17\u5206\u304C\u56DE\u5FA9\u3057\u305F\u3002"
     - I feel a bit more refreshed now.
+  - _kind: 4
+    _name:
+    - "\u786C\u3044\u77F3"
+    - Hard Stone.
+    _description:
+    - "\u30AA\u30D9\u30EA\u30B9\u30AF\u304B\u3089\u3082\u3089\u3063\u305F\u77F3\u3002\u653B\u6483\u3059\u308B\u3068\u98DB\u3070\u305B\u305D\u3046\u3060\u3002"
+    - A stone given to me by an obelisk. It seems to be able to fly when attacked.
+    _prefab: {fileID: 6804247848587745833, guid: ed7c7d119c7c0eb4c81ab47baf1db81f, type: 3}
+    _currentPrefab: {fileID: 0}
+    _predict: {fileID: 6804247848587745833, guid: 157ac3af51f0b834390b28c817eb904c, type: 3}
+    _sprite: {fileID: 21300000, guid: 35ae639cce71c124d96040d54502dce3, type: 3}
+    _count: 0
+    _isPut: 1
+    _isUse: 0
+    _effectedLogText:
+    - "\u305D\u308C\u3086\u3051\u786C\u3044\u77F3"
+    - I took out the stone.
   _pushAudio: {fileID: 8300000, guid: 8302fb6948a54f442b70734dc17bd38e, type: 3}
   _getItemAudio: {fileID: 8300000, guid: f660d0873b9fcbd4880426c03ffe22fe, type: 3}

@@ -1,5 +1,3 @@
-using System;
-using Item;
 using Manager;
 using Manager.Language;
 using TMPro;
@@ -15,7 +13,6 @@ namespace UI
         [SerializeField] private Image _itemImage;
         [SerializeField] private TextMeshProUGUI _itemCountText;
         [SerializeField] private GameObject[] _itemFrames;
-        [SerializeField] private TextMeshProUGUI _keyText;
         private InventoryHandler _inventoryHandler;
         [SerializeField] private PanelSwitcher _panelSwitcher;
         
@@ -27,11 +24,6 @@ namespace UI
             _inventoryHandler.OnItemCountChanged += ChangeItemCount;
             _inventoryHandler.OnItemLineupChanged += ChangeVisibleFrame;
             _panelSwitcher.IsOpenInventory += ChangeInventoryCount;
-        }
-
-        private void Update()
-        {
-            _keyText.text = "× " + _inventoryHandler.ItemSets[(int)ItemKind.Key]._count;
         }
 
         private void OnDestroy()

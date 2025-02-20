@@ -23,8 +23,9 @@ namespace Mission
                 return null;
             }
             
-            var rnd = Random.Range(4, MissionList.Count);
-            return MissionList[rnd];
+            //var rnd = Random.Range(4, MissionList.Count);
+            
+            return MissionList[6];
         }
     }
 }

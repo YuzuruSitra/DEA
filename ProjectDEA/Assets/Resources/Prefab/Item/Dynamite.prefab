@@ -10328,8 +10328,8 @@ MonoBehaviour:
   _layerToIgnore:
     serializedVersion: 2
     m_Bits: 400
-  _playerGiveDamage: 20
-  _dragonGiveDamage: 25
+  _playerGiveDamage: 30
+  _dragonGiveDamage: 200
   _bombAudio: {fileID: 8300000, guid: 8c313aede6c04d544b3ac855c7b587ee, type: 3}
   _bombScores:
   - _type: 2

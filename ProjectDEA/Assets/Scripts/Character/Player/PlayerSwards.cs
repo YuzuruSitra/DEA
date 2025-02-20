@@ -1,5 +1,6 @@
 using Character.NPC;
 using Gimmick;
+using Item;
 using Manager;
 using Manager.Audio;
 using UnityEngine;
@@ -17,6 +18,9 @@ namespace Character.Player
         
         private GameObject _currentBorn;
         private BornOut _currentBornOut;
+
+        private GameObject _currentRock;
+        private HardRock _currentHardRock;
         
         private SoundHandler _soundHandler;
         [SerializeField] private AudioClip _attackHitSeClip;
@@ -76,6 +80,18 @@ namespace Character.Player
                     _currentBornOut = _currentBorn.GetComponent<BornOut>();
                 }
                 _currentBornOut.FlyAwayBorn(_playerTrn.position);
+                _soundHandler.PlaySe(_attackHitSeClip);
+                _oneHit = true;
+            }
+            
+            if (other.CompareTag("HardRock"))
+            {
+                if (_currentRock != other.gameObject)
+                {
+                    _currentRock = other.gameObject;
+                    _currentHardRock = _currentRock.GetComponent<HardRock>();
+                }
+                _currentHardRock.FlyAwayStone(_playerTrn.position);
                 _soundHandler.PlaySe(_attackHitSeClip);
                 _oneHit = true;
             }
