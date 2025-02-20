@@ -1,8 +1,6 @@
 using System;
-using Gimmick;
 using Item;
 using Manager.Audio;
-using Manager.PlayData;
 using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -33,19 +31,18 @@ namespace Manager
         public Action OnItemNumChanged;
         public Action<Sprite> OnItemSpriteChanged;
         public Action<int> OnItemCountChanged;
-        public Action<int> OnKeyCountChanged;
         public Action<ItemPrefabSet[]> OnItemLineupChanged;
         public ItemPrefabSet TargetItem => _itemSets[CurrentItemNum];
         private LogTextHandler _logTextHandler;
-        private readonly string[] _logTemplate =
+        private readonly string[] _getLogTemplate =
         {
             "を手に入れた。",
             " has been obtained."
         };
-        private readonly string[] _logObeliskTemplate =
+        private readonly string[] _lostLogTemplate =
         {
-            "破片は集まった。オベリスクへ向かおう。",
-            "The fragments have been gathered.\nLet's head to the obelisk."
+            "を失った。",
+            " are gone."
         };
         private SoundHandler _soundHandler;
         [SerializeField] private AudioClip _pushAudio;
@@ -155,14 +152,9 @@ namespace Manager
             {
                 if (_itemSets[i]._kind != item) continue;
                 _itemSets[i]._count++;
-                var message = _itemSets[i]._name[(int)language] + _logTemplate[(int)language];
+                var message = _itemSets[i]._name[(int)language] + _getLogTemplate[(int)language];
                 _logTextHandler.AddLog(message);
                 _soundHandler.PlaySe(_getItemAudio);
-                if (item == ItemKind.Key)
-                {
-                    OnKeyCountChanged?.Invoke(_itemSets[i]._count);
-                    CheckObeliskCount();
-                }
                 if (CurrentItemNum == i) ChangeItemCount();
                 if (_itemSets[i]._count == 1) OnItemLineupChanged(_itemSets);
                 if (CurrentItemNum == ErrorValue) ChangeItemNum(i);
@@ -170,11 +162,16 @@ namespace Manager
             }
         }
 
-        private void CheckObeliskCount()
+        public void RemoveItem(ItemKind item)
         {
-            if (_itemSets[(int)ItemKind.Key]._count != ExitObelisk.NeededKeyCount) return;
             var language = _logTextHandler.LanguageHandler.CurrentLanguage;
-            _logTextHandler.AddLog(_logObeliskTemplate[(int)language]);
+            for (var i = 0; i < _itemSets.Length; i++)
+            {
+                if (_itemSets[i]._kind != item) continue;
+                _itemSets[i]._count--;
+                var message = _itemSets[i]._name[(int)language] + _lostLogTemplate[(int)language];
+                _logTextHandler.AddLog(message);
+            }
         }
 
         public GameObject UseItem()

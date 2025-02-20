@@ -14,7 +14,7 @@ namespace Mission.CreateScriptableObject
         {
             public string _missionName;
             public MissionType _missionType;
-            public int _targetItemID;
+            public int _missionItemID;
             public int _targetCompleteCount;
             public GameObject[] _addEnemyPrefab;
             public int _addEnemyCount;

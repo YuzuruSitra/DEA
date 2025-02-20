@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using Gimmick;
 using Item;
+using Manager;
 using Mission.CreateScriptableObject;
 using UnityEngine;
 
@@ -13,22 +15,25 @@ namespace Mission.Condition
         public MissionType MissionType { get; }
         private readonly GameEventManager _gameEventManager;
         private readonly RoomGimmickGenerator _roomGimmickGenerator;
-        private readonly int _targetItemID;
+        private readonly InventoryHandler _inventoryHandler;
+        private readonly int _missionItemID;
         private readonly int _targetCount;
         private int _currentCompleteCount;
         private readonly GimmickMissionData.GenerateType _generateType;
         private readonly ItemKind[] _itemKinds;
         private readonly GameObject[] _addEnemyPrefab;
         private readonly int _addEnemyCount;
+        private readonly List<GameObject> _addEnemyList = new ();
         
-        public UseItemMissionCondition(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, ItemKind[] itemKinds, UseItemMissionData.UseItemMissionStruct useItemMissionData)
+        public UseItemMissionCondition(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, InventoryHandler inventoryHandler, ItemKind[] itemKinds, UseItemMissionData.UseItemMissionStruct useItemMissionData)
         {
             _gameEventManager = gameEventManager;
             _roomGimmickGenerator = roomGimmickGenerator;
+            _inventoryHandler = inventoryHandler;
             _itemKinds = itemKinds;
             MissionName = useItemMissionData._missionName;
             MissionType = useItemMissionData._missionType;
-            _targetItemID = useItemMissionData._targetItemID;
+            _missionItemID = useItemMissionData._missionItemID;
             _currentCompleteCount = 0;
             _targetCount = useItemMissionData._targetCompleteCount;
             _addEnemyPrefab = useItemMissionData._addEnemyPrefab;
@@ -39,16 +44,19 @@ namespace Mission.Condition
         {
             _gameEventManager.OnGimmickCompleted += OnGimmickCompleted;
             AddItemForPlayer();
+            GenerateAddEnemy();
         }
 
         public void StopTracking()
         {
+            _inventoryHandler.RemoveItem(_itemKinds[_missionItemID]);
+            _roomGimmickGenerator.OnDestroyList(_addEnemyList);
             _gameEventManager.OnGimmickCompleted -= OnGimmickCompleted;
         }
 
-        private void OnGimmickCompleted(int useItemID)
+        private void OnGimmickCompleted(int itemMissionID)
         {
-            if (useItemID != _targetItemID) return;
+            if (itemMissionID != _missionItemID) return;
 
             _currentCompleteCount++;
             Debug.Log($"ギミックミッション進捗: {_currentCompleteCount}/{_targetCount}");
@@ -62,11 +70,18 @@ namespace Mission.Condition
         private void AddItemForPlayer()
         {
             // プレイヤーにアイテムを付与
+            _inventoryHandler.AddItem(_itemKinds[_missionItemID]);
         }
 
         private void GenerateAddEnemy()
         {
             // 敵の生成
+            for (var i = 0; i < _addEnemyCount; i++)
+            {
+                var target = _addEnemyPrefab[Random.Range(0, _addEnemyPrefab.Length)];
+                var insAddObj = _roomGimmickGenerator.InsGimmick(_roomGimmickGenerator.GetRandomRoom, target);
+                _addEnemyList.Add(insAddObj);
+            }
         }
 
     }

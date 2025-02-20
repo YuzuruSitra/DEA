@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Gimmick;
+using Manager;
 using Mission.Condition;
 using UnityEngine.AddressableAssets;
 using Mission.CreateScriptableObject;
@@ -11,13 +12,15 @@ namespace Mission
         private const string MissionKeyHolder = "Assets/Addressables_Resources/MissionKeyHolder.asset";
         private readonly GameEventManager _gameEventManager;
         private readonly RoomGimmickGenerator _roomGimmickGenerator;
+        private readonly InventoryHandler _inventoryHandler;
         public List<IMissionCondition> MissionConditions { get; }
         
-        public MissionInitializer(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator)
+        public MissionInitializer(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, InventoryHandler inventoryHandler)
         {
             MissionConditions = new List<IMissionCondition>();
             _gameEventManager = gameEventManager;
             _roomGimmickGenerator = roomGimmickGenerator;
+            _inventoryHandler = inventoryHandler;
             InitializeMissionConditions();
         }
 
@@ -57,7 +60,7 @@ namespace Mission
         {
             foreach (var t in dates._useItemMissionData)
             {
-                var gimmickMission = new UseItemMissionCondition(_gameEventManager, _roomGimmickGenerator, dates._itemData, t);
+                var gimmickMission = new UseItemMissionCondition(_gameEventManager, _roomGimmickGenerator, _inventoryHandler, dates._itemData, t);
                 AddMissionList(gimmickMission);
             }
         }

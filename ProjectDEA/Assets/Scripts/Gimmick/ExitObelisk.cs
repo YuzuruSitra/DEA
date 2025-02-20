@@ -47,7 +47,8 @@ namespace Gimmick
             _rewardCamWaitForSeconds = new WaitForSeconds(_rewardCamWaitTime);
             var gameEventManager = GameObject.FindWithTag("GameEventManager").GetComponent<GameEventManager>();
             var roomGimmickGenerator = GameObject.FindWithTag("GimmickGenerator").GetComponent<RoomGimmickGenerator>();
-            _missionStateHandler = new MissionStateHandler(gameEventManager, roomGimmickGenerator);
+            var inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
+            _missionStateHandler = new MissionStateHandler(gameEventManager, roomGimmickGenerator, inventoryHandler);
             _missionStateHandler.OnMissionFinished += OnMissionCompleted;
         }
 

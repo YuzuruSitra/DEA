@@ -1,4 +1,5 @@
 using Gimmick;
+using Manager;
 using UnityEngine;
 
 namespace Mission
@@ -11,7 +12,8 @@ namespace Mission
         {
             var gameEventManager = GameObject.FindWithTag("GameEventManager").GetComponent<GameEventManager>();
             var roomGimmickGenerator = GameObject.FindWithTag("GimmickGenerator").GetComponent<RoomGimmickGenerator>();
-            _missionStateHandler = new MissionStateHandler(gameEventManager, roomGimmickGenerator);
+            var inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
+            _missionStateHandler = new MissionStateHandler(gameEventManager, roomGimmickGenerator, inventoryHandler);
         }
 
         private void Update()
