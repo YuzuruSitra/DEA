@@ -154,7 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59ac6f5fedf1d46b4b8cc05414b4277c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _containItem: 01000000
+  _containItem: 000000000200000003000000
   _boxTop: {fileID: 4388816599247943785}
   _boxTopCol: {fileID: 4220184765452962934}
   _openDuration: 0.25
