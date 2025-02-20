@@ -1,7 +1,6 @@
 using System;
 using Item;
 using Manager;
-using Manager.Language;
 using Manager.MetaAI;
 using UI;
 using UnityEngine;
@@ -11,7 +10,7 @@ namespace Gimmick
     public class Monument : MonoBehaviour, IInteractable, IGimmickID
     {
         private LogTextHandler _logTextHandler;
-        private const ItemKind OutItem = ItemKind.PowerApple;
+        [SerializeField] private ItemKind[] _outItem;
         private InventoryHandler _inventoryHandler;
         public event Action Destroyed;
         public bool IsInteractable { get; private set; }
@@ -37,7 +36,10 @@ namespace Gimmick
 
         public void Interact()
         {
-            _inventoryHandler.AddItem(OutItem);
+            foreach (var t in _outItem)
+            {
+                _inventoryHandler.AddItem(t);
+            }
             IsInteractable = false;
             _metaAIHandler.SendLogsForMetaAI(_findScores);
         }

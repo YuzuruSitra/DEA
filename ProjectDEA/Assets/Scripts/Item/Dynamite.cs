@@ -18,10 +18,11 @@ namespace Item
         private float _animWaitTime;
         private static readonly int Bomb = Animator.StringToHash("Bomb");
         [SerializeField] private LayerMask _layerToIgnore;
+        [SerializeField] private int _discoveryRate;
 
         [SerializeField] private int _playerGiveDamage;
         private bool _isPlayerGive;
-        [SerializeField] private int _dragonGiveDamage;
+        [SerializeField] private int _enemyGiveDamage;
         private bool _isDragonGive;
         private bool _isPutMonument;
         private RoomGimmickGenerator _gimmickGenerator;
@@ -89,7 +90,7 @@ namespace Item
                         _isDragonGive = true;
                         var enemyController = obj.GetComponent<NpcController>();
                         if (enemyController == null) continue;
-                        enemyController.OnGetDamage(_dragonGiveDamage);
+                        enemyController.OnGetDamage(_enemyGiveDamage);
                         continue;
                     }
 
@@ -98,6 +99,8 @@ namespace Item
                         // モニュメントの生成
                         if (!_isPutMonument)
                         {
+                            var rnd = Random.Range(0, 100);
+                            if (rnd > _discoveryRate) continue;
                             _isPutMonument = true;
                             InsMonument(obj.transform.position);
                         }
