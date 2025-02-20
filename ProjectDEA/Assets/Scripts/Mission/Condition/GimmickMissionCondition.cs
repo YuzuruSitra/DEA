@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Gimmick;
 using Mission.CreateScriptableObject;
 using UnityEngine;
@@ -16,29 +17,36 @@ namespace Mission.Condition
         private readonly int _targetCount;
         private int _currentCompleteCount;
         private readonly GimmickMissionData.GenerateType _generateType;
-        private readonly GameObject[] _enemyPrefab;
+        private readonly GameObject[] _gimmickPrefab;
+        private readonly GameObject[] _addGimmickPrefab;
+        private readonly int _addGimmickCount;
+        private readonly List<GameObject> _addGimmickList = new ();
         
-        public GimmickMissionCondition(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, GameObject[] enemyPrefab, GimmickMissionData.GimmickMissionStruct gimmickMissionStruct)
+        public GimmickMissionCondition(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, GameObject[] gimmickPrefab, GimmickMissionData.GimmickMissionStruct gimmickMissionStruct)
         {
             _gameEventManager = gameEventManager;
             _roomGimmickGenerator = roomGimmickGenerator;
-            _enemyPrefab = enemyPrefab;
+            _gimmickPrefab = gimmickPrefab;
             MissionName = gimmickMissionStruct._missionName;
             MissionType = gimmickMissionStruct._missionType;
             _targetGimmickID = gimmickMissionStruct._targetGimmickID;
             _currentCompleteCount = 0;
             _generateType = gimmickMissionStruct._generateType;
             _targetCount = gimmickMissionStruct._targetCompleteCount;
+            _addGimmickPrefab = gimmickMissionStruct._addGimmickPrefab;
+            _addGimmickCount = gimmickMissionStruct._addGimmickCount;
         }
 
         public void StartTracking()
         {
             _gameEventManager.OnGimmickCompleted += OnGimmickCompleted;
-            GenerateEnemy();
+            GenerateGimmick();
+            GenerateAddGimmick();
         }
 
         public void StopTracking()
         {
+            _roomGimmickGenerator.OnDestroyList(_addGimmickList);
             _gameEventManager.OnGimmickCompleted -= OnGimmickCompleted;
         }
 
@@ -55,23 +63,33 @@ namespace Mission.Condition
             }
         }
         
-        private void GenerateEnemy()
+        private void GenerateGimmick()
         {
             for (var i = 0; i < _targetCount; i++)
             {
-                var targetEnemy = GetTargetEnemy();
+                var target = GetTargetGimmick();
                 var targetRoom = GetTargetRoom();
-                _roomGimmickGenerator.InsGimmick(targetRoom, targetEnemy);
-                Debug.Log("generate : " + targetEnemy.name + " Room : " + targetRoom);
+                _roomGimmickGenerator.InsGimmick(targetRoom, target);
+                Debug.Log("generate : " + target.name + " Room : " + targetRoom);
+            }
+        }
+
+        private void GenerateAddGimmick()
+        {
+            for (var i = 0; i < _addGimmickCount; i++)
+            {
+                var target = _addGimmickPrefab[Random.Range(0, _addGimmickPrefab.Length)];
+                var insAddObj = _roomGimmickGenerator.InsGimmick(_roomGimmickGenerator.GetRandomRoom, target);
+                _addGimmickList.Add(insAddObj);
             }
         }
         
-        private GameObject GetTargetEnemy()
+        private GameObject GetTargetGimmick()
         {
             return _targetGimmickID switch
             {
-                EnemyKillMissionData.NonTargetID => _enemyPrefab[Random.Range(0, _enemyPrefab.Length)],
-                _ => _enemyPrefab[_targetGimmickID]
+                GimmickMissionData.NonTargetID => _gimmickPrefab[Random.Range(0, _gimmickPrefab.Length)],
+                _ => _gimmickPrefab[_targetGimmickID]
             };
         }
 

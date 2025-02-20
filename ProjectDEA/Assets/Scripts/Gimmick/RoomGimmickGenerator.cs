@@ -151,7 +151,7 @@ namespace Gimmick
             iGimmickID.Returned -= RemoveRandomGimmickList;
         }
 
-        public void InsGimmick(int roomNum, GameObject insObj)
+        public GameObject InsGimmick(int roomNum, GameObject insObj)
         {
             // 配置可能な範囲を計算
             var halfScaleX = insObj.transform.localScale.x / 2.0f;
@@ -193,7 +193,7 @@ namespace Gimmick
             if (!carefulValidPos.Any())
             {
                 // Debug.LogWarning($"No valid position found for room {roomNum}");
-                return;
+                return null;
             }
 
             var careInsPos = carefulValidPos[Random.Range(0, carefulValidPos.Count)];
@@ -206,14 +206,16 @@ namespace Gimmick
             });
 
             var parent = _stageGenerator.NavMeshParents[roomNum].transform;
-            var insGimmick = Instantiate(insObj, careInsPos, insObj.transform.rotation, parent).GetComponent<IGimmickID>();
+            var insGimmick = Instantiate(insObj, careInsPos, insObj.transform.rotation, parent);
+            var iGimmickID = insGimmick.GetComponent<IGimmickID>();
             _navMeshHandler.BakeTargetNavMesh(roomNum);
-            if (insGimmick == null) return;
-            var info = insGimmick.GimmickIdInfo;
+            if (iGimmickID == null) return insGimmick;
+            var info = iGimmickID.GimmickIdInfo;
             info.RoomID = roomNum;
             info.InRoomGimmickID = inRoomGimmickID;
-            insGimmick.GimmickIdInfo = info; 
-            insGimmick.Returned += RemoveRandomGimmickList;
+            iGimmickID.GimmickIdInfo = info;
+            iGimmickID.Returned += RemoveRandomGimmickList;
+            return insGimmick;
         }
 
         private static Vector3 CalcDiffPos(Vector3 pos, float valueX, float valueZ)
@@ -236,6 +238,16 @@ namespace Gimmick
                 currentSize = size;
             }
             return mostBigRoom;
+        }
+        
+        // オブジェクトの破壊処理(別クラスの方がいい)
+        public void OnDestroyList(List<GameObject> list)
+        {
+            if (list == null) return;
+            foreach (var t in list)
+            {
+                Destroy(t.gameObject);
+            }
         }
     }
 }

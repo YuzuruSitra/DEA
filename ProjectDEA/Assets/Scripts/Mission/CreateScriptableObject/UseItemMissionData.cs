@@ -17,6 +17,7 @@ namespace Mission.CreateScriptableObject
             public int _targetItemID;
             public int _targetCompleteCount;
             public GameObject[] _addEnemyPrefab;
+            public int _addEnemyCount;
         } 
         public UseItemMissionStruct[] _gimmickMissionData;
         public const int NonTargetID = -1;

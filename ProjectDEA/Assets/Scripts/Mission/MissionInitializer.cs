@@ -47,8 +47,8 @@ namespace Mission
         {
             foreach (var t in dates._gimmickMissionData)
             {
-                var killEnemiesMission = new GimmickMissionCondition(_gameEventManager, _roomGimmickGenerator, dates._gimmickPrefab, t);
-                AddMissionList(killEnemiesMission);
+                var gimmickMission = new GimmickMissionCondition(_gameEventManager, _roomGimmickGenerator, dates._gimmickPrefab, t);
+                AddMissionList(gimmickMission);
             }
         }
 
