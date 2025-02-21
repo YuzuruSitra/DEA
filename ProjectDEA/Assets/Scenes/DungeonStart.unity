@@ -7759,7 +7759,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -370, y: -470}
+  m_AnchoredPosition: {x: -265, y: -465}
   m_SizeDelta: {x: 390, y: 133}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &476223803
@@ -33580,7 +33580,7 @@ PrefabInstance:
       objectReference: {fileID: 1724793322}
     - target: {fileID: 8110494800513058841, guid: 40925c55c83a140809e374ad0071b5bc, type: 3}
       propertyPath: m_Name
-      value: DefaultPanel
+      value: DungeonStartPanel
       objectReference: {fileID: 0}
     - target: {fileID: 8518107587176007232, guid: 40925c55c83a140809e374ad0071b5bc, type: 3}
       propertyPath: m_Pivot.x

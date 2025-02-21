@@ -36,15 +36,16 @@ namespace Character.Player
 
         private void Update()
         {
-            if (!_isInteractable) return;
             if (_currentInteractable == null) return;
-            _indicationUI.SetActive(_currentInteractable.IsInteractable);
+            var interactable = _currentInteractable.IsInteractable && _isInteractable;
+            _indicationUI.SetActive(interactable);
         }
 
         private void OnInteractPerformed(UnityEngine.InputSystem.InputAction.CallbackContext context)
         {
+            if (_currentInteractable == null) return;
             // インタラクト可能かチェックし、インタラクトを実行
-            if (_currentInteractable != null && _currentInteractable.IsInteractable)
+            if (_isInteractable && _currentInteractable.IsInteractable)
             {
                 _currentInteractable.Interact();
             }
