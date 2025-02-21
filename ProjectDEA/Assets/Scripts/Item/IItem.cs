@@ -13,6 +13,7 @@ namespace Item
         Born,
         PowerPotion,
         PowerApple,
-        HardStone
+        HardStone,
+        SignCandle
     }
 }

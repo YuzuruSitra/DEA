@@ -49,6 +49,9 @@ namespace Manager
         [SerializeField] private AudioClip _pushAudio;
         [SerializeField] private AudioClip _getItemAudio;
         private InputActions _inputActions;
+        private bool[] _putSignCandle;
+
+        public const int InfiniteNum = -1;
         
         private void Awake()
         {
@@ -112,8 +115,8 @@ namespace Manager
             for (var i = 1; i <= _itemSets.Length; i++)
             {
                 var newIndex = (startIndex + i) % _itemSets.Length;
-
-                if (_itemSets[newIndex]._count <= 0) continue;
+                
+                if (_itemSets[newIndex]._count <= 0 && _itemSets[newIndex]._kind != ItemKind.SignCandle) continue;
                 ChangeItemNum(newIndex);
                 if (CurrentItemNum != newIndex) _soundHandler.PlaySe(_pushAudio);
                 return;
@@ -151,6 +154,7 @@ namespace Manager
             var language = _logTextHandler.LanguageHandler.CurrentLanguage;
             for (var i = 0; i < _itemSets.Length; i++)
             {
+                if (_itemSets[i]._kind == ItemKind.SignCandle) continue;
                 if (_itemSets[i]._kind != item) continue;
                 _itemSets[i]._count++;
                 var message = _itemSets[i]._name[(int)language] + _getLogTemplate[(int)language];

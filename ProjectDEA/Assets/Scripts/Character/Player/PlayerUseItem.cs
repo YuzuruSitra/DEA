@@ -24,7 +24,13 @@ namespace Character.Player
         [SerializeField] private UseItemEffects _useItemEffects;
         private LogTextHandler _logTextHandler;
         private InputActions _inputActions;
-
+        public bool CanUseCandle { get; set; }
+        private readonly string[] _candleLogTemplate =
+        {
+            "他のキャンドルと少し近いな...",
+            "A little close to the other candles..."
+        };
+        
         private void Start()
         {
             _inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
@@ -36,6 +42,7 @@ namespace Character.Player
             _inputActions.Player.UseItem.performed += OnUseItem;
             _inputActions.Player.PutCancel.performed += OnPutCancel;
             _inputActions.Enable();
+            CanUseCandle = true;
         }
 
         private void OnDestroy()
@@ -65,6 +72,15 @@ namespace Character.Player
             if (_inventoryHandler.CurrentItemNum == InventoryHandler.ErrorValue) return;
 
             var target = _inventoryHandler.TargetItem;
+
+            if (target._kind == ItemKind.SignCandle && !CanUseCandle)
+            {
+                var language = _logTextHandler.LanguageHandler.CurrentLanguage;
+                _logTextHandler.AddLog(_candleLogTemplate[(int)language]);
+                ResetState();
+                return;
+            }
+            
             if (target._isPut)
             {
                 switch (_insState)

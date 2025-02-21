@@ -52,12 +52,23 @@ namespace UI
 
                 var cd3 = imageObj.transform.GetChild(2).gameObject;
                 var countText = cd3.GetComponent<TextMeshProUGUI>();
-                countText.text = "×" + itemSet[i]._count;
-                
+                if (itemSet[i]._count == InventoryHandler.InfiniteNum)
+                {
+                    countText.text = "×∞";
+                }
+                else
+                {
+                    countText.text = "×" + itemSet[i]._count;   
+                }
                 var cd4 = imageObj.transform.GetChild(3).gameObject;
                 var frame = cd4.transform.GetChild(0).gameObject;
                 var image = frame.transform.GetChild(0).gameObject.GetComponent<Image>();
                 image.sprite = itemSet[i]._sprite;
+                
+                if (itemSet[i]._count == InventoryHandler.InfiniteNum)
+                {
+                    _itemFrames[i].SetActive(true);
+                }
             }
         }
 
@@ -67,6 +78,12 @@ namespace UI
             {   
                 var count =  _itemFrames[i].transform.GetChild(2).gameObject;
                 var countText = count.GetComponent<TextMeshProUGUI>();
+                var itemCount = _inventoryHandler.ItemSets[i]._count;
+                if (itemCount == InventoryHandler.InfiniteNum)
+                {
+                    countText.text = "×∞";
+                    continue;
+                }
                 countText.text = "×" + _inventoryHandler.ItemSets[i]._count;
             }
         }
@@ -75,6 +92,11 @@ namespace UI
         {
             for (var i = 0; i < itemSet.Length; i++)
             {
+                if (itemSet[i]._count == InventoryHandler.InfiniteNum)
+                {
+                    _itemFrames[i].SetActive(true);
+                    continue;
+                }
                 _itemFrames[i].SetActive(itemSet[i]._count > 0);
             }
         }
@@ -90,14 +112,12 @@ namespace UI
 
         private void ChangeItemCount(int value)
         {
-            if (value == 0)
+            _itemCountText.text = value switch
             {
-                _itemCountText.text = "-";
-            }
-            else
-            {
-                _itemCountText.text = "×" + value;
-            }
+                0 => "-",
+                InventoryHandler.InfiniteNum => "×∞",
+                _ => "×" + value
+            };
         }
         
     }
