@@ -154,7 +154,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 920041667435903233}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2, y: 1.3, z: 10}
   m_LocalScale: {x: 4, y: 2.7272725, z: 4}
   m_ConstrainProportionsScale: 0
@@ -790,10 +790,14 @@ MonoBehaviour:
   _sideEffectWaitTime: 0.85
   _setKeyAudio: {fileID: 8300000, guid: d55c70b1db9e71949996ea1c73f087b4, type: 3}
   _camChangeWaitTime: 1.75
-  _logWaitTime: 1.5
+  _logWaitTime: 3.5
+  _nextSceneTime: 2.5
   _logTextHandler: {fileID: 0}
   _playerClasHub: {fileID: 0}
-  _explaneLogs: []
+  _explaneLogs:
+  - "\u63A5\u7D9A\u78BA\u8A8D\u2026\u2026\u8B58\u5225\u5B8C\u4E86\u2026\u2026\u5BFE\u8C61\u3001\u9069\u6027\u3042\u308A\u3002"
+  - "\u5B9F\u9A13\u74B0\u5883\u3078\u306E\u8EE2\u9001\u3092\u958B\u59CB\u2026\u2026\u89B3\u6E2C\u3092\u7D99\u7D9A\u2026\u2026\u3002"
+  - "\u8131\u51FA\u3092\u671B\u3080\u306A\u3089\u2500\u2500\u307E\u305A\u306F\u3001\u8A3C\u660E\u3057\u3066\u307F\u305B\u3088\u3002"
 --- !u!1 &4405189414682763730
 GameObject:
   m_ObjectHideFlags: 0

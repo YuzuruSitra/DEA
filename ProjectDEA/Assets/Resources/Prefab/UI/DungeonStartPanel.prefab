@@ -54,7 +54,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5784729226561058653, guid: 10dfe7734ba9e3e4a8552476e63ca9cc, type: 3}
       propertyPath: m_Name
-      value: DefaultPanel Variant
+      value: DungeonStartPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 6244598614423474882, guid: 10dfe7734ba9e3e4a8552476e63ca9cc, type: 3}
+      propertyPath: m_text
+      value: '-'
       objectReference: {fileID: 0}
     - target: {fileID: 6268831606193633540, guid: 10dfe7734ba9e3e4a8552476e63ca9cc, type: 3}
       propertyPath: m_Pivot.x
@@ -176,7 +180,8 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -440
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1634106518341431805, guid: 10dfe7734ba9e3e4a8552476e63ca9cc, type: 3}
     m_RemovedGameObjects:
     - {fileID: 5606892480030910872, guid: 10dfe7734ba9e3e4a8552476e63ca9cc, type: 3}
     m_AddedGameObjects: []

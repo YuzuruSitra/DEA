@@ -39,7 +39,7 @@ namespace UI
         {
             if (!_missionStateHandler.DoingMission) return;
             var mission = _missionStateHandler.CurrentMission;
-            _missionText.text = mission.MissionName + "\n" + _padding + mission.CurrentCount + "/" + mission.MaxCount;
+            _missionText.text = mission.MissionName + "\n\n" + _padding + mission.CurrentCount + "/" + mission.MaxCount;
         }
     }
 }

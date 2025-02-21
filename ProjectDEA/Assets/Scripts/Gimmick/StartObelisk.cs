@@ -33,6 +33,7 @@ namespace Gimmick
         [SerializeField] private AudioClip _setKeyAudio;
         [SerializeField] private float _camChangeWaitTime;
         [SerializeField] private float _logWaitTime;
+        [SerializeField] private float _nextSceneTime;
         private WaitForSeconds _logWaitForSeconds;
         [SerializeField] private LogTextHandler _logTextHandler;
         [SerializeField] private PlayerClasHub _playerClasHub;
@@ -81,7 +82,7 @@ namespace Gimmick
 
         private IEnumerator ExitLayer()
         {
-            yield return new WaitForSeconds(3.0f);
+            yield return new WaitForSeconds(_nextSceneTime);
             _dungeonLayerHandler.NextDungeonLayer();
         }
         

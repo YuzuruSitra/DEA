@@ -27,6 +27,7 @@ namespace Manager
         private SoundHandler _soundHandler;
         [SerializeField] private AudioClip _pushAudio;
         [SerializeField] private TutorialArea1 _tutorialArea1;
+        [SerializeField] private Vector3[] _tutorialArea1Transform;
         [SerializeField] private InventoryHandler _inventoryHandler;
         [SerializeField] private float _logBombTime;
         private WaitForSeconds _logBombTimeSeconds;
@@ -109,6 +110,7 @@ namespace Manager
             _tutorialIndicationUI.SetActive(false);
             _isTutorialLog = false;
             _tutorialArea1.gameObject.SetActive(true);
+            _tutorialArea1.gameObject.transform.position = _tutorialArea1Transform[0];
             var playerMover = _playerClasHub.PlayerMover;
             playerMover.SetWalkableState(true);
             AddLocalizedLog(
@@ -169,6 +171,7 @@ namespace Manager
             }
             
             _tutorialArea1.gameObject.SetActive(false);
+            _tutorialArea1.gameObject.transform.position = _tutorialArea1Transform[1];
             playerMover.SetWalkableState(false);
             var playerUseItem = _playerClasHub.PlayerUseItem;
             playerUseItem.SetCanUseItemState(true);

@@ -54,3 +54,7 @@ MonoBehaviour:
   _inputPaddingTime: 1.25
   _tutorialIndicationUI: {fileID: 0}
   _pushAudio: {fileID: 8300000, guid: 8302fb6948a54f442b70734dc17bd38e, type: 3}
+  _tutorialArea1: {fileID: 0}
+  _inventoryHandler: {fileID: 0}
+  _logBombTime: 5
+  _logFadeOutTime: 3

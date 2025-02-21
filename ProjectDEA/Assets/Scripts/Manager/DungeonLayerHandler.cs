@@ -74,7 +74,7 @@ namespace Manager
                     switch (language)
                     {
                         case LanguageHandler.Language.Japanese:
-                            logTextHandler.AddLog("また一つ降りられた。\n残るは" + CurrentLayer +"Fだ。");
+                            logTextHandler.AddLog("転送されたようだ。\n残るは" + CurrentLayer +"F程か。");
                             break;
                         case LanguageHandler.Language.English:
                             logTextHandler.AddLog("I managed to descend another floor.\nOnly the " + CurrentLayer + "nd floor remains.");
