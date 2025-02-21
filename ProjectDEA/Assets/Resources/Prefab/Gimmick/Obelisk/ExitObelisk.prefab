@@ -643,7 +643,7 @@ MonoBehaviour:
   - {fileID: 2592622398594043930}
   _sideEffectWaitTime: 0.85
   _setKeyAudio: {fileID: 8300000, guid: d55c70b1db9e71949996ea1c73f087b4, type: 3}
-  _camChangeWaitTime: 1.5
+  _camChangeWaitTime: 2
   _logWaitTime: 1.5
   _targetCam: {fileID: 7959371560687412303}
 --- !u!1 &4563023249573816172

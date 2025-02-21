@@ -31,6 +31,7 @@ namespace Gimmick
         
         public void OnDestroy()
         {
+            Debug.Log("VenomMush destroyed");
             _metaAIHandler.SendLogsForMetaAI(_metaAiScores);
             _gameEventManager.GimmickCompleted(_gimmickID);
             _soundHandler.PlaySe(_breakedSe);
