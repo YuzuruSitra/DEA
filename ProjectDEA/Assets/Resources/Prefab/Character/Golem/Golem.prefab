@@ -1114,10 +1114,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyID: 2
   _actionCooldown: 1
-  _removedTime: 5
+  _removedTime: 4
   _maxHealth: 240
   _staminaChangeSecond: 2
   _fullnessChangeSecond: 2
+  _collider: {fileID: 5592004340157365551}
+  _deathSendLog: "\u30B4\u30FC\u30EC\u30E0\u3092\u3084\u3063\u3064\u3051\u305F\uFF01"
   _battleStateParameters:
     _searchOffSetFactor: 0.4
     _searchRadius: 5

@@ -6,6 +6,7 @@ using Manager;
 using Manager.Audio;
 using Manager.MetaAI;
 using Mission;
+using UI;
 using UnityEngine;
 using UnityEngine.AI;
 using AnimationTrigger = Character.NPC.EnemyAnimHandler.AnimationTrigger;
@@ -21,6 +22,9 @@ namespace Character.NPC
 		[SerializeField] private float _maxHealth;
 		[SerializeField] private float _staminaChangeSecond;
 		[SerializeField] private float _fullnessChangeSecond;
+		[SerializeField] private BoxCollider _collider;
+		[SerializeField] private String _deathSendLog;
+		private LogTextHandler _logTextHandler;
 		private GameEventManager _gameEventManager;
 		private NavMeshAgent _agent;
 		[Serializable]
@@ -89,6 +93,7 @@ namespace Character.NPC
 			HealthComponent.OnDeath += OnDeath;
 			EnemyHpGaugeHandler.InitialSet(HealthComponent.MaxHealth, HealthComponent.CurrentHealth);
 			HealthComponent.OnHealthChanged += EnemyHpGaugeHandler.ChangeGauge;
+			_logTextHandler = GameObject.FindWithTag("LogTextHandler").GetComponent<LogTextHandler>();
 			_gameEventManager = GameObject.FindWithTag("GameEventManager").GetComponent<GameEventManager>();
 			SoundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
 		}
@@ -129,11 +134,13 @@ namespace Character.NPC
 		
 		private void OnDeath()
 		{
+			_logTextHandler.AddLog(_deathSendLog);
 			_gameEventManager.EnemyDefeated(_enemyID);
 			MovementControl.ChangeMove(false);
 			EnemyAnimHandler.OnTriggerAnim(AnimationTrigger.OnDead);
 			var rnd = UnityEngine.Random.Range(0, _dropItems.Length);
 			_inventoryHandler.AddItem(_dropItems[rnd]);
+			_collider.enabled = false;
 			StartCoroutine(DelayedDestroy());
 		}
 		
