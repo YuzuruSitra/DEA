@@ -4,11 +4,8 @@ using Character.Player;
 using Cinemachine;
 using Manager;
 using Manager.Audio;
-using Manager.MetaAI;
-using Mission;
 using UI;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Gimmick
 {
@@ -38,7 +35,7 @@ namespace Gimmick
         [SerializeField] private LogTextHandler _logTextHandler;
         [SerializeField] private PlayerClasHub _playerClasHub;
         [SerializeField] private string[] _explaneLogs;
-
+        
         private void Awake()
         {
             _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();

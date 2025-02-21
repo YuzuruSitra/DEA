@@ -13,6 +13,7 @@ namespace Item
 
         private void Start()
         {
+            _inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
             IsInteractable = true;
         }
 

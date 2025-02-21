@@ -71,14 +71,30 @@ namespace Manager
                 {
                     var logTextHandler = GameObject.FindWithTag("LogTextHandler").GetComponent<LogTextHandler>();
                     var language = logTextHandler.LanguageHandler.CurrentLanguage;
-                    switch (language)
+                    if (CurrentLayer == _maxLayer - 1)
                     {
-                        case LanguageHandler.Language.Japanese:
-                            logTextHandler.AddLog("転送されたようだ。\n残るは" + CurrentLayer +"F程か。");
-                            break;
-                        case LanguageHandler.Language.English:
-                            logTextHandler.AddLog("I managed to descend another floor.\nOnly the " + CurrentLayer + "nd floor remains.");
-                            break;
+                        switch (language)
+                        {
+                            case LanguageHandler.Language.Japanese:
+                                logTextHandler.AddLog("ここがダンジョンか。とりあえず探索しつつオベリスクを目指そう。");
+                                break;
+                            case LanguageHandler.Language.English:
+                                logTextHandler.AddLog("So this is the dungeon. Let's just explore and aim for the obelisk.");
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        switch (language)
+                        {
+                            case LanguageHandler.Language.Japanese:
+                                logTextHandler.AddLog("転送されたようだ。\n残るは" + CurrentLayer + "F程か。");
+                                break;
+                            case LanguageHandler.Language.English:
+                                logTextHandler.AddLog("I managed to descend another floor.\nOnly the " + CurrentLayer +
+                                                      "nd floor remains.");
+                                break;
+                        }
                     }
                     break;
                 }
