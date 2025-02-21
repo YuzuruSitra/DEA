@@ -102,7 +102,6 @@ namespace Item
                         breakRock.OnGetDamage(_giveDamage);
                         _isObjGive = true;
                     }
-                    Destroy(obj);
                 }
             }
         }

@@ -69,6 +69,7 @@ namespace Character.Player
 
         private void OnUseItem(InputAction.CallbackContext context)
         {
+            if (!_isCanUseItem) return;
             if (_inventoryHandler.CurrentItemNum == InventoryHandler.ErrorValue) return;
 
             var target = _inventoryHandler.TargetItem;

@@ -49,13 +49,17 @@ namespace Gimmick.BreakRock
 
         private void OnBreak()
         {
-            if (_insGameObject == null) return;
+            Destroy(gameObject);
+            if (_insGameObject.Length == 0)
+            {
+                Returned?.Invoke(this);
+                return;
+            }
             var target = UnityEngine.Random.Range(0, _insGameObject.Length);
             if (_insGameObject[target]._isRetuned)
             {
                 Returned?.Invoke(this);
             }
-            Destroy(gameObject);
             Instantiate(_insGameObject[target]._prefab, transform.position, Quaternion.identity);
         }
     }

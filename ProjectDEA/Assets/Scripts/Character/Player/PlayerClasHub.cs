@@ -9,9 +9,11 @@ namespace Character.Player
         [SerializeField] private PlayerHpHandler _playerHpHandler;
         public PlayerHpHandler PlayerHpHandler => _playerHpHandler;
         [SerializeField] private PlayerInteraction _playerInteraction;
+        public PlayerInteraction PlayerInteraction => _playerInteraction;
         [SerializeField] private PlayerAttackHandler _playerAttackHandler;
         public PlayerAttackHandler PlayerAttackHandler => _playerAttackHandler;
         [SerializeField] private PlayerUseItem _playerUseItem;
+        public PlayerUseItem PlayerUseItem => _playerUseItem;
 
         private void Start()
         {
