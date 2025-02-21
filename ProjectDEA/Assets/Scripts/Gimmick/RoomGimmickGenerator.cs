@@ -152,70 +152,68 @@ namespace Gimmick
 
         public GameObject InsGimmick(int roomNum, GameObject insObj)
         {
-            // 配置可能な範囲を計算
             var halfScaleX = insObj.transform.localScale.x / 2.0f;
             var halfScaleZ = insObj.transform.localScale.z / 2.0f;
-            var paddingX = Mathf.CeilToInt(halfScaleX) + PaddingThreshold;
-            var paddingZ = Mathf.CeilToInt(halfScaleZ) + PaddingThreshold;
-            var rangeMinX = _roomInfo[roomNum, (int)StageGenerator.RoomStatus.TopLeftX] + paddingX;
-            var rangeMaxX = _roomInfo[roomNum, (int)StageGenerator.RoomStatus.TopRightX] - paddingX;
-            var rangeMinZ = _roomInfo[roomNum, (int)StageGenerator.RoomStatus.BottomLeftZ] + paddingZ;
-            var rangeMaxZ = _roomInfo[roomNum, (int)StageGenerator.RoomStatus.TopLeftZ] - paddingZ;
-
-            var validPositions = new List<Vector3>();
             var insPosY = _groundY + insObj.transform.localScale.y / 2.0f;
-
-            // 配置可能な座標を列挙（効率化：グリッドステップでスキップ）
             var gridStep = Mathf.CeilToInt(halfScaleX);
-            for (var x = rangeMinX; x < rangeMaxX; x += gridStep)
+
+            for (var searchRoom = roomNum; searchRoom < _roomCount + roomNum; searchRoom++)
             {
-                for (var z = rangeMinZ; z <= rangeMaxZ; z += gridStep)
+                var currentRoom = searchRoom % _roomCount; 
+
+                var paddingX = Mathf.CeilToInt(halfScaleX) + PaddingThreshold;
+                var paddingZ = Mathf.CeilToInt(halfScaleZ) + PaddingThreshold;
+                var rangeMinX = _roomInfo[currentRoom, (int)StageGenerator.RoomStatus.TopLeftX] + paddingX;
+                var rangeMaxX = _roomInfo[currentRoom, (int)StageGenerator.RoomStatus.TopRightX] - paddingX;
+                var rangeMinZ = _roomInfo[currentRoom, (int)StageGenerator.RoomStatus.BottomLeftZ] + paddingZ;
+                var rangeMaxZ = _roomInfo[currentRoom, (int)StageGenerator.RoomStatus.TopLeftZ] - paddingZ;
+
+                var validPositions = new List<Vector3>();
+                for (var x = rangeMinX; x < rangeMaxX; x += gridStep)
                 {
-                    var insPos = new Vector3(x, insPosY, z);
-                    validPositions.Add(insPos);
+                    for (var z = rangeMinZ; z <= rangeMaxZ; z += gridStep)
+                    {
+                        validPositions.Add(new Vector3(x, insPosY, z));
+                    }
                 }
+
+                var carefulValidPos = validPositions.Where(pos =>
+                {
+                    var minPos = CalcDiffPos(pos, -halfScaleX, -halfScaleZ);
+                    var maxPos = CalcDiffPos(pos, halfScaleX, halfScaleZ);
+                    return !_inRoomGimmickPos[currentRoom].Any(placed =>
+                        minPos.x - PaddingThreshold < placed.RightTopPos.x &&
+                        maxPos.x + PaddingThreshold > placed.LeftBottomPos.x &&
+                        minPos.z - PaddingThreshold < placed.RightTopPos.z &&
+                        maxPos.z + PaddingThreshold > placed.LeftBottomPos.z);
+                }).ToList();
+
+                if (!carefulValidPos.Any()) continue;
+                var careInsPos = carefulValidPos[Random.Range(0, carefulValidPos.Count)];
+                var inRoomGimmickID = _inRoomGimmickPos[currentRoom].Count;
+                _inRoomGimmickPos[currentRoom].Add(new PlacedGimmickInfo
+                {
+                    GimmickID = inRoomGimmickID,
+                    LeftBottomPos = CalcDiffPos(careInsPos, -halfScaleX, -halfScaleZ),
+                    RightTopPos = CalcDiffPos(careInsPos, halfScaleX, halfScaleZ)
+                });
+
+                var parent = _stageGenerator.NavMeshParents[currentRoom].transform;
+                var insGimmick = Instantiate(insObj, careInsPos, insObj.transform.rotation, parent);
+                var iGimmickID = insGimmick.GetComponent<IGimmickID>();
+                _navMeshHandler.BakeTargetNavMesh(currentRoom);
+                if (iGimmickID == null) return insGimmick;
+                var info = iGimmickID.GimmickIdInfo;
+                info.RoomID = currentRoom;
+                info.InRoomGimmickID = inRoomGimmickID;
+                iGimmickID.GimmickIdInfo = info;
+                iGimmickID.Returned += RemoveRandomGimmickList;
+                return insGimmick;
             }
-
-            // 重複を避けた配置（効率化）
-            var carefulValidPos = validPositions.Where(pos =>
-            {
-                var minPos = CalcDiffPos(pos, -halfScaleX, -halfScaleZ);
-                var maxPos = CalcDiffPos(pos, halfScaleX, halfScaleZ);
-
-                return !_inRoomGimmickPos[roomNum].Any(placed =>
-                    minPos.x - PaddingThreshold < placed.RightTopPos.x &&
-                    maxPos.x + PaddingThreshold > placed.LeftBottomPos.x &&
-                    minPos.z - PaddingThreshold < placed.RightTopPos.z &&
-                    maxPos.z + PaddingThreshold > placed.LeftBottomPos.z);
-            }).ToList();
-
-            if (!carefulValidPos.Any())
-            {
-                // Debug.LogWarning($"No valid position found for room {roomNum}");
-                return null;
-            }
-
-            var careInsPos = carefulValidPos[Random.Range(0, carefulValidPos.Count)];
-            var inRoomGimmickID = _inRoomGimmickPos[roomNum].Count;
-            _inRoomGimmickPos[roomNum].Add(new PlacedGimmickInfo
-            {
-                GimmickID = inRoomGimmickID,
-                LeftBottomPos = CalcDiffPos(careInsPos, -halfScaleX, -halfScaleZ),
-                RightTopPos = CalcDiffPos(careInsPos, halfScaleX, halfScaleZ)
-            });
-
-            var parent = _stageGenerator.NavMeshParents[roomNum].transform;
-            var insGimmick = Instantiate(insObj, careInsPos, insObj.transform.rotation, parent);
-            var iGimmickID = insGimmick.GetComponent<IGimmickID>();
-            _navMeshHandler.BakeTargetNavMesh(roomNum);
-            if (iGimmickID == null) return insGimmick;
-            var info = iGimmickID.GimmickIdInfo;
-            info.RoomID = roomNum;
-            info.InRoomGimmickID = inRoomGimmickID;
-            iGimmickID.GimmickIdInfo = info;
-            iGimmickID.Returned += RemoveRandomGimmickList;
-            return insGimmick;
+            
+            return null; // すべての部屋で配置できなかった場合
         }
+
 
         private static Vector3 CalcDiffPos(Vector3 pos, float valueX, float valueZ)
         {
@@ -245,6 +243,7 @@ namespace Gimmick
             if (list == null) return;
             foreach (var t in list)
             {
+                if (t == null) continue;
                 Destroy(t.gameObject);
             }
         }

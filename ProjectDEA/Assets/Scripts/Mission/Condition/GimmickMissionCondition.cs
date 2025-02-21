@@ -23,7 +23,7 @@ namespace Mission.Condition
         public string[] MissionFinishLog { get; }
         
         public int CurrentCount { get; private set; }
-        public int MaxCount { get; }
+        public int MaxCount { get; private set; }
         public GameObject StandOutTarget { get; private set; }
         
         public GimmickMissionCondition(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, GameObject[] gimmickPrefab, GimmickMissionData.GimmickMissionStruct gimmickMissionStruct)
@@ -72,14 +72,16 @@ namespace Mission.Condition
         
         private void GenerateGimmick()
         {
+            var actualCount = 0;
             for (var i = 0; i < MaxCount; i++)
             {
                 var target = GetTargetGimmick();
                 var targetRoom = GetTargetRoom();
                 var insGimmick = _roomGimmickGenerator.InsGimmick(targetRoom, target);
+                if (insGimmick != null) actualCount++;
                 if (StandOutTarget == null) StandOutTarget = insGimmick;
-                Debug.Log("generate : " + target.name + " Room : " + targetRoom);
             }
+            MaxCount = actualCount;
         }
 
         private void GenerateAddGimmick()

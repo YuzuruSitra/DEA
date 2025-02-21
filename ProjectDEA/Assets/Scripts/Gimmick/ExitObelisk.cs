@@ -138,8 +138,6 @@ namespace Gimmick
                 _logTextHandler.AddLog(t);
                 yield return _logWaitForSeconds;
             }
-    
-            MissionStateHandler.StartMission();
             _soundHandler.PlaySe(_setKeyAudio);
 
             // 安全に範囲を制御

@@ -13,7 +13,7 @@ namespace Mission
         public IMissionCondition CurrentMission { get; private set; }
 
         private readonly InventoryHandler _inventoryHandler;
-        public bool DoingMission => CurrentMission != null;
+        public bool DoingMission { get; private set; }
         public Action OnMissionStarted;
         public Action OnMissionFinished;
 
@@ -35,10 +35,10 @@ namespace Mission
         public void StartMission()
         {
             CurrentMission = _missionSelector.SelectMission();
-            Debug.Log("Mission selected: " + CurrentMission.MissionName);
             CurrentMission.OnMissionCompleted += CompleteMission;
             CurrentMission.StartTracking();
             OnMissionStarted?.Invoke();
+            DoingMission = true;
         }
 
         private void CompleteMission()
@@ -46,9 +46,8 @@ namespace Mission
             if (CurrentMission == null) return;
             CurrentMission.OnMissionCompleted -= CompleteMission;
             CurrentMission.StopTracking();
-            CurrentMission = null;
             OnMissionFinished?.Invoke();
-            Debug.Log("ミッション達成！");
+            DoingMission = false;
         }
     }
 }

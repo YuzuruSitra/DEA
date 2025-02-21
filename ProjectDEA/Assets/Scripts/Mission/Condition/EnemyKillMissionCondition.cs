@@ -19,7 +19,7 @@ namespace Mission.Condition
         public string[] MissionFinishLog { get; }
 
         public int CurrentCount { get; private set; }
-        public int MaxCount { get; }
+        public int MaxCount { get; private set; }
         public GameObject StandOutTarget { get; private set; }
 
         public EnemyKillMissionCondition(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, GameObject[] enemyPrefab, EnemyKillMissionData.KillMissionStruct enemyKillMissionData)
@@ -51,8 +51,7 @@ namespace Mission.Condition
 
         private void OnEnemyDefeated(int enemyID)
         {
-            if (enemyID != _targetEnemyID) return;
-
+            if (_targetEnemyID != EnemyKillMissionData.NonTargetID && enemyID != _targetEnemyID) return;
             CurrentCount++;
 
             if (CurrentCount >= MaxCount)
@@ -63,13 +62,16 @@ namespace Mission.Condition
 
         private void GenerateEnemy()
         {
+            var actualCount = 0;
             for (var i = 0; i < MaxCount; i++)
             {
                 var targetEnemy = GetTargetEnemy();
                 var targetRoom = GetTargetRoom();
                 var insEnemy = _roomGimmickGenerator.InsGimmick(targetRoom, targetEnemy);
+                if (insEnemy != null) actualCount++;
                 if (StandOutTarget == null) StandOutTarget = insEnemy;
             }
+            MaxCount = actualCount;
         }
         
         private GameObject GetTargetEnemy()
