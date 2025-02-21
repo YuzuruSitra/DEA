@@ -77,6 +77,7 @@ namespace Gimmick
             {
                 _isCompleted = true;
                 _vCam.Priority = HighPriority;
+                _playerClasHub.SetPlayerFreedom(false);
                 StartCoroutine(ExitLayer());
                 return;
             }

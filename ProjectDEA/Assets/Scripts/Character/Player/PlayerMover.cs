@@ -86,7 +86,11 @@ namespace Character.Player
         private void Update()
         {
             VerticalMoving();
-            if (!_isWalkable || _isPushed || _playerAnimationCnt.IsAttacking) return;
+            if (!_isWalkable || _isPushed || _playerAnimationCnt.IsAttacking)
+            {
+                _playerAnimationCnt.SetSpeed(0);
+                return;
+            }
 
             UpdateInputDirection();
             UpdateMoveDirection();
