@@ -70,6 +70,7 @@ namespace Character.Player
             {
                 var venomMush = other.gameObject.GetComponent<VenomMush>();
                 venomMush.OnDestroy();
+                _oneHit = true;
             }
 
             if (other.CompareTag("BornOut"))
