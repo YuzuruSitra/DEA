@@ -1,5 +1,6 @@
 using System;
 using Character.Player;
+using Manager.MetaAI;
 using UnityEngine;
 
 namespace Gimmick
@@ -12,8 +13,15 @@ namespace Gimmick
         private PlayerHpHandler _playerHpHandler;
         [SerializeField] private int _damageForSeconds;
         private const float OneSecond = 1.0f;
-        private float _currentTime = OneSecond;
+        private float _currentTime;
+        private MetaAIHandler _metaAIHandler;
+        [SerializeField] private MetaAIHandler.AddScores[] _metaAiScores;
 
+        private void Start()
+        {
+            _metaAIHandler = GameObject.FindWithTag("MetaAI").GetComponent<MetaAIHandler>();
+        }
+        
         private void OnDestroy()
         {
             Returned?.Invoke(this);
@@ -30,7 +38,14 @@ namespace Gimmick
             if (_currentTime > 0) return;
             if (!_playerHpHandler.IsAddDamage) return;
             _playerHpHandler.ReceiveDamage(_damageForSeconds);
-            _currentTime = OneSecond;   
+            _currentTime = OneSecond; 
+            _metaAIHandler.SendLogsForMetaAI(_metaAiScores);
+        }
+        
+        private void OnTriggerExit(Collider other)
+        {
+            if (!other.gameObject.CompareTag("Player")) return;
+            _currentTime = 0;
         }
     }
 }

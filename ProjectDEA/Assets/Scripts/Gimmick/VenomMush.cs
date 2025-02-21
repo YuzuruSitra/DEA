@@ -16,7 +16,7 @@ namespace Gimmick
         public event Action<IGimmickID> Returned;
         [SerializeField] private int _damageForSeconds;
         private const float OneSecond = 1.0f;
-        private float _currentTime = OneSecond;
+        private float _currentTime;
         [SerializeField] private AudioClip _breakedSe;
         private GameEventManager _gameEventManager;
         private MetaAIHandler _metaAIHandler;
@@ -51,6 +51,12 @@ namespace Gimmick
             if (!_playerHpHandler.IsAddDamage) return;
             _playerHpHandler.ReceiveDamage(_damageForSeconds);
             _currentTime = OneSecond;   
+        }
+        
+        private void OnTriggerExit(Collider other)
+        {
+            if (!other.gameObject.CompareTag("Player")) return;
+            _currentTime = 0;
         }
         
     }
