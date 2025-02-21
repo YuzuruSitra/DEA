@@ -25,6 +25,7 @@ namespace Gimmick
         MoveGhost,
         EnemyDragon,
         EnemySlime,
-        EnemyGolem
+        EnemyGolem,
+        BreakRock
     }
 }

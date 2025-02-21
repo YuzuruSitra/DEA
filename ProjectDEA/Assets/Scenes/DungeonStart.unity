@@ -20921,6 +20921,67 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aec58227b077b394abe9afe5713d6abf, type: 3}
+--- !u!1001 &1341416266
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 935267625878532126, guid: 112178d8c0d9d2145b83920f66f58076, type: 3}
+      propertyPath: _containItem.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2093334473890586168, guid: 112178d8c0d9d2145b83920f66f58076, type: 3}
+      propertyPath: m_Name
+      value: TreasureBox
+      objectReference: {fileID: 0}
+    - target: {fileID: 8916585156190949554, guid: 112178d8c0d9d2145b83920f66f58076, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 5.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8916585156190949554, guid: 112178d8c0d9d2145b83920f66f58076, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.39
+      objectReference: {fileID: 0}
+    - target: {fileID: 8916585156190949554, guid: 112178d8c0d9d2145b83920f66f58076, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 8916585156190949554, guid: 112178d8c0d9d2145b83920f66f58076, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.23030432
+      objectReference: {fileID: 0}
+    - target: {fileID: 8916585156190949554, guid: 112178d8c0d9d2145b83920f66f58076, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8916585156190949554, guid: 112178d8c0d9d2145b83920f66f58076, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.9731187
+      objectReference: {fileID: 0}
+    - target: {fileID: 8916585156190949554, guid: 112178d8c0d9d2145b83920f66f58076, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8916585156190949554, guid: 112178d8c0d9d2145b83920f66f58076, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8916585156190949554, guid: 112178d8c0d9d2145b83920f66f58076, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 206.63
+      objectReference: {fileID: 0}
+    - target: {fileID: 8916585156190949554, guid: 112178d8c0d9d2145b83920f66f58076, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 112178d8c0d9d2145b83920f66f58076, type: 3}
 --- !u!1001 &1343006479
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27095,7 +27156,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4728160227320062266, guid: f3efd800a7a027844b886e6628f76b37, type: 3}
       propertyPath: m_Name
-      value: BreakRock (1)
+      value: BreakRock2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5610134595775282354, guid: f3efd800a7a027844b886e6628f76b37, type: 3}
+      propertyPath: _insGameObject.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8909687830992703722, guid: f3efd800a7a027844b886e6628f76b37, type: 3}
       propertyPath: m_LocalScale.x
@@ -33130,7 +33195,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4728160227320062266, guid: f3efd800a7a027844b886e6628f76b37, type: 3}
       propertyPath: m_Name
-      value: BreakRock
+      value: BreakRock1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5610134595775282354, guid: f3efd800a7a027844b886e6628f76b37, type: 3}
+      propertyPath: _insGameObject.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8909687830992703722, guid: f3efd800a7a027844b886e6628f76b37, type: 3}
       propertyPath: m_LocalScale.x
@@ -33843,3 +33912,4 @@ SceneRoots:
   - {fileID: 1152903333}
   - {fileID: 792767094470642034}
   - {fileID: 1789110144}
+  - {fileID: 1341416266}

@@ -49,6 +49,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _exitBt: {fileID: 6722494338671326936}
+  _pushAudio: {fileID: 0}
+  _surveyOpenBt: {fileID: 0}
+  _surveyPanel: {fileID: 0}
 --- !u!1 &135655103058941146
 GameObject:
   m_ObjectHideFlags: 0
@@ -1795,7 +1798,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1719188480049207882
 RectTransform:
   m_ObjectHideFlags: 0

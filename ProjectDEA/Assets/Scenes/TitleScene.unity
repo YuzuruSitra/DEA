@@ -11068,6 +11068,22 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4776281767689576884, guid: cac4eec800d28e743bbe04ccfe6ae356, type: 3}
+      propertyPath: m_text
+      value: Venomagnesis
+      objectReference: {fileID: 0}
+    - target: {fileID: 4776281767689576884, guid: cac4eec800d28e743bbe04ccfe6ae356, type: 3}
+      propertyPath: m_fontSize
+      value: 62
+      objectReference: {fileID: 0}
+    - target: {fileID: 4776281767689576884, guid: cac4eec800d28e743bbe04ccfe6ae356, type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4776281767689576884, guid: cac4eec800d28e743bbe04ccfe6ae356, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 62
+      objectReference: {fileID: 0}
     - target: {fileID: 4985410031395408156, guid: cac4eec800d28e743bbe04ccfe6ae356, type: 3}
       propertyPath: m_IsActive
       value: 1

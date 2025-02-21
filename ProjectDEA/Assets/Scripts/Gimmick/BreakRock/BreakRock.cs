@@ -49,6 +49,7 @@ namespace Gimmick.BreakRock
 
         private void OnBreak()
         {
+            if (_insGameObject == null) return;
             var target = UnityEngine.Random.Range(0, _insGameObject.Length);
             if (_insGameObject[target]._isRetuned)
             {
