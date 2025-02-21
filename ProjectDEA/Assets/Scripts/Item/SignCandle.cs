@@ -1,6 +1,7 @@
 using System;
 using Gimmick;
 using Manager;
+using Manager.Audio;
 using UnityEngine;
 
 namespace Item
@@ -10,11 +11,15 @@ namespace Item
         public event Action Destroyed;
         public bool IsInteractable { get; private set; }
         private InventoryHandler _inventoryHandler;
+        private SoundHandler _soundHandler;
+        [SerializeField] private AudioClip _signCandleSound;
 
         private void Start()
         {
             _inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
+            _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
             IsInteractable = true;
+            _soundHandler.PlaySe(_signCandleSound);
         }
 
         public void Interact()
@@ -23,6 +28,7 @@ namespace Item
             _inventoryHandler.AddItem(ItemKind.SignCandle);
             Destroy(gameObject);
             Destroyed?.Invoke();
+            _soundHandler.PlaySe(_signCandleSound);
         }
     }
 }

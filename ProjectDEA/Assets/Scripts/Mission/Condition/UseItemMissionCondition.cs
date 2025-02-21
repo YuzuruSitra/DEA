@@ -64,7 +64,6 @@ namespace Mission.Condition
             if (itemMissionID != _missionItemID) return;
 
             CurrentCount++;
-            Debug.Log($"アイテムミッション進捗: {CurrentCount}/{MaxCount}");
 
             if (CurrentCount >= MaxCount)
             {

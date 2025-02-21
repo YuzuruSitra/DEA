@@ -140,12 +140,17 @@ namespace Manager
 
         private void ChangeItemCount()
         {
-            if (CurrentItemNum == ErrorValue )
+            switch (CurrentItemNum)
             {
-                OnItemCountChanged?.Invoke(0);
-                return;
+                case (int)ItemKind.SignCandle:
+                    return;
+                case ErrorValue:
+                    OnItemCountChanged?.Invoke(0);
+                    return;
+                default:
+                    OnItemCountChanged?.Invoke(_itemSets[CurrentItemNum]._count);
+                    break;
             }
-            OnItemCountChanged?.Invoke(_itemSets[CurrentItemNum]._count);
         }
 
         // アイテムをインベントリに追加する
@@ -154,7 +159,12 @@ namespace Manager
             var language = _logTextHandler.LanguageHandler.CurrentLanguage;
             for (var i = 0; i < _itemSets.Length; i++)
             {
-                if (_itemSets[i]._kind == ItemKind.SignCandle) continue;
+                if (_itemSets[i]._kind == ItemKind.SignCandle)
+                {
+                    var signCandleMessage = _itemSets[i]._name[(int)language] + _getLogTemplate[(int)language];
+                    _logTextHandler.AddLog(signCandleMessage);
+                    continue;
+                }
                 if (_itemSets[i]._kind != item) continue;
                 _itemSets[i]._count++;
                 var message = _itemSets[i]._name[(int)language] + _getLogTemplate[(int)language];
@@ -185,7 +195,14 @@ namespace Manager
 
         public GameObject UseItem()
         {
-            if (CurrentItemNum == ErrorValue) return null;
+            switch (CurrentItemNum)
+            {
+                case (int)ItemKind.SignCandle:
+                    return _itemSets[CurrentItemNum]._prefab;
+                case ErrorValue:
+                    return null;
+            }
+
             var outItem = _itemSets[CurrentItemNum]._prefab;
             _itemSets[CurrentItemNum]._count = Math.Max(0, _itemSets[CurrentItemNum]._count - 1);
             ChangeItemCount();

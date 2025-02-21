@@ -308,3 +308,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acbd211b5cb128f4e9b72556accfed4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _signCandleSound: {fileID: 8300000, guid: b1ca11ec7a4fa6943aaead1cec891ca2, type: 3}

@@ -20,7 +20,6 @@ namespace Item
             if (!other.CompareTag("Player")) return;
             if (_playerUseItem == null) _playerUseItem = other.gameObject.GetComponent<PlayerUseItem>();
             _playerUseItem.CanUseCandle = false;
-            Debug.Log(_playerUseItem.CanUseCandle);
         }
 
         private void OnTriggerExit(Collider other)
