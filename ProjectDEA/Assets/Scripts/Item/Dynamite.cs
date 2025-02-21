@@ -1,7 +1,7 @@
 using System.Collections;
 using Character.NPC;
 using Character.Player;
-using Gimmick;
+using Gimmick.BreakRock;
 using Manager.Audio;
 using Manager.MetaAI;
 using UnityEngine;
@@ -22,10 +22,10 @@ namespace Item
 
         [SerializeField] private int _playerGiveDamage;
         private bool _isPlayerGive;
-        [SerializeField] private int _enemyGiveDamage;
+        [SerializeField] private int _giveDamage;
         private bool _isDragonGive;
+        private bool _isObjGive;
         private bool _isPutMonument;
-        private RoomGimmickGenerator _gimmickGenerator;
         private SoundHandler _soundHandler;
         [SerializeField] private AudioClip _bombAudio;
         private MetaAIHandler _metaAIHandler;
@@ -33,7 +33,6 @@ namespace Item
         
         private void Start()
         {
-            _gimmickGenerator = GameObject.FindWithTag("GimmickGenerator").GetComponent<RoomGimmickGenerator>();
             _soundHandler = GameObject.FindWithTag("SoundHandler").GetComponent<SoundHandler>();
             _metaAIHandler = GameObject.FindWithTag("MetaAI").GetComponent<MetaAIHandler>();
             UseEffect();
@@ -91,34 +90,21 @@ namespace Item
                         _isDragonGive = true;
                         var enemyController = obj.GetComponent<NpcController>();
                         if (enemyController == null) continue;
-                        enemyController.OnGetDamage(_enemyGiveDamage);
+                        enemyController.OnGetDamage(_giveDamage);
                         continue;
                     }
 
-                    if (obj.CompareTag("StageCube"))
+                    if (obj.CompareTag("BreakRock"))
                     {
-                        // モニュメントの生成
-                        if (!_isPutMonument)
-                        {
-                            var rnd = Random.Range(0, 100);
-                            if (rnd > _discoveryRate) continue;
-                            _isPutMonument = true;
-                            InsMonument(obj.transform.position);
-                        }
+                        if (_isObjGive) continue;
+                        var breakRock = obj.GetComponent<BreakRock>();
+                        if (breakRock == null) continue;
+                        breakRock.OnGetDamage(_giveDamage);
+                        _isObjGive = true;
                     }
                     Destroy(obj);
                 }
             }
-        }
-
-        private void InsMonument(Vector3 pos)
-        {
-            var monumentPrefab = _gimmickGenerator.GimmickInfos[(int)GimmickKind.Monument]._prefab;
-            var directionToSelf = transform.position - pos;
-            var insRot = Vector3.zero;
-            // 左右方向の判定
-            if (Mathf.Abs(directionToSelf.x) < Mathf.Abs(directionToSelf.z)) insRot.y = 90;
-            Instantiate(monumentPrefab, pos, Quaternion.Euler(insRot));
         }
         
         private static Vector3[] SetDirections()

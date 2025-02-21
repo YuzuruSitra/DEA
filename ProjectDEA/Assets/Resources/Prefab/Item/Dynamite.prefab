@@ -10330,7 +10330,7 @@ MonoBehaviour:
     m_Bits: 400
   _discoveryRate: 30
   _playerGiveDamage: 30
-  _enemyGiveDamage: 200
+  _giveDamage: 200
   _bombAudio: {fileID: 8300000, guid: 8c313aede6c04d544b3ac855c7b587ee, type: 3}
   _bombScores:
   - _type: 2

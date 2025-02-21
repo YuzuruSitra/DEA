@@ -1,5 +1,6 @@
 using Character.NPC;
 using Gimmick;
+using Gimmick.BreakRock;
 using Item;
 using Manager;
 using Manager.Audio;
@@ -15,6 +16,9 @@ namespace Character.Player
         
         private GameObject _currentEnemy;
         private NpcController _currentNpcController;
+        
+        private GameObject _currentbreakRock;
+        private BreakRock _currentBreakRock;
         
         private GameObject _currentBorn;
         private BornOut _currentBornOut;
@@ -62,6 +66,19 @@ namespace Character.Player
                 }
                 if (_currentNpcController == null) return;
                 _currentNpcController.OnGetDamage(_playerStatusHandler.PlayerAttackDamage);
+                _soundHandler.PlaySe(_attackHitSeClip);
+                _oneHit = true;
+            }
+                
+            if (other.CompareTag("BreakRock"))
+            {
+                if (_currentbreakRock != other.gameObject)
+                {
+                    _currentbreakRock = other.gameObject;
+                    _currentBreakRock = other.gameObject.GetComponent<BreakRock>();
+                }
+                var damage = _playerStatusHandler.PlayerAttackDamage * _currentBreakRock.PlayerReductionRatio;
+                _currentBreakRock.OnGetDamage((int)damage);
                 _soundHandler.PlaySe(_attackHitSeClip);
                 _oneHit = true;
             }
