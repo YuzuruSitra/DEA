@@ -107,6 +107,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""CloseMemoirsPanel"",
+                    ""type"": ""Button"",
+                    ""id"": ""1fd408f4-4364-423b-99e7-6bcfb2ce664a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -395,6 +404,28 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""InventryViewScroll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e0b01339-6550-4f3a-9cab-9a76e9b951cb"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CloseMemoirsPanel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""62d81b48-558a-4493-ae9d-b2a831809ada"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CloseMemoirsPanel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -460,6 +491,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Player_InventryShift = m_Player.FindAction("InventryShift", throwIfNotFound: true);
         m_Player_ChangeInventryPanel = m_Player.FindAction("ChangeInventryPanel", throwIfNotFound: true);
         m_Player_InventryViewScroll = m_Player.FindAction("InventryViewScroll", throwIfNotFound: true);
+        m_Player_CloseMemoirsPanel = m_Player.FindAction("CloseMemoirsPanel", throwIfNotFound: true);
         // InputSeparate
         m_InputSeparate = asset.FindActionMap("InputSeparate", throwIfNotFound: true);
         m_InputSeparate_InputKeyBoard = m_InputSeparate.FindAction("InputKeyBoard", throwIfNotFound: true);
@@ -534,6 +566,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_InventryShift;
     private readonly InputAction m_Player_ChangeInventryPanel;
     private readonly InputAction m_Player_InventryViewScroll;
+    private readonly InputAction m_Player_CloseMemoirsPanel;
     public struct PlayerActions
     {
         private @InputActions m_Wrapper;
@@ -547,6 +580,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         public InputAction @InventryShift => m_Wrapper.m_Player_InventryShift;
         public InputAction @ChangeInventryPanel => m_Wrapper.m_Player_ChangeInventryPanel;
         public InputAction @InventryViewScroll => m_Wrapper.m_Player_InventryViewScroll;
+        public InputAction @CloseMemoirsPanel => m_Wrapper.m_Player_CloseMemoirsPanel;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -583,6 +617,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @InventryViewScroll.started += instance.OnInventryViewScroll;
             @InventryViewScroll.performed += instance.OnInventryViewScroll;
             @InventryViewScroll.canceled += instance.OnInventryViewScroll;
+            @CloseMemoirsPanel.started += instance.OnCloseMemoirsPanel;
+            @CloseMemoirsPanel.performed += instance.OnCloseMemoirsPanel;
+            @CloseMemoirsPanel.canceled += instance.OnCloseMemoirsPanel;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -614,6 +651,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @InventryViewScroll.started -= instance.OnInventryViewScroll;
             @InventryViewScroll.performed -= instance.OnInventryViewScroll;
             @InventryViewScroll.canceled -= instance.OnInventryViewScroll;
+            @CloseMemoirsPanel.started -= instance.OnCloseMemoirsPanel;
+            @CloseMemoirsPanel.performed -= instance.OnCloseMemoirsPanel;
+            @CloseMemoirsPanel.canceled -= instance.OnCloseMemoirsPanel;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -696,6 +736,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         void OnInventryShift(InputAction.CallbackContext context);
         void OnChangeInventryPanel(InputAction.CallbackContext context);
         void OnInventryViewScroll(InputAction.CallbackContext context);
+        void OnCloseMemoirsPanel(InputAction.CallbackContext context);
     }
     public interface IInputSeparateActions
     {

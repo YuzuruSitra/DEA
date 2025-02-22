@@ -217,6 +217,7 @@ MonoBehaviour:
   _findScores:
   - _type: 1
     _point: 8
+  _book: {fileID: 4894932321564343745}
 --- !u!1 &7454046251027805119
 GameObject:
   m_ObjectHideFlags: 0

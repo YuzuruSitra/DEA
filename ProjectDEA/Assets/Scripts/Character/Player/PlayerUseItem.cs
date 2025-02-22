@@ -30,6 +30,7 @@ namespace Character.Player
             "他のキャンドルと少し近いな...",
             "A little close to the other candles..."
         };
+        [SerializeField] private PanelSwitcher _panelSwitcher;
         
         private void Start()
         {
@@ -167,6 +168,9 @@ namespace Character.Player
                 case ItemKind.PowerApple:
                     _useItemEffects.PlayerRecovery();
                     SendLogText(target._effectedLogText[(int)language]);
+                    break;
+                case ItemKind.RaggedMemoirs:
+                    _panelSwitcher.ChangeMemoirsPanel(true);
                     break;
             }
         }

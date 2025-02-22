@@ -23,6 +23,7 @@ namespace Gimmick
         };
         private MetaAIHandler _metaAIHandler;
         [SerializeField] private MetaAIHandler.AddScores[] _findScores;
+        [SerializeField] private MeshRenderer _book;
         
         private void Start()
         {
@@ -34,6 +35,7 @@ namespace Gimmick
         
         public void Interact()
         {
+            _book.enabled = false;
             _logTextHandler.AddLog(_addLogMessage[(int)_logTextHandler.LanguageHandler.CurrentLanguage]);
             _metaAIHandler.SendLogsForMetaAI(_findScores);
             _inventoryHandler.AddItem(ItemKind.RaggedMemoirs);

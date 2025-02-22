@@ -90,7 +90,7 @@ namespace Manager
                 _itemSets[i]._currentPredict = Instantiate(_itemSets[i]._predict);
             }
             
-            CurrentItemNum = (int)ItemKind.SignCandle;
+            CurrentItemNum = ErrorValue;
         }
         
         private void CheckSingleton()
