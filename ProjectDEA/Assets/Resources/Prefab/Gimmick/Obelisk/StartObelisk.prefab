@@ -791,7 +791,7 @@ MonoBehaviour:
   _setKeyAudio: {fileID: 8300000, guid: d55c70b1db9e71949996ea1c73f087b4, type: 3}
   _camChangeWaitTime: 1.75
   _logWaitTime: 3.5
-  _nextSceneTime: 2.5
+  _nextSceneTime: 2.25
   _logTextHandler: {fileID: 0}
   _playerClasHub: {fileID: 0}
   _explaneLogs:

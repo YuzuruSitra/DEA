@@ -164,7 +164,6 @@ namespace Manager
             
             // 方向転換
             playerMover.SetWalkableState(false);
-            _playerTransform.LookAt(_targetTransform);
             var playerUseItem = _playerClasHub.PlayerUseItem;
             playerUseItem.SetCanUseItemState(true);
             AddLocalizedLog(
@@ -173,6 +172,7 @@ namespace Manager
             );
             while (_inventoryHandler.ItemSets[(int)ItemKind.Dynamite]._count == 1)
             {
+                _playerTransform.LookAt(_targetTransform);
                 yield return null;
             }
             
