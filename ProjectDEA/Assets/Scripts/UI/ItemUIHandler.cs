@@ -65,7 +65,7 @@ namespace UI
                 var image = frame.transform.GetChild(0).gameObject.GetComponent<Image>();
                 image.sprite = itemSet[i]._sprite;
                 
-                if (itemSet[i]._count == InventoryHandler.InfiniteNum)
+                if (itemSet[i]._count == InventoryHandler.InfiniteNum || itemSet[i]._count >= 1)
                 {
                     _itemFrames[i].SetActive(true);
                 }

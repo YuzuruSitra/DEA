@@ -6,9 +6,14 @@ namespace Test
 	public class DebugSceneChange : MonoBehaviour
 	{
 		[SerializeField] private bool _isDebug;
-		[SerializeField] private DungeonLayerHandler _dungeonLayerHandler;
+		private DungeonLayerHandler _dungeonLayerHandler;
+
+		private void Start()
+		{
+			if (!_isDebug) return;
+			_dungeonLayerHandler = GameObject.FindWithTag("DungeonLayerHandler").GetComponent<DungeonLayerHandler>();
+		}
 		
-		// Update is called once per frame
 		private void Update()
 		{
 			if (!_isDebug) return;

@@ -28,7 +28,6 @@ namespace Item
             _inventoryHandler.AddItem(ItemKind.SignCandle);
             Destroy(gameObject);
             Destroyed?.Invoke();
-            _soundHandler.PlaySe(_signCandleSound);
         }
     }
 }

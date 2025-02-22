@@ -90,7 +90,7 @@ namespace Manager
                 _itemSets[i]._currentPredict = Instantiate(_itemSets[i]._predict);
             }
             
-            CurrentItemNum = ErrorValue;
+            CurrentItemNum = (int)ItemKind.SignCandle;
         }
         
         private void CheckSingleton()
@@ -140,17 +140,12 @@ namespace Manager
 
         private void ChangeItemCount()
         {
-            switch (CurrentItemNum)
+            if (CurrentItemNum == ErrorValue)
             {
-                case (int)ItemKind.SignCandle:
-                    return;
-                case ErrorValue:
-                    OnItemCountChanged?.Invoke(0);
-                    return;
-                default:
-                    OnItemCountChanged?.Invoke(_itemSets[CurrentItemNum]._count);
-                    break;
+                OnItemCountChanged?.Invoke(0);
+                return;
             }
+            OnItemCountChanged?.Invoke(_itemSets[CurrentItemNum]._count);
         }
 
         // アイテムをインベントリに追加する
@@ -159,14 +154,8 @@ namespace Manager
             var language = _logTextHandler.LanguageHandler.CurrentLanguage;
             for (var i = 0; i < _itemSets.Length; i++)
             {
-                if (_itemSets[i]._kind == ItemKind.SignCandle)
-                {
-                    var signCandleMessage = _itemSets[i]._name[(int)language] + _getLogTemplate[(int)language];
-                    _logTextHandler.AddLog(signCandleMessage);
-                    continue;
-                }
                 if (_itemSets[i]._kind != item) continue;
-                _itemSets[i]._count++;
+                if (_itemSets[i]._kind != ItemKind.SignCandle) _itemSets[i]._count++;
                 var message = _itemSets[i]._name[(int)language] + _getLogTemplate[(int)language];
                 _logTextHandler.AddLog(message);
                 _soundHandler.PlaySe(_getItemAudio);
