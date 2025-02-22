@@ -1066,6 +1066,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 10dfe7734ba9e3e4a8552476e63ca9cc, type: 3}
+--- !u!114 &124661290650254277 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2489764831776359219, guid: 10dfe7734ba9e3e4a8552476e63ca9cc, type: 3}
+  m_PrefabInstance: {fileID: 124661290650254276}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3143c407a4cd4e8297d42b193c4228c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1888449965349577875
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1110,6 +1121,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2817494418154973700, guid: af343f917a18a974dbde0989ed8e63db, type: 3}
+      propertyPath: _panelSwitcher
+      value: 
+      objectReference: {fileID: 124661290650254277}
     - target: {fileID: 6541468794001565378, guid: af343f917a18a974dbde0989ed8e63db, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2

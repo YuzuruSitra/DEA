@@ -52,6 +52,16 @@ namespace Manager
         private bool[] _putSignCandle;
 
         public const int InfiniteNum = -1;
+        [Serializable]
+        public struct MemoirsData
+        {
+            public string _title;
+            public string _content;
+            public bool _active;
+        } 
+        [SerializeField] private MemoirsData[] _memoirsDataSet;
+        public MemoirsData[] MemoirsDataSet => _memoirsDataSet;
+        public Action OnMemoirsChanged;
         
         private void Awake()
         {
@@ -116,7 +126,7 @@ namespace Manager
             {
                 var newIndex = (startIndex + i) % _itemSets.Length;
                 
-                if (_itemSets[newIndex]._count <= 0 && _itemSets[newIndex]._kind != ItemKind.SignCandle) continue;
+                if (_itemSets[newIndex]._count <= 0 && _itemSets[newIndex]._count != InfiniteNum) continue;
                 ChangeItemNum(newIndex);
                 if (CurrentItemNum != newIndex) _soundHandler.PlaySe(_pushAudio);
                 return;
@@ -155,7 +165,25 @@ namespace Manager
             for (var i = 0; i < _itemSets.Length; i++)
             {
                 if (_itemSets[i]._kind != item) continue;
-                if (_itemSets[i]._kind != ItemKind.SignCandle) _itemSets[i]._count++;
+                if (_itemSets[i]._kind == ItemKind.RaggedMemoirs)
+                {
+                    if (_itemSets[i]._count == 0)
+                    {
+                        _itemSets[i]._count = InfiniteNum;
+                    }
+                    var startIndex = UnityEngine.Random.Range(0, _memoirsDataSet.Length);
+                    for (var j = 0; j < _memoirsDataSet.Length; j++)
+                    {
+                        var index = (startIndex + j) % _memoirsDataSet.Length;
+                        if (_memoirsDataSet[index]._active) continue;
+                        _memoirsDataSet[index]._active = true;
+                        OnMemoirsChanged?.Invoke();
+                    }
+                }
+                if (_itemSets[i]._count != InfiniteNum)
+                {
+                    _itemSets[i]._count++;
+                }
                 var message = _itemSets[i]._name[(int)language] + _getLogTemplate[(int)language];
                 _logTextHandler.AddLog(message);
                 _soundHandler.PlaySe(_getItemAudio);
@@ -188,6 +216,7 @@ namespace Manager
             {
                 case (int)ItemKind.SignCandle:
                     return _itemSets[CurrentItemNum]._prefab;
+                case (int)ItemKind.RaggedMemoirs:
                 case ErrorValue:
                     return null;
             }
