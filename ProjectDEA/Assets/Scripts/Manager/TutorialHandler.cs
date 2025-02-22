@@ -27,12 +27,13 @@ namespace Manager
         private SoundHandler _soundHandler;
         [SerializeField] private AudioClip _pushAudio;
         [SerializeField] private TutorialArea1 _tutorialArea1;
-        [SerializeField] private Vector3[] _tutorialArea1Transform;
         [SerializeField] private InventoryHandler _inventoryHandler;
         [SerializeField] private float _logBombTime;
         private WaitForSeconds _logBombTimeSeconds;
         [SerializeField] private float _logFadeOutTime;
         private WaitForSeconds _logFadeOutTimeSeconds;
+        [SerializeField] private Transform _targetTransform; 
+        [SerializeField] private Transform _playerTransform;
         
         private void Start()
         {
@@ -110,7 +111,6 @@ namespace Manager
             _tutorialIndicationUI.SetActive(false);
             _isTutorialLog = false;
             _tutorialArea1.gameObject.SetActive(true);
-            _tutorialArea1.gameObject.transform.position = _tutorialArea1Transform[0];
             var playerMover = _playerClasHub.PlayerMover;
             playerMover.SetWalkableState(true);
             AddLocalizedLog(
@@ -122,6 +122,7 @@ namespace Manager
                 yield return null;
             }
             
+            _tutorialArea1.gameObject.SetActive(false);
             AddLocalizedLog(
                 "[ 岩を攻撃してみよう ]",
                 "[ Let's attack the rock. ]"
@@ -161,18 +162,9 @@ namespace Manager
                 yield return null;
             }
             
-            AddLocalizedLog(
-                "[ 再び赤いエリアへ向かおう ]",
-                "[ Let's head to the red area again. ]"
-            );
-            while (!_tutorialArea1.IsReaching)
-            {
-                yield return null;
-            }
-            
-            _tutorialArea1.gameObject.SetActive(false);
-            _tutorialArea1.gameObject.transform.position = _tutorialArea1Transform[1];
+            // 方向転換
             playerMover.SetWalkableState(false);
+            _playerTransform.LookAt(_targetTransform);
             var playerUseItem = _playerClasHub.PlayerUseItem;
             playerUseItem.SetCanUseItemState(true);
             AddLocalizedLog(
