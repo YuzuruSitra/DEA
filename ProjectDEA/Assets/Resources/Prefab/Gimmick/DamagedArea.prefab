@@ -5041,7 +5041,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78e41c119a2af6c4db3912dbfa66acb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damageForSeconds: 2
+  _damageForSeconds: 3
   _metaAiScores:
   - _type: 1
     _point: 5

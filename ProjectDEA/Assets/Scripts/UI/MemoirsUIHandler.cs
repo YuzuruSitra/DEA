@@ -15,17 +15,20 @@ namespace UI
         private void Start()
         {
             _inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
-            _memoirsIndex = new GameObject[_inventoryHandler.MemoirsDataSet.Length];
-            for (var i = 0; i < _inventoryHandler.MemoirsDataSet.Length; i++)
+            var dataSet = _inventoryHandler.MemoirsDataSet;
+            _memoirsIndex = new GameObject[dataSet.Length];
+            for (var i = 0; i < dataSet.Length; i++)
             {
                 _memoirsIndex[i] = Instantiate(_contentPrefab, _memoirsContent.transform);
                 var cd1 = _memoirsIndex[i].transform.GetChild(0).gameObject;
                 var nameText = cd1.GetComponent<TextMeshProUGUI>();
-                nameText.text = _inventoryHandler.MemoirsDataSet[i]._title;
+                nameText.text = dataSet[i]._title;
                 
                 var cd2 = _memoirsIndex[i].transform.GetChild(1).gameObject;
                 var contentTxt = cd2.GetComponent<TextMeshProUGUI>();
-                contentTxt.text = _inventoryHandler.MemoirsDataSet[i]._content;
+                contentTxt.text = dataSet[i]._content;
+                
+                _memoirsIndex[i].SetActive(dataSet[i]._active);
             }
 
             _inventoryHandler.OnMemoirsChanged += ChangeMemoirsPanel;

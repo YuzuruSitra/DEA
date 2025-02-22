@@ -256,7 +256,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gimmickID: 2
-  _damageForSeconds: 2
+  _damageForSeconds: 5
   _breakedSe: {fileID: 8300000, guid: 9306e02308d840e44947fd4062ccbdaa, type: 3}
   _metaAiScores:
   - _type: 1

@@ -83,8 +83,8 @@ MonoBehaviour:
     - "\u529B\u306E\u30DD\u30FC\u30B7\u30E7\u30F3"
     - Potion of Strength
     _description:
-    - "\u653B\u6483\u529B\u304C\u5C11\u3057\u3042\u304C\u308B\u3002"
-    - Slightly increases attack power.
+    - "\u653B\u6483\u529B\u304C\u5C11\u3057\u3042\u304C\u308B\u3002\u52B9\u679C\u306F\u6C38\u7D9A\u3059\u308B\u3088\u3046\u3060\u3002"
+    - Attack power is slightly increased. The effect seems to be permanent.
     _prefab: {fileID: 0}
     _currentPredict: {fileID: 0}
     _predict: {fileID: 0}

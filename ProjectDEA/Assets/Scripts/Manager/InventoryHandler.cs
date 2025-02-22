@@ -170,6 +170,7 @@ namespace Manager
                     if (_itemSets[i]._count == 0)
                     {
                         _itemSets[i]._count = InfiniteNum;
+                        OnItemLineupChanged(_itemSets);
                     }
                     var startIndex = UnityEngine.Random.Range(0, _memoirsDataSet.Length);
                     for (var j = 0; j < _memoirsDataSet.Length; j++)
@@ -178,6 +179,7 @@ namespace Manager
                         if (_memoirsDataSet[index]._active) continue;
                         _memoirsDataSet[index]._active = true;
                         OnMemoirsChanged?.Invoke();
+                        break;
                     }
                 }
                 if (_itemSets[i]._count != InfiniteNum)
