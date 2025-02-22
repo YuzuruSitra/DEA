@@ -164,9 +164,9 @@ namespace Gimmick
                 var paddingX = Mathf.CeilToInt(halfScaleX) + PaddingThreshold;
                 var paddingZ = Mathf.CeilToInt(halfScaleZ) + PaddingThreshold;
                 var rangeMinX = _roomInfo[currentRoom, (int)StageGenerator.RoomStatus.TopLeftX] + paddingX;
-                var rangeMaxX = _roomInfo[currentRoom, (int)StageGenerator.RoomStatus.TopRightX] - paddingX;
+                var rangeMaxX = _roomInfo[currentRoom, (int)StageGenerator.RoomStatus.TopRightX] - (paddingX + 1);
                 var rangeMinZ = _roomInfo[currentRoom, (int)StageGenerator.RoomStatus.BottomLeftZ] + paddingZ;
-                var rangeMaxZ = _roomInfo[currentRoom, (int)StageGenerator.RoomStatus.TopLeftZ] - paddingZ;
+                var rangeMaxZ = _roomInfo[currentRoom, (int)StageGenerator.RoomStatus.TopLeftZ] - (paddingX + 1);
 
                 var validPositions = new List<Vector3>();
                 for (var x = rangeMinX; x < rangeMaxX; x += gridStep)

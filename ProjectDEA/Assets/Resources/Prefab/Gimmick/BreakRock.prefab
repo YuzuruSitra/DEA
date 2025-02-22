@@ -317,6 +317,7 @@ GameObject:
   - component: {fileID: 8631854210195265730}
   - component: {fileID: 5610134595775282354}
   - component: {fileID: 8631373175663622398}
+  - component: {fileID: -8092980943623807474}
   m_Layer: 0
   m_Name: BreakRock
   m_TagString: BreakRock
@@ -437,6 +438,22 @@ MonoBehaviour:
   _slider: {fileID: 8800751234740683796}
   _waitingTime: 1
   _disabledTime: 2
+--- !u!208 &-8092980943623807474
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4728160227320062266}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.2
 --- !u!1 &6467928484100375311
 GameObject:
   m_ObjectHideFlags: 0
