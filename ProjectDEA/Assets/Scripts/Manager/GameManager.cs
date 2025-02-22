@@ -69,7 +69,7 @@ namespace Manager
             gimmickGenerator.InitialGenerateGimmicks(stageGenerator, navMeshHandler);
             var playerSetPos = Vector3.zero;
             playerSetPos.x = stageGenerator.RoomInfo[0, (int) StageGenerator.RoomStatus.CenterX];
-            playerSetPos.y = 1.88f;
+            playerSetPos.y = 1.0f;
             playerSetPos.z = stageGenerator.RoomInfo[0, (int) StageGenerator.RoomStatus.CenterZ];
             var player = GameObject.FindWithTag("Player");
             player.transform.position = playerSetPos;

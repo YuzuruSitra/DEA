@@ -35,10 +35,12 @@ namespace Character.Player
 
         // 速度の変化にかかる時間
         [SerializeField] private float _speedTransitionTime;
+        [SerializeField] private float _maxMoveThreshold = 1.0f;
 
         private InputActions _inputActions;
         private Vector2 _inputMove = Vector2.zero; // 再利用可能なベクトル
         private bool _isRunning;
+        private Vector3 _previousPosition;
 
         private void Start()
         {
@@ -52,6 +54,8 @@ namespace Character.Player
             _inputActions.Player.Run.performed += OnRunPerformed;
             _inputActions.Player.Run.canceled += OnRunCanceled;
             _inputActions.Enable();
+            
+            _previousPosition = transform.position;
         }
 
         private void OnDestroy()
@@ -83,7 +87,7 @@ namespace Character.Player
             _isRunning = false;
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             VerticalMoving();
             if (!_isWalkable || _isPushed || _playerAnimationCnt.IsAttacking)
@@ -95,6 +99,22 @@ namespace Character.Player
             UpdateInputDirection();
             UpdateMoveDirection();
             DoMoving();
+            CheckPositionCorrection();
+        }
+        
+        private void CheckPositionCorrection()
+        {
+            if (!_isPushed && Mathf.Abs(transform.position.y - _previousPosition.y) > 0.01f)
+            {
+                transform.position = new Vector3(transform.position.x, _previousPosition.y, transform.position.z);
+            }
+            else
+            {
+                if (_controller.isGrounded)
+                {
+                    _previousPosition = transform.position;
+                }
+            }
         }
 
         private void UpdateInputDirection()
