@@ -9,6 +9,7 @@ namespace Mission.Condition
         event System.Action OnMissionCompleted;
         void StartTracking();
         void StopTracking();
+        void OnDefeated(int id);
         public int CurrentCount { get; }
         public int MaxCount { get; }
         public string[] MissionLaunchLog { get; }

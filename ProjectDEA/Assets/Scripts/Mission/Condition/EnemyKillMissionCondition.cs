@@ -10,7 +10,6 @@ namespace Mission.Condition
         
         public string MissionName { get; }
         public MissionType MissionType { get; }
-        private readonly GameEventManager _gameEventManager;
         private readonly RoomGimmickGenerator _roomGimmickGenerator;
         private readonly int _targetEnemyID;
         private readonly EnemyKillMissionData.GenerateType _generateType;
@@ -22,9 +21,8 @@ namespace Mission.Condition
         public int MaxCount { get; private set; }
         public GameObject StandOutTarget { get; private set; }
 
-        public EnemyKillMissionCondition(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, GameObject[] enemyPrefab, EnemyKillMissionData.KillMissionStruct enemyKillMissionData)
+        public EnemyKillMissionCondition(RoomGimmickGenerator roomGimmickGenerator, GameObject[] enemyPrefab, EnemyKillMissionData.KillMissionStruct enemyKillMissionData)
         {
-            _gameEventManager = gameEventManager;
             _roomGimmickGenerator = roomGimmickGenerator;
             _enemyPrefab = enemyPrefab;
             MissionName = enemyKillMissionData._missionName;
@@ -38,7 +36,6 @@ namespace Mission.Condition
 
         public void StartTracking()
         {
-            _gameEventManager.OnEnemyDefeated += OnEnemyDefeated;
             CurrentCount = 0;
             StandOutTarget = null;
             GenerateEnemy();
@@ -46,12 +43,12 @@ namespace Mission.Condition
 
         public void StopTracking()
         {
-            _gameEventManager.OnEnemyDefeated -= OnEnemyDefeated;
+
         }
 
-        private void OnEnemyDefeated(int enemyID)
+        public void OnDefeated(int id)
         {
-            if (_targetEnemyID != EnemyKillMissionData.NonTargetID && enemyID != _targetEnemyID) return;
+            if (_targetEnemyID != EnemyKillMissionData.NonTargetID && id != _targetEnemyID) return;
             CurrentCount++;
 
             if (CurrentCount >= MaxCount)

@@ -11,19 +11,17 @@ namespace Mission
     public class MissionInitializer
     {
         private const string MissionKeyHolder = "Assets/Addressables_Resources/MissionKeyHolder.asset";
-        private readonly GameEventManager _gameEventManager;
         private readonly RoomGimmickGenerator _roomGimmickGenerator;
         private readonly InventoryHandler _inventoryHandler;
         public List<IMissionCondition> KillerMissions { get; }
         public List<IMissionCondition> AchieverMissions { get; }
         public List<IMissionCondition> ExplorerMissions { get; }
         
-        public MissionInitializer(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, InventoryHandler inventoryHandler)
+        public MissionInitializer(RoomGimmickGenerator roomGimmickGenerator, InventoryHandler inventoryHandler)
         {
             KillerMissions = new List<IMissionCondition>();
             AchieverMissions = new List<IMissionCondition>();
             ExplorerMissions = new List<IMissionCondition>();
-            _gameEventManager = gameEventManager;
             _roomGimmickGenerator = roomGimmickGenerator;
             _inventoryHandler = inventoryHandler;
             InitializeMissionConditions();
@@ -47,7 +45,7 @@ namespace Mission
         {
             foreach (var t in dates._killMissionData)
             {
-                var killEnemiesMission = new EnemyKillMissionCondition(_gameEventManager, _roomGimmickGenerator, dates._enemyPrefab, t);
+                var killEnemiesMission = new EnemyKillMissionCondition(_roomGimmickGenerator, dates._enemyPrefab, t);
                 AddMissionList(killEnemiesMission);
             }
         }
@@ -56,7 +54,7 @@ namespace Mission
         {
             foreach (var t in dates._gimmickMissionData)
             {
-                var gimmickMission = new GimmickMissionCondition(_gameEventManager, _roomGimmickGenerator, dates._gimmickPrefab, t);
+                var gimmickMission = new GimmickMissionCondition(_roomGimmickGenerator, dates._gimmickPrefab, t);
                 AddMissionList(gimmickMission);
             }
         }
@@ -65,7 +63,7 @@ namespace Mission
         {
             foreach (var t in dates._useItemMissionData)
             {
-                var gimmickMission = new UseItemMissionCondition(_gameEventManager, _roomGimmickGenerator, _inventoryHandler, dates._itemData, t);
+                var gimmickMission = new UseItemMissionCondition(_roomGimmickGenerator, _inventoryHandler, dates._itemData, t);
                 AddMissionList(gimmickMission);
             }
         }

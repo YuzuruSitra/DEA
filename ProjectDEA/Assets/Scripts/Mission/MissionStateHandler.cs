@@ -9,6 +9,7 @@ namespace Mission
 {
     public class MissionStateHandler
     {
+        private readonly GameEventManager _gameEventManager;
         private readonly MissionSelector _missionSelector;
         public IMissionCondition CurrentMission { get; private set; }
 
@@ -19,7 +20,8 @@ namespace Mission
 
         public MissionStateHandler(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, InventoryHandler inventoryHandler)
         {
-            var missionInitializer = new MissionInitializer(gameEventManager, roomGimmickGenerator, inventoryHandler);
+            _gameEventManager = gameEventManager;
+            var missionInitializer = new MissionInitializer(roomGimmickGenerator, inventoryHandler);
             _missionSelector = new MissionSelector(missionInitializer);
             OnMissionFinished += inventoryHandler.RemoveMissionItem;
             _inventoryHandler = inventoryHandler;
@@ -36,6 +38,7 @@ namespace Mission
         {
             CurrentMission = _missionSelector.SelectMission();
             CurrentMission.OnMissionCompleted += CompleteMission;
+            _gameEventManager.OnEnemyDefeated += CurrentMission.OnDefeated;
             CurrentMission.StartTracking();
             OnMissionStarted?.Invoke();
             DoingMission = true;
@@ -45,6 +48,7 @@ namespace Mission
         {
             if (CurrentMission == null) return;
             CurrentMission.OnMissionCompleted -= CompleteMission;
+            _gameEventManager.OnEnemyDefeated -= CurrentMission.OnDefeated;
             CurrentMission.StopTracking();
             OnMissionFinished?.Invoke();
             DoingMission = false;

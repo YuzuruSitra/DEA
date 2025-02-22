@@ -11,7 +11,6 @@ namespace Mission.Condition
         
         public string MissionName { get; }
         public MissionType MissionType { get; }
-        private readonly GameEventManager _gameEventManager;
         private readonly RoomGimmickGenerator _roomGimmickGenerator;
         private readonly int _targetGimmickID;
         private readonly GimmickMissionData.GenerateType _generateType;
@@ -26,9 +25,8 @@ namespace Mission.Condition
         public int MaxCount { get; private set; }
         public GameObject StandOutTarget { get; private set; }
         
-        public GimmickMissionCondition(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, GameObject[] gimmickPrefab, GimmickMissionData.GimmickMissionStruct gimmickMissionStruct)
+        public GimmickMissionCondition(RoomGimmickGenerator roomGimmickGenerator, GameObject[] gimmickPrefab, GimmickMissionData.GimmickMissionStruct gimmickMissionStruct)
         {
-            _gameEventManager = gameEventManager;
             _roomGimmickGenerator = roomGimmickGenerator;
             _gimmickPrefab = gimmickPrefab;
             MissionName = gimmickMissionStruct._missionName;
@@ -46,7 +44,6 @@ namespace Mission.Condition
         {
             CurrentCount = 0;
             StandOutTarget = null;
-            _gameEventManager.OnGimmickCompleted += OnGimmickCompleted;
             GenerateGimmick();
             GenerateAddGimmick();
         }
@@ -54,12 +51,11 @@ namespace Mission.Condition
         public void StopTracking()
         {
             _roomGimmickGenerator.OnDestroyList(_addGimmickList);
-            _gameEventManager.OnGimmickCompleted -= OnGimmickCompleted;
         }
 
-        private void OnGimmickCompleted(int gimmickID)
+        public void OnDefeated(int id)
         {
-            if (gimmickID != _targetGimmickID) return;
+            if (id != _targetGimmickID) return;
             CurrentCount++;
 
             if (CurrentCount >= MaxCount)

@@ -13,7 +13,6 @@ namespace Mission.Condition
         
         public string MissionName { get; }
         public MissionType MissionType { get; }
-        private readonly GameEventManager _gameEventManager;
         private readonly RoomGimmickGenerator _roomGimmickGenerator;
         private readonly InventoryHandler _inventoryHandler;
         private readonly int _missionItemID;
@@ -29,9 +28,8 @@ namespace Mission.Condition
         public int MaxCount { get; }
         public GameObject StandOutTarget { get; private set; }
         
-        public UseItemMissionCondition(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, InventoryHandler inventoryHandler, ItemKind[] itemKinds, UseItemMissionData.UseItemMissionStruct useItemMissionData)
+        public UseItemMissionCondition(RoomGimmickGenerator roomGimmickGenerator, InventoryHandler inventoryHandler, ItemKind[] itemKinds, UseItemMissionData.UseItemMissionStruct useItemMissionData)
         {
-            _gameEventManager = gameEventManager;
             _roomGimmickGenerator = roomGimmickGenerator;
             _inventoryHandler = inventoryHandler;
             _itemKinds = itemKinds;
@@ -48,7 +46,6 @@ namespace Mission.Condition
         public void StartTracking()
         {
             CurrentCount = 0;
-            _gameEventManager.OnItemUsed += OnGimmickCompleted;
             AddItemForPlayer();
             GenerateAddEnemy();
         }
@@ -56,12 +53,11 @@ namespace Mission.Condition
         public void StopTracking()
         {
             _roomGimmickGenerator.OnDestroyList(_addEnemyList);
-            _gameEventManager.OnItemUsed -= OnGimmickCompleted;
         }
 
-        private void OnGimmickCompleted(int itemMissionID)
+        public void OnDefeated(int id)
         {
-            if (itemMissionID != _missionItemID) return;
+            if (id != _missionItemID) return;
 
             CurrentCount++;
 
