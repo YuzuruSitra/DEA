@@ -29,9 +29,8 @@ namespace Gimmick
             _metaAIHandler = GameObject.FindWithTag("MetaAI").GetComponent<MetaAIHandler>();
         }
         
-        public void OnDestroy()
+        private void OnDestroy()
         {
-            Debug.Log("VenomMush destroyed");
             _metaAIHandler.SendLogsForMetaAI(_metaAiScores);
             _gameEventManager.GimmickCompleted(_gimmickID);
             _soundHandler.PlaySe(_breakedSe);

@@ -12,6 +12,7 @@ namespace Mission.Condition
         public event System.Action OnMissionCompleted;
         
         public string MissionName { get; }
+        public ClassType ClassType { get; }
         public MissionType MissionType { get; }
         private readonly RoomGimmickGenerator _roomGimmickGenerator;
         private readonly InventoryHandler _inventoryHandler;
@@ -23,6 +24,7 @@ namespace Mission.Condition
         private readonly List<GameObject> _addEnemyList = new ();
         public string[] MissionLaunchLog { get; }
         public string[] MissionFinishLog { get; }
+        private readonly bool _isDynamicAddEnemy;
         
         public int CurrentCount { get; private set; }
         public int MaxCount { get; }
@@ -34,6 +36,7 @@ namespace Mission.Condition
             _inventoryHandler = inventoryHandler;
             _itemKinds = itemKinds;
             MissionName = useItemMissionData._missionName;
+            ClassType = useItemMissionData._classType;
             MissionType = useItemMissionData._missionType;
             _missionItemID = useItemMissionData._missionItemID;
             MaxCount = useItemMissionData._targetCompleteCount;
@@ -41,6 +44,7 @@ namespace Mission.Condition
             _addEnemyCount = useItemMissionData._addEnemyCount;
             MissionLaunchLog = useItemMissionData._missionLaunchLog;
             MissionFinishLog = useItemMissionData._missionFinishLog;
+            _isDynamicAddEnemy = useItemMissionData._isDynamicAddEnemy;
         }
 
         public void StartTracking()
@@ -65,6 +69,14 @@ namespace Mission.Condition
             {
                 OnMissionCompleted?.Invoke();
             }
+        }
+        
+        public void PlayerChangeRoomEvent()
+        {
+            if (!_isDynamicAddEnemy) return;
+            var target = _addEnemyPrefab[Random.Range(0, _addEnemyPrefab.Length)];
+            var insAddObj = _roomGimmickGenerator.InsGimmick(_roomGimmickGenerator.GetRandomRoom, target);
+            _addEnemyList.Add(insAddObj);
         }
         
         private void AddItemForPlayer()

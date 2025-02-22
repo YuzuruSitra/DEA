@@ -13,6 +13,7 @@ namespace Mission.CreateScriptableObject
         public struct UseItemMissionStruct
         {
             public string _missionName;
+            public ClassType _classType;
             public MissionType _missionType;
             public int _missionItemID;
             public int _targetCompleteCount;
@@ -20,7 +21,8 @@ namespace Mission.CreateScriptableObject
             public int _addEnemyCount;
             public string[] _missionLaunchLog;
             public string[] _missionFinishLog;
-        } 
+            public bool _isDynamicAddEnemy;
+        }
         public UseItemMissionStruct[] _useItemMissionData;
     }
 }

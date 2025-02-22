@@ -4,6 +4,7 @@ using Character.Player;
 using Cinemachine;
 using Manager;
 using Manager.Audio;
+using Manager.Map;
 using Mission;
 using UI;
 using UnityEngine;
@@ -55,7 +56,8 @@ namespace Gimmick
             var gameEventManager = GameObject.FindWithTag("GameEventManager").GetComponent<GameEventManager>();
             var roomGimmickGenerator = GameObject.FindWithTag("GimmickGenerator").GetComponent<RoomGimmickGenerator>();
             var inventoryHandler = GameObject.FindWithTag("InventoryHandler").GetComponent<InventoryHandler>();
-            MissionStateHandler = new MissionStateHandler(gameEventManager, roomGimmickGenerator, inventoryHandler);
+            var playerRoomTracker = GameObject.FindWithTag("PlayerRoomTracker").GetComponent<PlayerRoomTracker>();
+            MissionStateHandler = new MissionStateHandler(gameEventManager, roomGimmickGenerator, inventoryHandler, playerRoomTracker);
             MissionStateHandler.OnMissionFinished += OnMissionCompleted;
             _logWaitForSeconds = new WaitForSeconds(_logWaitTime);
             _logTextHandler = GameObject.FindWithTag("LogTextHandler").GetComponent<LogTextHandler>();

@@ -104,7 +104,7 @@ namespace Character.Player
         
         private void CheckPositionCorrection()
         {
-            if (!_isPushed && Mathf.Abs(transform.position.y - _previousPosition.y) > 0.01f)
+            if (!_isPushed && Mathf.Abs(transform.position.y - _previousPosition.y) > 0.5f)
             {
                 transform.position = new Vector3(transform.position.x, _previousPosition.y, transform.position.z);
             }

@@ -1,9 +1,8 @@
 using System;
 using Gimmick;
 using Manager;
-using Manager.MetaAI;
+using Manager.Map;
 using Mission.Condition;
-using UnityEngine;
 
 namespace Mission
 {
@@ -11,6 +10,7 @@ namespace Mission
     {
         private readonly GameEventManager _gameEventManager;
         private readonly MissionSelector _missionSelector;
+        private readonly PlayerRoomTracker _playerRoomTracker;
         public IMissionCondition CurrentMission { get; private set; }
 
         private readonly InventoryHandler _inventoryHandler;
@@ -18,11 +18,12 @@ namespace Mission
         public Action OnMissionStarted;
         public Action OnMissionFinished;
 
-        public MissionStateHandler(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, InventoryHandler inventoryHandler)
+        public MissionStateHandler(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, InventoryHandler inventoryHandler, PlayerRoomTracker playerRoomTracker)
         {
             _gameEventManager = gameEventManager;
             var missionInitializer = new MissionInitializer(roomGimmickGenerator, inventoryHandler);
             _missionSelector = new MissionSelector(missionInitializer);
+            _playerRoomTracker = playerRoomTracker;
             OnMissionFinished += inventoryHandler.RemoveMissionItem;
             _inventoryHandler = inventoryHandler;
         }
@@ -38,7 +39,19 @@ namespace Mission
         {
             CurrentMission = _missionSelector.SelectMission();
             CurrentMission.OnMissionCompleted += CompleteMission;
-            _gameEventManager.OnEnemyDefeated += CurrentMission.OnDefeated;
+            _playerRoomTracker.OnPlayerRoomChange += CurrentMission.PlayerChangeRoomEvent;
+            switch (CurrentMission.ClassType)
+            {
+                case ClassType.EnemyKill:
+                    _gameEventManager.OnEnemyDefeated += CurrentMission.OnDefeated;
+                    break;
+                case ClassType.Gimmick:
+                    _gameEventManager.OnGimmickCompleted += CurrentMission.OnDefeated;
+                    break;
+                case ClassType.UseItem:
+                    _gameEventManager.OnItemUsed += CurrentMission.OnDefeated;
+                    break;
+            }
             CurrentMission.StartTracking();
             OnMissionStarted?.Invoke();
             DoingMission = true;
@@ -48,11 +61,24 @@ namespace Mission
         {
             if (CurrentMission == null) return;
             CurrentMission.OnMissionCompleted -= CompleteMission;
-            _gameEventManager.OnEnemyDefeated -= CurrentMission.OnDefeated;
+            _playerRoomTracker.OnPlayerRoomChange -= CurrentMission.PlayerChangeRoomEvent;
+            switch (CurrentMission.ClassType)
+            {
+                case ClassType.EnemyKill:
+                    _gameEventManager.OnEnemyDefeated -= CurrentMission.OnDefeated;
+                    break;
+                case ClassType.Gimmick:
+                    _gameEventManager.OnGimmickCompleted -= CurrentMission.OnDefeated;
+                    break;
+                case ClassType.UseItem:
+                    _gameEventManager.OnItemUsed -= CurrentMission.OnDefeated;
+                    break;
+            }
             CurrentMission.StopTracking();
             OnMissionFinished?.Invoke();
             DoingMission = false;
         }
+        
     }
 }
 

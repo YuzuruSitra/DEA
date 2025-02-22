@@ -1,6 +1,7 @@
 using System;
 using Mission.Condition;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Mission.CreateScriptableObject
 {
@@ -12,6 +13,7 @@ namespace Mission.CreateScriptableObject
         public struct KillMissionStruct
         {
             public string _missionName;
+            public ClassType _classType;
             public MissionType _missionType;
             public int _targetEnemyID;
             public int _targetKillCount;

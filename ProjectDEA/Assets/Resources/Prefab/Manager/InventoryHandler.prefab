@@ -147,6 +147,6 @@ MonoBehaviour:
     _effectedLogText:
     - "\u76EE\u5370\u8A2D\u7F6E\u5B8C\u4E86"
     - Marker installation completed.
-  _onlyMissionItems: 
+  _onlyMissionItems: 0100000004000000
   _pushAudio: {fileID: 8300000, guid: 8302fb6948a54f442b70734dc17bd38e, type: 3}
   _getItemAudio: {fileID: 8300000, guid: f660d0873b9fcbd4880426c03ffe22fe, type: 3}

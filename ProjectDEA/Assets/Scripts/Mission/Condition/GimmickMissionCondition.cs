@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Gimmick;
+using Manager;
 using Mission.CreateScriptableObject;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace Mission.Condition
         public event System.Action OnMissionCompleted;
         
         public string MissionName { get; }
+        public ClassType ClassType { get; }
         public MissionType MissionType { get; }
         private readonly RoomGimmickGenerator _roomGimmickGenerator;
         private readonly int _targetGimmickID;
@@ -30,6 +32,7 @@ namespace Mission.Condition
             _roomGimmickGenerator = roomGimmickGenerator;
             _gimmickPrefab = gimmickPrefab;
             MissionName = gimmickMissionStruct._missionName;
+            ClassType = gimmickMissionStruct._classType;
             MissionType = gimmickMissionStruct._missionType;
             _targetGimmickID = gimmickMissionStruct._targetGimmickID;
             _generateType = gimmickMissionStruct._generateType;
@@ -51,6 +54,11 @@ namespace Mission.Condition
         public void StopTracking()
         {
             _roomGimmickGenerator.OnDestroyList(_addGimmickList);
+        }
+        
+        public void PlayerChangeRoomEvent()
+        {
+            
         }
 
         public void OnDefeated(int id)

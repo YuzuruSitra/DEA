@@ -85,8 +85,7 @@ namespace Character.Player
 
             if (other.CompareTag("VenomMush"))
             {
-                var venomMush = other.gameObject.GetComponent<VenomMush>();
-                venomMush.OnDestroy();
+                Destroy(other.gameObject);
                 _oneHit = true;
             }
 

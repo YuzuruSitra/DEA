@@ -13,6 +13,7 @@ namespace Mission.CreateScriptableObject
         public struct GimmickMissionStruct
         {
             public string _missionName;
+            public ClassType _classType;
             public MissionType _missionType;
             public int _targetGimmickID;
             public int _targetCompleteCount;

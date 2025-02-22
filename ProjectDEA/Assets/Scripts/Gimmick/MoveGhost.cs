@@ -80,6 +80,7 @@ namespace Gimmick
 
         private void ChangeRoom()
         {
+            _isMoving = true;
             _currentChangeCount++;
             var currentRoom = _roomChecker.CheckStayRoomNum(transform.position);
             int nextRoom;
@@ -91,7 +92,6 @@ namespace Gimmick
             _targetPos.x = _stageGenerator.RoomInfo[nextRoom, (int)StageGenerator.RoomStatus.CenterX];
             _targetPos.y = transform.position.y;
             _targetPos.z = _stageGenerator.RoomInfo[nextRoom, (int)StageGenerator.RoomStatus.CenterZ];
-            _isMoving = true;
         }
     }
 }

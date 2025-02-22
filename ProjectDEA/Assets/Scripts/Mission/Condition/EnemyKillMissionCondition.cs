@@ -9,6 +9,7 @@ namespace Mission.Condition
         public event System.Action OnMissionCompleted;
         
         public string MissionName { get; }
+        public ClassType ClassType { get; }
         public MissionType MissionType { get; }
         private readonly RoomGimmickGenerator _roomGimmickGenerator;
         private readonly int _targetEnemyID;
@@ -26,6 +27,7 @@ namespace Mission.Condition
             _roomGimmickGenerator = roomGimmickGenerator;
             _enemyPrefab = enemyPrefab;
             MissionName = enemyKillMissionData._missionName;
+            ClassType = enemyKillMissionData._classType;
             MissionType = enemyKillMissionData._missionType;
             _targetEnemyID = enemyKillMissionData._targetEnemyID;
             _generateType = enemyKillMissionData._generateType;
@@ -44,6 +46,11 @@ namespace Mission.Condition
         public void StopTracking()
         {
 
+        }
+
+        public void PlayerChangeRoomEvent()
+        {
+            
         }
 
         public void OnDefeated(int id)
