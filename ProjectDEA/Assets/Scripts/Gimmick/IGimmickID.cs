@@ -26,6 +26,7 @@ namespace Gimmick
         EnemyDragon,
         EnemySlime,
         EnemyGolem,
-        BreakRock
+        BreakRock,
+        RaggedMemoirs
     }
 }

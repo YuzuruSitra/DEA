@@ -103,6 +103,10 @@ MonoBehaviour:
     _prefab: {fileID: 4728160227320062266, guid: f3efd800a7a027844b886e6628f76b37, type: 3}
     _isRoomGenerate: 1
     _priorityType: 2
+  - _kind: 11
+    _prefab: {fileID: 6079282345880423849, guid: 08bfa8ca650c6fa40943016dc5f5f7f1, type: 3}
+    _isRoomGenerate: 1
+    _priorityType: 1
   _maxGimmickPerRoom: 3
   _minGimmickPerRoom: 2
   _typeProbability: 75

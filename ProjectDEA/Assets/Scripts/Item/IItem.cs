@@ -14,6 +14,7 @@ namespace Item
         PowerPotion,
         PowerApple,
         HardStone,
-        SignCandle
+        SignCandle,
+        RaggedMemoirs
     }
 }
