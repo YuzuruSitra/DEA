@@ -105,4 +105,4 @@ MonoBehaviour:
     _priorityType: 2
   _maxGimmickPerRoom: 3
   _minGimmickPerRoom: 2
-  _typeProbability: 55
+  _typeProbability: 75

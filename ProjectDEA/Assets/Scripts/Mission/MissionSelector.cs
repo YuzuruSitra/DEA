@@ -9,23 +9,17 @@ namespace Mission
     public class MissionSelector
     {
         private readonly MissionInitializer _missionInitializer;
-        private readonly MetaAIHandler _metaAIHandler;
         
-        public MissionSelector(MissionInitializer missionInitializer, MetaAIHandler metaAIHandler)
+        public MissionSelector(MissionInitializer missionInitializer)
         {
             _missionInitializer = missionInitializer;
-            _metaAIHandler = metaAIHandler;
         }
         
         public IMissionCondition SelectMission()
         {
-            var type = _metaAIHandler.CurrentPlayerType;
-    
-            if (type == MetaAIHandler.PlayerType.None)
-            {
-                var typeCount = Enum.GetValues(typeof(MetaAIHandler.PlayerType)).Length - 1;
-                type = (MetaAIHandler.PlayerType)Random.Range(0, typeCount);
-            }
+            // メタAIの影響を一旦削除
+            var typeCount = Enum.GetValues(typeof(MetaAIHandler.PlayerType)).Length - 1;
+            var type = (MetaAIHandler.PlayerType)Random.Range(0, typeCount);
 
             // プレイヤータイプとミッションリストのマッピング
             var missionDict = new Dictionary<MetaAIHandler.PlayerType, List<IMissionCondition>>

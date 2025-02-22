@@ -17,10 +17,10 @@ namespace Mission
         public Action OnMissionStarted;
         public Action OnMissionFinished;
 
-        public MissionStateHandler(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, InventoryHandler inventoryHandler, MetaAIHandler metaAIHandler)
+        public MissionStateHandler(GameEventManager gameEventManager, RoomGimmickGenerator roomGimmickGenerator, InventoryHandler inventoryHandler)
         {
             var missionInitializer = new MissionInitializer(gameEventManager, roomGimmickGenerator, inventoryHandler);
-            _missionSelector = new MissionSelector(missionInitializer, metaAIHandler);
+            _missionSelector = new MissionSelector(missionInitializer);
             OnMissionFinished += inventoryHandler.RemoveMissionItem;
             _inventoryHandler = inventoryHandler;
         }
