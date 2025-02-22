@@ -1090,7 +1090,7 @@ MonoBehaviour:
     _attackOffSetFactor: 1
     _attackRadius: 0.4
     _takeDamageWait: 0.45
-    _attackDuration: 3
+    _attackDuration: 2.5
     _attackDamage: 15
     _pushPower: 6
     _stopFactor: 0.6
@@ -1133,8 +1133,8 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3
-  m_Acceleration: 1.5
+  m_Speed: 3.5
+  m_Acceleration: 1.75
   avoidancePriority: 50
   m_AngularSpeed: 320
   m_StoppingDistance: 1
