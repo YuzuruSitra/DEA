@@ -543,6 +543,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerAnimationCnt: {fileID: 4351832874976852339}
+  _postProcessVolume: {fileID: 0}
+  _vignetteColors:
+  - {r: 0.05490196, g: 0.05490196, b: 0.05490196, a: 1}
+  - {r: 0.33333334, g: 0, b: 0, a: 1}
+  _vignetteDuratrion: 1
 --- !u!114 &2002799768244149595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -562,6 +567,7 @@ MonoBehaviour:
   _gravity: -7
   _decelerationRate: 5.5
   _speedTransitionTime: 0.35
+  _maxMoveThreshold: 1
 --- !u!114 &51901469298106324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -597,6 +603,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 272
   _useItemEffects: {fileID: 3852264020249794046}
+  _panelSwitcher: {fileID: 0}
 --- !u!114 &3852264020249794046
 MonoBehaviour:
   m_ObjectHideFlags: 0

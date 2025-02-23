@@ -4829,6 +4829,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1337890114001121513, guid: ed543cf5ee08ab548aab9b2ba606d057, type: 3}
   m_PrefabInstance: {fileID: 255244617}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &255244619 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4418690600881306453, guid: ed543cf5ee08ab548aab9b2ba606d057, type: 3}
+  m_PrefabInstance: {fileID: 255244617}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &256120021 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5909615239051804413, guid: aec58227b077b394abe9afe5713d6abf, type: 3}
@@ -34264,6 +34275,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: f4d4c14c788b8cf42a001fc3ef8ec7de, type: 2}
+    - target: {fileID: 1623497148600613073, guid: af343f917a18a974dbde0989ed8e63db, type: 3}
+      propertyPath: _postProcessVolume
+      value: 
+      objectReference: {fileID: 255244619}
     - target: {fileID: 1987016267545938754, guid: af343f917a18a974dbde0989ed8e63db, type: 3}
       propertyPath: m_Enabled
       value: 0

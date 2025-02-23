@@ -11,10 +11,7 @@ namespace Manager.Cam.PostProcess
         {
             var postProcessVolume = GameObject.FindWithTag("PostprocessVolume").GetComponent<PostProcessVolume>();
             // PostProcessVolumeからVignetteの設定を取得
-            if (postProcessVolume.profile.TryGetSettings(out _vignette))
-            {
-                _vignette.intensity.value = 0.2f;
-            }
+            postProcessVolume.profile.TryGetSettings(out _vignette);
         }
 
         public void SetVignetteIntensity(float intensity)

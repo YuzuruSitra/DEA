@@ -121,11 +121,10 @@ MonoBehaviour:
   _vCams:
   - _kind: 0
     _vCam: {fileID: 5347650687914222714}
-    _vignetteValue: 0.2
+    _vignetteValue: 0.26
   - _kind: 1
     _vCam: {fileID: 1083185142648700442}
     _vignetteValue: 0.5
-  _player: {fileID: 0}
   _vignetteDuration: 0.5
 --- !u!1 &4838700762428844644
 GameObject:

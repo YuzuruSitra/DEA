@@ -10956,6 +10956,18 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 949057734258368851, guid: cac4eec800d28e743bbe04ccfe6ae356, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 949057734258368851, guid: cac4eec800d28e743bbe04ccfe6ae356, type: 3}
+      propertyPath: m_Interactable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1371075923698294085, guid: cac4eec800d28e743bbe04ccfe6ae356, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1371075923698294085, guid: cac4eec800d28e743bbe04ccfe6ae356, type: 3}
       propertyPath: _answerTexts.Array.size
       value: 11
