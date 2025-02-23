@@ -39,7 +39,7 @@ namespace Gimmick
             if (!_playerHpHandler.IsAddDamage) return;
             _playerHpHandler.ReceiveDamage(_damageForSeconds);
             _currentTime = OneSecond; 
-            if (_metaAiScores != null) _metaAIHandler.SendLogsForMetaAI(_metaAiScores);
+            if (_metaAIHandler != null) _metaAIHandler.SendLogsForMetaAI(_metaAiScores);
         }
         
         private void OnTriggerExit(Collider other)

@@ -94,8 +94,6 @@ namespace Character.Player
                     case InsState.Predict:
                         PlaceItem();
                         ResetState();
-                        var language = _logTextHandler.LanguageHandler.CurrentLanguage;
-                        SendLogText(target._effectedLogText[(int)language]);
                         break;
                 }
             }
@@ -142,9 +140,13 @@ namespace Character.Player
 
         private void PlaceItem()
         {
-            var item = _inventoryHandler.UseItem();
+            var targetItem = _inventoryHandler.TargetItem;
+            var item = targetItem._prefab;
             if (item == null || _predictedPosition == Vector3.zero) return;
             Instantiate(item, _predictedPosition, _predictedRotation);
+            var language = _logTextHandler.LanguageHandler.CurrentLanguage;
+            SendLogText(targetItem._effectedLogText[(int)language]);
+            _inventoryHandler.UseItem();
         }
 
         private void ResetState()

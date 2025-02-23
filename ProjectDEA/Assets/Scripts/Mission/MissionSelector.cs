@@ -20,6 +20,7 @@ namespace Mission
             // メタAIの影響を一旦削除
             var typeCount = Enum.GetValues(typeof(MetaAIHandler.PlayerType)).Length - 1;
             var type = (MetaAIHandler.PlayerType)Random.Range(0, typeCount);
+            type = MetaAIHandler.PlayerType.Explorer;
             // プレイヤータイプとミッションリストのマッピング
             var missionDict = new Dictionary<MetaAIHandler.PlayerType, List<IMissionCondition>>
             {

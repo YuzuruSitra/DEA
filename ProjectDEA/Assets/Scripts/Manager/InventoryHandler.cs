@@ -212,25 +212,22 @@ namespace Manager
             }
         }
 
-        public GameObject UseItem()
+        public void UseItem()
         {
             switch (CurrentItemNum)
             {
                 case (int)ItemKind.SignCandle:
-                    return _itemSets[CurrentItemNum]._prefab;
                 case (int)ItemKind.RaggedMemoirs:
                 case ErrorValue:
-                    return null;
+                    return;
             }
-
-            var outItem = _itemSets[CurrentItemNum]._prefab;
+            
             _itemSets[CurrentItemNum]._count = Math.Max(0, _itemSets[CurrentItemNum]._count - 1);
             ChangeItemCount();
-
-            if (_itemSets[CurrentItemNum]._count > 0) return outItem;
+            
+            if (_itemSets[CurrentItemNum]._count > 0) return;
             OnItemLineupChanged(_itemSets);
             ChangeItemNum(ErrorValue);
-            return outItem;
         }
 
         public void ChangePredictActive(GameObject predict, bool isVisible)
