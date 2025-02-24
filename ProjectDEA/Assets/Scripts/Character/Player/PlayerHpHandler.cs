@@ -42,7 +42,7 @@ namespace Character.Player
             newHp = Math.Min(newHp, _playerStatusHandler.MaxHp);
             _playerStatusHandler.SetPlayerCurrentHp(newHp);
             
-            if (_vignette != null)
+            if (_vignette != null && damage > 0)
             {
                 if (_vignetteCoroutine != null)
                 {
