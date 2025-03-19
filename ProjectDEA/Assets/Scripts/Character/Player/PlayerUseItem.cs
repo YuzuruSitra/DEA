@@ -133,7 +133,7 @@ namespace Character.Player
         {
             var value = Vector3.zero;
             value.x = Mathf.Floor(position.x) + 0.5f;
-            value.y = Mathf.Round(position.y);
+            value.y = Mathf.Round(position.y) + 0.25f;
             value.z = Mathf.Floor(position.z) + 0.5f;
             return value;
         }

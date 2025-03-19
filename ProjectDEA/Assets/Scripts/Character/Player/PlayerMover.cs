@@ -12,50 +12,37 @@ namespace Character.Player
         [SerializeField] private float _walkSpeed;
         [Header("走行速度")]
         [SerializeField] private float _runSpeed;
-        private CharacterController _controller;
+        private Rigidbody _rb;
 
         [SerializeField] private PlayerAnimationCnt _playerAnimationCnt;
         [SerializeField] private PlayerHpHandler _playerHpHandler;
 
         private Vector3 _moveDirection = Vector3.zero;
-        private Vector3 _verticalDirection = Vector3.zero;
         private Vector3 _inputDirection = Vector3.zero;
-        private Vector3 _rotationDirection = Vector3.zero;
         private bool _isPushed;
         private const float PushedDuration = 0.5f;
-
-        // 重力の値
+        
         [SerializeField] private float _gravity = -9.81f;
-
-        // 現在の移動速度
         private float _currentSpeed;
-
-        // 速度の減速スピード
         [SerializeField] private float _decelerationRate = 5f;
-
-        // 速度の変化にかかる時間
         [SerializeField] private float _speedTransitionTime;
-        [SerializeField] private float _maxMoveThreshold = 1.0f;
 
         private InputActions _inputActions;
-        private Vector2 _inputMove = Vector2.zero; // 再利用可能なベクトル
+        private Vector2 _inputMove = Vector2.zero;
         private bool _isRunning;
-        private Vector3 _previousPosition;
 
         private void Start()
         {
-            _controller = GetComponent<CharacterController>();
-            _controller.enabled = true;
-            _inputActions = new InputActions();
+            _rb = GetComponent<Rigidbody>();
+            _rb.interpolation = RigidbodyInterpolation.Interpolate;
+            _rb.constraints = RigidbodyConstraints.FreezeRotation;
 
-            // MoveとRunのアクションを購読
+            _inputActions = new InputActions();
             _inputActions.Player.Move.performed += OnMovePerformed;
             _inputActions.Player.Move.canceled += OnMoveCanceled;
             _inputActions.Player.Run.performed += OnRunPerformed;
             _inputActions.Player.Run.canceled += OnRunCanceled;
             _inputActions.Enable();
-            
-            _previousPosition = transform.position;
         }
 
         private void OnDestroy()
@@ -89,89 +76,49 @@ namespace Character.Player
 
         private void FixedUpdate()
         {
-            VerticalMoving();
             if (!_isWalkable || _isPushed || _playerAnimationCnt.IsAttacking)
             {
                 _playerAnimationCnt.SetSpeed(0);
+                _rb.velocity = new Vector3(0, _rb.velocity.y, 0); 
                 return;
             }
 
             UpdateInputDirection();
             UpdateMoveDirection();
-            DoMoving();
-            CheckPositionCorrection();
-        }
-        
-        private void CheckPositionCorrection()
-        {
-            if (!_isPushed && Mathf.Abs(transform.position.y - _previousPosition.y) > 0.5f)
-            {
-                transform.position = new Vector3(transform.position.x, _previousPosition.y, transform.position.z);
-            }
-            else
-            {
-                if (_controller.isGrounded)
-                {
-                    _previousPosition = transform.position;
-                }
-            }
         }
 
         private void UpdateInputDirection()
         {
-            // 入力方向を計算して再利用可能なベクトルに代入
             _inputDirection.x = _inputMove.x;
             _inputDirection.z = _inputMove.y;
 
             if (_inputDirection.magnitude > 1f)
+            {
                 _inputDirection.Normalize();
+            }
         }
 
         private void UpdateMoveDirection()
         {
-            // 入力がない場合は速度を徐々に減少
             if (_inputDirection == Vector3.zero)
             {
-                _currentSpeed = Mathf.Lerp(_currentSpeed, 0f, Time.deltaTime * _decelerationRate);
-                _moveDirection.x = Mathf.Lerp(_moveDirection.x, 0f, Time.deltaTime * _decelerationRate);
-                _moveDirection.z = Mathf.Lerp(_moveDirection.z, 0f, Time.deltaTime * _decelerationRate);
+                _currentSpeed = Mathf.Lerp(_currentSpeed, 0f, Time.fixedDeltaTime * _decelerationRate);
             }
             else
             {
                 var targetSpeed = _isRunning ? _runSpeed : _walkSpeed;
-                _currentSpeed = Mathf.Lerp(_currentSpeed, targetSpeed, Time.deltaTime / _speedTransitionTime);
-
-                _moveDirection.x = _inputDirection.x * _currentSpeed;
-                _moveDirection.z = _inputDirection.z * _currentSpeed;
-
-                // 回転処理用に方向ベクトルを計算して再利用
-                _rotationDirection.x = _moveDirection.x;
-                _rotationDirection.z = _moveDirection.z;
-                _rotationDirection.y = 0;
-
-                if (_rotationDirection != Vector3.zero)
-                    transform.rotation = Quaternion.LookRotation(_rotationDirection);
+                _currentSpeed = Mathf.Lerp(_currentSpeed, targetSpeed, Time.fixedDeltaTime / _speedTransitionTime);
             }
-        }
+            _moveDirection = new Vector3(_inputDirection.x, 0, _inputDirection.z) * _currentSpeed;
+            _moveDirection.y = _rb.velocity.y + _gravity * Time.fixedDeltaTime; 
+            _rb.velocity = _moveDirection;
 
-        private void VerticalMoving()
-        {
-            // 重力適用
-            if (_controller.isGrounded)
-                _verticalDirection.y = 0f;
-            else
-                _verticalDirection.y += _gravity * Time.deltaTime;
-            _controller.Move(_verticalDirection * Time.deltaTime);
-        }
+            if (_inputDirection != Vector3.zero)
+            {
+                transform.rotation = Quaternion.LookRotation(new Vector3(_moveDirection.x, 0, _moveDirection.z));
+            }
 
-        private void DoMoving()
-        {
-            // CharacterControllerで移動
-            _controller.Move(_moveDirection * Time.deltaTime);
-
-            // アニメーション用の速度比率
-            var speedRatio = _currentSpeed / _runSpeed;
-            _playerAnimationCnt.SetSpeed(speedRatio);
+            _playerAnimationCnt.SetSpeed(_currentSpeed / _runSpeed);
         }
 
         public IEnumerator AttackMove(float time, float speed)
@@ -182,7 +129,7 @@ namespace Character.Player
             {
                 elapsedTime += Time.deltaTime;
                 if (halfT < elapsedTime)
-                    _controller.Move(transform.forward * (speed * Time.deltaTime));
+                    _rb.velocity = transform.forward * speed;
                 yield return null;
             }
         }
@@ -204,8 +151,7 @@ namespace Character.Player
             {
                 elapsedTime += Time.deltaTime;
                 var force = initialUForce * (1 - (elapsedTime / PushedDuration));
-                var velocity = direction * force;
-                _controller.Move(velocity * Time.deltaTime);
+                _rb.velocity = direction * force;
                 yield return null;
             }
 
@@ -216,6 +162,10 @@ namespace Character.Player
         public void SetWalkableState(bool active)
         {
             _isWalkable = active;
+            if (!active)
+            {
+                _rb.velocity = Vector3.zero;
+            }
         }
     }
 }
