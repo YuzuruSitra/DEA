@@ -536,11 +536,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _walkSpeed: 2
   _runSpeed: 4
+  _rb: {fileID: 5984014845965616732}
   _playerAnimationCnt: {fileID: 4351832874976852339}
   _playerHpHandler: {fileID: 1623497148600613073}
   _gravity: -4.81
   _decelerationRate: 5.5
   _speedTransitionTime: 0.35
+  _debug: 0
 --- !u!114 &51901469298106324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -639,7 +641,7 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 2
 --- !u!136 &5806510385359366932

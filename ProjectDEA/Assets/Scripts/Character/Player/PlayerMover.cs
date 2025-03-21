@@ -12,7 +12,7 @@ namespace Character.Player
         [SerializeField] private float _walkSpeed;
         [Header("走行速度")]
         [SerializeField] private float _runSpeed;
-        private Rigidbody _rb;
+        [SerializeField] private Rigidbody _rb;
 
         [SerializeField] private PlayerAnimationCnt _playerAnimationCnt;
         [SerializeField] private PlayerHpHandler _playerHpHandler;
@@ -33,10 +33,6 @@ namespace Character.Player
 
         private void Start()
         {
-            _rb = GetComponent<Rigidbody>();
-            _rb.interpolation = RigidbodyInterpolation.Interpolate;
-            _rb.constraints = RigidbodyConstraints.FreezeRotation;
-
             _inputActions = new InputActions();
             _inputActions.Player.Move.performed += OnMovePerformed;
             _inputActions.Player.Move.canceled += OnMoveCanceled;
@@ -79,10 +75,10 @@ namespace Character.Player
             if (!_isWalkable || _isPushed || _playerAnimationCnt.IsAttacking)
             {
                 _playerAnimationCnt.SetSpeed(0);
-                _rb.velocity = new Vector3(0, _rb.velocity.y, 0); 
+                _rb.velocity = Vector3.zero; 
                 return;
             }
-
+            
             UpdateInputDirection();
             UpdateMoveDirection();
         }
@@ -162,10 +158,6 @@ namespace Character.Player
         public void SetWalkableState(bool active)
         {
             _isWalkable = active;
-            if (!active)
-            {
-                _rb.velocity = Vector3.zero;
-            }
         }
     }
 }

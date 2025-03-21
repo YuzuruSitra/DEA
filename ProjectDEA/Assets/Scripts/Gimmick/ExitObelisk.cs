@@ -16,7 +16,7 @@ namespace Gimmick
         private DungeonLayerHandler _dungeonLayerHandler;
         public MissionStateHandler MissionStateHandler { get; private set; }
 
-        public const int NeededKeyCount = 4;
+        private const int NeededKeyCount = 4;
         private int _setKeyCount;
         [SerializeField] private int _oneMissionGetKeyCount;
         [SerializeField] private CinemachineVirtualCameraBase _vCam;

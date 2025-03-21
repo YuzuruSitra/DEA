@@ -131,10 +131,11 @@ namespace Character.Player
 
         private static Vector3 AdjustToGrid(Vector3 position)
         {
+            const float padding = 0.5f;
             var value = Vector3.zero;
-            value.x = Mathf.Floor(position.x) + 0.5f;
-            value.y = Mathf.Round(position.y) + 0.25f;
-            value.z = Mathf.Floor(position.z) + 0.5f;
+            value.x = Mathf.Floor(position.x) + padding;
+            value.y = Mathf.Round(position.y) + padding;
+            value.z = Mathf.Floor(position.z) + padding;
             return value;
         }
 

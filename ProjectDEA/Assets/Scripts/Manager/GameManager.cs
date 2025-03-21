@@ -71,8 +71,8 @@ namespace Manager
             playerSetPos.x = stageGenerator.RoomInfo[0, (int) StageGenerator.RoomStatus.CenterX];
             playerSetPos.y = 1.0f;
             playerSetPos.z = stageGenerator.RoomInfo[0, (int) StageGenerator.RoomStatus.CenterZ];
-            var player = GameObject.FindWithTag("Player");
-            player.transform.position = playerSetPos;
+            var player = GameObject.FindWithTag("Player").transform;
+            player.position = playerSetPos;
             
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
