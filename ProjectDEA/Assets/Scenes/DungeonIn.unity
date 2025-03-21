@@ -1028,6 +1028,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6541468794001565378, guid: af343f917a18a974dbde0989ed8e63db, type: 3}
   m_PrefabInstance: {fileID: 1435004896}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1435004900 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5969759676665908825, guid: af343f917a18a974dbde0989ed8e63db, type: 3}
+  m_PrefabInstance: {fileID: 1435004896}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e548286d11930bb4593caa1371bcca53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1832479687 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 551811124803093548, guid: 5fda10300312f4943b89a95be524b982, type: 3}
@@ -1151,7 +1162,7 @@ PrefabInstance:
     - target: {fileID: 2489764831776359219, guid: 10dfe7734ba9e3e4a8552476e63ca9cc, type: 3}
       propertyPath: _playerClasHub
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1435004900}
     - target: {fileID: 5784729226561058653, guid: 10dfe7734ba9e3e4a8552476e63ca9cc, type: 3}
       propertyPath: m_Name
       value: DefaultPanel
