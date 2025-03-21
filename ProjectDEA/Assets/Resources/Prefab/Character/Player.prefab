@@ -542,7 +542,6 @@ MonoBehaviour:
   _gravity: -4.81
   _decelerationRate: 5.5
   _speedTransitionTime: 0.35
-  _debug: 0
 --- !u!114 &51901469298106324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -556,7 +555,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackCt: 1
-  _attackMoveTime: 0.5
+  _attackMoveTime: 0.4
   _attackSpeed: 2
   _playerAnimationCnt: {fileID: 4351832874976852339}
   _playerMover: {fileID: 2002799768244149595}

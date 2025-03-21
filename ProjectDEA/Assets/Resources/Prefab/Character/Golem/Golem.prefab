@@ -1154,7 +1154,7 @@ MonoBehaviour:
     _takeDamageWait: 0.8
     _attackDuration: 3
     _attackDamage: 25
-    _pushPower: 9
+    _pushPower: 10
     _stopFactor: 0.6
     _searchUpPadding: 1.25
     _hitAudio: {fileID: 8300000, guid: 77953016569cb174b8515b084c305e57, type: 3}

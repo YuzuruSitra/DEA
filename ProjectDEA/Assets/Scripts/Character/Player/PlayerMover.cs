@@ -75,7 +75,6 @@ namespace Character.Player
             if (!_isWalkable || _isPushed || _playerAnimationCnt.IsAttacking)
             {
                 _playerAnimationCnt.SetSpeed(0);
-                _rb.velocity = Vector3.zero; 
                 return;
             }
             
@@ -158,6 +157,9 @@ namespace Character.Player
         public void SetWalkableState(bool active)
         {
             _isWalkable = active;
+            if (active) return;
+            _rb.velocity = Vector3.zero;
+            _playerAnimationCnt.SetSpeed(0);
         }
     }
 }

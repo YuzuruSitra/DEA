@@ -1092,7 +1092,7 @@ MonoBehaviour:
     _takeDamageWait: 0.45
     _attackDuration: 2.5
     _attackDamage: 15
-    _pushPower: 6
+    _pushPower: 8
     _stopFactor: 0.6
     _screamTime: 1
     _screamWaitTime: 0.75
